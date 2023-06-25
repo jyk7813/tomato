@@ -19,11 +19,11 @@ public class first {
 		
 		try {
 			conn = DBUtil.getConnection();
-			stmt= conn.prepareStatement("SELECT * FROM books");
+			stmt= conn.prepareStatement("SHOW TABLES");
 			rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				System.out.println(rs.getObject(2));
+				System.out.println(rs.getObject(1));
 			}
 			
 			
