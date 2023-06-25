@@ -15,6 +15,7 @@ local.properties
 .recommenders
 .classpath
 .project
+mysql.properties
 
 
 # External tool builders
