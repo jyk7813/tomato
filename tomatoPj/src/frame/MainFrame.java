@@ -73,6 +73,9 @@ public class MainFrame extends JFrame {
 		JPanel loginPnl = new LoginPnl(loginImage,this);
 		JPanel signUpPnl = new SignUpPnl(signImage,this);
 		
+		// Todo 페이지 (테스트)
+//		JPanel TodoPnl = new SignUpPnl(signImage,this);
+		
 		
 		
 		
@@ -89,6 +92,7 @@ public class MainFrame extends JFrame {
 		getContentPane().setLayout(new CardLayout(0, 0));
 		getContentPane().add(loginPnl,"login");
 		getContentPane().add(signUpPnl,"signUp");
+		getContentPane().add(TodoPnl,"todo");
 		
 		
 	}
