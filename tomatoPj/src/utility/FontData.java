@@ -6,14 +6,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class FontData {
-		public Font nanumFont25() {
+		public Font nanumFont(int size) {
 			try {
 	            // 폰트 파일 로드
-	            InputStream is = getClass().getClassLoader().getResourceAsStream("NanumSquareNeo-dEb.ttf");
+	            InputStream is = getClass().getClassLoader().getResourceAsStream("NanumSquareNeo-bRg.ttf");
 	            Font font = Font.createFont(Font.TRUETYPE_FONT, is);
 
 	            // 폰트 크기 및 스타일 설정
-	            Font customFont = font.deriveFont(Font.BOLD, 25);
+	            Font customFont = font.deriveFont(Font.PLAIN, size);
 	            return customFont;
 	        } catch (FontFormatException | IOException e) {
 	            e.printStackTrace();
