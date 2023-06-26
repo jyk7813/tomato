@@ -10,6 +10,8 @@ import java.util.List;
 import dbutil.DBUtil;
 
 public class MemberRepository {
+	
+	
 	public List<Member> selectAll(Connection conn) throws SQLException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -111,7 +113,7 @@ public class MemberRepository {
 		ResultSet rs = null;
 		Member member = null;
 		try {
-			String query = "SELECT id, pwd,  member FROM member";
+			String query = "SELECT * FROM member";
 			stmt = conn.prepareStatement(query);
 			rs = stmt.executeQuery();
 
