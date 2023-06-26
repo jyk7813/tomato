@@ -4,13 +4,18 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import dbutil.DBUtil;
 import frame.MainFrame;
+import tomatoPj.Member;
+import tomatoPj.MemberRepository;
 import utility.FontData;
 import utility.Utility;
 
@@ -20,7 +25,13 @@ public class LoginPnl extends JPanel {
 	private JButton signUpBtn;
 	private JButton loginButton;
 	private FontData fontData;
+	private Member member;
+	private MemberRepository mr;
+	private JTextField idField;
+	private JTextField passwordField;
+	
 	public LoginPnl(Image image, MainFrame mainFrame) {
+		mr = new MemberRepository();
 		this.image = image;
 		fontData = new FontData();
 		setLayout(null);
@@ -30,8 +41,10 @@ public class LoginPnl extends JPanel {
 		loginButton = new JButton();
 		signUpBtn = new JButton();
 
+
 		JTextField idField = new JTextField();
 		JPasswordField passwordField = new JPasswordField();
+
 		loginButton.setBounds(897, 659, 126, 41);
 		signUpBtn.setBounds(927, 709, 66, 18);
 
@@ -73,7 +86,17 @@ public class LoginPnl extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				Connection conn = null;
+				try {
+					conn = DBUtil.getConnection();
+					member = mr.logIn(conn, idField.getText(), passwordField.getText());
+					System.out.println("로그인성공");
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+					System.out.println("로그인실패");
+				} finally {
+					DBUtil.close(conn);
+				}
 			}
 		});
 	}
