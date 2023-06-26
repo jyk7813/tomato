@@ -42,7 +42,7 @@ public class LoginPnl extends JPanel {
 		signUpBtn = new JButton();
 
 
-		JTextField idField = new JTextField();
+		JTextField idField = new JTextField(); 
 		JPasswordField passwordField = new JPasswordField();
 
 		loginButton.setBounds(897, 659, 126, 41);
