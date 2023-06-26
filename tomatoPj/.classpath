@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="commons-pool2-2.11.1.jar"/>
 	<classpathentry kind="lib" path="mysql-connector-j-8.0.33.jar"/>
+	<classpathentry kind="lib" path="spring-security-core-6.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
