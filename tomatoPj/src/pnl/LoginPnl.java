@@ -28,7 +28,7 @@ public class LoginPnl extends JPanel {
 	private Member member;
 	private MemberRepository mr;
 	private JTextField idField;
-	private JTextField passwordField;
+	private JPasswordField passwordField;
 	
 	public LoginPnl(Image image, MainFrame mainFrame) {
 		mr = new MemberRepository();
@@ -42,8 +42,9 @@ public class LoginPnl extends JPanel {
 		signUpBtn = new JButton();
 
 
-		JTextField idField = new JTextField(); 
-		JPasswordField passwordField = new JPasswordField();
+
+		idField = new JTextField();
+		passwordField = new JPasswordField();
 
 		loginButton.setBounds(897, 659, 126, 41);
 		signUpBtn.setBounds(927, 709, 66, 18);
