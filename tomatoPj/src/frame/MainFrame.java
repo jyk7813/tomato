@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import pnl.LoginPnl;
-import pnl.signUpPnl;
+import pnl.SignUpPnl;
 import utility.IconData;
 
 public class MainFrame extends JFrame {
@@ -71,7 +71,7 @@ public class MainFrame extends JFrame {
 		Image signImage = iconData.signUpBackGround().getImage();
 		
 		JPanel loginPnl = new LoginPnl(loginImage,this);
-		JPanel signUpPnl = new signUpPnl(signImage);
+		JPanel signUpPnl = new SignUpPnl(signImage,this);
 		
 		
 		

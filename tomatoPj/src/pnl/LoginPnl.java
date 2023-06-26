@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import dbutil.DBUtil;
@@ -40,8 +41,10 @@ public class LoginPnl extends JPanel {
 		loginButton = new JButton();
 		signUpBtn = new JButton();
 
-		idField = new JTextField();
-		passwordField = new JTextField();
+
+		JTextField idField = new JTextField();
+		JPasswordField passwordField = new JPasswordField();
+
 		loginButton.setBounds(897, 659, 126, 41);
 		signUpBtn.setBounds(927, 709, 66, 18);
 
