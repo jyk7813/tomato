@@ -37,10 +37,8 @@ public class LoginPnl extends JPanel {
 		setLayout(null);
 
 		utility = new Utility();
-
 		loginButton = new JButton();
 		signUpBtn = new JButton();
-
 
 		idField = new JTextField();
 		passwordField = new JPasswordField();
@@ -57,7 +55,7 @@ public class LoginPnl extends JPanel {
 		
 		signUpActionListener(mainFrame);
 		
-		loginActionListener();
+		loginActionListener(mainFrame);
 
 		utility.setButtonProperties(idField);
 		utility.setButtonProperties(passwordField);
@@ -81,7 +79,7 @@ public class LoginPnl extends JPanel {
 		});
 	}
 
-	private void loginActionListener() {
+	private void loginActionListener(MainFrame mainFrame) {
 		loginButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -91,6 +89,7 @@ public class LoginPnl extends JPanel {
 					conn = DBUtil.getConnection();
 					member = mr.logIn(conn, idField.getText(), passwordField.getText());
 					System.out.println("로그인성공");
+					mainFrame.showCard("projectSelect");
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 					System.out.println("로그인실패");
