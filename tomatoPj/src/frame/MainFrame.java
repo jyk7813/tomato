@@ -92,7 +92,7 @@ public class MainFrame extends JFrame {
 		getContentPane().setLayout(new CardLayout(0, 0));
 		getContentPane().add(loginPnl,"login");
 		getContentPane().add(signUpPnl,"signUp");
-		getContentPane().add(TodoPnl,"todo");
+//		getContentPane().add(TodoPnl,"todo");
 		
 		
 	}
