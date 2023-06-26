@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout;
 
 import frame.MainFrame;
 import utility.FontData;
@@ -31,7 +31,7 @@ public class LoginPnl extends JPanel {
 		signUpBtn = new JButton();
 
 		JTextField idField = new JTextField();
-		JTextField passwordField = new JTextField();
+		JPasswordField passwordField = new JPasswordField();
 		loginButton.setBounds(897, 659, 126, 41);
 		signUpBtn.setBounds(927, 709, 66, 18);
 
