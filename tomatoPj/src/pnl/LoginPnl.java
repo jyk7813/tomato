@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 import frame.MainFrame;
+import utility.FontData;
 import utility.Utility;
 
 public class LoginPnl extends JPanel {
@@ -18,9 +19,10 @@ public class LoginPnl extends JPanel {
 	private Utility utility;
 	private JButton signUpBtn;
 	private JButton loginButton;
-
+	private FontData fontData;
 	public LoginPnl(Image image, MainFrame mainFrame) {
 		this.image = image;
+		fontData = new FontData();
 		setLayout(null);
 
 		utility = new Utility();
@@ -33,8 +35,13 @@ public class LoginPnl extends JPanel {
 		loginButton.setBounds(897, 659, 126, 41);
 		signUpBtn.setBounds(927, 709, 66, 18);
 
-		idField.setBounds(821, 536, 276, 41);
-		passwordField.setBounds(821, 597, 276, 41);
+		idField.setBounds(842, 536, 255, 41);
+		passwordField.setBounds(842, 597, 255, 41);
+		
+		idField.setFont(fontData.nanumFont(16));
+		passwordField.setFont(fontData.nanumFont(16));
+		
+		
 		signUpActionListener(mainFrame);
 		
 		loginActionListener();
