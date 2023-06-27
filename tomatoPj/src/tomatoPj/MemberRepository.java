@@ -172,7 +172,6 @@ public class MemberRepository {
 			DBUtil.close(stmt);
 			DBUtil.close(conn);
 		}
-		System.out.println(list);
 		return list;
 	}
 	

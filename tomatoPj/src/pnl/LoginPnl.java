@@ -26,6 +26,7 @@ import dbutil.LoginMember;
 import frame.MainFrame;
 import tomatoPj.Member;
 import tomatoPj.MemberRepository;
+import tomatoPj.Project;
 import utility.FontData;
 import utility.IconData;
 import utility.Utility;
@@ -186,8 +187,10 @@ public class LoginPnl extends JPanel {
 					if (member != null) {
 						System.out.println("로그인성공");
 						setLoginMember(mainFrame, member);
-						//System.out.println(mainFrame.loginMember.getMember());
-						System.out.println(mainFrame.loginMember.getPjList());
+						System.out.println("로그인한계정 가지고있는 프로젝트 목록");
+						for(Project p : mainFrame.loginMember.getPjList()) {
+							System.out.println(p);
+						}
 						mainFrame.showCard("projectSelect");
 					} else {
 						System.out.println("로그인실패");

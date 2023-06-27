@@ -12,6 +12,7 @@ public class Task {
 	private LocalDateTime deadLine;
 	private int active;
 	private List<Member>list;
+	
 	public Task(String title, String content, int importance, LocalDateTime updateDate, LocalDateTime deadLine) {
 		super();
 		this.title = title;

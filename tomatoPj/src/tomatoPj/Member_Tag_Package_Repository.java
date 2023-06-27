@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 import dbutil.DBUtil;
 
@@ -16,11 +16,11 @@ public class Member_Tag_Package_Repository {
 		memberRepo = new MemberRepository();
 	}
 	
-	public Member returnMemberByPj_no(int project_no) throws SQLException {
+	public HashSet<Member> returnMemberByPj_no(int project_no) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		Member member = null;
+		HashSet<Member> list = new HashSet<>();
 		try {
 			conn = DBUtil.getConnection();
 			String query = "SELECT * FROM `member_tag` WHERE `project_no` = ?";
@@ -33,7 +33,8 @@ public class Member_Tag_Package_Repository {
 				int project_noParse = rs.getInt("project_no");
 				int member_no = rs.getInt("member_no");
 				String color = rs.getString("color");
-				member = memberRepo.searchByMemberNo(member_no);
+				Member member = memberRepo.searchByMemberNo(member_no);
+				list.add(member);
 			}
 			
 		} finally {
@@ -41,9 +42,7 @@ public class Member_Tag_Package_Repository {
 			DBUtil.close(stmt);
 			DBUtil.close(conn);
 		}
-		///////////////여기서 리스트로 리턴해야함 ///////////
-		System.out.println("이상한멤버 " + member);
-		return member;
+		return list;
 	}
 	
 	public int containMemberCnt(int project_no) throws SQLException {
