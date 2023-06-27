@@ -1,6 +1,7 @@
 package pnl;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 
 import dbutil.DBUtil;
@@ -14,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,13 +32,19 @@ public class TaskPnl extends JPanel{
 		IconData IC = new IconData();
 		FontData FD = new FontData();
 		Utility util = new Utility();
+		
 		Imoportance = 0;
 		// task �г�
 		JPanel TaskPnlMain = new JPanel();
 		TaskPnlMain.setSize(631,725);
 		TaskPnlMain.setLocation(645,296);
-		TaskPnlMain.setLayout(new BoxLayout(TaskPnlMain, BoxLayout.Y_AXIS));
+		// 라벨 이미지 추가
+		JLabel TaskPnlMainLbl = new JLabel(IC.getImageIcon("contentPanel"));
+		TaskPnlMainLbl.setSize(631,725);
+		TaskPnlMainLbl.setLocation(645,296);
+		TaskPnlMainLbl.setLayout(new BoxLayout(TaskPnlMainLbl, BoxLayout.Y_AXIS));
 		TaskPnlMain.setOpaque(false);
+
 		
 		
 		// 날짜와 별
@@ -74,26 +82,6 @@ public class TaskPnl extends JPanel{
 			
 			};
 			Star.addMouseListener(ma);
-			Connection conn = null;
-			PreparedStatement stmt = null;
-			try {
-				conn = DBUtil.getConnection();
-				String sql = "update task\r\n" + 
-						"set importance = ?\r\n" + 
-						"where task_no = 1;";
-				
-						
-				stmt = conn.prepareStatement(sql);
-				stmt.setInt(1, Imoportance+1);
-				stmt.executeUpdate();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}finally {
-				DBUtil.close(conn);
-				DBUtil.close(stmt);
-			}
-			
-			
 			util.setButtonProperties(Star);
 			StarAndDate.add(Stars[i]);
 		}
@@ -137,22 +125,23 @@ public class TaskPnl extends JPanel{
 		StarAndDate.add(TimeManagementNavi);		
 		StarAndDate.add(TimeMangementBar);
 		
-		TaskPnlMain.add(StarAndDate);
+		TaskPnlMainLbl.add(StarAndDate);
 		
 		//task 테스크 패널 
 		JPanel TaskUnderPanel = new JPanel();
 		TaskUnderPanel.setPreferredSize(new Dimension(625,591));
 		TaskUnderPanel.setOpaque(false);
-		TaskPnlMain.add(TaskUnderPanel);
 		
-		
-		
+		//스크롤페인
+		JScrollPane scrollPane = new JScrollPane(TaskUnderPanel);
 
+		TaskPnlMainLbl.add(scrollPane);
 
 		
 
 		JLabel Background =new JLabel(IC.getImageIcon("selectTask(BG)"));
 
+		TaskPnlMain.add(TaskPnlMainLbl);
 		Background.add(TaskPnlMain);
 		add(Background);
 
