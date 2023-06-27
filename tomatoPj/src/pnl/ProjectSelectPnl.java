@@ -64,6 +64,7 @@ public class ProjectSelectPnl extends JPanel {
             }
 
         };
+        
         JPanel northPanel = new JPanel() {
             @Override
             public Dimension getPreferredSize() {
@@ -174,7 +175,7 @@ public class ProjectSelectPnl extends JPanel {
 			}
 		});
         scrollPane.setComponentZOrder(scrollPane.getVerticalScrollBar(), 0);
-		scrollPane.setComponentZOrder(scrollPane.getViewport(), 0);
+		scrollPane.setComponentZOrder(scrollPane.getViewport(), 1);
 		scrollPane.getVerticalScrollBar().setOpaque(false);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);  // Add this line
