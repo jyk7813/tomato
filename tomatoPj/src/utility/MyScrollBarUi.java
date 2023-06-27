@@ -45,7 +45,6 @@ public class MyScrollBarUi extends BasicScrollBarUI {
 
     @Override
     protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
-        g.drawImage(track, trackBounds.x, trackBounds.y, trackBounds.width, trackBounds.height, null);
     }
 
     @Override

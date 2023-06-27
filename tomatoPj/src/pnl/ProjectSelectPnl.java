@@ -1,18 +1,28 @@
 package pnl;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneLayout;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import frame.MainFrame;
 import utility.IconData;
@@ -42,7 +52,7 @@ public class ProjectSelectPnl extends JPanel {
             @Override
             public Dimension getPreferredSize() {
                 setOpaque(false);
-                return new Dimension(510, 945);
+                return new Dimension(510, 905);
             }
         };
         JPanel eastPnl = new JPanel() {
@@ -50,7 +60,7 @@ public class ProjectSelectPnl extends JPanel {
             @Override
             public Dimension getPreferredSize() {
                 setOpaque(false);
-                return new Dimension(510, 945);
+                return new Dimension(510, 905);
             }
 
         };
@@ -77,9 +87,95 @@ public class ProjectSelectPnl extends JPanel {
         // Create JScrollPane and add the centerPnl to it
         scrollPane = new JScrollPane(centerPnl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane = new JScrollPane(centerPnl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        Image thumb = iconData.getImageIcon("dragBarLength_f").getImage();
-        Image track = iconData.getImageIcon("dragBarLength_b").getImage();
-        scrollPane.getVerticalScrollBar().setUI(new MyScrollBarUi(thumb, track));
+        scrollPane.setLayout(new ScrollPaneLayout() {
+			@Override
+			public void layoutContainer(Container parent) {
+				JScrollPane scrollPane = (JScrollPane) parent;
+
+				Rectangle availR = scrollPane.getBounds();
+				availR.x = availR.y = 0;
+
+				Insets insets = parent.getInsets();
+				availR.x = insets.left;
+				availR.y = insets.top;
+				availR.width -= insets.left + insets.right;
+				availR.height -= insets.top + insets.bottom;
+
+				Rectangle vsbR = new Rectangle();
+				vsbR.width = 12;
+				vsbR.height = availR.height;
+				vsbR.x = availR.x + availR.width - vsbR.width;
+				vsbR.y = availR.y;
+
+				if (viewport != null) {
+					viewport.setBounds(availR);
+				}
+				if (vsb != null) {
+					vsb.setVisible(true);
+					vsb.setOpaque(false);
+					
+					vsb.setBounds(vsbR);
+				}
+			}
+		});
+        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+			private final Dimension d = new Dimension();
+
+			@Override
+			protected JButton createDecreaseButton(int orientation) {
+				return new JButton() {
+					@Override
+					public Dimension getPreferredSize() {
+						return d;
+					}
+				};
+			}
+
+			@Override
+			protected JButton createIncreaseButton(int orientation) {
+				return new JButton() {
+					@Override
+					public Dimension getPreferredSize() {
+						return d;
+					}
+				};
+			}
+
+			@Override
+			protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
+			}
+
+			@Override
+			protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
+				Graphics2D g2 = (Graphics2D) g.create();
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				Color color = null;
+				JScrollBar sb = (JScrollBar) c;
+				if (!sb.isEnabled() || r.width > r.height) {
+					return;
+				} else if (isDragging) {
+					color = new Color(1, 147, 121, 0);
+				} else if (isThumbRollover()) {
+					color = new Color(1, 147, 121, 0);
+				} else {
+					color = new Color(1, 147, 121, 0);
+				}
+				g2.setPaint(color);
+				g2.fillRoundRect(r.x, r.y, r.width, r.height, 10, 10);
+				g2.setPaint(color);
+				g2.drawRoundRect(r.x, r.y, r.width, r.height, 10, 10);
+				g2.dispose();
+			}
+
+			@Override
+			protected void setThumbBounds(int x, int y, int width, int height) {
+				super.setThumbBounds(x, y, width, height);
+				scrollbar.repaint();
+			}
+		});
+        scrollPane.setComponentZOrder(scrollPane.getVerticalScrollBar(), 0);
+		scrollPane.setComponentZOrder(scrollPane.getViewport(), 0);
+		scrollPane.getVerticalScrollBar().setOpaque(false);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);  // Add this line
         scrollPane.setBorder(null);
