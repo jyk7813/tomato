@@ -26,8 +26,7 @@ public class Member {
 		this.project = new ArrayList<>();
 		this.feedback = new ArrayList<>();
 	}
-	public Member(String id, String pwd, String e_mail, String name, String mbti, List<Project> project,
-			List<Feedback> feedback) {
+	public Member(String id, String pwd, String e_mail, String name, String mbti) {
 		super();
 		this.id = id;
 		this.pwd = pwd;

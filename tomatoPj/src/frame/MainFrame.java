@@ -44,10 +44,6 @@ public class MainFrame extends JFrame {
 		c1.show(getContentPane(), cardName);
 	}
 
-	/**
-	 * Create the frame.
-	 */
-
 	public MainFrame() {
 		iconData = new IconData();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
