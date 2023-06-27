@@ -6,12 +6,17 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import frame.MainFrame;
 import utility.IconData;
+import utility.MyScrollBarUi;
 import utility.Utility;
 
 public class ProjectSelectPnl extends JPanel {
@@ -71,9 +76,14 @@ public class ProjectSelectPnl extends JPanel {
 
         // Create JScrollPane and add the centerPnl to it
         scrollPane = new JScrollPane(centerPnl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane = new JScrollPane(centerPnl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        Image thumb = iconData.getImageIcon("dragBarLength_f").getImage();
+        Image track = iconData.getImageIcon("dragBarLength_b").getImage();
+        scrollPane.getVerticalScrollBar().setUI(new MyScrollBarUi(thumb, track));
         scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);  // Add this line
         scrollPane.setBorder(null);
+
         add(scrollPane, BorderLayout.CENTER);  // Add the JScrollPane to the main panel
         add(northPanel, BorderLayout.NORTH);
         add(westPnl, BorderLayout.WEST);
