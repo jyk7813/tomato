@@ -53,7 +53,9 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		iconData = new IconData();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(0, 0, 450, 300);
+		setSize(1920,1080);
+		setResizable(false);
 		
 		KeyStroke escKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0,false);
 		
@@ -78,17 +80,10 @@ public class MainFrame extends JFrame {
 		signUpPnl = new SignUpPnl(signImage,this);
 		JPanel projectPnl = new ProjectSelectPnl(projectImage, this);
 
-		// 현재 그래픽 환경을 얻습니다.
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		// 현재 그래픽 디바이스(일반적으로 모니터)를 얻습니다.
-		GraphicsDevice gs = ge.getDefaultScreenDevice();
 
 		// frame의 타이틀 바를 숨깁니다.
 		setUndecorated(true);
 
-		// 전체화면으로 설정합니다.
-		gs.setFullScreenWindow(this);
-		
 		getContentPane().setLayout(new CardLayout(0, 0));
 		getContentPane().add(loginPnl,"login");
 		getContentPane().add(signUpPnl,"signUp");
