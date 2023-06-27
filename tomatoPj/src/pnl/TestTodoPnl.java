@@ -21,15 +21,12 @@ import utility.IconData;
 import utility.Utility;
 
 public class TestTodoPnl extends JFrame{
-	
-	static JPanel comboMonth = new JPanel();
-	
 	static final IconData ICON = new IconData();
 	static final FontData FONT = new FontData();
 	static final Utility UT = new Utility();
-	static final int MONTH_X = 715;
-	static List<String> list = new ArrayList<>(Arrays.asList("테스트1","테스트2","테스트3"));
-	static List<String> month ;
+	
+//	static List<String> list = new ArrayList<>(Arrays.asList("테스트1","테스트2","테스트3"));
+//	static List<String> month ;
 	
 	// 최상단 고정 패널
 	static JPanel fixedTopPnl = new JPanel() {
@@ -40,6 +37,8 @@ public class TestTodoPnl extends JFrame{
 			g.dispose();
 		}
 	};
+	
+	JP
 	
 	// 선택 패널
 	static JPanel selectPnl = new JPanel() {
