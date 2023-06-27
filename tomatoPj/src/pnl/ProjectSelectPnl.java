@@ -87,8 +87,25 @@ public class ProjectSelectPnl extends JPanel {
 
         // Create JScrollPane and add the centerPnl to it
         scrollPane = new JScrollPane(centerPnl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane = new JScrollPane(centerPnl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setLayout(new ScrollPaneLayout() {
+        scrollPaneSetLayout();
+        
+        scrollPaneSetUI();
+        
+        scrollPane.setComponentZOrder(scrollPane.getVerticalScrollBar(), 0);
+		scrollPane.setComponentZOrder(scrollPane.getViewport(), 1);
+		scrollPane.getVerticalScrollBar().setOpaque(false);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);  // Add this line
+        scrollPane.setBorder(null);
+
+        add(scrollPane, BorderLayout.CENTER);  // Add the JScrollPane to the main panel
+        add(northPanel, BorderLayout.NORTH);
+        add(westPnl, BorderLayout.WEST);
+        add(eastPnl, BorderLayout.EAST);
+    }
+
+    private void scrollPaneSetLayout() {
+    	scrollPane.setLayout(new ScrollPaneLayout() {
 			@Override
 			public void layoutContainer(Container parent) {
 				JScrollPane scrollPane = (JScrollPane) parent;
@@ -119,7 +136,11 @@ public class ProjectSelectPnl extends JPanel {
 				}
 			}
 		});
-        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+		
+	}
+
+	private void scrollPaneSetUI() {
+    	scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 			private final Dimension d = new Dimension();
 
 			@Override
@@ -174,20 +195,10 @@ public class ProjectSelectPnl extends JPanel {
 				scrollbar.repaint();
 			}
 		});
-        scrollPane.setComponentZOrder(scrollPane.getVerticalScrollBar(), 0);
-		scrollPane.setComponentZOrder(scrollPane.getViewport(), 1);
-		scrollPane.getVerticalScrollBar().setOpaque(false);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);  // Add this line
-        scrollPane.setBorder(null);
+		
+	}
 
-        add(scrollPane, BorderLayout.CENTER);  // Add the JScrollPane to the main panel
-        add(northPanel, BorderLayout.NORTH);
-        add(westPnl, BorderLayout.WEST);
-        add(eastPnl, BorderLayout.EAST);
-    }
-
-    private void addPanel() {
+	private void addPanel() {
         ProjectPnl projectPnl = new ProjectPnl();
         projectPnl.setBounds(0, jButton.getY(), 900, 216);  // Set the position to current jButton position
         centerPnl.add(projectPnl, new Integer(2));  // Add projectPnl to a lower layer
