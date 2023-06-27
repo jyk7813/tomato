@@ -61,7 +61,7 @@ public class ProjectSelectPnl extends JPanel {
         centerPnl.setOpaque(false);
         centerPnl.setLayout(null); // Necessary for JScrollPane to function correctly
 
-        JPanel westPnl = new JPanel() {
+        ProjectSelectWestPnl westPnl = new ProjectSelectWestPnl() {
             @Override
             public Dimension getPreferredSize() {
                 setOpaque(false);
