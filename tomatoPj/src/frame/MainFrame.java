@@ -76,8 +76,8 @@ public class MainFrame extends JFrame {
 		});
         
 		Image loginImage = iconData.loginBackGround().getImage();
-		Image signImage = iconData.signUpBackGround().getImage();
-		Image projectImage = iconData.projectBackGround().getImage();
+		Image signImage = iconData.getImageIcon("signup(BG)remake").getImage();
+		Image projectImage = iconData.getImageIcon("projectSelect(BG)remake").getImage();
 		Image boradImage = iconData.getImageIcon("selectColumn(BG)").getImage();
 		
 		JPanel loginPnl = new LoginPnl(loginImage,this);

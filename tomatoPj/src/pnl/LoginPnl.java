@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -122,7 +125,7 @@ public class LoginPnl extends JPanel {
 		add(signUpBtn);
 		add(idField);
 		add(passwordField);
-
+		
 		addComponentListener(new ComponentListener() {
 
 			@Override
@@ -185,6 +188,7 @@ public class LoginPnl extends JPanel {
 					if (member != null) {
 						System.out.println("로그인성공");
 						setLoginMember(mainFrame, member);
+						System.out.println(member);
 						//System.out.println(mainFrame.loginMember.getMember());
 						System.out.println(mainFrame.loginMember.getPjList());
 						mainFrame.showCard("projectSelect");
