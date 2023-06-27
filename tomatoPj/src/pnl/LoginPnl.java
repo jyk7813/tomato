@@ -109,7 +109,7 @@ public class LoginPnl extends JPanel{
 					conn = DBUtil.getConnection();
 					member = mr.logIn(conn, idField.getText(), passwordField.getText());
 					System.out.println(member);
-					System.out.println(passwordField);
+					//System.out.println(passwordField);
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 					System.out.println("로그인실패");
