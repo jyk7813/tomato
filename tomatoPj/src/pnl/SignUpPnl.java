@@ -102,8 +102,8 @@ public class SignUpPnl extends JPanel{
 				try {
 					if(regex.regexPassword(regex.pwdToString(passwordField)) && regex.regexEmail(emailField.getText())) {
 						if(regex.pwdToString(passwordField).equals(regex.pwdToString(checkPasswordField))) {
+							conn = DBUtil.getConnection();
 							if(mr.dupliIdCheck(conn, idField.getText())) {
-								conn = DBUtil.getConnection();
 								mr.signUp(conn, idField.getText(), regex.pwdToString(passwordField), emailField.getText(), nameField.getText(), null);
 								System.out.println("회원가입성공");
 								mainFrame.showCard("login");

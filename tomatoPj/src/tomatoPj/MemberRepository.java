@@ -51,7 +51,7 @@ public class MemberRepository {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			String query = "SELECT id FROM member WHERE id = ?";
+			String query = "SELECT `id` FROM `member` WHERE id = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, id);
 			rs = stmt.executeQuery();
