@@ -12,9 +12,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
-import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
@@ -26,7 +24,6 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import frame.MainFrame;
 import utility.IconData;
-import utility.MyScrollBarUi;
 import utility.Utility;
 
 public class ProjectSelectPnl extends JPanel {
@@ -51,14 +48,14 @@ public class ProjectSelectPnl extends JPanel {
         centerPnl.setOpaque(false);
         centerPnl.setLayout(null); // Necessary for JScrollPane to function correctly
 
-        JPanel westPnl = new JPanel() {
+        ProjectSelectWestPnl westPnl = new ProjectSelectWestPnl() {
             @Override
             public Dimension getPreferredSize() {
                 setOpaque(false);
                 return new Dimension(510, 905);
             }
         };
-        ProjectSelectEastPnl eastPnl = new ProjectSelectEastPnl() {
+        JPanel eastPnl = new JPanel() {
 
             @Override
             public Dimension getPreferredSize() {
