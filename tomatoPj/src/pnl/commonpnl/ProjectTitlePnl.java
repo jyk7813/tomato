@@ -9,6 +9,7 @@ import utility.FontData;
 import utility.IconData;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
+import javax.swing.SwingConstants;
 
 public class ProjectTitlePnl extends JPanel {
 	private IconData iconData;
@@ -27,6 +28,7 @@ public class ProjectTitlePnl extends JPanel {
 		setLayout(new GridLayout(1, 0, 0, 0));
 		
 		JLabel projectTiltleLbl = new JLabel("Project1");
+		projectTiltleLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		projectTiltleLbl.setFont(fontData.nanumFont(20));
 		add(projectTiltleLbl);
 		

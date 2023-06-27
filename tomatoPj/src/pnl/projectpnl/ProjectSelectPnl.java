@@ -1,4 +1,4 @@
-package pnl;
+package pnl.projectpnl;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

@@ -1,4 +1,4 @@
-package pnl;
+package pnl.projectpnl;
 
 import javax.swing.JPanel;
 

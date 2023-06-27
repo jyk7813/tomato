@@ -20,14 +20,14 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import dbutil.LoginMember;
+import pnl.BoradPnl;
 import pnl.LoginPnl;
-import pnl.ProjectSelectPnl;
 import pnl.SignUpPnl;
+import pnl.projectpnl.ProjectSelectPnl;
 import utility.IconData;
 
 public class MainFrame extends JFrame {
 	private IconData iconData;
-	private JPanel signUpPnl;
 	public LoginMember loginMember;
 	/**
 	 * Launch the application.
@@ -78,10 +78,12 @@ public class MainFrame extends JFrame {
 		Image loginImage = iconData.loginBackGround().getImage();
 		Image signImage = iconData.signUpBackGround().getImage();
 		Image projectImage = iconData.projectBackGround().getImage();
+		Image boradImage = iconData.getImageIcon("selectColumn(BG)").getImage();
 		
 		JPanel loginPnl = new LoginPnl(loginImage,this);
 		JPanel signUpPnl = new SignUpPnl(signImage,this);
 		JPanel projectPnl = new ProjectSelectPnl(projectImage, this);
+		JPanel boradPnl = new BoradPnl(boradImage, this);
 
 
 		// frame의 타이틀 바를 숨깁니다.
@@ -91,6 +93,7 @@ public class MainFrame extends JFrame {
 		getContentPane().add(loginPnl,"login");
 		getContentPane().add(signUpPnl,"signUp");
 		getContentPane().add(projectPnl,"projectSelect");
+		getContentPane().add(boradPnl,"columSelect");
 		
 		
 	}

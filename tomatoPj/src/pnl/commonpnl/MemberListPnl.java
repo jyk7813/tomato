@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import pnl.ProjectPnl;
+import pnl.projectpnl.ProjectPnl;
 import utility.FontData;
 import utility.IconData;
 import utility.Utility;

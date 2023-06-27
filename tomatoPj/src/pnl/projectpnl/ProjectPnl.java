@@ -1,4 +1,4 @@
-package pnl;
+package pnl.projectpnl;
 import java.awt.Graphics;
 import java.awt.Image;
 

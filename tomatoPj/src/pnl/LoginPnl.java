@@ -84,7 +84,6 @@ public class LoginPnl extends JPanel {
 
 		idField = new JTextField("testid");
 		passwordField = new JPasswordField("test1234");
-		setLayout(null);
 
 		loginButton = new JButton();
 		signUpBtn = new JButton();
