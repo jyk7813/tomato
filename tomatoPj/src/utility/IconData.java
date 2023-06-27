@@ -14,6 +14,9 @@ public class IconData {
 	public ImageIcon loginBtnIcon() {
 		return new ImageIcon(getClass().getClassLoader().getResource("login_btn.png"));
 	}
+	public ImageIcon projectBackGround() {
+		return new ImageIcon(getClass().getClassLoader().getResource("selectProject(BG).png"));
+	}
 
 	public ImageIcon getImageIcon(String iconName) {
 		return new ImageIcon(getClass().getClassLoader().getResource(iconName + ".png"));

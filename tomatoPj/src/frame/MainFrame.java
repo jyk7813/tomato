@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import pnl.LoginPnl;
+import pnl.ProjectSelectPnl;
 import pnl.SignUpPnl;
 import utility.IconData;
 
@@ -65,9 +66,11 @@ public class MainFrame extends JFrame {
         
 		Image loginImage = iconData.loginBackGround().getImage();
 		Image signImage = iconData.signUpBackGround().getImage();
+		Image projectImage = iconData.projectBackGround().getImage();
 		
 		JPanel loginPnl = new LoginPnl(loginImage,this);
 		JPanel signUpPnl = new SignUpPnl(signImage,this);
+		JPanel projectPnl = new ProjectSelectPnl(projectImage, this);
 		
 		
 		
@@ -82,9 +85,11 @@ public class MainFrame extends JFrame {
 
 		// 전체화면으로 설정합니다.
 		gs.setFullScreenWindow(this);
+		
 		getContentPane().setLayout(new CardLayout(0, 0));
 		getContentPane().add(loginPnl,"login");
 		getContentPane().add(signUpPnl,"signUp");
+		getContentPane().add(projectPnl,"projectSelect");
 		
 		
 	}
