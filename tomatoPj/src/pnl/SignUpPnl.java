@@ -50,7 +50,7 @@ public class SignUpPnl extends JPanel{
 	public void setIdField(JTextField idField) {
 		this.idField = idField;
 	}*/
-
+	
 	public KeyListener enterKey() {
 		return new KeyAdapter() {
 			@Override

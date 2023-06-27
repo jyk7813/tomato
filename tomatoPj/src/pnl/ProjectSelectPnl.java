@@ -183,16 +183,16 @@ public class ProjectSelectPnl extends JPanel {
 				if (vsb != null) {
 					vsb.setVisible(true);
 					vsb.setOpaque(false);
-					
+
 					vsb.setBounds(vsbR);
 				}
 			}
 		});
-		
+
 	}
 
 	private void scrollPaneSetUI() {
-    	scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+		scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 			private final Dimension d = new Dimension();
 
 			@Override
@@ -247,24 +247,24 @@ public class ProjectSelectPnl extends JPanel {
 				scrollbar.repaint();
 			}
 		});
-		
+
 	}
 
 	private void addPanel() {
-        ProjectPnl projectPnl = new ProjectPnl();
-        projectPnl.setBounds(0, jButton.getY(), 900, 216);  // Set the position to current jButton position
-        centerPnl.add(projectPnl, new Integer(2));  // Add projectPnl to a lower layer
-        jButton.setLocation(jButton.getX(), jButton.getY() + projectPnl.getHeight() + 10);  // Move jButton down
+		ProjectPnl projectPnl = new ProjectPnl();
+		projectPnl.setBounds(0, jButton.getY(), 900, 216); // Set the position to current jButton position
+		centerPnl.add(projectPnl, new Integer(2)); // Add projectPnl to a lower layer
+		jButton.setLocation(jButton.getX(), jButton.getY() + projectPnl.getHeight() + 10); // Move jButton down
 
-        // Update the preferred size of the centerPnl and validate the JScrollPane
-        centerPnl.setPreferredSize(new Dimension(centerPnl.getWidth(), jButton.getY() + jButton.getHeight()));
-        scrollPane.validate();
-        centerPnl.repaint();
-    }
+		// Update the preferred size of the centerPnl and validate the JScrollPane
+		centerPnl.setPreferredSize(new Dimension(centerPnl.getWidth(), jButton.getY() + jButton.getHeight()));
+		scrollPane.validate();
+		centerPnl.repaint();
+	}
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(image, 0, 0, this);
-    }
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(image, 0, 0, this);
+	}
 }
