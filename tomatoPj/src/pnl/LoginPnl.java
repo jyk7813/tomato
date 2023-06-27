@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,6 +22,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import dbutil.DBUtil;
+import dbutil.LoginMember;
 import frame.MainFrame;
 import tomatoPj.Member;
 import tomatoPj.MemberRepository;
@@ -43,6 +45,15 @@ public class LoginPnl extends JPanel {
 	private ImageIcon loginDarkIcon;
 	private ImageIcon loginbrightIcon;
 
+	private void setLoginMember(MainFrame mainFrame, Member member) {
+		LocalDateTime now = LocalDateTime.now();
+		try {
+			mainFrame.loginMember = new LoginMember(member, member.getMember_no(), mr.returnMemberPj(member.getMember_no()), now);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public KeyListener enterKey() {
 		return new KeyAdapter() {
 			@Override
@@ -63,12 +74,16 @@ public class LoginPnl extends JPanel {
 		mr = new MemberRepository();
 		this.image = image;
 		fontData = new FontData();
+		setLayout(null);
+		
 		utility = new Utility();
 		iconData = new IconData();
 		Image loginImg = iconData.getImageIcon("login_btn").getImage(); // 로그인 버튼 이미지 경로
 		Image loginDarkImg = iconData.getImageIcon("login_btn(clicked)").getImage(); // 어두운 버전의 로그인 버튼 이미지 경로
 		Image loginBrightImg = iconData.getImageIcon("login_btn(enter)").getImage(); // 어두운 버전의 로그인 버튼 이미지 경로
 
+		idField = new JTextField("testid");
+		passwordField = new JPasswordField("test1234");
 		setLayout(null);
 
 		loginButton = new JButton();
@@ -170,6 +185,9 @@ public class LoginPnl extends JPanel {
 					member = mr.logIn(conn, idField.getText(), passwordField.getText());
 					if (member != null) {
 						System.out.println("로그인성공");
+						setLoginMember(mainFrame, member);
+						//System.out.println(mainFrame.loginMember.getMember());
+						System.out.println(mainFrame.loginMember.getPjList());
 						mainFrame.showCard("projectSelect");
 					} else {
 						System.out.println("로그인실패");

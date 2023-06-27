@@ -142,4 +142,69 @@ public class MemberRepository {
 		}
 		return member;
 	}
+	/**
+	 * @author 임태경
+	 * @param member_no
+	 * @return List<Project>
+	 * @throws SQLException
+	 */
+	public List<Project> returnMemberPj(int member_no) throws SQLException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<Project> list = new ArrayList<>();
+		try {
+			conn = DBUtil.getConnection();
+			String query = "SELECT * FROM `project` WHERE member_no = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, member_no);
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				int project_no = rs.getInt("project_no");
+				String title = rs.getString("title");
+				int member_noParse = rs.getInt("member_no");
+				int active = rs.getInt("active");
+				list.add(new Project(project_no, title, member_noParse, active));
+			}
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+		System.out.println(list);
+		return list;
+	}
+	
+	public Member searchByMemberNo(int member_no) throws SQLException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Member member = null;
+		try {
+			conn = DBUtil.getConnection();
+			String query = "SELECT * FROM `member` WHERE member_no = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, member_no);
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				int member_noParse = rs.getInt("member_no");
+				String id = rs.getString("id");
+				String pwd = rs.getString("pwd");
+				String e_mail = rs.getString("e-mail");
+				String name = rs.getString("name");
+				String mbti = rs.getString("mbti");
+				int active = rs.getInt("active");
+				
+				
+				member = new Member(member_noParse, id, pwd, e_mail, name, mbti, active);
+			}
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+		return member;
+	}
 }
