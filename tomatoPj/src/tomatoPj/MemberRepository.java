@@ -51,19 +51,25 @@ public class MemberRepository {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			String query = "SELECT id FROM member WHERE id = ?";
+			String query = "SELECT `id` FROM `member` WHERE id = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, id);
 			rs = stmt.executeQuery();
 			
 			String a = null;
-			rs.next();
-			a = rs.getString("id");
-			if(a.equals(null)) {
-				return false;
-			} else {
-				return true;
+			while(rs.next()) {
+				a = rs.getString("id");
+				if(a.equals(null) || id.equals(a)) {
+					return false;
+				}
 			}
+			return true;
+//			a = rs.getString("id");
+//			if(a.equals(null)) {
+//				return false;
+//			} else {
+//				return true;
+//			}
 		} finally {
 			DBUtil.close(rs);
 			DBUtil.close(stmt);
@@ -84,7 +90,7 @@ public class MemberRepository {
 	public int signUp(Connection conn, String id, String pwd, String e_mail, String name, String mbti) {
 		PreparedStatement stmt = null;
 		try {
-			stmt = conn.prepareStatement("INSERT INTO member (id, password, e-mail, name, mbti) VALUES (?, ?, ?, ?, ?)");
+			stmt = conn.prepareStatement("INSERT INTO `member` (id, pwd, `e-mail`, name, mbti) VALUES (?, ?, ?, ?, ?)");
 			stmt.setString(1, id);
 			stmt.setString(2, pwd);
 			stmt.setString(3, e_mail);

@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -14,15 +15,18 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import pnl.LoginPnl;
+import pnl.ProjectSelectPnl;
 import pnl.SignUpPnl;
 import utility.IconData;
 
 public class MainFrame extends JFrame {
 	private IconData iconData;
-
+	private JPanel signUpPnl;
 	/**
 	 * Launch the application.
 	 */
@@ -39,18 +43,19 @@ public class MainFrame extends JFrame {
 		});
 	}
 	public void showCard(String cardName) {
+		
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().clearFocusOwner();
 		CardLayout c1 = (CardLayout)(getContentPane().getLayout());
 		c1.show(getContentPane(), cardName);
+		
 	}
-
-	/**
-	 * Create the frame.
-	 */
 
 	public MainFrame() {
 		iconData = new IconData();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(0, 0, 450, 300);
+		setSize(1920,1080);
+		setResizable(false);
 		
 		KeyStroke escKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0,false);
 		
@@ -69,30 +74,20 @@ public class MainFrame extends JFrame {
         
 		Image loginImage = iconData.loginBackGround().getImage();
 		Image signImage = iconData.signUpBackGround().getImage();
+		Image projectImage = iconData.projectBackGround().getImage();
 		
 		JPanel loginPnl = new LoginPnl(loginImage,this);
 		JPanel signUpPnl = new SignUpPnl(signImage,this);
-		
-		// Todo 페이지 (테스트)
-//		JPanel TodoPnl = new SignUpPnl(signImage,this);
-		
-		
-		
-		
-		// 현재 그래픽 환경을 얻습니다.
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		// 현재 그래픽 디바이스(일반적으로 모니터)를 얻습니다.
-		GraphicsDevice gs = ge.getDefaultScreenDevice();
+		JPanel projectPnl = new ProjectSelectPnl(projectImage, this);
+
 
 		// frame의 타이틀 바를 숨깁니다.
 		setUndecorated(true);
 
-		// 전체화면으로 설정합니다.
-		gs.setFullScreenWindow(this);
 		getContentPane().setLayout(new CardLayout(0, 0));
 		getContentPane().add(loginPnl,"login");
 		getContentPane().add(signUpPnl,"signUp");
-//		getContentPane().add(TodoPnl,"todo");
+		getContentPane().add(projectPnl,"projectSelect");
 		
 		
 	}
