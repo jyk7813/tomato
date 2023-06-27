@@ -50,5 +50,45 @@ public class Project {
 	public void setActive(int active) {
 		this.active = active;
 	}
+
+	@Override
+	public String toString() {
+		return "Project [project_no=" + project_no + ", title=" + title + ", member_no=" + member_no + ", active="
+				+ active + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + active;
+		result = prime * result + member_no;
+		result = prime * result + project_no;
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Project other = (Project) obj;
+		if (active != other.active)
+			return false;
+		if (member_no != other.member_no)
+			return false;
+		if (project_no != other.project_no)
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		return true;
+	}
 	
 }

@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -18,6 +19,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import dbutil.DBUtil;
+import dbutil.LoginMember;
 import frame.MainFrame;
 import tomatoPj.Member;
 import tomatoPj.MemberRepository;
@@ -35,6 +37,15 @@ public class LoginPnl extends JPanel {
 	private JTextField idField;
 	private JPasswordField passwordField;
 
+	private void setLoginMember(MainFrame mainFrame, Member member) {
+		LocalDateTime now = LocalDateTime.now();
+		try {
+			mainFrame.loginMember = new LoginMember(member, member.getMember_no(), mr.returnMemberPj(member.getMember_no()), now);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public KeyListener enterKey() {
 		return new KeyAdapter() {
 			@Override
@@ -56,13 +67,13 @@ public class LoginPnl extends JPanel {
 		this.image = image;
 		fontData = new FontData();
 		setLayout(null);
-
+		
 		utility = new Utility();
 		loginButton = new JButton("로그인");
 		signUpBtn = new JButton("회원가입");
 
-		idField = new JTextField();
-		passwordField = new JPasswordField();
+		idField = new JTextField("testid");
+		passwordField = new JPasswordField("test1234");
 		idField.addKeyListener(enterKey());
 		passwordField.addKeyListener(enterKey());
 
@@ -124,6 +135,9 @@ public class LoginPnl extends JPanel {
 					member = mr.logIn(conn, idField.getText(), passwordField.getText());
 					if (member != null) {
 						System.out.println("로그인성공");
+						setLoginMember(mainFrame, member);
+						//System.out.println(mainFrame.loginMember.getMember());
+						System.out.println(mainFrame.loginMember.getPjList());
 						mainFrame.showCard("projectSelect");
 					} else {
 						System.out.println("로그인실패");

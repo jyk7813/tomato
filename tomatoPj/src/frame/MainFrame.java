@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import dbutil.LoginMember;
 import pnl.LoginPnl;
 import pnl.ProjectSelectPnl;
 import pnl.SignUpPnl;
@@ -27,6 +28,7 @@ import utility.IconData;
 public class MainFrame extends JFrame {
 	private IconData iconData;
 	private JPanel signUpPnl;
+	public LoginMember loginMember;
 	/**
 	 * Launch the application.
 	 */
@@ -51,6 +53,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public MainFrame() {
+		loginMember = new LoginMember();
 		iconData = new IconData();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 450, 300);
