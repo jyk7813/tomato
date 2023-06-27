@@ -77,7 +77,7 @@ public class MainFrame extends JFrame {
 		Image projectImage = iconData.projectBackGround().getImage();
 		
 		JPanel loginPnl = new LoginPnl(loginImage,this);
-		signUpPnl = new SignUpPnl(signImage,this);
+		JPanel signUpPnl = new SignUpPnl(signImage,this);
 		JPanel projectPnl = new ProjectSelectPnl(projectImage, this);
 
 
