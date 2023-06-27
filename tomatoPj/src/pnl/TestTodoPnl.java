@@ -26,10 +26,9 @@ public class TestTodoPnl extends JFrame implements ActionListener {
 	
 	
 	public TestTodoPnl(){
-		// 토글버튼 그룹에 추가
-		tg.add(totalTogle);
-		tg.add(projectTogle);
 		
+		totalTogle = new JToggleButton(); // 전체 프로젝트 토글버튼
+		projectTogle = new JToggleButton(); // 프로젝트 별 토글버튼
 		fixedTopPnl = fixedTopPnl(); // 최상단 페이지 간 이동 버튼 고정 패널
 		topPnl = new JPanel(); // 월, 토글, 프로젝트 표시될 위치의 패널
 		calendarPnl = new JPanel(); // 달력 + 우측 태스크 정보 표시 패널
@@ -37,6 +36,13 @@ public class TestTodoPnl extends JFrame implements ActionListener {
 		projectSelPnl = new JPanel(); // 프로젝트 선택 시 나타낼 패널
 		checkSelPnl = new JPanel(); // 햄버거 메뉴 선택 시 나타낼 패널
 		
+		// 토글버튼 그룹에 추가
+		tg.add(totalTogle);
+		tg.add(projectTogle);
+		
+		topPnl.add(totalTogle);
+		topPnl.add(projectTogle);
+
 		// 배경이미지 패널
 		BgPanel bgPnl = new BgPanel();
 		bgPnl.setLayout(null);
@@ -47,10 +53,6 @@ public class TestTodoPnl extends JFrame implements ActionListener {
 		bgPnl.add(projectSelPnl);
 		bgPnl.add(checkSelPnl);
 		this.add(bgPnl);
-//		bgPnl.add(totalTogle);
-//		bgPnl.add(projectTogle);
-		
-		
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
