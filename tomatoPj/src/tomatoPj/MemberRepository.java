@@ -90,7 +90,7 @@ public class MemberRepository {
 	public int signUp(Connection conn, String id, String pwd, String e_mail, String name, String mbti) {
 		PreparedStatement stmt = null;
 		try {
-			stmt = conn.prepareStatement("INSERT INTO member (id, pwd, `e-mail`, name, mbti) VALUES (?, ?, ?, ?, ?)");
+			stmt = conn.prepareStatement("INSERT INTO `member` (id, pwd, `e-mail`, name, mbti) VALUES (?, ?, ?, ?, ?)");
 			stmt.setString(1, id);
 			stmt.setString(2, pwd);
 			stmt.setString(3, e_mail);

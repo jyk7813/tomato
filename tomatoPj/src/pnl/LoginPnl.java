@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -22,7 +24,7 @@ import tomatoPj.MemberRepository;
 import utility.FontData;
 import utility.Utility;
 
-public class LoginPnl extends JPanel{
+public class LoginPnl extends JPanel {
 	private Image image;
 	private Utility utility;
 	private JButton signUpBtn;
@@ -32,17 +34,21 @@ public class LoginPnl extends JPanel{
 	private MemberRepository mr;
 	private JTextField idField;
 	private JPasswordField passwordField;
-	
-	
+
 	public KeyListener enterKey() {
 		return new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					loginButton.doClick();
 				}
 			}
 		};
+	}
+
+	private void clearTextField() {
+		idField.setText("");
+		passwordField.setText("");
 	}
 	
 	public LoginPnl(Image image, MainFrame mainFrame) {
@@ -52,26 +58,25 @@ public class LoginPnl extends JPanel{
 		setLayout(null);
 
 		utility = new Utility();
-		loginButton = new JButton();
-		signUpBtn = new JButton();
+		loginButton = new JButton("로그인");
+		signUpBtn = new JButton("회원가입");
 
 		idField = new JTextField();
 		passwordField = new JPasswordField();
 		idField.addKeyListener(enterKey());
 		passwordField.addKeyListener(enterKey());
-		
+
 		loginButton.setBounds(897, 659, 126, 41);
-		signUpBtn.setBounds(927, 709, 66, 18);
+		signUpBtn.setBounds(927, 709, 126, 41);
 
 		idField.setBounds(842, 536, 255, 41);
 		passwordField.setBounds(842, 597, 255, 41);
-		
+
 		idField.setFont(fontData.nanumFont(16));
 		passwordField.setFont(fontData.nanumFont(16));
-		
-		
+
 		signUpActionListener(mainFrame);
-		
+
 		loginActionListener(mainFrame);
 
 		utility.setButtonProperties(idField);
@@ -82,9 +87,21 @@ public class LoginPnl extends JPanel{
 		add(idField);
 		add(passwordField);
 
+		addComponentListener(new ComponentListener() {
+
+			@Override
+			public void componentShown(ComponentEvent e) {
+				idField.requestFocusInWindow();
+				clearTextField();
+			}
+			@Override
+			public void componentResized(ComponentEvent e) {}
+			@Override
+			public void componentMoved(ComponentEvent e) {}
+			@Override
+			public void componentHidden(ComponentEvent e) {}
+		});
 	}
-	
-	
 
 	private void signUpActionListener(MainFrame mainFrame) {
 		signUpBtn.addActionListener(new ActionListener() {
@@ -105,14 +122,15 @@ public class LoginPnl extends JPanel{
 				try {
 					conn = DBUtil.getConnection();
 					member = mr.logIn(conn, idField.getText(), passwordField.getText());
-
-
-					System.out.println("로그인성공");
-					mainFrame.showCard("projectSelect");
-
+					if (member != null) {
+						System.out.println("로그인성공");
+						mainFrame.showCard("projectSelect");
+					} else {
+						System.out.println("로그인실패");
+					}
 				} catch (SQLException e1) {
 					e1.printStackTrace();
-					System.out.println("로그인실패");
+
 				} finally {
 					DBUtil.close(conn);
 				}
