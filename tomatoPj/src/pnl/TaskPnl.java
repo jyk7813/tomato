@@ -4,9 +4,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 
+import org.springframework.security.access.method.P;
+
 import dbutil.DBUtil;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -14,8 +17,11 @@ import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,14 +37,24 @@ import utility.Utility;
 
 public class TaskPnl extends JPanel{
 	private int Imoportance;
+	//멤버의 이미지 아이콘
+	List<ImageIcon> list = new ArrayList<>();
+	int Count = 0;
+	
 	public TaskPnl() {
+		
 		IconData IC = new IconData();
 		FontData FD = new FontData();
 		Utility util = new Utility();
+		list.add(IC.getImageIcon("user1"));
+		list.add(IC.getImageIcon("user2"));
+		list.add(IC.getImageIcon("user3"));
+		list.add(IC.getImageIcon("user4"));
+		list.add(IC.getImageIcon("user5"));
 		
 		Imoportance = 0;
 		// task �г�
-		JPanel TaskPnlMain=TaskMain(IC);
+		JPanel TaskMain=TaskMain(IC);
 		JLabel TaskPnlMainLbl = TaskMainLbl(IC);
 		// 날짜와 별
 		JPanel StarAndDate = StarAndDate();
@@ -69,20 +85,32 @@ public class TaskPnl extends JPanel{
 		//task 테스크 패널 
 		JPanel TaskUnderPanel = TaskUnderPnl();
 		
-		// task detail
-//		JPanel TaskUnderPnlDetail = TaskUnderPnlDetail(TaskUnderPanel);
 		//스크롤페인
 		
 		JScrollPane scrollPane =scrollPane(IC,TaskUnderPanel);
 		
-
+		//프로젝트 타이틀과 멤버 아이콘이 들어갈 패널
+		JPanel ProTitleAndMember = ProTitleAndMember(TaskUnderPanel);
 		
-
+		String title= "프로젝트 제목";
+		JLabel projectTitle = ProjectTitle(FD,ProTitleAndMember,title);
+		
+		JPanel MemberPnl =MemberPnl(ProTitleAndMember);
+		
+		// 멤버용 패널 
+//		seletMember(IC, MemberPnl);
+//		MemberPnl.add(seletMember(IC, MemberPnl));
+		ProTitleAndMember.add(projectTitle);
+		scrollPane.add(ProTitleAndMember);
+		
 		JLabel Background =new JLabel(IC.getImageIcon("selectTask(BG)"));
-		TaskPnlMainLbl.add(StarAndDate);
-		TaskPnlMain.add(TaskPnlMainLbl);
-		TaskPnlMainLbl.add(scrollPane);
-		Background.add(TaskPnlMain);
+		// 추가버튼
+		selectMember(IC,MemberPnl);
+		
+		TaskMain.add(StarAndDate);
+//		TaskMain.add(TaskPnlMainLbl);
+		TaskMain.add(scrollPane);
+		Background.add(TaskMain);
 		add(Background);
 
 
@@ -110,6 +138,7 @@ public class TaskPnl extends JPanel{
 		JLabel TaskPnlMainLbl = new JLabel(IC.getImageIcon("contentPanel"));
 		TaskPnlMainLbl.setSize(631,725);
 		TaskPnlMainLbl.setLocation(645,296);
+		
 		TaskPnlMainLbl.setLayout(new BoxLayout(TaskPnlMainLbl, BoxLayout.Y_AXIS));
 		TaskPnlMainLbl.setOpaque(false);
 		return TaskPnlMainLbl;
@@ -261,30 +290,80 @@ public class TaskPnl extends JPanel{
 	 */
 	public JPanel TaskUnderPnl() {
 		JPanel TaskUnderPanel = new JPanel();
-		TaskUnderPanel.setPreferredSize(new Dimension(625,593));
+		TaskUnderPanel.setPreferredSize(new Dimension(625,591));
+		TaskUnderPanel.setLayout(new BoxLayout(TaskUnderPanel, BoxLayout.Y_AXIS));
 		TaskUnderPanel.setOpaque(false);
 		return TaskUnderPanel;
 	}
-	
-	public JPanel TaskUnderPnlDetail(JPanel TaskUnderPnl) {
-		JPanel TaskUnderPnlDetail = new JPanel();
-		TaskUnderPnlDetail.setSize(631,552);
-		TaskUnderPnlDetail.setBackground(new Color(255,55,44));
-		return TaskUnderPnlDetail;
-	}
-	
+//사용 안하는중 혹시 모름	
+//	public JPanel TaskUnderPnlDetail(JPanel TaskUnderPnl) {
+//		JPanel TaskUnderPnlDetail = new JPanel();
+//		TaskUnderPnlDetail.setSize(631,552);
+//		TaskUnderPnlDetail.setBackground(new Color(255,55,44));
+//		return TaskUnderPnlDetail;
+//	}
+	// 스크롤 페인
 	public JScrollPane scrollPane(IconData IC, JPanel TaskUnderPnlDetail) {
 		JScrollPane scrollPane = new JScrollPane(TaskUnderPnlDetail, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//		Image track = IC.getImageIcon("dragBarLength_b").getImage();
-//		Image thumb = IC.getImageIcon("dragBarLength_f").getImage();
-//		scrollPane.getVerticalScrollBar().setUI(new MyScrollBarUi(thumb,track));
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		return scrollPane;
 	}
 	
-	
+	public JPanel ProTitleAndMember(JPanel TaskUnderPanel) {
+		//프로젝트 타이틀과 멤버 아이콘이 들어갈 패널
+		JPanel ProTitleAndMember = new JPanel();
+		ProTitleAndMember.setOpaque(false);
+		ProTitleAndMember.setSize(631,164);
+		ProTitleAndMember.setLayout(null);
+		TaskUnderPanel.add(ProTitleAndMember);
+		return ProTitleAndMember;
+	}
+	public JPanel MemberPnl(JPanel ProTitleAndMember) {
+		JPanel MemberPnl = new JPanel();
+//		MemberPnl.setOpaque(false);
+		MemberPnl.setLayout(new BoxLayout(MemberPnl, BoxLayout.X_AXIS));
+		MemberPnl.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		MemberPnl.add(Box.createRigidArea(new Dimension(10, 0)));
+		MemberPnl.setSize(499,94);
+		MemberPnl.setLocation(60,40);
+		
+		ProTitleAndMember.add(MemberPnl);
+		return MemberPnl;
+	}
+	public JLabel ProjectTitle(FontData FD,JPanel ProTitleAndMember,String title) {
+		JLabel projectTitle = new JLabel(title);
+		projectTitle.setSize(208,53);
+		projectTitle.setLocation(58,-5);
+		projectTitle.setFont(FD.nanumFont(20));
+		return projectTitle;
+	}
+	public void selectMember(IconData IC, JPanel MemberPnl) {
+	    JLabel plus = new JLabel(IC.getImageIcon("plus"));
+	    plus.setSize(80, 80);
+	    plus.addMouseListener(new MouseAdapter() {
+	        public void mousePressed(MouseEvent e) {
+	            JLabel memberIcon = new JLabel(list.get(Count));
+
+	            MemberPnl.add(memberIcon);
+
+	            // 아이콘들을 수평으로 정렬하기 위해 BoxLayout 사용
+	            MemberPnl.setLayout(new BoxLayout(MemberPnl, BoxLayout.X_AXIS));
+
+	            // 아이콘들 간의 간격을 위한 빈 공간 컴포넌트 추가
+	            MemberPnl.add(Box.createRigidArea(new Dimension(10, 0)));
+	            
+	            MemberPnl.revalidate();
+	            MemberPnl.repaint();
+	            Count++;
+	            System.out.println(Count);
+	        
+	        }
+	    });
+	    MemberPnl.add(plus);
+	}
+	    
 	public static class MyFrame extends JFrame {
 	    public MyFrame() {
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
