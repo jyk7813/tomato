@@ -37,12 +37,15 @@ public class ProjectSelectPnl extends JPanel {
     private JLayeredPane centerPnl;
     private JButton jButton;
     private JScrollPane scrollPane;
+    private JPanel projectMemberPnl;
 
     public ProjectSelectPnl(Image image, MainFrame mainFrame) {
         this.image = image;
         iconData = new IconData();
         utility = new Utility();
         setLayout(new BorderLayout(0, 0));
+        
+        
 
         centerPnl = new JLayeredPane();
         centerPnl.setOpaque(false);
@@ -55,7 +58,7 @@ public class ProjectSelectPnl extends JPanel {
                 return new Dimension(510, 905);
             }
         };
-        JPanel eastPnl = new JPanel() {
+        ProjectSelectEastPnl eastPnl = new ProjectSelectEastPnl() {
 
             @Override
             public Dimension getPreferredSize() {

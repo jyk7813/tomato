@@ -1,7 +1,6 @@
 package pnl;
 
 import javax.swing.JPanel;
-import java.awt.GridLayout;
 import javax.swing.JLabel;
 
 public class ProjectMemberPnl extends JPanel {
@@ -10,20 +9,23 @@ public class ProjectMemberPnl extends JPanel {
 	 * Create the panel.
 	 */
 	public ProjectMemberPnl() {
-		setLayout(new GridLayout(0, 1, 0, 0));
+		setLayout(null);
 		
-		JLabel lblNewLabel_2 = new JLabel("New label");
-		add(lblNewLabel_2);
+		JPanel panel = new JPanel();
+		panel.setBounds(0, 0, 130, 945);
+		add(panel);
+		panel.setLayout(null);
 		
-		JLabel lblNewLabel_3 = new JLabel("New label");
-		add(lblNewLabel_3);
+		JPanel projectTitle = new JPanel();
+		projectTitle.setBounds(0, 41, 130, 140);
+		panel.add(projectTitle);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		add(lblNewLabel_1);
+		JLabel lblNewLabel = new JLabel("Title");
+		projectTitle.add(lblNewLabel);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		add(lblNewLabel);
+		JPanel myInfo = new JPanel();
+		myInfo.setBounds(0, 199, 130, 140);
+		panel.add(myInfo);
 
 	}
-
 }
