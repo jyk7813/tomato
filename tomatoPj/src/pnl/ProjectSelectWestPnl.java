@@ -1,6 +1,9 @@
 package pnl;
 
 import javax.swing.JPanel;
+
+import pnl.commonpnl.ProjectMemberPnl;
+
 import javax.swing.BoxLayout;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -22,6 +25,7 @@ public class ProjectSelectWestPnl extends JPanel {
 		};
 
 		JPanel panel_1 = new JPanel();
+		setOpaque(false);
 		add(panel_1, BorderLayout.CENTER);
 		add(projectMemberPnl, BorderLayout.WEST);
 
