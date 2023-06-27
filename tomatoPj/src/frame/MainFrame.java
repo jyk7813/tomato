@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -14,7 +15,9 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import pnl.LoginPnl;
 import pnl.ProjectSelectPnl;
@@ -23,7 +26,7 @@ import utility.IconData;
 
 public class MainFrame extends JFrame {
 	private IconData iconData;
-
+	private JPanel signUpPnl;
 	/**
 	 * Launch the application.
 	 */
@@ -40,8 +43,11 @@ public class MainFrame extends JFrame {
 		});
 	}
 	public void showCard(String cardName) {
+		
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().clearFocusOwner();
 		CardLayout c1 = (CardLayout)(getContentPane().getLayout());
 		c1.show(getContentPane(), cardName);
+		
 	}
 
 	public MainFrame() {
@@ -71,9 +77,9 @@ public class MainFrame extends JFrame {
 		Image projectImage = iconData.projectBackGround().getImage();
 		
 		JPanel loginPnl = new LoginPnl(loginImage,this);
-		JPanel signUpPnl = new SignUpPnl(signImage,this);
+		signUpPnl = new SignUpPnl(signImage,this);
 		JPanel projectPnl = new ProjectSelectPnl(projectImage, this);
-		
+
 
 		// frame의 타이틀 바를 숨깁니다.
 		setUndecorated(true);
