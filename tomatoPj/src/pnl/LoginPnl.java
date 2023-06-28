@@ -107,8 +107,8 @@ public class LoginPnl extends JPanel {
 
 		loginButton.setBounds(896, 622, 126, 41);
 		signUpBtn.setBounds(896, 663, 126, 41);
-		idField.setBounds(860, 509, 255, 41);
-		passwordField.setBounds(860, 570, 255, 41);
+		idField.setBounds(870, 509, 255, 41);
+		passwordField.setBounds(870, 570, 255, 41);
 
 		idField.setFont(fontData.nanumFont(16));
 		passwordField.setFont(fontData.nanumFont(16));
