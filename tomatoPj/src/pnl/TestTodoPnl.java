@@ -1,108 +1,111 @@
 package pnl;
 
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Label;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import utility.FontData;
 import utility.IconData;
 import utility.Utility;
 
-public class TestTodoPnl extends JFrame{
-	static final IconData ICON = new IconData();
-	static final FontData FONT = new FontData();
-	static final Utility UT = new Utility();
+public class TestTodoPnl extends JFrame {
+	private final static IconData IC = new IconData();
+	private final static FontData FT = new FontData();
+	private final static Utility UT = new Utility();
 	
-//	static List<String> list = new ArrayList<>(Arrays.asList("테스트1","테스트2","테스트3"));
-//	static List<String> month ;
+	JScrollPane scrollPane;
 	
-	// 최상단 고정 패널
-	static JPanel fixedTopPnl = new JPanel() {
-		Image background = ICON.getImageIcon("topPnlTestCom").getImage();
-		public void paint(Graphics g) {
-			g.drawImage(background, 0, 0, null);
-			super.paintChildren(g); // 패널 위 요소를 위에 다시 그리기
-			g.dispose();
-		}
-	};
-	
-	
-	// 선택 패널
-	static JPanel selectPnl = new JPanel() {
-		Image background = ICON.getImageIcon("comboSection").getImage();
-		public void paint(Graphics g) {
-			g.drawImage(background, 0, 0, null);
-			super.paintChildren(g);
-			g.dispose();
-		}
-	};
-	
-	
-	// 배경이미지 패널
-	static JPanel bgPnl = new JPanel() {
-		Image background = new ImageIcon("img/todobgTest.png").getImage();
-		public void paint(Graphics g) { //그리는 함수
-			g.drawImage(background, 0, 0, null); //background를 그려줌		
-		}
-	};
-	
-	public void homeframe() {
-		// -----------------------------------------------
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setLayout(null);
-		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// -----------------------------------------------
-		// 최상단 고정 패널 추가
-		fixedTopPnl.setBounds(0, 0, getWidth(), getHeight());
-		fixedTopPnl.setLayout(null);
-		add(fixedTopPnl);
+	public TestTodoPnl(){
+		// 상단 배경 패널 ------------------------------------
+		JPanel topBgPnl = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(IC.getImageIcon("topLine").getImage(), 0, 0, null);
+				setOpaque(false); // 이미지 불투명도 설정 : false = 불투명(이미지 표시) / true = 투명
+				super.paintComponent(g);
+			}
+		};
 		
-		// 선택 패널 추가
-		selectPnl.setBounds(0, 140, getWidth(), getHeight());
-		selectPnl.setLayout(null);
-		add(selectPnl);
+		// 달력 배경 패널 ------------------------------------
+		JPanel calBgPnl = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(IC.getImageIcon("calendarWeek").getImage(), 0, 0, null);
+				setOpaque(false); // 이미지 불투명도 설정 : false = 불투명(이미지 표시) / true = 투명
+				super.paintComponent(g);
+			}
+		};
 		
-		// 배경이미지 패널 추가
+		// 배경 패널 -----------------------------------------
+		JPanel bgPnl = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(IC.getImageIcon("Background").getImage(), 0, 0, null);
+				setOpaque(false); // 이미지 불투명도 설정 : false = 불투명(이미지 표시) / true = 투명
+				super.paintComponent(g);
+			}
+		};
+		
+		// 상단 패널 -----------------------------------------
+		JPanel topPnl = new JPanel();
+		
+		// 메뉴 이동 버튼
+		JButton logoBtn = UT.getBtn(100, 45, "topLogo");
+		topPnl.add(logoBtn);
+		JButton kanbanMenuBtn = UT.getBtn(753, 55, "navi_board2");
+		topPnl.add(kanbanMenuBtn);
+		JButton todoMenuBtn = UT.getBtn(915, 55, "navi_todo2");
+		topPnl.add(todoMenuBtn);
+		JButton projectMenuBtn = UT.getBtn(1064, 55, "navi_planner2");
+		topPnl.add(projectMenuBtn);
+		JButton logoutBtn = UT.getBtn(1649, 33, "logout_btn");
+		topPnl.add(logoutBtn);
+		
+		topPnl.setBounds(0, -10, 1920, 135);
+		topPnl.setLayout(null);
+		topPnl.setOpaque(false);
+		
+		topBgPnl.setBounds(0, -10, 1920, 135);
+		topBgPnl.setLayout(null);
+		topBgPnl.setOpaque(false);
+		
+		
+		// 달력 패널 -----------------------------------------
+		JPanel calPnl = new JPanel();
+		calPnl.setBounds(164, 160, 1718, 870);
+		calPnl.setLayout(null);
+		calPnl.setOpaque(false);
+		
+		calBgPnl.setBounds(164, 160, 1718, 870);
+		calBgPnl.setLayout(null);
+		calBgPnl.setOpaque(false);
+		
+		
+		// 배경 패널에 각 패널 붙이기 ------------------------------
+		bgPnl.add(topPnl); // 상단 패널
+		bgPnl.add(topBgPnl); // 상단 배경 패널
+		bgPnl.add(calBgPnl); // 달력 배경 패널
+		
+		
+		// -----------------------------------------------
+//		scrollPane = new JScrollPane(bgPnl);
+//		setContentPane(scrollPane);
+		bgPnl.setBounds(0, 0, 1920, 1080);
 		bgPnl.setLayout(null);
-		bgPnl.setBounds(0, 0, getWidth(), getHeight());
 		add(bgPnl);
 		// -----------------------------------------------
-		
-		// 최상단 고정 패널
-		JButton kanbanMenu = UT.getBtn(650, 60, "navi_board2");
-		fixedTopPnl.add(kanbanMenu);
-		JButton todoMenu = UT.getBtn(870, 60, "navi_todo2");
-		fixedTopPnl.add(todoMenu);
-		JButton projectMenu = UT.getBtn(1060, 60, "navi_planner2");
-		fixedTopPnl.add(projectMenu);
-		
-		// 선택 패널
-		JButton monthSel = UT.getBtn(700, 55, "monthSelTest");
-		selectPnl.add(monthSel);
-		JButton toggleSel = UT.getBtn(850, 55, "toggleSelTest");
-		selectPnl.add(toggleSel);
-		
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(null);
+		setVisible(true);
+		// -----------------------------------------------
 	}
 	
-	public TestTodoPnl() {
-		homeframe();
-	}
-	
-	
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		new TestTodoPnl();
 	}
 }
