@@ -60,20 +60,20 @@ public class TestTodoPnl extends JFrame {
 		// 메뉴 이동 버튼
 		JButton logoBtn = UT.getBtnRoll(100, 45, "topLogo");
 		topPnl.add(logoBtn);
-		JButton kanbanMenuBtn = UT.getBtnRoll(753, 55, "navi_board2");
+		JButton kanbanMenuBtn = UT.getBtnRoll(753, 60, "navi_board2");
 		topPnl.add(kanbanMenuBtn);
-		JButton todoMenuBtn = UT.getBtnRoll(915, 55, "navi_todo2");
+		JButton todoMenuBtn = UT.getBtnRoll(915, 60, "navi_todo2");
 		topPnl.add(todoMenuBtn);
-		JButton projectMenuBtn = UT.getBtnRoll(1064, 55, "navi_planner2");
+		JButton projectMenuBtn = UT.getBtnRoll(1064, 60, "navi_planner2");
 		topPnl.add(projectMenuBtn);
-		JButton logoutBtn = UT.getBtnRoll(1649, 33, "logout_btn");
+		JButton logoutBtn = UT.getBtnRoll(1649, 40, "logout_btn");
 		topPnl.add(logoutBtn);
 		
-		topPnl.setBounds(0, -10, 1920, 135);
+		topPnl.setBounds(0, 0, 1920, 135);
 		topPnl.setLayout(null);
 		topPnl.setOpaque(false);
 		
-		topBgPnl.setBounds(0, -10, 1920, 135);
+		topBgPnl.setBounds(0, 0, 1920, 135);
 		topBgPnl.setLayout(null);
 		topBgPnl.setOpaque(false);
 		
@@ -156,13 +156,17 @@ public class TestTodoPnl extends JFrame {
 		add(bgPnl);
 		// -----------------------------------------------
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 		setVisible(true);
 		// -----------------------------------------------
+		
 	}
 	
 	public static void main(String[] args) {
 		new TestTodoPnl();
 	}
+	
+	
 }
