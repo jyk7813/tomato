@@ -2,6 +2,8 @@ package pnl;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import frame.MainFrame;
 import utility.CalendarData;
 import utility.FontData;
 import utility.IconData;
@@ -25,7 +28,23 @@ public class TestTodoPnl extends JFrame {
 	
 	private boolean toggleSwitch = true;
 	
-	public TestTodoPnl(){
+	public TestTodoPnl() {
+		addComponentListener(new ComponentListener() {
+			
+			@Override
+			public void componentShown(ComponentEvent e) {
+					
+			}
+			@Override
+			public void componentResized(ComponentEvent e) {
+			}
+			@Override
+			public void componentMoved(ComponentEvent e) {
+			}
+			@Override
+			public void componentHidden(ComponentEvent e) {
+			}
+		});
 		
 		// 상단 배경 패널 ------------------------------------
 		JPanel topBgPnl = new JPanel() {

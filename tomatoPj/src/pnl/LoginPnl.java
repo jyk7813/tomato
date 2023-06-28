@@ -198,6 +198,7 @@ public class LoginPnl extends JPanel {
 					} else {
 						System.out.println("로그인실패");
 					}
+					mainFrame.loginMember.setPjListSize(mainFrame.loginMember.getPjList().size());
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 
