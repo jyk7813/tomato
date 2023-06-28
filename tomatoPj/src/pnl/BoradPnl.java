@@ -24,7 +24,7 @@ public class BoradPnl extends JPanel{
 		this.image = image;
 		setLayout(new BorderLayout(0, 0));
 		
-		topPnl topPnl = new topPnl();
+		topPnl topPnl = new topPnl(mainFrame);
 		add(topPnl, BorderLayout.NORTH);
 		
 		ProjectMemberPnl projectMemberPnl = new ProjectMemberPnl();
