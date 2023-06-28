@@ -12,9 +12,11 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.sql.SQLException;
+import java.util.HashSet;
 
-import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
@@ -24,88 +26,148 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+import dbutil.SelectProjectInfo;
 import frame.MainFrame;
+import pnl.projectpnl.ProjectPnl;
+import pnl.projectpnl.ProjectSelectWestPnl;
+import tomatoPj.ColumnRepository;
+import tomatoPj.Member;
+import tomatoPj.MemberRepository;
+import tomatoPj.Member_Tag_Package_Repository;
+import tomatoPj.Project;
 import utility.IconData;
-import utility.MyScrollBarUi;
 import utility.Utility;
 
 public class ProjectSelectPnl extends JPanel {
 
-    private Image image;
-    private IconData iconData;
-    private Utility utility;
-    private JLayeredPane centerPnl;
-    private JButton jButton;
-    private JScrollPane scrollPane;
+	private Image image;
+	private IconData iconData;
+	private Utility utility;
+	private JLayeredPane centerPnl;
+	private JButton jButton;
+	private JScrollPane scrollPane;
+	private MemberRepository memberRepo;
+	private HashSet<Member> memberList;
+	private Member_Tag_Package_Repository mtPackageRepo;
+	private MainFrame mainFrame;
+	private ColumnRepository colRepo;
+	private SelectProjectInfo pjInfo;
 
-    public ProjectSelectPnl(Image image, MainFrame mainFrame) {
-        this.image = image;
-        iconData = new IconData();
-        utility = new Utility();
-        setLayout(new BorderLayout(0, 0));
+	public ProjectSelectPnl(Image image, MainFrame mainFrame) {
+		this.mainFrame = mainFrame;
+		memberRepo = new MemberRepository();
+		mtPackageRepo = new Member_Tag_Package_Repository();
+		memberList = new HashSet<>();
+		colRepo = new ColumnRepository();
+		this.image = image;
+		iconData = new IconData();
+		utility = new Utility();
+		setLayout(new BorderLayout(0, 0));
 
-        centerPnl = new JLayeredPane();
-        centerPnl.setOpaque(false);
-        centerPnl.setLayout(null); // Necessary for JScrollPane to function correctly
+		centerPnl = new JLayeredPane();
+		centerPnl.setOpaque(false);
+		centerPnl.setLayout(null); // Necessary for JScrollPane to function correctly
 
-        JPanel westPnl = new JPanel() {
-            @Override
-            public Dimension getPreferredSize() {
-                setOpaque(false);
-                return new Dimension(510, 905);
-            }
-        };
-        JPanel eastPnl = new JPanel() {
+		ProjectSelectWestPnl westPnl = new ProjectSelectWestPnl() {
+			@Override
+			public Dimension getPreferredSize() {
+				setOpaque(false);
+				return new Dimension(510, 905);
+			}
+		};
+		JPanel eastPnl = new JPanel() {
 
-            @Override
-            public Dimension getPreferredSize() {
-                setOpaque(false);
-                return new Dimension(510, 905);
-            }
+			@Override
+			public Dimension getPreferredSize() {
+				setOpaque(false);
+				return new Dimension(510, 905);
+			}
 
-        };
-        
-        JPanel northPanel = new JPanel() {
-            @Override
-            public Dimension getPreferredSize() {
-                setOpaque(false);
-                return new Dimension(1920, 135);
-            }
-        };
-        jButton = new JButton(iconData.getImageIcon("blankAdd"));
-        jButton.setBounds(0, 55, 900, 216);
+		};
 
-        jButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addPanel();
-            }
-        });
+		JPanel northPanel = new JPanel() {
+			@Override
+			public Dimension getPreferredSize() {
+				setOpaque(false);
+				return new Dimension(1920, 135);
+			}
+		};
+		jButton = new JButton(iconData.getImageIcon("blankAdd"));
+		jButton.setBounds(0, 55, 900, 216);
 
-        centerPnl.add(jButton, new Integer(3));  // Add jButton to a higher layer
-        utility.setButtonProperties(jButton);
+		jButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//addPanel();
+				mainFrame.showCard("columnSelect");
+			}
+		});
 
-        // Create JScrollPane and add the centerPnl to it
-        scrollPane = new JScrollPane(centerPnl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPaneSetLayout();
-        
-        scrollPaneSetUI();
-        
-        scrollPane.setComponentZOrder(scrollPane.getVerticalScrollBar(), 0);
+		centerPnl.add(jButton, new Integer(3)); // Add jButton to a higher layer
+		utility.setButtonProperties(jButton);
+
+		// Create JScrollPane and add the centerPnl to it
+		scrollPane = new JScrollPane(centerPnl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPaneSetLayout();
+
+		scrollPaneSetUI();
+
+		scrollPane.setComponentZOrder(scrollPane.getVerticalScrollBar(), 0);
 		scrollPane.setComponentZOrder(scrollPane.getViewport(), 1);
 		scrollPane.getVerticalScrollBar().setOpaque(false);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);  // Add this line
-        scrollPane.setBorder(null);
+		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false); // Add this line
+		scrollPane.setBorder(null);
 
-        add(scrollPane, BorderLayout.CENTER);  // Add the JScrollPane to the main panel
-        add(northPanel, BorderLayout.NORTH);
-        add(westPnl, BorderLayout.WEST);
-        add(eastPnl, BorderLayout.EAST);
-    }
+		add(scrollPane, BorderLayout.CENTER); // Add the JScrollPane to the main panel
+		add(northPanel, BorderLayout.NORTH);
+		add(westPnl, BorderLayout.WEST);
+		add(eastPnl, BorderLayout.EAST);
 
-    private void scrollPaneSetLayout() {
-    	scrollPane.setLayout(new ScrollPaneLayout() {
+		addComponentListener(new ComponentListener() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				int a = mainFrame.loginMember.getMember_no();
+				try {
+					mainFrame.loginMember.setPjList(memberRepo.returnMemberPj(a));
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				for (Project project : mainFrame.loginMember.getPjList()) {
+					int key = project.getProject_no();
+					try {
+
+						for (Member mem : mtPackageRepo.returnMemberByPj_no(key)) {
+							memberList.add(mem);
+						}
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				}
+				System.out.println("제대로된 멤버? " + memberList);
+				//////////// 가지고있는 프로젝트 리스트 패널 생성  ///////////
+				for (Project project : mainFrame.loginMember.getPjList()) {
+					addPanel(project.getProject_no(), project.getTitle());
+				}
+			}
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+			}
+		});
+	}
+
+	private void scrollPaneSetLayout() {
+		scrollPane.setLayout(new ScrollPaneLayout() {
 			@Override
 			public void layoutContainer(Container parent) {
 				JScrollPane scrollPane = (JScrollPane) parent;
@@ -131,16 +193,16 @@ public class ProjectSelectPnl extends JPanel {
 				if (vsb != null) {
 					vsb.setVisible(true);
 					vsb.setOpaque(false);
-					
+
 					vsb.setBounds(vsbR);
 				}
 			}
 		});
-		
+
 	}
 
 	private void scrollPaneSetUI() {
-    	scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+		scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 			private final Dimension d = new Dimension();
 
 			@Override
@@ -195,24 +257,25 @@ public class ProjectSelectPnl extends JPanel {
 				scrollbar.repaint();
 			}
 		});
-		
+
 	}
 
-	private void addPanel() {
-        ProjectPnl projectPnl = new ProjectPnl();
-        projectPnl.setBounds(0, jButton.getY(), 900, 216);  // Set the position to current jButton position
-        centerPnl.add(projectPnl, new Integer(2));  // Add projectPnl to a lower layer
-        jButton.setLocation(jButton.getX(), jButton.getY() + projectPnl.getHeight() + 10);  // Move jButton down
+	private void addPanel(int project_no, String title) {
+		
+		ProjectPnl projectPnl = new ProjectPnl(mainFrame, project_no, title);
+		projectPnl.setBounds(0, jButton.getY(), 900, 216); // Set the position to current jButton position
+		centerPnl.add(projectPnl, new Integer(2)); // Add projectPnl to a lower layer
+		jButton.setLocation(jButton.getX(), jButton.getY() + projectPnl.getHeight() + 10); // Move jButton down
 
-        // Update the preferred size of the centerPnl and validate the JScrollPane
-        centerPnl.setPreferredSize(new Dimension(centerPnl.getWidth(), jButton.getY() + jButton.getHeight()));
-        scrollPane.validate();
-        centerPnl.repaint();
-    }
+		// Update the preferred size of the centerPnl and validate the JScrollPane
+		centerPnl.setPreferredSize(new Dimension(centerPnl.getWidth(), jButton.getY() + jButton.getHeight()));
+		scrollPane.validate();
+		centerPnl.repaint();
+	}
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(image, 0, 0, this);
-    }
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(image, 0, 0, this);
+	}
 }

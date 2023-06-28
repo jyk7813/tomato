@@ -2,6 +2,7 @@ package pnl;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 
@@ -88,7 +89,19 @@ public class TestTodoPnl extends JFrame {
 		todoListPnl.setLayout(null);
 		todoListPnl.setOpaque(false);
 		
-//		JLabel currentDate = new JLabel("");
+		
+		// 토글 버튼
+		JButton toggleTotal = UT.getBtn(1400, 200, "prijectAll_toggle");
+		
+		// 현재 날짜 출력 라벨
+		JLabel currentDate = new JLabel();
+		String res = UT.getCurrentDate();
+		currentDate.setText(res);
+		currentDate.setFont(FT.nanumFontBold(18));
+		currentDate.setForeground(Color.DARK_GRAY);
+		
+		todoListPnl.add(currentDate);
+		currentDate.setBounds(950, 140, 240, 30);
 		
 		
 		calBgPnl.setBounds(164, 160, 1718, 870);
@@ -99,6 +112,7 @@ public class TestTodoPnl extends JFrame {
 		// 배경 패널에 각 패널 붙이기 ------------------------------
 		bgPnl.add(topPnl); // 상단 패널
 		bgPnl.add(topBgPnl); // 상단 배경 패널
+		bgPnl.add(todoListPnl); // 투두 리스트 패널
 		bgPnl.add(calBgPnl); // 달력 배경 패널
 		
 		

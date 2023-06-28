@@ -1,5 +1,6 @@
 package tomatoPj;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -8,11 +9,12 @@ public class Task {
 	private String title;
 	private String content;
 	private int importance;
-	private LocalDateTime updateDate;
-	private LocalDateTime deadLine;
+	private Timestamp updateDate;
+	private Timestamp deadLine;
 	private int active;
 	private List<Member>list;
-	public Task(String title, String content, int importance, LocalDateTime updateDate, LocalDateTime deadLine) {
+	
+	public Task(String title, String content, int importance, Timestamp updateDate, Timestamp deadLine) {
 		super();
 		this.title = title;
 		this.content = content;
@@ -20,8 +22,8 @@ public class Task {
 		this.updateDate = updateDate;
 		this.deadLine = deadLine;
 	}
-	public Task(int task_no, String title, String content, int importance, LocalDateTime updateDate,
-			LocalDateTime deadLine, int active) {
+	public Task(int task_no, String title, String content, int importance, Timestamp updateDate,
+			Timestamp deadLine, int active) {
 		super();
 		this.task_no = task_no;
 		this.title = title;
@@ -55,16 +57,16 @@ public class Task {
 	public void setImportance(int importance) {
 		this.importance = importance;
 	}
-	public LocalDateTime getUpdateDate() {
+	public Timestamp getUpdateDate() {
 		return updateDate;
 	}
-	public void setUpdateDate(LocalDateTime updateDate) {
+	public void setUpdateDate(Timestamp updateDate) {
 		this.updateDate = updateDate;
 	}
-	public LocalDateTime getDeadLine() {
+	public Timestamp getDeadLine() {
 		return deadLine;
 	}
-	public void setDeadLine(LocalDateTime deadLine) {
+	public void setDeadLine(Timestamp deadLine) {
 		this.deadLine = deadLine;
 	}
 	public int getActive() {
