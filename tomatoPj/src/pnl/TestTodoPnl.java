@@ -31,156 +31,6 @@ public class TestTodoPnl extends JFrame {
 	private boolean toggleSwitch = true;
 
 	// 달력 출력 패널 클래스 ------------------------------------
-	class CalendarMain extends JPanel implements ActionListener {
-		// ------외형 구현------------
-		private  IconData icon = new IconData();
-		private  FontData font = new FontData();
-		private Utility util = new Utility();
-
-		Calendar cal;
-		int year, month, date;
-		JPanel pane = new JPanel();
-
-		// 월선택 좌우버튼
-		JButton selMonthbeforeBtn = UT.getBtn(50, 28, "before_btn");
-		JButton selMonthnextBtn = UT.getBtn(200, 28, "next_btn");
-
-		// 위에 라벨추가
-		JLabel yearlb = new JLabel("년");
-		JLabel monthlb = new JLabel("월");
-
-		//년월 추가
-		JComboBox<Integer> yearCombo = new JComboBox<Integer>();
-		DefaultComboBoxModel<Integer> yearModel = new DefaultComboBoxModel<Integer>();
-		JComboBox<Integer> monthCombo = new JComboBox<Integer>();
-		DefaultComboBoxModel<Integer> monthModel = new DefaultComboBoxModel<Integer>();
-
-		// 패널추가
-		JPanel pane2 = new JPanel(new BorderLayout());
-		JPanel title = new JPanel(new GridLayout(1, 7));
-		String titleStr[] = { "일", "월", "화", "수", "목", "금", "토" };
-		JPanel datePane = new JPanel(new GridLayout(0, 7));
-
-		// 화면디자인
-		public CalendarMain() {
-			// ------년도 월 구하기------------
-			cal = Calendar.getInstance(); // 현재날짜
-			year = cal.get(Calendar.YEAR);
-			month = cal.get(Calendar.MONTH) + 1;
-			date = cal.get(Calendar.DATE);
-
-			// 년
-			for (int i = year - 100; i <= year + 50; i++) {
-				yearModel.addElement(i);
-			}
-
-			yearCombo.setModel(yearModel);
-			yearCombo.setSelectedItem(year);
-
-			// 월
-			for (int i = 1; i <= 12; i++) {
-				monthModel.addElement(i);
-			}
-			monthCombo.setModel(monthModel);
-			monthCombo.setSelectedItem(month);
-
-			// 월화수목금토일
-			for (int i = 0; i < titleStr.length; i++) {
-				JLabel lbl = new JLabel(titleStr[i], JLabel.CENTER);
-				if (i == 0) {
-					lbl.setForeground(Color.red);
-				} else if (i == 6) {
-					lbl.setForeground(Color.blue);
-				}
-				title.add(lbl);
-			}
-			// 날짜 출력
-			day(year, month);
-
-			// ----------------------------
-			pane.add(selMonthbeforeBtn);
-			pane.add(yearCombo);
-			pane.add(yearlb);
-			pane.add(monthCombo);
-			pane.add(monthlb);
-			pane.add(selMonthnextBtn);
-			pane.setBackground(Color.CYAN);
-			add(BorderLayout.NORTH, pane);
-			pane2.add(title, "North");
-			pane2.add(datePane);
-			add(BorderLayout.CENTER, pane2);
-
-			// 각종 명령어
-			setVisible(true);
-			setSize(400, 300);
-			setResizable(false);
-			setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-			// ----------기능구현----------
-			selMonthbeforeBtn.addActionListener(this);
-			selMonthnextBtn.addActionListener(this);
-			yearCombo.addActionListener(this);
-			monthCombo.addActionListener(this);
-		}
-
-		// 기능구현
-		public void actionPerformed(ActionEvent e) {
-			Object eventObj = e.getSource();
-			if (eventObj instanceof JComboBox) {
-				datePane.setVisible(false); // 보여지는 패널을 숨킨다.
-				datePane.removeAll(); // 라벨 지우기
-				day((Integer) yearCombo.getSelectedItem(), (Integer) monthCombo.getSelectedItem());
-				datePane.setVisible(true); // 패널 재출력
-			} else if (eventObj instanceof JButton) {
-				JButton eventBtn = (JButton) eventObj;
-				int yy = (Integer) yearCombo.getSelectedItem();
-				int mm = (Integer) monthCombo.getSelectedItem();
-				if (eventBtn.equals(selMonthbeforeBtn)) { // 전달
-					if (mm == 1) {
-						yy--;
-						mm = 12;
-					} else {
-						mm--;
-					}
-				} else if (eventBtn.equals(selMonthnextBtn)) { // 다음달
-					if (mm == 12) {
-						yy++;
-						mm = 1;
-					} else {
-						mm++;
-					}
-				}
-				yearCombo.setSelectedItem(yy);
-				monthCombo.setSelectedItem(mm);
-			}
-		}
-
-		// 날짜출력
-		public void day(int year, int month) {
-			Calendar date = Calendar.getInstance();// 오늘날짜 + 시간
-			date.set(year, month - 1, 1);
-			int week = date.get(Calendar.DAY_OF_WEEK);
-			int lastDay = date.getActualMaximum(Calendar.DAY_OF_MONTH);
-
-			// 공백출력
-			for (int space = 1; space < week; space++) {
-				datePane.add(new JLabel("\t"));
-			}
-
-			// 날짜 출력
-			for (int day = 1; day <= lastDay; day++) {
-				JLabel lbl = new JLabel(String.valueOf(day), JLabel.CENTER);
-				cal.set(year, month - 1, day);
-				int Week = cal.get(Calendar.DAY_OF_WEEK);
-				if (Week == 1) {
-					lbl.setForeground(Color.red);
-				} else if (Week == 7) {
-					lbl.setForeground(Color.BLUE);
-				}
-				datePane.add(lbl);
-			}
-		}
-	}
 
 	public TestTodoPnl() {
 
@@ -239,6 +89,12 @@ public class TestTodoPnl extends JFrame {
 		calPnl.setLayout(null);
 		calPnl.setOpaque(false);
 
+		// 달력 출력 패널 --------------------------------------
+//		JPanel printCal = new CalendarMain();
+//		printCal.setBounds(0, 0, 857, 870);
+//		printCal.setLayout(null);
+//		printCal.setOpaque(false);
+
 		JLabel printCurrentMonth = new JLabel();
 		String currentMonth = CD.getCurrentSelDate("monthofvalue") + " 월";
 		printCurrentMonth.setText(currentMonth);
@@ -247,6 +103,7 @@ public class TestTodoPnl extends JFrame {
 		printCurrentMonth.setBounds(120, 30, 50, 34);
 
 		calPnl.add(printCurrentMonth);
+//		calPnl.add(printCal);
 
 //		// 월선택 좌우버튼
 //		JButton selMonthbeforeBtn = UT.getBtn(50, 28, "before_btn");
