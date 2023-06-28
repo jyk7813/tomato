@@ -58,15 +58,15 @@ public class TestTodoPnl extends JFrame {
 		JPanel topPnl = new JPanel();
 		
 		// 메뉴 이동 버튼
-		JButton logoBtn = UT.getBtn(100, 45, "topLogo");
+		JButton logoBtn = UT.getBtnRoll(100, 45, "topLogo");
 		topPnl.add(logoBtn);
-		JButton kanbanMenuBtn = UT.getBtn(753, 55, "navi_board2");
+		JButton kanbanMenuBtn = UT.getBtnRoll(753, 55, "navi_board2");
 		topPnl.add(kanbanMenuBtn);
-		JButton todoMenuBtn = UT.getBtn(915, 55, "navi_todo2");
+		JButton todoMenuBtn = UT.getBtnRoll(915, 55, "navi_todo2");
 		topPnl.add(todoMenuBtn);
-		JButton projectMenuBtn = UT.getBtn(1064, 55, "navi_planner2");
+		JButton projectMenuBtn = UT.getBtnRoll(1064, 55, "navi_planner2");
 		topPnl.add(projectMenuBtn);
-		JButton logoutBtn = UT.getBtn(1649, 33, "logout_btn");
+		JButton logoutBtn = UT.getBtnRoll(1649, 33, "logout_btn");
 		topPnl.add(logoutBtn);
 		
 		topPnl.setBounds(0, -10, 1920, 135);
