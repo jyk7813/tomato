@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,8 +15,8 @@ import dbutil.DBUtil;
 public class TaskRepository {
 	
 	// 선택한 멤버들의 배열과 선택한 프로젝트 넘버를 보내면 가지고있는 task리스트 리턴
-	// todo에 쓸 데이터베이스 함수구축.
-	public HashSet<Task> todoSelectTaskList(int[] member_noArray, int project_no) throws SQLException {
+	// todo에 쓸 데이터베이스 함수구축. 완료
+	public HashSet<Task> todoSelectTaskList(int project_no, List<Integer> member_noArray) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -31,9 +32,10 @@ public class TaskRepository {
 					+ "ON akatask.task_no = akadupli.task_no";
 			stmt = conn.prepareStatement(query);
 			
-			for(int i = 0;i < member_noArray.length; i++) {
+			for(int i = 0;i < member_noArray.size(); i++) {
 				stmt.setInt(1, project_no);
-				stmt.setInt(2, member_noArray[i]);
+				//stmt.setInt(2, member_noArray.get(i));
+				stmt.setObject(2, member_noArray.get(i), Types.INTEGER);
 				rs = stmt.executeQuery();
 
 				while (rs.next()) {

@@ -5,12 +5,18 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import frame.MainFrame;
+import tomatoPj.Member;
+import tomatoPj.Member_Tag_Package_Repository;
+import tomatoPj.Task;
 import utility.CalendarData;
 import utility.FontData;
 import utility.IconData;
@@ -24,8 +30,22 @@ public class TestTodoPnl extends JPanel{
 	private final static Utility UT = new Utility();
 	private final static CalendarData CD = new CalendarData();
 	private boolean toggleSwitch = true;
+	// 로그인한 멤버의 모든 프로젝트의 task리스트
+	private List<Task> pjAllList;
+	private Member_Tag_Package_Repository mtpRepo;
+	// 선택한 프로젝트에 포함된 Member 리스트
+	private HashSet<Member> memberList;
+	
+	private void projectEachFunction(int project_no, HashSet<Member> memberList) {
+		
+	}
+	private void projectAllFunction(List<Task> pjAllList) {
+		this.pjAllList = pjAllList;
+	}
+	
 	
 	public TestTodoPnl(MainFrame mainFrame) {
+		mtpRepo = new Member_Tag_Package_Repository();
 		
 		// 상단 배경 패널 ------------------------------------
 				JPanel topBgPnl = new JPanel() {
@@ -115,9 +135,19 @@ public class TestTodoPnl extends JPanel{
 			                if(toggleSwitch){
 			                    toggleBtn.setIcon(IC.getImageIcon("prijectEach_toggle"));
 			                    toggleSwitch = false;
+			                    /////////// 프로젝트를 특정해야함 ////////////
+			                    ///////////  임시 프로젝트 넘버  ////////////
+			                   // 프로젝트가 특정이된다면 바로가능
+			                    try {
+			                    	memberList = mtpRepo.returnMemberByPj_no(1);
+									projectEachFunction(1, memberList);
+								} catch (SQLException e1) {
+									e1.printStackTrace();
+								}
 			                } else {
 			                	toggleBtn.setIcon(IC.getImageIcon("prijectAll_toggle"));
 			                	toggleSwitch = true;
+			                	projectAllFunction(mainFrame.loginMember.getTakeTaskList());
 			                }
 			            }
 			        };
