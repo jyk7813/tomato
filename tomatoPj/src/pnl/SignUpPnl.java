@@ -67,7 +67,7 @@ public class SignUpPnl extends JPanel {
 		emailField = new JTextField("이메일");
 		btn = new JButton();
 		btn.setBackground(Color.BLACK);
-		backBtn = new JButton("뒤로갈래..");
+		backBtn = new JButton(iconData.getImageIcon("login_logo"));
 		for (int i = 0; i < checkLbl.length; i++) {
 			checkLbl[i] = new JLabel();
 		}
@@ -97,6 +97,26 @@ public class SignUpPnl extends JPanel {
 			public void mouseExited(MouseEvent me) {
 				btn.setIcon(iconData.getImageIcon("okbtnicon"));
 				btn.repaint();
+			}
+		});
+		
+		backBtn.addMouseListener (new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				backBtn.setIcon(iconData.getImageIcon("login_logo"));
+				backBtn.repaint();
+			}
+
+			public void mouseEntered(MouseEvent me) {
+				System.out.println("마우스 들어감");
+				backBtn.setIcon(iconData.getImageIcon("login_logo"));
+				backBtn.repaint();
+			}
+
+			public void mouseExited(MouseEvent me) {
+				backBtn.setIcon(iconData.getImageIcon("login_logo"));
+				backBtn.repaint();
 			}
 		});
 
