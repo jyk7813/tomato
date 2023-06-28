@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import frame.MainFrame;
+import utility.CalendarData;
 import utility.FontData;
 import utility.IconData;
 import utility.Utility;
@@ -20,8 +24,9 @@ public class TestTodoPnl extends JFrame {
 	private final static IconData IC = new IconData();
 	private final static FontData FT = new FontData();
 	private final static Utility UT = new Utility();
+	private final static CalendarData CD = new CalendarData();
 	
-	JScrollPane scrollPane;
+	private boolean toggleSwitch = true;
 	
 	public TestTodoPnl() {
 		addComponentListener(new ComponentListener() {
@@ -72,22 +77,21 @@ public class TestTodoPnl extends JFrame {
 		JPanel topPnl = new JPanel();
 		
 		// 메뉴 이동 버튼
-		JButton logoBtn = UT.getBtn(100, 45, "topLogo");
+		JButton logoBtn = UT.getBtnRoll(100, 45, "topLogo");
 		topPnl.add(logoBtn);
-		JButton kanbanMenuBtn = UT.getBtn(753, 55, "navi_board2");
+		JButton kanbanMenuBtn = UT.getBtnRoll(753, 60, "navi_board2");
 		topPnl.add(kanbanMenuBtn);
-		JButton todoMenuBtn = UT.getBtn(915, 55, "navi_todo2");
+		JButton todoMenuBtn = UT.getBtnRoll(915, 60, "navi_todo2");
 		topPnl.add(todoMenuBtn);
-		JButton projectMenuBtn = UT.getBtn(1064, 55, "navi_planner2");
+		JButton projectMenuBtn = UT.getBtnRoll(1064, 60, "navi_planner2");
 		topPnl.add(projectMenuBtn);
-		JButton logoutBtn = UT.getBtn(1649, 33, "logout_btn");
+		JButton logoutBtn = UT.getBtnRoll(1649, 40, "logout_btn");
 		topPnl.add(logoutBtn);
-		
-		topPnl.setBounds(0, -10, 1920, 135);
+		topPnl.setBounds(0, 0, 1920, 135);
 		topPnl.setLayout(null);
 		topPnl.setOpaque(false);
 		
-		topBgPnl.setBounds(0, -10, 1920, 135);
+		topBgPnl.setBounds(0, 0, 1920, 135);
 		topBgPnl.setLayout(null);
 		topBgPnl.setOpaque(false);
 		
@@ -98,6 +102,21 @@ public class TestTodoPnl extends JFrame {
 		calPnl.setLayout(null);
 		calPnl.setOpaque(false);
 		
+		JLabel printCurrentMonth = new JLabel();
+		String currentMonth = CD.getCurrentSelDate("monthofvalue") + " 월";
+		printCurrentMonth.setText(currentMonth);
+		printCurrentMonth.setFont(FT.nanumFontBold(25));
+		printCurrentMonth.setForeground(Color.DARK_GRAY);
+		
+		printCurrentMonth.setBounds(120, 30, 50, 34);
+		calPnl.add(printCurrentMonth);
+		
+		// 월선택 좌우버튼
+		JButton selMonthbeforeBtn = UT.getBtn(50, 28, "before_btn");
+		calPnl.add(selMonthbeforeBtn);
+		JButton selMonthnextBtn = UT.getBtn(200, 28, "next_btn");
+		calPnl.add(selMonthnextBtn);
+		
 		
 		
 		// 투두 리스트 패널 ------------------------------------
@@ -106,19 +125,36 @@ public class TestTodoPnl extends JFrame {
 		todoListPnl.setLayout(null);
 		todoListPnl.setOpaque(false);
 		
+		// 뷰 설정 토글 버튼
+		JButton toggleBtn = UT.getBtn(1210, 15, "prijectAll_toggle");
+		todoListPnl.add(toggleBtn);
+		ActionListener listener = new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                if(toggleSwitch){
+	                    toggleBtn.setIcon(IC.getImageIcon("prijectEach_toggle"));
+	                    toggleSwitch = false;
+	                } else {
+	                	toggleBtn.setIcon(IC.getImageIcon("prijectAll_toggle"));
+	                	toggleSwitch = true;
+	                }
+	            }
+	        };
+	        toggleBtn.addActionListener(listener);
 		
-		// 토글 버튼
-		JButton toggleTotal = UT.getBtn(1400, 200, "prijectAll_toggle");
+		// 선택 버튼
+		JButton selBtn = UT.getBtn(1650, 30, "projectOpne");
+		todoListPnl.add(selBtn);
 		
 		// 현재 날짜 출력 라벨
 		JLabel currentDate = new JLabel();
-		String res = UT.getCurrentDate();
-		currentDate.setText(res);
+		String todoDate = CD.getCurrentDate();
+		currentDate.setText(todoDate);
 		currentDate.setFont(FT.nanumFontBold(18));
 		currentDate.setForeground(Color.DARK_GRAY);
+		currentDate.setBounds(950, 140, 240, 30);
 		
 		todoListPnl.add(currentDate);
-		currentDate.setBounds(950, 140, 240, 30);
 		
 		
 		calBgPnl.setBounds(164, 160, 1718, 870);
@@ -130,19 +166,17 @@ public class TestTodoPnl extends JFrame {
 		bgPnl.add(topPnl); // 상단 패널
 		bgPnl.add(topBgPnl); // 상단 배경 패널
 		bgPnl.add(todoListPnl); // 투두 리스트 패널
-		bgPnl.add(calBgPnl); // 달력 배경 패널
-		
-		
+		bgPnl.add(calPnl); // 달력 패널
+		bgPnl.add(calBgPnl); // 메인 영역 배경 패널
 		// -----------------------------------------------
-//		scrollPane = new JScrollPane(bgPnl);
-//		setContentPane(scrollPane);
 		bgPnl.setBounds(0, 0, 1920, 1080);
 		bgPnl.setLayout(null);
-		add(bgPnl);
+		getContentPane().add(bgPnl);
 		// -----------------------------------------------
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(null);
+		getContentPane().setLayout(null);
 		setVisible(true);
 		// -----------------------------------------------
 		
@@ -151,4 +185,6 @@ public class TestTodoPnl extends JFrame {
 	public static void main(String[] args) {
 		new TestTodoPnl();
 	}
+	
+	
 }

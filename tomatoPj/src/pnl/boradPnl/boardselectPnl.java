@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.BoxLayout;
 
 public class boardselectPnl extends JPanel {
     /**
@@ -29,7 +30,9 @@ public class boardselectPnl extends JPanel {
         
         JPanel panel_1 = new JPanel();
         scrollPane.setViewportView(panel_1);
-        add(panel, BorderLayout.CENTER);
+        panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
+        
+        
     }
 
     @Override
