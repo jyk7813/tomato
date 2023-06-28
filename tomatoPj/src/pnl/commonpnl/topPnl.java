@@ -26,16 +26,6 @@ public class topPnl extends JPanel {
 			}
 		});
 		
-		JButton btnNewButton = new JButton("New button");
-		add(btnNewButton);
-		
-		btnNewButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mainFrame.showCard("task");
-			}
-		});
 		
 	}
 

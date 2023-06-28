@@ -96,9 +96,8 @@ public class Taskrefrom extends JPanel{
 
 
 
-	public Taskrefrom(Image image, MainFrame mainFrame) {
+	public Taskrefrom() {
 		this.task = task;
-		this.image = image;
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();

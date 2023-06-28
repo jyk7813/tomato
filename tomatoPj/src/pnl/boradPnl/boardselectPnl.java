@@ -2,17 +2,23 @@
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+
+import frame.MainFrame;
+
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 
 public class boardselectPnl extends JPanel {
     /**
      * Create the panel.
      */
-    public boardselectPnl() {
+    public boardselectPnl(MainFrame mainFrame) {
         setLayout(new BorderLayout());
         setOpaque(false);
         
@@ -27,8 +33,18 @@ public class boardselectPnl extends JPanel {
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(null);
+    	JButton btnNewButton = new JButton("New button");
+		add(btnNewButton);
+		
+		btnNewButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainFrame.showCard("task");
+			}
+		});
         
-        JPanel panel_1 = new JPanel();
+        ColumnPnl panel_1 = new ColumnPnl(mainFrame);
         scrollPane.setViewportView(panel_1);
         panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
         

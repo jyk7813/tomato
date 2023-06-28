@@ -32,7 +32,7 @@ public class BoradPnl extends JPanel{
 		add(projectMemberPnl, BorderLayout.WEST);
 		projectMemberPnl.setOpaque(false);
 		
-		boardselectPnl panel_2 = new boardselectPnl();
+		boardselectPnl panel_2 = new boardselectPnl(mainFrame);
 		panel_2.setOpaque(false);
 		add(panel_2, BorderLayout.CENTER);
 		
