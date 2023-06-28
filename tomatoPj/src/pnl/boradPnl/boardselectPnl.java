@@ -1,4 +1,4 @@
-package pnl.boradPnl;
+ package pnl.boradPnl;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -23,7 +23,12 @@ public class boardselectPnl extends JPanel {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         panel.add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(null);
         
+        JPanel panel_1 = new JPanel();
+        scrollPane.setViewportView(panel_1);
         add(panel, BorderLayout.CENTER);
     }
 

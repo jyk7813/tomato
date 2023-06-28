@@ -29,7 +29,7 @@ public class ProjectPnl extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mainFrame.showCard("columSelect");
+				mainFrame.showCard("columnSelect");
 			}
 		});
         add(btnNewButton, BorderLayout.CENTER);
