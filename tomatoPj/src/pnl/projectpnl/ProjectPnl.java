@@ -56,6 +56,7 @@ public class ProjectPnl extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				insertPjInfo(mainFrame, project_no, title);
+				mainFrame.showCard("columnSelect");
 			}
 		});
         add(btnNewButton, BorderLayout.CENTER);
