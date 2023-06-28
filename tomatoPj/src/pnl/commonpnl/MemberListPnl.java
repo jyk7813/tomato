@@ -28,6 +28,8 @@ public class MemberListPnl extends JPanel {
 	private Utility utility;
 	private JButton addMemberBtn;
 	private JPanel memberAddPnl;
+	private final static int MAX_MEMBER_SIZE = 4;
+	
 
 	/**
 	 * Create the panel.
@@ -74,6 +76,7 @@ public class MemberListPnl extends JPanel {
 	    
 	}
 	private void addPanel() {
+		
 	    MemberPnl memberPnl = new MemberPnl();
 	    memberPnl.setBounds(25, addMemberBtn.getY() - 10, 80, 80); 
 	    memberAddPnl.add(memberPnl);  

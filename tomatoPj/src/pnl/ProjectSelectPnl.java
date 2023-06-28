@@ -49,10 +49,12 @@ public class ProjectSelectPnl extends JPanel {
 	private MemberRepository memberRepo;
 	private HashSet<Member> memberList;
 	private Member_Tag_Package_Repository mtPackageRepo;
+	private MainFrame mainFrame;
 	private ColumnRepository colRepo;
 	private SelectProjectInfo pjInfo;
 
 	public ProjectSelectPnl(Image image, MainFrame mainFrame) {
+		this.mainFrame = mainFrame;
 		memberRepo = new MemberRepository();
 		mtPackageRepo = new Member_Tag_Package_Repository();
 		memberList = new HashSet<>();
@@ -256,7 +258,7 @@ public class ProjectSelectPnl extends JPanel {
 	}
 
 	private void addPanel() {
-		ProjectPnl projectPnl = new ProjectPnl();
+		ProjectPnl projectPnl = new ProjectPnl(mainFrame);
 		projectPnl.setBounds(0, jButton.getY(), 900, 216); // Set the position to current jButton position
 		centerPnl.add(projectPnl, new Integer(2)); // Add projectPnl to a lower layer
 		jButton.setLocation(jButton.getX(), jButton.getY() + projectPnl.getHeight() + 10); // Move jButton down
