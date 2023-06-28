@@ -16,6 +16,7 @@ public class Member_Tag_Package_Repository {
 		memberRepo = new MemberRepository();
 	}
 	
+	// 프로젝트 넘버를 날리면 해당 프로젝트에 참가하고있는 멤버리턴
 	public HashSet<Member> returnMemberByPj_no(int project_no) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
