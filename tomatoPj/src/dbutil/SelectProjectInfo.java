@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import tomatoPj.Column;
+import tomatoPj.Member;
 import tomatoPj.Task;
 
 public class SelectProjectInfo {
@@ -12,12 +13,28 @@ public class SelectProjectInfo {
 	private String title;
 	private List<Column> col;
 	private List<Task> task;
+	private List<Member> memberList;
+	
+	public SelectProjectInfo() {
+		this.project_no = 0;
+		this.title = null;
+		this.col = null;
+		this.task = null;
+		this.memberList = null;
+	}
+	
 	public SelectProjectInfo(int project_no, String title, List<Column> col, List<Task> task) {
 		super();
 		this.project_no = project_no;
 		this.title = title;
 		this.col = col;
 		this.task = task;
+	}
+	public List<Member> getMemberList() {
+		return memberList;
+	}
+	public void setMemberList(List<Member> memberList) {
+		this.memberList = memberList;
 	}
 	public int getProject_no() {
 		return project_no;
