@@ -79,6 +79,7 @@ public class SignUpPnl extends JPanel {
 		utility.setButtonProperties(checkPasswordField);
 		utility.setButtonProperties(nameField);
 		utility.setButtonProperties(emailField);
+		utility.setButtonProperties(backBtn);
 
 		btn.addMouseListener (new MouseAdapter() {
 
