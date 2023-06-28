@@ -2,6 +2,8 @@ package pnl;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -9,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import frame.MainFrame;
 import utility.FontData;
 import utility.IconData;
 import utility.Utility;
@@ -20,7 +23,24 @@ public class TestTodoPnl extends JFrame {
 	
 	JScrollPane scrollPane;
 	
-	public TestTodoPnl(){
+	public TestTodoPnl() {
+		addComponentListener(new ComponentListener() {
+			
+			@Override
+			public void componentShown(ComponentEvent e) {
+					
+			}
+			@Override
+			public void componentResized(ComponentEvent e) {
+			}
+			@Override
+			public void componentMoved(ComponentEvent e) {
+			}
+			@Override
+			public void componentHidden(ComponentEvent e) {
+			}
+		});
+		
 		// 상단 배경 패널 ------------------------------------
 		JPanel topBgPnl = new JPanel() {
 			public void paintComponent(Graphics g) {
@@ -125,6 +145,7 @@ public class TestTodoPnl extends JFrame {
 		setLayout(null);
 		setVisible(true);
 		// -----------------------------------------------
+		
 	}
 	
 	public static void main(String[] args) {
