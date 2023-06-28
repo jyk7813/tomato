@@ -1,12 +1,16 @@
 package utility;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class FontData {
-		public Font nanumFont(int size) {
+	private final static int FONTSIZE_BASIC = 18;  
+	private final static int FONTSIZE_TITLE = 23;  
+		
+	public Font nanumFont(int size) {
 			try {
 	            // 폰트 파일 로드
 	            InputStream is = getClass().getClassLoader().getResourceAsStream("NanumSquareNeo-bRg.ttf");
@@ -22,6 +26,7 @@ public class FontData {
 	            return null;
 	        }
 		}
+	
 		public Font nanumFontBold(int size) {
 			try {
 				// 폰트 파일 로드

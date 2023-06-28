@@ -99,10 +99,21 @@ public class Utility {
 	 * @param int x좌표값, int y좌표값, String 버튼에 설정할 아이콘 이미지 파일명
 	 * @return JButton
 	 */
-	public JButton getBtn(int x, int y, String iconName) {
+	public JButton getBtnRoll(int x, int y, String iconName) {
 		JButton btn = new JButton();
 		btn.setIcon(ICON.getImageIcon(iconName));
 		btn.setRolloverIcon(ICON.getRollImageIcon(iconName)); // 롤오버이미지 설정 (마우스 올렸을 때 이미지)
+		btn.setSize(ICON.getImageIcon(iconName).getIconWidth(), ICON.getImageIcon(iconName).getIconHeight());
+		btn.setBounds(x, y, btn.getWidth(), btn.getHeight());
+		btn.setLayout(null);
+		defaultSet(btn);
+
+		return btn;
+	}
+	// 롤오버 적용X
+	public JButton getBtn(int x, int y, String iconName) {
+		JButton btn = new JButton();
+		btn.setIcon(ICON.getImageIcon(iconName));
 		btn.setSize(ICON.getImageIcon(iconName).getIconWidth(), ICON.getImageIcon(iconName).getIconHeight());
 		btn.setBounds(x, y, btn.getWidth(), btn.getHeight());
 		btn.setLayout(null);
