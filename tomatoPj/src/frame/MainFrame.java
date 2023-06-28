@@ -2,8 +2,6 @@ package frame;
 
 import java.awt.CardLayout;
 import java.awt.EventQueue;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -15,15 +13,13 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 
 import dbutil.LoginMember;
 import pnl.BoradPnl;
 import pnl.LoginPnl;
+import pnl.ProjectSelectPnl;
 import pnl.SignUpPnl;
-import pnl.projectpnl.ProjectSelectPnl;
 import utility.IconData;
 
 public class MainFrame extends JFrame {

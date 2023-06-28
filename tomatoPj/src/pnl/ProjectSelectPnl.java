@@ -1,4 +1,4 @@
-package pnl.projectpnl;
+package pnl;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -15,8 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -27,8 +26,11 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import dbutil.LoginMember;
+import dbutil.SelectProjectInfo;
 import frame.MainFrame;
+import pnl.projectpnl.ProjectPnl;
+import pnl.projectpnl.ProjectSelectWestPnl;
+import tomatoPj.ColumnRepository;
 import tomatoPj.Member;
 import tomatoPj.MemberRepository;
 import tomatoPj.Member_Tag_Package_Repository;
@@ -38,126 +40,129 @@ import utility.Utility;
 
 public class ProjectSelectPnl extends JPanel {
 
-    private Image image;
-    private IconData iconData;
-    private Utility utility;
-    private JLayeredPane centerPnl;
-    private JButton jButton;
-    private JScrollPane scrollPane;
-    private MemberRepository memberRepo;
-    private List<Member> memberList;
-    private Member_Tag_Package_Repository mtPackageRepo;
-    
-    public ProjectSelectPnl(Image image, MainFrame mainFrame) {
-        memberRepo = new MemberRepository();
-        mtPackageRepo = new Member_Tag_Package_Repository();
-    	memberList = new ArrayList<>();
-        this.image = image;
-        iconData = new IconData();
-        utility = new Utility();
-        setLayout(new BorderLayout(0, 0));
+	private Image image;
+	private IconData iconData;
+	private Utility utility;
+	private JLayeredPane centerPnl;
+	private JButton jButton;
+	private JScrollPane scrollPane;
+	private MemberRepository memberRepo;
+	private HashSet<Member> memberList;
+	private Member_Tag_Package_Repository mtPackageRepo;
+	private ColumnRepository colRepo;
+	private SelectProjectInfo pjInfo;
 
-        centerPnl = new JLayeredPane();
-        centerPnl.setOpaque(false);
-        centerPnl.setLayout(null); // Necessary for JScrollPane to function correctly
+	public ProjectSelectPnl(Image image, MainFrame mainFrame) {
+		memberRepo = new MemberRepository();
+		mtPackageRepo = new Member_Tag_Package_Repository();
+		memberList = new HashSet<>();
+		colRepo = new ColumnRepository();
+		this.image = image;
+		iconData = new IconData();
+		utility = new Utility();
+		setLayout(new BorderLayout(0, 0));
 
-        ProjectSelectWestPnl westPnl = new ProjectSelectWestPnl() {
-            @Override
-            public Dimension getPreferredSize() {
-                setOpaque(false);
-                return new Dimension(510, 905);
-            }
-        };
-        JPanel eastPnl = new JPanel() {
+		centerPnl = new JLayeredPane();
+		centerPnl.setOpaque(false);
+		centerPnl.setLayout(null); // Necessary for JScrollPane to function correctly
 
-            @Override
-            public Dimension getPreferredSize() {
-                setOpaque(false);
-                return new Dimension(510, 905);
-            }
+		ProjectSelectWestPnl westPnl = new ProjectSelectWestPnl() {
+			@Override
+			public Dimension getPreferredSize() {
+				setOpaque(false);
+				return new Dimension(510, 905);
+			}
+		};
+		JPanel eastPnl = new JPanel() {
 
-        };
-        
-        JPanel northPanel = new JPanel() {
-            @Override
-            public Dimension getPreferredSize() {
-                setOpaque(false);
-                return new Dimension(1920, 135);
-            }
-        };
-        jButton = new JButton(iconData.getImageIcon("blankAdd"));
-        jButton.setBounds(0, 55, 900, 216);
+			@Override
+			public Dimension getPreferredSize() {
+				setOpaque(false);
+				return new Dimension(510, 905);
+			}
 
-        jButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addPanel();
-            }
-        });
+		};
 
-        centerPnl.add(jButton, new Integer(3));  // Add jButton to a higher layer
-        utility.setButtonProperties(jButton);
+		JPanel northPanel = new JPanel() {
+			@Override
+			public Dimension getPreferredSize() {
+				setOpaque(false);
+				return new Dimension(1920, 135);
+			}
+		};
+		jButton = new JButton(iconData.getImageIcon("blankAdd"));
+		jButton.setBounds(0, 55, 900, 216);
 
-        // Create JScrollPane and add the centerPnl to it
-        scrollPane = new JScrollPane(centerPnl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPaneSetLayout();
-        
-        scrollPaneSetUI();
-        
-        scrollPane.setComponentZOrder(scrollPane.getVerticalScrollBar(), 0);
+		jButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addPanel();
+			}
+		});
+
+		centerPnl.add(jButton, new Integer(3)); // Add jButton to a higher layer
+		utility.setButtonProperties(jButton);
+
+		// Create JScrollPane and add the centerPnl to it
+		scrollPane = new JScrollPane(centerPnl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPaneSetLayout();
+
+		scrollPaneSetUI();
+
+		scrollPane.setComponentZOrder(scrollPane.getVerticalScrollBar(), 0);
 		scrollPane.setComponentZOrder(scrollPane.getViewport(), 1);
 		scrollPane.getVerticalScrollBar().setOpaque(false);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);  // Add this line
-        scrollPane.setBorder(null);
+		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false); // Add this line
+		scrollPane.setBorder(null);
 
-        add(scrollPane, BorderLayout.CENTER);  // Add the JScrollPane to the main panel
-        add(northPanel, BorderLayout.NORTH);
-        add(westPnl, BorderLayout.WEST);
-        add(eastPnl, BorderLayout.EAST);
-        
-        addComponentListener(new ComponentListener() {
+		add(scrollPane, BorderLayout.CENTER); // Add the JScrollPane to the main panel
+		add(northPanel, BorderLayout.NORTH);
+		add(westPnl, BorderLayout.WEST);
+		add(eastPnl, BorderLayout.EAST);
+
+		addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent e) {
 				int a = mainFrame.loginMember.getMember_no();
-				Member m = null;
 				try {
 					mainFrame.loginMember.setPjList(memberRepo.returnMemberPj(a));
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
-				
-				for(Project project : mainFrame.loginMember.getPjList()) { // 2번돈다
+				for (Project project : mainFrame.loginMember.getPjList()) {
 					int key = project.getProject_no();
 					try {
-						for(int i=0;i<mtPackageRepo.containMemberCnt(key);i++) {
-							try {
-								m = mtPackageRepo.returnMemberByPj_no(key);
-							} catch (SQLException e1) {
-								e1.printStackTrace();
-							}
-							if(!memberList.contains(m)) {
-								memberList.add(m);
-							}
+
+						for (Member mem : mtPackageRepo.returnMemberByPj_no(key)) {
+							memberList.add(mem);
 						}
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}
 				}
-				System.out.println("여기용" + memberList);
+				//////////// 테스트지역 ///////////
+				pjInfo = new SelectProjectInfo(a, TOOL_TIP_TEXT_KEY, null, null);
 				
 			}
-			@Override
-			public void componentResized(ComponentEvent e) {}
-			@Override
-			public void componentMoved(ComponentEvent e) {}
-			@Override
-			public void componentHidden(ComponentEvent e) {}
-		});
-    }
 
-    private void scrollPaneSetLayout() {
-    	scrollPane.setLayout(new ScrollPaneLayout() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+			}
+		});
+	}
+
+	private void scrollPaneSetLayout() {
+		scrollPane.setLayout(new ScrollPaneLayout() {
 			@Override
 			public void layoutContainer(Container parent) {
 				JScrollPane scrollPane = (JScrollPane) parent;
