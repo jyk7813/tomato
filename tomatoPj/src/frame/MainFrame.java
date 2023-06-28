@@ -74,7 +74,7 @@ public class MainFrame extends JFrame {
 			}
 		});
         
-		Image loginImage = iconData.loginBackGround().getImage();
+		Image loginImage = iconData.getImageIcon("login(BG)remake2").getImage();
 		Image signImage = iconData.getImageIcon("signup(BG)remake").getImage();
 		Image projectImage = iconData.getImageIcon("projectSelect(BG)remake").getImage();
 		Image boradImage = iconData.getImageIcon("selectColumn(BG)").getImage();
