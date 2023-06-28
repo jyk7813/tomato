@@ -82,5 +82,11 @@ public class Task {
 	public void setList(List<Member> list) {
 		this.list = list;
 	}
+	@Override
+	public String toString() {
+		return "Task [task_no=" + task_no + ", title=" + title + ", content=" + content + ", importance=" + importance
+				+ ", updateDate=" + updateDate + ", deadLine=" + deadLine + ", active=" + active + ", list=" + list
+				+ "]";
+	}
 	
 }
