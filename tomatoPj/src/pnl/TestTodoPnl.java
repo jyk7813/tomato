@@ -86,25 +86,24 @@ public class TestTodoPnl extends JFrame {
 
 		// 달력 패널 -----------------------------------------
 		JPanel calPnl = new JPanel();
-		calPnl.setBounds(164, 175, 857, 870);
+		calPnl.setBounds(164, 300, 857, 870);
 		calPnl.setLayout(null);
 		calPnl.setOpaque(false);
 
 		// 달력 출력 패널 --------------------------------------
-		JPanel printCal = new Jpanel();
-		printCal.setBounds(0, 0, 857, 870);
-		printCal.setLayout(null);
-		printCal.setOpaque(false);
-		printCal.add(printCal);
+//		printCal.setBounds(0, 0, 857, 870);
+//		printCal.setLayout(null);
+//		printCal.setOpaque(false);
+//		printCal.add(printCal);
 
-		JLabel printCurrentMonth = new JLabel();
-		String currentMonth = CD.getCurrentSelDate("monthofvalue") + " 월";
-		printCurrentMonth.setText(currentMonth);
-		printCurrentMonth.setFont(FT.nanumFontBold(25));
-		printCurrentMonth.setForeground(Color.DARK_GRAY);
-		printCurrentMonth.setBounds(120, 30, 50, 34);
+//		JLABEL PRINTCURRENTMONTH = NEW JLABEL();
+//		STRING CURRENTMONTH = CD.GETCURRENTSELDATE("MONTHOFVALUE") + " 월";
+//		PRINTCURRENTMONTH.SETTEXT(CURRENTMONTH);
+//		PRINTCURRENTMONTH.SETFONT(FT.NANUMFONTBOLD(25));
+//		PRINTCURRENTMONTH.SETFOREGROUND(COLOR.DARK_GRAY);
+//		PRINTCURRENTMONTH.SETBOUNDS(120, 30, 50, 34);
 
-		calPnl.add(printCurrentMonth);
+//		calPnl.add(printCurrentMonth);
 		calPnl.add(printCal);
 
 //		// 월선택 좌우버튼
