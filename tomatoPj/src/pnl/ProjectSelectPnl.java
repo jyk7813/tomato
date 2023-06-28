@@ -142,6 +142,7 @@ public class ProjectSelectPnl extends JPanel {
 						e1.printStackTrace();
 					}
 				}
+				System.out.println("제대로된 멤버? " + memberList);
 				//////////// 테스트지역 ///////////
 				pjInfo = new SelectProjectInfo(a, TOOL_TIP_TEXT_KEY, null, null);
 				
