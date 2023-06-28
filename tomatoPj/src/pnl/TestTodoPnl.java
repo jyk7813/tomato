@@ -29,8 +29,7 @@ public class TestTodoPnl extends JPanel {
 	private Image image; 
 	private boolean toggleSwitch = true;
 	
-	public TestTodoPnl(Image image, MainFrame mainFrame) {
-		this.image = image;
+	public TestTodoPnl() {
 		addComponentListener(new ComponentListener() {
 			
 			@Override
@@ -184,11 +183,6 @@ public class TestTodoPnl extends JPanel {
 		
 	}
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.drawImage(image, 0, 0, this);
-	}
 	
 //	public static void main(String[] args) {
 //		new TestTodoPnl();
