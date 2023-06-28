@@ -38,7 +38,6 @@ public class TestTodoPnl extends JFrame{
 		}
 	};
 	
-	JP
 	
 	// 선택 패널
 	static JPanel selectPnl = new JPanel() {
