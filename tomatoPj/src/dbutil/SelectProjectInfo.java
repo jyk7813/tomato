@@ -1,5 +1,6 @@
 package dbutil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +30,7 @@ public class SelectProjectInfo {
 		this.title = title;
 		this.col = col;
 		this.task = task;
+		this.memberList = new ArrayList<>();
 	}
 	public List<Member> getMemberList() {
 		return memberList;

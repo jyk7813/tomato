@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import dbutil.SelectProjectInfo;
 import frame.MainFrame;
 import tomatoPj.ColumnRepository;
 import tomatoPj.Member;
@@ -27,6 +28,7 @@ public class ProjectPnl extends JPanel {
     
     // 프로젝트선택시 해당정보 보관
     public void insertPjInfo(MainFrame mainFrame, int project_no, String title) {
+    	mainFrame.pjInfo = new SelectProjectInfo(project_no, title, null, null);
     	mainFrame.showCard("columSelect");
 		mainFrame.pjInfo.setProject_no(project_no);
 		mainFrame.pjInfo.setTitle(title);
@@ -60,11 +62,6 @@ public class ProjectPnl extends JPanel {
 			}
 		});
         add(btnNewButton, BorderLayout.CENTER);
-        
-        
-        
-        
-
     }
 
     @Override
