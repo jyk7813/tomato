@@ -217,7 +217,7 @@ public class CalendarSwing extends JFrame implements ItemListener, ActionListene
 	// 상단 패널생성
 	JPanel selectPane = new JPanel(); 
 	JButton prevBtn = utilManager.getBtn(50, 28, "before_btn"); // 이전버튼
-	JButton nextBtn = utilManager.getBtn(300, 28, "next_btn"); // 다음버튼
+	JButton nextBtn = utilManager.getBtn(295, 28, "next_btn"); // 다음버튼
 	JComboBox<Integer> yearCombo = new JComboBox<Integer>(); // 년도 콤보박스추가
 	JComboBox<Integer> monthCombo = new JComboBox<Integer>(); // 월 콤보박스 추가
 	JLabel yearLBl = new JLabel("년"); // "년"을 표시할 라벨 추가
@@ -240,10 +240,10 @@ public class CalendarSwing extends JFrame implements ItemListener, ActionListene
 		month = date.get(Calendar.MONTH) + 1; // 월을 받아와서 month에 대입한다. +1을 하는 이유는 0~11이라
 	
 		// 상단
-		yearCombo.setBounds(100, 28, 80, 34); 
-		yearLBl.setBounds(190, 28, 50, 34); 
-		monthCombo.setBounds(220, 28, 50, 34); 
-		monthLBl.setBounds(280, 28, 50, 34); 
+		yearCombo.setBounds(95, 28, 80, 34); 
+		yearLBl.setBounds(185, 28, 50, 34); 
+		monthCombo.setBounds(215, 28, 50, 34); 
+		monthLBl.setBounds(275, 28, 50, 34); 
 		
 		selectPane.add(prevBtn);
 		prevBtn.setFont(fnt);
