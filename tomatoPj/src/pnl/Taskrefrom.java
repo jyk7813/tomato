@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
@@ -42,6 +44,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import com.mysql.cj.jdbc.result.UpdatableResultSet;
 
 import dbutil.DBUtil;
+import frame.MainFrame;
 import tomatoPj.Task;
 import utility.FontData;
 import utility.IconData;
@@ -88,11 +91,14 @@ public class Taskrefrom extends JPanel{
 	
 	//Task 에 줘야하는거
 	Timestamp updateDate;
+	
+	Image image;
 
 
 
-	public Taskrefrom(Task task) {
+	public Taskrefrom(Image image, MainFrame mainFrame) {
 		this.task = task;
+		this.image = image;
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
@@ -105,10 +111,10 @@ public class Taskrefrom extends JPanel{
 		StarSet();
 		// 날짜 세팅
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-		String year = dateFormat.format(task.getUpdateDate());
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+//		String year = dateFormat.format(task.getUpdateDate());
 		
-		SetUpdateLbl(year);
+		SetUpdateLbl("2023.06.22");
 		UpdateMentLbl();
 		
 		//끝나는 날짜
@@ -146,8 +152,9 @@ public class Taskrefrom extends JPanel{
 
 
 		setVisible(true);
-		setSize(631,725);
-		setLocation(645,290);
+		setBounds(646,295, 631,725);
+//		setSize(631,725);
+//		setLocation(646,295);
 		setOpaque(false);
 		
 	}
@@ -225,13 +232,14 @@ public class Taskrefrom extends JPanel{
 	 * @return JLabel
 	 */
 	public void SetUpdateLbl(String date) {
-		if(task!=null) {
+//		if(task!=null) {
 			StartDate = new JTextField(date);
-		}else {
-			
-		}
+//		}else {
+//			
+//		}
 
 		//Update date 라벨
+		
 		StartDate.setBorder(null); // 테두리 제거
 		StartDate.setSize(98,16);
 		StartDate.setLocation(65,68);
@@ -241,33 +249,33 @@ public class Taskrefrom extends JPanel{
 		
 		String dateString = StartDate.getText();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-		addComponentListener(new ComponentListener() {
-
-			@Override
-			public void componentShown(ComponentEvent e) {
-
-			}
-
-			@Override
-			public void componentResized(ComponentEvent e) {
-			}
-
-			@Override
-			public void componentMoved(ComponentEvent e) {
-			}
-
-			@Override
-			public void componentHidden(ComponentEvent e) {
-				try {
-					java.util.Date utilDate = dateFormat.parse(dateString);
-					java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-					updateDate = new Timestamp(sqlDate.getTime());
-					System.out.println(updateDate);
-				} catch (ParseException e2) {
-					e2.printStackTrace();
-				}
-			}
-		});
+//		addComponentListener(new ComponentListener() {
+//
+//			@Override
+//			public void componentShown(ComponentEvent e) {
+//
+//			}
+//
+//			@Override
+//			public void componentResized(ComponentEvent e) {
+//			}
+//
+//			@Override
+//			public void componentMoved(ComponentEvent e) {
+//			}
+//
+//			@Override
+//			public void componentHidden(ComponentEvent e) {
+//				try {
+//					java.util.Date utilDate = dateFormat.parse(dateString);
+//					java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+//					updateDate = new Timestamp(sqlDate.getTime());
+//					System.out.println(updateDate);
+//				} catch (ParseException e2) {
+//					e2.printStackTrace();
+//				}
+//			}
+//		});
 	
 	}
 	/**
@@ -686,38 +694,43 @@ public class Taskrefrom extends JPanel{
 
 
 
-	public static class MyFrame extends JFrame {
-		IconData IC;
-	    public MyFrame() {
-	    	IC = new IconData();
-	    	Task testTask = null;
-	    	Taskrefrom task;
-			try {
-				testTask = taskListBypjNo();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			task = new Taskrefrom(testTask);
-	    	
-	    	
-	        JLabel Background =new JLabel(IC.getImageIcon("selectTask(BG)"));
-	        Background.setSize(1920, 1080);
-	        Background.add(task);
-	        add(Background);
-	    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        setTitle("My Frame");
-	        setSize(1920, 1080);
-//	        setBackground(new Color(255,0,0));
-	        setUndecorated(true);
-	        setLocationRelativeTo(null); //중앙정렬
-	        setVisible(true);
-	    }
-	}
-	public static void main(String[] args) {
-		new MyFrame();
-//		frame.add(task);
-		
-	}
+//	public static class MyFrame extends JFrame {
+//		IconData IC;
+//	    public MyFrame() {
+//	    	IC = new IconData();
+//	    	Task testTask = null;
+//	    	Taskrefrom task;
+//			try {
+//				testTask = taskListBypjNo();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			task = new Taskrefrom(testTask);
+//	    	
+//	    	
+//	        JLabel Background =new JLabel(IC.getImageIcon("selectTask(BG)"));
+//	        Background.setSize(1920, 1080);
+//	        Background.add(task);
+//	        add(Background);
+//	    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//	        setTitle("My Frame");
+//	        setSize(1920, 1080);
+////	        setBackground(new Color(255,0,0));
+//	        setUndecorated(true);
+//	        setLocationRelativeTo(null); //중앙정렬
+//	        setVisible(true);
+//	    }
+//	}
+//	public static void main(String[] args) {
+//		new MyFrame();
+////		frame.add(task);
+//		
+//	}
 	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(image, 0, 0, this);
+	}
 }
 

@@ -21,6 +21,7 @@ import pnl.BoradPnl;
 import pnl.LoginPnl;
 import pnl.ProjectSelectPnl;
 import pnl.SignUpPnl;
+import pnl.Taskrefrom;
 import utility.IconData;
 
 public class MainFrame extends JFrame {
@@ -78,11 +79,13 @@ public class MainFrame extends JFrame {
 		Image signImage = iconData.getImageIcon("signup(BG)remake").getImage();
 		Image projectImage = iconData.getImageIcon("projectSelect(BG)remake").getImage();
 		Image boradImage = iconData.getImageIcon("selectColumn(BG)").getImage();
+		Image taskImage = iconData.getImageIcon("selectTask(BG)").getImage();
 		
 		JPanel loginPnl = new LoginPnl(loginImage,this);
 		JPanel signUpPnl = new SignUpPnl(signImage,this);
 		JPanel projectPnl = new ProjectSelectPnl(projectImage, this);
 		JPanel boradPnl = new BoradPnl(boradImage, this);
+		JPanel taskPnl = new Taskrefrom(taskImage, this);
 
 
 		// frame의 타이틀 바를 숨깁니다.
@@ -93,6 +96,7 @@ public class MainFrame extends JFrame {
 		getContentPane().add(signUpPnl,"signUp");
 		getContentPane().add(projectPnl,"projectSelect");
 		getContentPane().add(boradPnl,"columnSelect");
+		getContentPane().add(taskPnl,"task");
 		
 		
 	}
