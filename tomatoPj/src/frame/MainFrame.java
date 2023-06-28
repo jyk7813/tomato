@@ -22,9 +22,7 @@ import pnl.LoginPnl;
 import pnl.ProjectSelectPnl;
 import pnl.SignUpPnl;
 import pnl.TaskBackgroundPnl;
-import pnl.Taskrefrom;
 import pnl.TestTodoPnl;
-import pnl.TodoBackground;
 import utility.IconData;
 
 public class MainFrame extends JFrame {
@@ -83,14 +81,14 @@ public class MainFrame extends JFrame {
 		Image projectImage = iconData.getImageIcon("projectSelect(BG)remake").getImage();
 		Image boradImage = iconData.getImageIcon("selectColumn(BG)").getImage();
 		Image taskImage = iconData.getImageIcon("selectTask(BG)").getImage();
-		Image todoImage = iconData.getImageIcon("Background").getImage();
+//		Image todoImage = iconData.getImageIcon("Background").getImage();
 		
 		JPanel loginPnl = new LoginPnl(loginImage,this);
 		JPanel signUpPnl = new SignUpPnl(signImage,this);
 		JPanel projectPnl = new ProjectSelectPnl(projectImage, this);
 		JPanel boradPnl = new BoradPnl(boradImage, this);
 		JPanel taskPnl = new TaskBackgroundPnl(taskImage, this);
-		JPanel todoPnl = new TodoBackground(todoImage, this);
+		JPanel todoPnl = new TestTodoPnl(this);
 
 
 		// frame의 타이틀 바를 숨깁니다.
