@@ -15,6 +15,17 @@ public class topPnl extends JPanel {
 	public topPnl(MainFrame mainFrame) {
 		setOpaque(false);
 		
+		JButton todo = new JButton("todo");
+		add(todo);
+		
+		todo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainFrame.showCard("todo");
+			}
+		});
+		
 		JButton btnNewButton = new JButton("New button");
 		add(btnNewButton);
 		

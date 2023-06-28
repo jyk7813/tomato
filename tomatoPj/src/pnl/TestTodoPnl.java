@@ -20,15 +20,17 @@ import utility.FontData;
 import utility.IconData;
 import utility.Utility;
 
-public class TestTodoPnl extends JFrame {
+public class TestTodoPnl extends JPanel {
 	private final static IconData IC = new IconData();
 	private final static FontData FT = new FontData();
 	private final static Utility UT = new Utility();
 	private final static CalendarData CD = new CalendarData();
 	
+	private Image image; 
 	private boolean toggleSwitch = true;
 	
-	public TestTodoPnl() {
+	public TestTodoPnl(Image image, MainFrame mainFrame) {
+		this.image = image;
 		addComponentListener(new ComponentListener() {
 			
 			@Override
@@ -171,20 +173,26 @@ public class TestTodoPnl extends JFrame {
 		// -----------------------------------------------
 		bgPnl.setBounds(0, 0, 1920, 1080);
 		bgPnl.setLayout(null);
-		getContentPane().add(bgPnl);
+//		getContentPane().add(bgPnl);
 		// -----------------------------------------------
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setUndecorated(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getContentPane().setLayout(null);
-		setVisible(true);
+//		setExtendedState(JFrame.MAXIMIZED_BOTH);
+//		setUndecorated(true);
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		getContentPane().setLayout(null);
+//		setVisible(true);
 		// -----------------------------------------------
 		
 	}
-	
-	public static void main(String[] args) {
-		new TestTodoPnl();
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(image, 0, 0, this);
 	}
+	
+//	public static void main(String[] args) {
+//		new TestTodoPnl();
+//	}
 	
 	
 }
