@@ -16,7 +16,23 @@ public class ProjectRepository {
 		colRepo = new ColumnRepository();
 	}
 
-	
+	public int generateProject(String title, int member_no) throws SQLException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DBUtil.getConnection();
+			String query = "INSERT INTO tomato_copy.project (title, member_no)\r\n" + 
+					"VALUES (?,?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, title);
+			stmt.setInt(2, member_no);
+			return stmt.executeUpdate();
+
+		} finally {
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+	}
 	
 	public List<Column> returnProjectColumn(int project_no) throws SQLException {
 		Connection conn = null;

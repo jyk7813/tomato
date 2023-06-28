@@ -21,12 +21,12 @@ public class ProjectPnl extends JPanel {
     private Image image;
     private JTextField textField;
 
-    public ProjectPnl(MainFrame mainFrame) {
+    public ProjectPnl(MainFrame mainFrame, int project_no, String title) {
         this.image = iconData.getImageIcon("projectIcon").getImage(); // Set imagePath to your image path
         setOpaque(false);
         setLayout(new BorderLayout(0, 0));
         
-        JButton btnNewButton = new JButton("New button");
+        JButton btnNewButton = new JButton(title);
         btnNewButton.addActionListener(new ActionListener() {
 			
 			@Override
