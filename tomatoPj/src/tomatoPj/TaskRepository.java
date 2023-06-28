@@ -40,6 +40,7 @@ public class TaskRepository {
 				int importance = rs.getInt("importance");
 				Timestamp updateDate = rs.getTimestamp("updateDate");
 				Timestamp deadLine = rs.getTimestamp("deadLine");
+			
 				int active = rs.getInt("active");
 				list.add(new Task(task_no, title, content, importance, updateDate, deadLine, active));
 			}
@@ -50,5 +51,75 @@ public class TaskRepository {
 			DBUtil.close(conn);
 		}
 		return list;
+	}
+	
+	// 새로운 태스크 생성
+	public int insertTask(String title, String content, int importance, Timestamp updateDate, Timestamp deadLine) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DBUtil.getConnection();
+			stmt = conn.prepareStatement("INSERT INTO tomato_copy.task (title, content, importance, updateDate, deadLine)\n" + 
+					"VALUES (?,?,?,?,?)");
+			stmt.setString(1, title);
+			stmt.setString(2, content);
+			stmt.setInt(3, importance);
+			stmt.setTimestamp(4, updateDate);
+			stmt.setTimestamp(5, deadLine);
+			return stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+			
+		}
+		return 0;
+	}
+	
+	// 태스크 수정
+	public int updateTask(int task_no, String title, String content, int importance, Timestamp updateDate, Timestamp deadLine) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DBUtil.getConnection();
+			stmt = conn.prepareStatement("UPDATE task\n" + 
+					"SET title = ?, content = ?, importance = ?, updateDate = ?, deadLine = ?\n" + 
+					"WHERE task_no = ?;");
+			stmt.setString(1, title);
+			stmt.setString(2, content);
+			stmt.setInt(3, importance);
+			stmt.setTimestamp(4, updateDate);
+			stmt.setTimestamp(5, deadLine);
+			stmt.setInt(6, task_no);
+			return stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+			
+		}
+		return 0;
+	}
+	
+	// 특정한 태스크 삭제
+	public int deleteTask(int task_no) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DBUtil.getConnection();
+			stmt = conn.prepareStatement("DELETE FROM tomato_copy.task\n" + 
+					"WHERE task_no = ?");
+			stmt.setInt(1, task_no);
+			return stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+			
+		}
+		return 0;
 	}
 }

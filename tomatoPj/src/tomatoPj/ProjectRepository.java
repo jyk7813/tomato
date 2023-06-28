@@ -11,18 +11,18 @@ import dbutil.DBUtil;
 
 public class ProjectRepository {
 	private ColumnRepository colRepo;
-	
+
 	public ProjectRepository() {
 		colRepo = new ColumnRepository();
 	}
 
+	// 프로젝트생성
 	public int generateProject(String title, int member_no) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
 			conn = DBUtil.getConnection();
-			String query = "INSERT INTO tomato_copy.project (title, member_no)\r\n" + 
-					"VALUES (?,?)";
+			String query = "INSERT INTO tomato_copy.project (title, member_no)\r\n" + "VALUES (?,?)";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, title);
 			stmt.setInt(2, member_no);
@@ -33,7 +33,23 @@ public class ProjectRepository {
 			DBUtil.close(conn);
 		}
 	}
-	
+
+	// 프로젝트제거
+	public int deleteProject(int project_no) throws SQLException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DBUtil.getConnection();
+			String query = "DELETE FROM tomato_copy.project\r\n" + "WHERE project_no = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, project_no);
+			return stmt.executeUpdate();
+		} finally {
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+	}
+
 	public List<Column> returnProjectColumn(int project_no) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -53,7 +69,7 @@ public class ProjectRepository {
 				int column_no = rs.getInt("column_no");
 				packlist.add(new Project_Column_Package(package_no, project_noParse, column_no));
 			}
-			for(Project_Column_Package a : packlist) {
+			for (Project_Column_Package a : packlist) {
 				int key = a.getColumn_no();
 				list.add(colRepo.selectByColNo(conn, key));
 			}
@@ -64,6 +80,5 @@ public class ProjectRepository {
 		}
 		return list;
 	}
-	
 
 }
