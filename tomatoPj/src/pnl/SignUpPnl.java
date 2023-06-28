@@ -168,13 +168,13 @@ public class SignUpPnl extends JPanel {
 		nameField.addKeyListener(enterKey());
 		emailField.addKeyListener(enterKey());
 
-		idField.setBounds(842, 333, 233, 41);
-		passwordField.setBounds(842, 415, 233, 41);
-		checkPasswordField.setBounds(842, 498, 233, 41);
-		emailField.setBounds(842, 582, 233, 41);
-		nameField.setBounds(842, 643, 233, 41);
-		btn.setBounds(897, 776, 126, 41);
-		backBtn.setBounds(860, 218, 200, 45);
+		idField.setBounds(870, 363, 233, 41);
+		passwordField.setBounds(870, 474, 233, 41);
+		checkPasswordField.setBounds(870, 547, 233, 41);
+		emailField.setBounds(870, 652, 233, 41);
+		nameField.setBounds(870, 713, 233, 41);
+		btn.setBounds(898, 826, 126, 41);
+		backBtn.setBounds(761, 193, 399, 90);
 
 		idField.setFont(fontData.nanumFont(16));
 		passwordField.setFont(fontData.nanumFont(16));
