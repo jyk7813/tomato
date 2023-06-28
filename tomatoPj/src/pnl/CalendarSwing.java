@@ -246,7 +246,6 @@ public class CalendarSwing extends JFrame implements ItemListener, ActionListene
 		monthLBl.setBounds(275, 28, 50, 34); 
 		
 		selectPane.add(prevBtn);
-		prevBtn.setFont(fnt);
 		selectPane.add(yearCombo);
 		yearCombo.setFont(fnt);
 		selectPane.add(yearLBl);
@@ -256,14 +255,12 @@ public class CalendarSwing extends JFrame implements ItemListener, ActionListene
 		selectPane.add(monthLBl);
 		monthLBl.setFont(fnt);
 		selectPane.add(nextBtn);
-		nextBtn.setFont(fnt); // 패널에 대입한후 작성한 font를 주입한다.
 		
 		selectPane.setBounds(50, 50,850,870);
 		selectPane.setLayout(null);
 		selectPane.setOpaque(false);
 		add(selectPane); 
 												
-
 		// 현재 년, 월 세팅
 		setYear();
 		setMonth();
