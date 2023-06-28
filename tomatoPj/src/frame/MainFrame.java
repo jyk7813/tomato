@@ -89,7 +89,7 @@ public class MainFrame extends JFrame {
 		getContentPane().add(loginPnl,"login");
 		getContentPane().add(signUpPnl,"signUp");
 		getContentPane().add(projectPnl,"projectSelect");
-		getContentPane().add(boradPnl,"columSelect");
+		getContentPane().add(boradPnl,"columnSelect");
 		
 		
 	}

@@ -99,6 +99,7 @@ public class ProjectSelectPnl extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//addPanel();
+				mainFrame.showCard("columnSelect");
 			}
 		});
 
@@ -260,6 +261,7 @@ public class ProjectSelectPnl extends JPanel {
 	}
 
 	private void addPanel(int project_no, String title) {
+		
 		ProjectPnl projectPnl = new ProjectPnl(mainFrame, project_no, title);
 		projectPnl.setBounds(0, jButton.getY(), 900, 216); // Set the position to current jButton position
 		centerPnl.add(projectPnl, new Integer(2)); // Add projectPnl to a lower layer
