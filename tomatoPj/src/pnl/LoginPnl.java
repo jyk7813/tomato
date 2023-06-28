@@ -48,6 +48,8 @@ public class LoginPnl extends JPanel {
 	private ImageIcon loginIcon;
 	private ImageIcon loginDarkIcon;
 	private ImageIcon loginbrightIcon;
+	private ImageIcon signUpIcon;
+	private ImageIcon signUpDarkIcon;
 
 	private void setLoginMember(MainFrame mainFrame, Member member) {
 		LocalDateTime now = LocalDateTime.now();
@@ -85,7 +87,11 @@ public class LoginPnl extends JPanel {
 		Image loginImg = iconData.getImageIcon("login_btn").getImage(); // 로그인 버튼 이미지 경로
 		Image loginDarkImg = iconData.getImageIcon("login_btn(clicked)2").getImage(); // 어두운 버전의 로그인 버튼 이미지 경로
 		Image loginBrightImg = iconData.getImageIcon("login_btn(enter)").getImage(); // 어두운 버전의 로그인 버튼 이미지 경로
-
+		
+		Image signUpImg = iconData.getImageIcon("signUp_btn").getImage();
+		Image signUpDarkImg = iconData.getImageIcon("signUp_btn2").getImage();
+		
+		
 		idField = new JTextField("testid");
 		passwordField = new JPasswordField("test1234");
 
@@ -98,9 +104,13 @@ public class LoginPnl extends JPanel {
 		loginIcon = new ImageIcon(loginImg);
 		loginDarkIcon = new ImageIcon(loginDarkImg);
 		loginbrightIcon = new ImageIcon(loginBrightImg);
+		signUpIcon = new ImageIcon(signUpImg);
+		signUpDarkIcon = new ImageIcon(signUpDarkImg);
+		
 		
 
 		loginButton = new JButton(loginIcon);
+		signUpBtn = new JButton(signUpIcon);
 
 		idField.addKeyListener(enterKey());
 		passwordField.addKeyListener(enterKey());
@@ -165,6 +175,25 @@ public class LoginPnl extends JPanel {
 				loginButton.repaint();
 			}
 		});
+		
+		signUpBtn.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				signUpBtn.setIcon(signUpDarkIcon);
+				signUpBtn.repaint();
+			}
+			public void mouseEntered(MouseEvent me) {
+				System.out.println("마우스 들어감");
+				signUpBtn.setIcon(signUpDarkIcon);
+				signUpBtn.repaint();
+			}
+			public void mouseExited(MouseEvent me) {
+				signUpBtn.setIcon(signUpIcon);
+				signUpBtn.repaint();
+			}
+		});
+
 	}
 
 	private void signUpActionListener(MainFrame mainFrame) {
