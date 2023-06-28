@@ -32,11 +32,11 @@ public class TestTodoPnl extends JFrame {
 			}
 		};
 		
-		// 달력 배경 패널 ------------------------------------
+		// 메인 영역 배경 패널 ------------------------------------
 		JPanel calBgPnl = new JPanel() {
 			public void paintComponent(Graphics g) {
 				g.drawImage(IC.getImageIcon("calendarWeek").getImage(), 0, 0, null);
-				setOpaque(false); // 이미지 불투명도 설정 : false = 불투명(이미지 표시) / true = 투명
+				setOpaque(false); 
 				super.paintComponent(g);
 			}
 		};
@@ -45,7 +45,7 @@ public class TestTodoPnl extends JFrame {
 		JPanel bgPnl = new JPanel() {
 			public void paintComponent(Graphics g) {
 				g.drawImage(IC.getImageIcon("Background").getImage(), 0, 0, null);
-				setOpaque(false); // 이미지 불투명도 설정 : false = 불투명(이미지 표시) / true = 투명
+				setOpaque(false); 
 				super.paintComponent(g);
 			}
 		};
@@ -79,6 +79,17 @@ public class TestTodoPnl extends JFrame {
 		calPnl.setBounds(164, 160, 1718, 870);
 		calPnl.setLayout(null);
 		calPnl.setOpaque(false);
+		
+		
+		
+		// 투두 리스트 패널 ------------------------------------
+		JPanel todoListPnl = new JPanel();
+		todoListPnl.setBounds(164, 160, 1718, 870);
+		todoListPnl.setLayout(null);
+		todoListPnl.setOpaque(false);
+		
+//		JLabel currentDate = new JLabel("");
+		
 		
 		calBgPnl.setBounds(164, 160, 1718, 870);
 		calBgPnl.setLayout(null);
