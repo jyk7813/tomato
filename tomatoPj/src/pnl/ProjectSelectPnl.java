@@ -15,7 +15,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -35,6 +37,8 @@ import tomatoPj.Member;
 import tomatoPj.MemberRepository;
 import tomatoPj.Member_Tag_Package_Repository;
 import tomatoPj.Project;
+import tomatoPj.Task;
+import tomatoPj.TaskRepository;
 import utility.IconData;
 import utility.Utility;
 
@@ -52,9 +56,13 @@ public class ProjectSelectPnl extends JPanel {
 	private MainFrame mainFrame;
 	private ColumnRepository colRepo;
 	private SelectProjectInfo pjInfo;
-
+	private TaskRepository taskRepo;
+	
+	
+	
 	public ProjectSelectPnl(Image image, MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
+		taskRepo = new TaskRepository();
 		memberRepo = new MemberRepository();
 		mtPackageRepo = new Member_Tag_Package_Repository();
 		memberList = new HashSet<>();
@@ -62,6 +70,7 @@ public class ProjectSelectPnl extends JPanel {
 		this.image = image;
 		iconData = new IconData();
 		utility = new Utility();
+		pjInfo = new SelectProjectInfo();
 		setLayout(new BorderLayout(0, 0));
 
 		centerPnl = new JLayeredPane();
@@ -100,6 +109,7 @@ public class ProjectSelectPnl extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				//addPanel();
 				mainFrame.showCard("columnSelect");
+				
 			}
 		});
 
@@ -128,28 +138,8 @@ public class ProjectSelectPnl extends JPanel {
 		addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-				int a = mainFrame.loginMember.getMember_no();
-				try {
-					mainFrame.loginMember.setPjList(memberRepo.returnMemberPj(a));
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-				for (Project project : mainFrame.loginMember.getPjList()) {
-					int key = project.getProject_no();
-					try {
-
-						for (Member mem : mtPackageRepo.returnMemberByPj_no(key)) {
-							memberList.add(mem);
-						}
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					}
-				}
-				System.out.println("제대로된 멤버? " + memberList);
-				//////////// 가지고있는 프로젝트 리스트 패널 생성  ///////////
-				for (Project project : mainFrame.loginMember.getPjList()) {
-					addPanel(project.getProject_no(), project.getTitle());
-				}
+				loginMemberSetting();
+				
 			}
 
 			@Override
@@ -166,6 +156,43 @@ public class ProjectSelectPnl extends JPanel {
 		});
 	}
 
+	private void selectProjectInfoSetting() {
+		
+	}
+	
+	// 프로젝트 선택화면에 띄우기 위함
+	private void loginMemberSetting() {
+		List<Task> list = new ArrayList<>();
+		int a = mainFrame.loginMember.getMember_no();
+		try {
+			mainFrame.loginMember.setPjList(memberRepo.returnMemberPj(a));
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		for (Project project : mainFrame.loginMember.getPjList()) {
+			int key = project.getProject_no();
+			try {
+				list.addAll(taskRepo.taskListBypjNo(key));
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+			try {
+				for (Member mem : mtPackageRepo.returnMemberByPj_no(key)) {
+					memberList.add(mem);
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		mainFrame.loginMember.setTakeTaskList(list);
+		System.out.println("제대로된 멤버? " + memberList);
+		//////////// 가지고있는 프로젝트 리스트 패널 생성  ///////////
+		for (Project project : mainFrame.loginMember.getPjList()) {
+			addPanel(project.getProject_no(), project.getTitle());
+		}
+		System.out.println("참여한모든프로젝트 태스크리스트사이즈" + mainFrame.loginMember.getTakeTaskList().size());
+	}
+	
 	private void scrollPaneSetLayout() {
 		scrollPane.setLayout(new ScrollPaneLayout() {
 			@Override

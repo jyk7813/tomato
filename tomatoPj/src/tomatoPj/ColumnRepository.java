@@ -14,7 +14,6 @@ public class ColumnRepository {
 	public Column selectByColNo(Connection conn, int column_no) throws SQLException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		//Column column = null;
 
 		try {
 			String query = "SELECT * FROM `column` WHERE column_no = ?";
@@ -45,7 +44,7 @@ public class ColumnRepository {
 		List<Column> list = new ArrayList<>();
 		try {
 			conn = DBUtil.getConnection();
-			String query = "ELECT a.column_no, title, column_Index, active FROM `column` AS a\r\n"
+			String query = "SELECT a.column_no, title, column_Index, active FROM `column` AS a\r\n"
 					+ "JOIN (SELECT * FROM project_column WHERE project_no = ?) AS b\r\n"
 					+ "ON a.column_no = b.column_no";
 			stmt = conn.prepareStatement(query);
