@@ -31,6 +31,7 @@ public class TestTodoPnl extends JFrame {
 	private boolean toggleSwitch = true;
 
 	// 달력 출력 패널 클래스 ------------------------------------
+	CalendarSwing printCal = new CalendarSwing();
 
 	public TestTodoPnl() {
 
@@ -90,10 +91,11 @@ public class TestTodoPnl extends JFrame {
 		calPnl.setOpaque(false);
 
 		// 달력 출력 패널 --------------------------------------
-//		JPanel printCal = new CalendarMain();
-//		printCal.setBounds(0, 0, 857, 870);
-//		printCal.setLayout(null);
-//		printCal.setOpaque(false);
+		JPanel printCal = new Jpanel();
+		printCal.setBounds(0, 0, 857, 870);
+		printCal.setLayout(null);
+		printCal.setOpaque(false);
+		printCal.add(printCal);
 
 		JLabel printCurrentMonth = new JLabel();
 		String currentMonth = CD.getCurrentSelDate("monthofvalue") + " 월";
@@ -103,7 +105,7 @@ public class TestTodoPnl extends JFrame {
 		printCurrentMonth.setBounds(120, 30, 50, 34);
 
 		calPnl.add(printCurrentMonth);
-//		calPnl.add(printCal);
+		calPnl.add(printCal);
 
 //		// 월선택 좌우버튼
 //		JButton selMonthbeforeBtn = UT.getBtn(50, 28, "before_btn");
@@ -170,6 +172,11 @@ public class TestTodoPnl extends JFrame {
 		setVisible(true);
 		// -----------------------------------------------
 
+	}
+
+	private JPanel CalendarMain() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public static void main(String[] args) {
