@@ -13,6 +13,42 @@ import dbutil.DBUtil;
 
 public class TaskRepository {
 	
+	//태스크 특정 // 공사중 ///////////////////////
+	// 멤버리스트에 해당 태스크 참여중인 멤버리스트 가져와야함
+	public Task searchByTask_no(int task_no) throws SQLException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Task task = null;
+		try {
+			conn = DBUtil.getConnection();
+			String query = "SELECT * FROM task WHERE task_no = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, task_no);
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				int task_noParse = rs.getInt("task_no");
+				String title = rs.getString("title");
+				String content = rs.getString("content");
+				int importance = rs.getInt("importance");
+				Timestamp updateDate = rs.getTimestamp("updateDate");
+				Timestamp deadLine = rs.getTimestamp("deadLine");
+				int active = rs.getInt("active");
+				
+				List<Member> list = null;
+				
+				task = new Task(task_noParse, title, content, importance, updateDate, deadLine, active);
+			}
+			
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+		return task;
+	}
+	
 	// 파라미터에 project_no을 넘기면 해당 프로젝트의 모든 태스크를 가진 task 리스트 리턴
 	public List<Task> taskListBypjNo(int project_no) throws SQLException {
 		Connection conn = null;
