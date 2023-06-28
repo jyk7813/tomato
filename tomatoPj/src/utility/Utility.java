@@ -11,27 +11,28 @@ import javax.swing.JToggleButton;
 
 public class Utility {
 	private static final IconData ICON = new IconData();
-	
-	
+
 	public void setButtonProperties(JButton button) {
 		button.setOpaque(false);
 		button.setContentAreaFilled(false);
 		button.setBorderPainted(false);
 		button.setFocusPainted(false);
 	}
+
 	public void setButtonProperties(JToggleButton tgbtn) {
 		tgbtn.setOpaque(false);
 		tgbtn.setContentAreaFilled(false);
 		tgbtn.setBorderPainted(false);
 		tgbtn.setFocusPainted(false);
 	}
+
 	public void setButtonProperties(JTextField jtxf) {
 		jtxf.setOpaque(false);
 		jtxf.setBorder(null);
 		jtxf.setBackground(new Color(0, 0, 0, 0));
-		
+
 	}
-	
+
 	/**
 	 * 버튼 객체 관련 메소드
 	 * 

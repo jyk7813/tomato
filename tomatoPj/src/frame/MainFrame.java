@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import dbutil.LoginMember;
+import dbutil.SelectProjectInfo;
 import pnl.BoradPnl;
 import pnl.LoginPnl;
 import pnl.ProjectSelectPnl;
@@ -25,6 +26,7 @@ import utility.IconData;
 public class MainFrame extends JFrame {
 	private IconData iconData;
 	public LoginMember loginMember;
+	public SelectProjectInfo pjInfo;
 	/**
 	 * Launch the application.
 	 */
@@ -49,6 +51,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public MainFrame() {
+		pjInfo = new SelectProjectInfo();
 		loginMember = new LoginMember();
 		iconData = new IconData();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
