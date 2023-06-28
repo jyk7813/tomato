@@ -63,7 +63,7 @@ public class TestTodoPnl extends JFrame {
 		JButton logoutBtn = UT.getBtn(1649, 33, "logout_btn");
 		topPnl.add(logoutBtn);
 		
-		topPnl.setBounds(0, -10, 1920, 135);
+		topPnl.setBounds(0,	-10, 1920, 135);
 		topPnl.setLayout(null);
 		topPnl.setOpaque(false);
 		
@@ -118,11 +118,11 @@ public class TestTodoPnl extends JFrame {
 //		setContentPane(scrollPane);
 		bgPnl.setBounds(0, 0, 1920, 1080);
 		bgPnl.setLayout(null);
-		add(bgPnl);
+		getContentPane().add(bgPnl);
 		// -----------------------------------------------
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(null);
+		getContentPane().setLayout(null);
 		setVisible(true);
 		// -----------------------------------------------
 	}
