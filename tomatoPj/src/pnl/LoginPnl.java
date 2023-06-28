@@ -83,7 +83,7 @@ public class LoginPnl extends JPanel {
 		utility = new Utility();
 		iconData = new IconData();
 		Image loginImg = iconData.getImageIcon("login_btn").getImage(); // 로그인 버튼 이미지 경로
-		Image loginDarkImg = iconData.getImageIcon("login_btn(clicked)").getImage(); // 어두운 버전의 로그인 버튼 이미지 경로
+		Image loginDarkImg = iconData.getImageIcon("login_btn(clicked)2").getImage(); // 어두운 버전의 로그인 버튼 이미지 경로
 		Image loginBrightImg = iconData.getImageIcon("login_btn(enter)").getImage(); // 어두운 버전의 로그인 버튼 이미지 경로
 
 		idField = new JTextField("testid");
