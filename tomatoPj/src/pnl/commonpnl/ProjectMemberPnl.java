@@ -7,6 +7,7 @@ import javax.swing.UIManager;
 import utility.IconData;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 public class ProjectMemberPnl extends JPanel {
@@ -46,5 +47,9 @@ public class ProjectMemberPnl extends JPanel {
 		memberPnl.setBounds(0, 360, 130, 553);
 		panel.add(memberPnl);
 		panel.setBackground(new Color(0,0,0,0));
+	}
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(130, 905);
 	}
 }
