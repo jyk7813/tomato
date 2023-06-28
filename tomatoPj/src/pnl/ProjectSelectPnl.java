@@ -98,7 +98,7 @@ public class ProjectSelectPnl extends JPanel {
 		jButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addPanel();
+				//addPanel();
 			}
 		});
 
@@ -145,9 +145,10 @@ public class ProjectSelectPnl extends JPanel {
 					}
 				}
 				System.out.println("제대로된 멤버? " + memberList);
-				//////////// 테스트지역 ///////////
-				pjInfo = new SelectProjectInfo(a, TOOL_TIP_TEXT_KEY, null, null);
-				
+				//////////// 가지고있는 프로젝트 리스트 패널 생성  ///////////
+				for (Project project : mainFrame.loginMember.getPjList()) {
+					addPanel(project.getProject_no(), project.getTitle());
+				}
 			}
 
 			@Override
@@ -258,8 +259,8 @@ public class ProjectSelectPnl extends JPanel {
 
 	}
 
-	private void addPanel() {
-		ProjectPnl projectPnl = new ProjectPnl(mainFrame);
+	private void addPanel(int project_no, String title) {
+		ProjectPnl projectPnl = new ProjectPnl(mainFrame, project_no, title);
 		projectPnl.setBounds(0, jButton.getY(), 900, 216); // Set the position to current jButton position
 		centerPnl.add(projectPnl, new Integer(2)); // Add projectPnl to a lower layer
 		jButton.setLocation(jButton.getX(), jButton.getY() + projectPnl.getHeight() + 10); // Move jButton down
