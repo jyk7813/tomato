@@ -1,19 +1,17 @@
  package pnl.boradPnl;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Component;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import frame.MainFrame;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
+import tomatoPj.Column;
 
 public class BoardselectPnl extends JPanel {
 	
@@ -42,6 +40,13 @@ public class BoardselectPnl extends JPanel {
 //        add(columnSelectPnl);
         scrollPane.setViewportView(columnSelectPnl);
         
+        addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				removeAllProjectPanels();
+			}
+		});
+        
         
         
         
@@ -62,6 +67,14 @@ public class BoardselectPnl extends JPanel {
 //        
         
     }
+    private void removeAllProjectPanels() {
+		for (Component comp : columnSelectPnl.getComponents()) {
+			columnSelectPnl.remove(comp);
+		}
+		columnSelectPnl.revalidate();
+		columnSelectPnl.repaint();
+	}
+    
 
     
 }

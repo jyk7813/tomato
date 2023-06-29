@@ -1,6 +1,7 @@
 package pnl.boradPnl;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import frame.MainFrame;
+import pnl.projectpnl.ProjectPnl;
 import utility.IconData;
 import utility.Utility;
 
@@ -93,6 +95,8 @@ public class ColumnPnl extends JPanel {
 		        panel.repaint();
 		    }
 		});
+		
+		
 
 //		AddColumnPnl taskPnl = new AddColumnPnl();
 //		taskPnl.setBounds(0,0,350,60);
