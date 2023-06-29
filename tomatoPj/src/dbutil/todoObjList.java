@@ -8,6 +8,4 @@ import tomatoPj.Project;
 public class todoObjList {
 	List<Project> projectList;
 	List<Member> memberList;
-	
-	
 }
