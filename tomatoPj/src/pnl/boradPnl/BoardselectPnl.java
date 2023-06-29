@@ -21,8 +21,8 @@ public class BoardselectPnl extends JPanel {
      * Create the panel.
      */
 	// 보드판넬 메인 부분
-    public BoardselectPnl(MainFrame mainFrame, String colTitle) {
-        System.out.println("여기까진가니? " + colTitle);
+    public BoardselectPnl(MainFrame mainFrame) {
+       
         setLayout(new BorderLayout());
         setOpaque(false);
         
@@ -35,7 +35,7 @@ public class BoardselectPnl extends JPanel {
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(null);
         
-        columnSelectPnl = new ColumnSelectPnl(mainFrame, colTitle);
+        columnSelectPnl = new ColumnSelectPnl(mainFrame);
 
 //        add(columnSelectPnl);
         scrollPane.setViewportView(columnSelectPnl);

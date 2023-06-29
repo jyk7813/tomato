@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -26,7 +27,7 @@ public class ColumnSelectPnl extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ColumnSelectPnl(MainFrame mainFrame, String colTitle) {
+	public ColumnSelectPnl(MainFrame mainFrame) {
 		//this.colTitle = colTitle;
 		iconData = new IconData();
 		utility = new Utility();
@@ -57,24 +58,24 @@ public class ColumnSelectPnl extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				List<Column> col = mainFrame.pjInfo.getCol();
-				System.out.println("제목이없어? " + col.get(0).getTitle());
-				
-				columnCount++;
-				ColumnPnl columnPnl = new ColumnPnl(mainFrame, col.get(0).getTitle());
-				
-				add(columnPnl);
-				columnPnl.setBounds(addColumnPnl.getX()+31, 0, 350, 940);
-				addColumnPnl.setBounds(addColumnPnl.getX() + columnPnl.getWidth() + 20, addColumnPnl.getY(), 350, 60);
-				add(addColumnPnl);
-				revalidate();
-				repaint();
+				Collections.sort(col, (a, b) -> a.getColumn_index() - b.getColumn_index());
+				for (Column column : col) {
+					columnCount++;
+					ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle());
+					
+					add(columnPnl);
+					columnPnl.setBounds(addColumnPnl.getX()+31, 0, 350, 940);
+					addColumnPnl.setBounds(addColumnPnl.getX() + columnPnl.getWidth() + 20, addColumnPnl.getY(), 350, 60);
+					add(addColumnPnl);
+					revalidate();
+					repaint();
+					// 태스크 생성
+					//columnPnl.addcardBtn.doClick();
+				}
 			}
-		});
-		
-		
-
-		
+		});	
 	}
 	  @Override
 	    public Dimension getPreferredSize() {

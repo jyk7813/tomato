@@ -156,6 +156,44 @@ public class TaskRepository {
 		return list;
 	}
 
+	// col_no파라미터로 보내면 해당 들고있는 taskList리턴
+	/////////////////////여기작업해야됨 06/30 /////////////////
+	public List<Task> taskListByColNo(Connection conn, int column_no) throws SQLException {
+		//Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<Task> list = new ArrayList<>();
+
+		try {
+			conn = DBUtil.getConnection();
+			String query = "SELECT * FROM `task` AS a\r\n"
+					+ "JOIN (\r\n"
+					+ "SELECT * FROM `column_task` WHERE `column_no` = ? ) AS b\r\n"
+					+ "ON a.task_no = b.task_no";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, column_no);
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				int task_no = rs.getInt("task_no");
+				String title = rs.getString("title");
+				String content = rs.getString("content");
+				int importance = rs.getInt("importance");
+				Timestamp updateDate = rs.getTimestamp("updateDate");
+				Timestamp deadLine = rs.getTimestamp("deadLine");
+
+				int active = rs.getInt("active");
+				list.add(new Task(task_no, title, content, importance, updateDate, deadLine, active));
+			}
+
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+		return list;
+	}
+	
 	// 새로운 태스크 생성
 	public int insertTask(String title, String content, int importance, Timestamp updateDate, Timestamp deadLine) {
 		Connection conn = null;
