@@ -1,16 +1,17 @@
 package pnl.boradPnl;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import frame.MainFrame;
+import tomatoPj.Column;
 import utility.IconData;
 import utility.Utility;
 
@@ -18,10 +19,15 @@ public class ColumnSelectPnl extends JPanel {
 	 private int columnCount = 0;
 	 private IconData iconData;
 	 private Utility utility;
+	 public JButton addBtn;
+	 public Column thisCol;
+	// public String colTitle;
+	 
 	/**
 	 * Create the panel.
 	 */
-	public ColumnSelectPnl(MainFrame mainFrame) {
+	public ColumnSelectPnl(MainFrame mainFrame, String colTitle) {
+		//this.colTitle = colTitle;
 		iconData = new IconData();
 		utility = new Utility();
 		setLayout(null);
@@ -29,11 +35,7 @@ public class ColumnSelectPnl extends JPanel {
 		columnTopPanel.setLayout(null);
 		columnTopPanel.setBounds(31, 0, 350, 101);
 		columnTopPanel.setOpaque(false);
-		
-		
-		
-		
-		
+
 //		ColumnPnl columnPnl = new ColumnPnl();
 //		add(columnPnl);
 //		columnPnl.setBounds(31, 0, 350, 940);
@@ -45,17 +47,22 @@ public class ColumnSelectPnl extends JPanel {
 		columnTopPanel.add(addColumnPnl);
 		add(columnTopPanel);
 		
-		JButton addBtn = new JButton();
+		addBtn = new JButton();
 		addBtn.setBounds(0, 0, 350, 60);
 		addColumnPnl.add(addBtn);
 		utility.setButtonProperties(addBtn);
 		
+		// 칼럼추가버튼 액션리스너
 		addBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				List<Column> col = mainFrame.pjInfo.getCol();
+				System.out.println("제목이없어? " + col.get(0).getTitle());
+				
 				columnCount++;
-				ColumnPnl columnPnl = new ColumnPnl(mainFrame);
+				ColumnPnl columnPnl = new ColumnPnl(mainFrame, col.get(0).getTitle());
+				
 				add(columnPnl);
 				columnPnl.setBounds(addColumnPnl.getX()+31, 0, 350, 940);
 				addColumnPnl.setBounds(addColumnPnl.getX() + columnPnl.getWidth() + 20, addColumnPnl.getY(), 350, 60);
@@ -64,6 +71,8 @@ public class ColumnSelectPnl extends JPanel {
 				repaint();
 			}
 		});
+		
+		
 
 		
 	}
