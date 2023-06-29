@@ -5,13 +5,57 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import dbutil.DBUtil;
 
 public class TaskRepository {
+	
+	// 선택한 멤버들의 배열과 선택한 프로젝트 넘버를 보내면 가지고있는 task리스트 리턴
+	// todo에 쓸 데이터베이스 함수구축. 완료
+	public HashSet<Task> todoSelectTaskList(int project_no, List<Integer> member_noArray) throws SQLException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		HashSet<Task> list = new HashSet<>();
+
+		try {
+			conn = DBUtil.getConnection();
+			String query = "SELECT * FROM task AS akatask\r\n"
+					+ "JOIN (SELECT a.task_no FROM `member_task` AS a\r\n"
+					+ "JOIN (SELECT * FROM `member_tag`\r\n"
+					+ "WHERE project_no = ? AND member_no = ?) AS b\r\n"
+					+ "ON a.member_no = b.member_no) AS akadupli\r\n"
+					+ "ON akatask.task_no = akadupli.task_no";
+			stmt = conn.prepareStatement(query);
+			
+			for(int i = 0;i < member_noArray.size(); i++) {
+				stmt.setInt(1, project_no);
+				//stmt.setInt(2, member_noArray.get(i));
+				stmt.setObject(2, member_noArray.get(i), Types.INTEGER);
+				rs = stmt.executeQuery();
+
+				while (rs.next()) {
+					int task_no = rs.getInt("task_no");
+					String title = rs.getString("title");
+					String content = rs.getString("content");
+					int importance = rs.getInt("importance");
+					Timestamp updateDate = rs.getTimestamp("updateDate");
+					Timestamp deadLine = rs.getTimestamp("deadLine");
+					int active = rs.getInt("active");
+					list.add(new Task(task_no, title, content, importance, updateDate, deadLine, active));
+				}
+			}
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+		return list;
+	}
 	
 	//태스크 특정 // 공사중 ///////////////////////
 	// 멤버리스트에 해당 태스크 참여중인 멤버리스트 가져와야함
