@@ -41,7 +41,7 @@ public class BoradPnl extends JPanel{
 		projectMemberPnl.setOpaque(false);
 		//////////
 		
-		panel_2 = new BoardselectPnl(mainFrame, title);
+		panel_2 = new BoardselectPnl(mainFrame);
 		panel_2.setOpaque(false);
 		add(panel_2, BorderLayout.CENTER);
 		title = "title";
@@ -49,12 +49,10 @@ public class BoradPnl extends JPanel{
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-				List<Column> col = mainFrame.pjInfo.getCol();
-				panel_2.columnSelectPnl.thisCol = col.get(0);
-				title = col.get(0).getTitle();
-				System.out.println("제목이없어? " + col.get(0).getTitle());
-				
-				panel_2.columnSelectPnl.addBtn.doClick();
+				int size = mainFrame.pjInfo.getCol().size();
+				if(size>0) {
+					panel_2.columnSelectPnl.addBtn.doClick();
+				}
 			}
 		});
 		
