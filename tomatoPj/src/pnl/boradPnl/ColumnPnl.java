@@ -18,11 +18,12 @@ public class ColumnPnl extends JPanel {
 	private IconData iconData;
 	private Utility utility;
 	private int taskCount = 0;
+	public ColumnTitlePnl columnTitlePnl;
 	
 	/**
 	 * Create the panel.
 	 */
-	public ColumnPnl(MainFrame mainFrame) {
+	public ColumnPnl(MainFrame mainFrame, String colTitle) {
 		iconData = new IconData();
 		utility = new Utility();
 		
@@ -34,7 +35,7 @@ public class ColumnPnl extends JPanel {
 		columnTop.setPreferredSize(new Dimension(350,101));
 		columnTop.setOpaque(false);
 		
-		ColumnTitlePnl columnTitlePnl = new ColumnTitlePnl();
+		columnTitlePnl = new ColumnTitlePnl(mainFrame, colTitle);
 		columnTitlePnl.setBounds(0, 41, 350, 80);
 		columnTop.add(columnTitlePnl);
 		
@@ -50,6 +51,7 @@ public class ColumnPnl extends JPanel {
 //		addColumnPnl.setOpaque(false); // for testing
 //		columnTitle.add(addColumnPnl);
 		
+		// 태스크 추가버튼
 		JButton addcardBtn = new JButton(iconData.getImageIcon("addcardicon"));
 		addcardBtn.setBounds(0, 0, 350, 79);
 		utility.setButtonProperties(addcardBtn);
