@@ -81,13 +81,16 @@ public class Taskrefrom extends JPanel {
 	JToggleButton star;
 	JToggleButton[] stars;
 	SettingTask st;
-
+	
+	// 캘린더 2
+	CalendarPnl2 cal2;
 	public Taskrefrom(Task task) {
 
-		CalendarPnl cal;
 		add(pnl());
-		add(cal = new CalendarPnl(this));
-		add(cal.CalendarPnl2());
+		add(cal2 = new CalendarPnl2(this));
+		CalendarPnl cal = new CalendarPnl(this,cal2);
+		add(cal);
+
 		setSize(1338, 727);
 		setLocation(292, 294);
 		setLayout(null);
