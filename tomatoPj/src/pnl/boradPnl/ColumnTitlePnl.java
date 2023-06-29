@@ -2,7 +2,11 @@ package pnl.boradPnl;
 
 import java.awt.Graphics;
 import java.awt.Image;
+
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import utility.IconData;
 
 public class ColumnTitlePnl extends JPanel {
@@ -15,9 +19,13 @@ public class ColumnTitlePnl extends JPanel {
 	public ColumnTitlePnl() {
 		iconData = new IconData();
 
-		this.image = iconData.getImageIcon("boardTop").getImage();
+		this.image = iconData.getImageIcon("boardTop_opaque").getImage();
 		setLayout(null);
 		setOpaque(false);
+		
+		JLabel titleLbl = new JLabel("title",SwingConstants.CENTER);
+		titleLbl.setBounds(0, 0, 350, 60);
+		add(titleLbl);
 
 	}
 

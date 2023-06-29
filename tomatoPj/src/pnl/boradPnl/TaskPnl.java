@@ -10,16 +10,19 @@ import javax.swing.JPanel;
 
 import frame.MainFrame;
 import utility.IconData;
+import utility.Utility;
 
 public class TaskPnl extends JPanel {
 	private IconData iconData;
 	private Image image;
+	private Utility utility;
 
 	/**
 	 * Create the panel.
 	 */
 	public TaskPnl(MainFrame mainFrame) {
 		iconData = new IconData();
+		utility = new Utility();
 
 		this.image = iconData.getImageIcon("boardMiddle_opaque").getImage();
 		setLayout(null);
@@ -27,6 +30,8 @@ public class TaskPnl extends JPanel {
 		JButton jButton = new JButton();
 		jButton.setBounds(0, 0, 360, 80);
 		add(jButton);
+		utility.setButtonProperties(jButton);
+		
 		jButton.addActionListener(new ActionListener() {
 			
 			@Override
