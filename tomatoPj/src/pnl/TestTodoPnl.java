@@ -112,7 +112,7 @@ public class TestTodoPnl extends JPanel{
 //		PRINTCURRENTMONTH.SETBOUNDS(120, 30, 50, 34);
 
 //		calPnl.add(printCurrentMonth);
-//		calPnl.add(printCal);
+		calPnl.add(printCal);
 
 //		// 월선택 좌우버튼
 //		JButton selMonthbeforeBtn = UT.getBtn(50, 28, "before_btn");
@@ -154,7 +154,7 @@ public class TestTodoPnl extends JPanel{
 		currentDate.setFont(FT.nanumFontBold(18));
 		currentDate.setForeground(Color.DARK_GRAY);
 		currentDate.setBounds(90, 140, 240, 30);
-
+		currentDate.setOpaque(false);
 		todoListPnl.add(currentDate);
 
 		calBgPnl.setBounds(164, 160, 1718, 870);
@@ -171,6 +171,7 @@ public class TestTodoPnl extends JPanel{
 		bgPnl.setBounds(0, 0, 1920, 1080);
 		bgPnl.setLayout(null);
 		bgPnl.setOpaque(false);
+		setLayout(null);
 		setOpaque(false);
 		add(bgPnl);
 //		getContentPane().add(bgPnl);
@@ -179,9 +180,8 @@ public class TestTodoPnl extends JPanel{
 //		setUndecorated(true);
 //		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		getContentPane().setLayout(null);
-//		setVisible(true);
+		setVisible(true);
 		// -----------------------------------------------
-
 	}
 
 	private JPanel CalendarMain() {

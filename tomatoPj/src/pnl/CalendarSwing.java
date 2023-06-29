@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.text.Utilities;
 
+import frame.MainFrame;
 import utility.FontData;
 import utility.Utility;
 
@@ -209,7 +210,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class CalendarSwing extends JFrame implements ItemListener, ActionListener {
+public class CalendarSwing extends JPanel implements ItemListener, ActionListener {
 	FontData fontManager = new FontData();
 	Utility utilManager = new Utility();
 	Font fnt = fontManager.nanumFontBold(18);
@@ -260,6 +261,7 @@ public class CalendarSwing extends JFrame implements ItemListener, ActionListene
 		selectPane.setLayout(null);
 		selectPane.setOpaque(false);
 		add(selectPane); 
+		setLayout(null);
 												
 		// 현재 년, 월 세팅
 		setYear();
@@ -277,7 +279,7 @@ public class CalendarSwing extends JFrame implements ItemListener, ActionListene
 		monthCombo.addItemListener(this);
 
 		setBounds(0, 0, 850, 870);
-//		setOpaque(false);
+		setOpaque(false);
 		setVisible(true);
 	}
 
@@ -406,7 +408,7 @@ public class CalendarSwing extends JFrame implements ItemListener, ActionListene
 	}
 
 	// 시작메소드
-	public static void main(String[] args) {
-		new CalendarSwing();
-	}
+//	public static void main(String[] args) {
+//		new CalendarSwing();
+//	}
 }
