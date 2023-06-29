@@ -16,11 +16,15 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
 public class BoardselectPnl extends JPanel {
-    /**
+	
+    public ColumnSelectPnl columnSelectPnl;
+
+	/**
      * Create the panel.
      */
 	// 보드판넬 메인 부분
-    public BoardselectPnl(MainFrame mainFrame) {
+    public BoardselectPnl(MainFrame mainFrame, String colTitle) {
+        System.out.println("여기까진가니? " + colTitle);
         setLayout(new BorderLayout());
         setOpaque(false);
         
@@ -33,9 +37,12 @@ public class BoardselectPnl extends JPanel {
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(null);
         
-        ColumnSelectPnl columnSelectPnl = new ColumnSelectPnl(mainFrame);
+        columnSelectPnl = new ColumnSelectPnl(mainFrame, colTitle);
+
 //        add(columnSelectPnl);
         scrollPane.setViewportView(columnSelectPnl);
+        
+        
         
         
 //    	JButton btnNewButton = new JButton("New button");
