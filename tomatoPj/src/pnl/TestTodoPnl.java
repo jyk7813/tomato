@@ -99,6 +99,7 @@ public class TestTodoPnl extends JFrame{
 //		calPnl.setOpaque(false);
 
 		// 달력 출력 패널 --------------------------------------
+		printCal.setBounds(164, 175, 1718, 870);
 		printCal.setLayout(null);
 		printCal.setOpaque(false);
 

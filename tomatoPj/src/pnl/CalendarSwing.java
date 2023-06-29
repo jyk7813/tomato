@@ -28,8 +28,8 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 
 	// 상단 패널생성
 	JPanel selectPane = new JPanel();
-	JButton prevBtn = utilManager.getBtn(50, 28, "before_btn"); // 이전버튼
-	JButton nextBtn = utilManager.getBtn(295, 28, "next_btn"); // 다음버튼
+	JButton prevBtn = utilManager.getBtn(0, 10, "before_btn"); // 이전버튼
+	JButton nextBtn = utilManager.getBtn(250, 10, "next_btn"); // 다음버튼
 	JComboBox<Integer> yearCombo = new JComboBox<Integer>(); // 년도 콤보박스추가
 	JComboBox<Integer> monthCombo = new JComboBox<Integer>(); // 월 콤보박스 추가
 	JLabel yearLBl = new JLabel("년"); // "년"을 표시할 라벨 추가
@@ -57,10 +57,10 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		boolean toggleSwitch = true;
 		
 		// 상단
-		yearCombo.setBounds(95, 28, 80, 34);
-		yearLBl.setBounds(185, 28, 50, 34);
-		monthCombo.setBounds(215, 28, 50, 34);
-		monthLBl.setBounds(275, 28, 50, 34);
+		yearCombo.setBounds(50, 10, 80, 34);
+		yearLBl.setBounds(140, 10, 50, 34);
+		monthCombo.setBounds(170, 10, 50, 34);
+		monthLBl.setBounds(230, 10, 50, 34);
 		selectPane.add(prevBtn);
 		selectPane.add(yearCombo);
 		yearCombo.setFont(fnt);
@@ -71,24 +71,24 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		selectPane.add(monthLBl);
 		monthLBl.setFont(fnt);
 		selectPane.add(nextBtn);
-		selectPane.setBounds(150, 170, 1718, 870);
+		selectPane.setBounds(50, 15, 300, 300);
 		selectPane.setLayout(null);
 		selectPane.setOpaque(false);
 
 		// 투두리스트 패널
-
-		todoListPnl.setBounds(500, 355, 857, 870);
-		todoListPnl.setLayout(null);
-		todoListPnl.setOpaque(false);
 		String todoDate = calManager.getCurrentDate();
 		currentDate.setText(todoDate);
 		currentDate.setFont(fnt);
-		currentDate.setForeground(Color.DARK_GRAY);
-		currentDate.setBounds(90, 140, 240, 30);
-
+		currentDate.setLayout(null);
+		currentDate.setBounds(1026, 200, 240, 100);
+		todoListPnl.setBounds(1200, 300, 857, 870);
+		todoListPnl.setLayout(null);
+		todoListPnl.setOpaque(true);
+		todoListPnl.add(currentDate);
+		
 		// 패널 붙이기
-		add(selectPane);
 		add(todoListPnl);
+		add(selectPane);
 
 		// 현재 년, 월 세팅
 		setYear();
@@ -105,7 +105,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		yearCombo.addItemListener(this);
 		monthCombo.addItemListener(this);
 
-		setBounds(0, 0, 850, 870);
+		setBounds(0, 0, 1718, 870);
 		setOpaque(false);
 		setVisible(true);
 	}
