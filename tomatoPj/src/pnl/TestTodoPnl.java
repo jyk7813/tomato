@@ -94,6 +94,8 @@ public class TestTodoPnl extends JFrame{
 		printCal.setBounds(200, 135, 1718, 870);
 		printCal.setLayout(null);
 		printCal.setOpaque(false);
+		
+		System.out.println(printCal.year + "" + printCal.month);
 
 		// 뷰 설정 토글 버튼
 		JButton toggleBtn = UT.getBtn(1380, 175, "prijectAll_toggle");
