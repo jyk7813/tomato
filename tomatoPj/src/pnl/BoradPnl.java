@@ -8,7 +8,7 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JPanel;
 
 import frame.MainFrame;
-import pnl.boradPnl.boardselectPnl;
+import pnl.boradPnl.BoardselectPnl;
 import pnl.commonpnl.ProjectMemberPnl;
 import pnl.commonpnl.topPnl;
 import tomatoPj.Member;
@@ -32,7 +32,7 @@ public class BoradPnl extends JPanel{
 		add(projectMemberPnl, BorderLayout.WEST);
 		projectMemberPnl.setOpaque(false);
 		
-		boardselectPnl panel_2 = new boardselectPnl(mainFrame);
+		BoardselectPnl panel_2 = new BoardselectPnl(mainFrame);
 		panel_2.setOpaque(false);
 		add(panel_2, BorderLayout.CENTER);
 		
