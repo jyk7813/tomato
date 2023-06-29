@@ -19,6 +19,7 @@ public class BoardselectPnl extends JPanel {
     /**
      * Create the panel.
      */
+	// 보드판넬 메인 부분
     public BoardselectPnl(MainFrame mainFrame) {
         setLayout(new BorderLayout());
         setOpaque(false);

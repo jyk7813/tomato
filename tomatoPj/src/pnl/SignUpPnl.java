@@ -3,28 +3,30 @@ package pnl;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import dbutil.DBUtil;
 import frame.MainFrame;
@@ -49,7 +51,8 @@ public class SignUpPnl extends JPanel {
 	private Utility utility;
 	private IconData iconData;
 	private JLabel[] checkLbl;
-
+	private JButton inputImgBtn;
+	
 	public SignUpPnl(Image image, MainFrame mainFrame) {
 		regex = new Regex();
 		mr = new MemberRepository();
@@ -70,7 +73,44 @@ public class SignUpPnl extends JPanel {
 		backBtn = new JButton(iconData.getImageIcon("login_logo"));
 		for (int i = 0; i < checkLbl.length; i++) {
 			checkLbl[i] = new JLabel();
-		}
+		} 
+		inputImgBtn = new JButton("응애 나 이미지버튼");
+		
+//		inputImgBtn.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				JFileChooser fileChooser = new JFileChooser();
+//				FileNameExtensionFilter filter = new FileNameExtensionFilter("Image files",
+//						ImageIO.getReaderFileSuffixes());
+//				fileChooser.setFileFilter(filter);
+//				int returnValue = fileChooser.showOpenDialog(null);
+//				if (returnValue == JFileChooser.APPROVE_OPTION) {
+//					File selectedFile = fileChooser.getSelectedFile();
+//					double bytes = selectedFile.length();
+//					double kilobytes = bytes / 1024;
+//					double megabytes = kilobytes / 1024;
+//
+//					BufferedImage originalImage;
+//					try {
+//						originalImage = ImageIO.read(selectedFile);
+//
+//						int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+//
+//						BufferedImage resizedImage = resizeImage(originalImage, type);
+//						ImageIcon imageIcon = new ImageIcon(resizedImage);
+//
+//						registeredImage.setIcon(imageIcon);
+//
+//					} catch (IOException e1) {
+//						e1.printStackTrace();
+//					}
+//
+//					imageRoot.setText(selectedFile.getAbsolutePath());
+//				}
+//			}
+//		});
+		
 		signUpActionListener(mainFrame);
 		settingTextField();
 
@@ -81,6 +121,8 @@ public class SignUpPnl extends JPanel {
 		utility.setButtonProperties(emailField);
 		utility.setButtonProperties(backBtn);
 
+		
+		
 		btn.addMouseListener (new MouseAdapter() {
 
 			@Override
