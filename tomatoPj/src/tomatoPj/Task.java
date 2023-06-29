@@ -85,7 +85,8 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [task_no=" + task_no + ", title=" + title + ", content=" + content + ", importance=" + importance
-				+ ", updateDate=" + updateDate + ", deadLine=" + deadLine + ", active=" + active + "]";
+				+ ", updateDate=" + updateDate + ", deadLine=" + deadLine + ", active=" + active + ", list=" + list
+				+ "]";
 	}
 	
 }
