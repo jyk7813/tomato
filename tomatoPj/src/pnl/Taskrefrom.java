@@ -87,20 +87,22 @@ public class Taskrefrom extends JPanel{
 	// 태그 패널
 	JPanel tagPnl;
 	int CountTag;
-	Task task;
+
 	
 	//Task 에 줘야하는거
+	Task task;
 	Timestamp updateDate;
 	
 	Image image;
 
 
 
-	public Taskrefrom() {
-		this.task = task;
+	public Taskrefrom(Task task) {
+		this.task = null;
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
+		
 		//메인
 //		TaskMain();
 		TaskMainLbl();
@@ -110,10 +112,9 @@ public class Taskrefrom extends JPanel{
 		StarSet();
 		// 날짜 세팅
 
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-//		String year = dateFormat.format(task.getUpdateDate());
-		
-		SetUpdateLbl("2023.06.22");
+
+	
+		SetUpdateLbl("2023.07.03");
 		UpdateMentLbl();
 		
 		//끝나는 날짜
@@ -157,6 +158,7 @@ public class Taskrefrom extends JPanel{
 		setOpaque(false);
 		
 	}
+	
 
 	
 	
@@ -231,11 +233,11 @@ public class Taskrefrom extends JPanel{
 	 * @return JLabel
 	 */
 	public void SetUpdateLbl(String date) {
-//		if(task!=null) {
+		if(task!=null) {
 			StartDate = new JTextField(date);
-//		}else {
-//			
-//		}
+		}else {
+
+		}
 
 		//Update date 라벨
 		
@@ -248,33 +250,7 @@ public class Taskrefrom extends JPanel{
 		
 		String dateString = StartDate.getText();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-//		addComponentListener(new ComponentListener() {
-//
-//			@Override
-//			public void componentShown(ComponentEvent e) {
-//
-//			}
-//
-//			@Override
-//			public void componentResized(ComponentEvent e) {
-//			}
-//
-//			@Override
-//			public void componentMoved(ComponentEvent e) {
-//			}
-//
-//			@Override
-//			public void componentHidden(ComponentEvent e) {
-//				try {
-//					java.util.Date utilDate = dateFormat.parse(dateString);
-//					java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-//					updateDate = new Timestamp(sqlDate.getTime());
-//					System.out.println(updateDate);
-//				} catch (ParseException e2) {
-//					e2.printStackTrace();
-//				}
-//			}
-//		});
+
 	
 	}
 	/**
@@ -666,7 +642,7 @@ public class Taskrefrom extends JPanel{
 
 		try {
 			conn = DBUtil.getConnection();
-			String query = "select * from task where task_no = 1";
+			String query = "select * from task where task_no = 36";
 			stmt = conn.prepareStatement(query);
 
 			rs = stmt.executeQuery();
@@ -693,38 +669,38 @@ public class Taskrefrom extends JPanel{
 
 
 
-//	public static class MyFrame extends JFrame {
-//		IconData IC;
-//	    public MyFrame() {
-//	    	IC = new IconData();
-//	    	Task testTask = null;
-//	    	Taskrefrom task;
-//			try {
-//				testTask = taskListBypjNo();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//			task = new Taskrefrom(testTask);
-//	    	
-//	    	
-//	        JLabel Background =new JLabel(IC.getImageIcon("selectTask(BG)"));
-//	        Background.setSize(1920, 1080);
-//	        Background.add(task);
-//	        add(Background);
-//	    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//	        setTitle("My Frame");
-//	        setSize(1920, 1080);
-////	        setBackground(new Color(255,0,0));
-//	        setUndecorated(true);
-//	        setLocationRelativeTo(null); //중앙정렬
-//	        setVisible(true);
-//	    }
-//	}
-//	public static void main(String[] args) {
-//		new MyFrame();
-////		frame.add(task);
-//		
-//	}
+	public static class MyFrame extends JFrame {
+		IconData IC;
+	    public MyFrame() {
+	    	IC = new IconData();
+	    	Task testTask = null;
+	    	Taskrefrom task;
+			try {
+				testTask = taskListBypjNo();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			task = new Taskrefrom(testTask);
+	    	
+	    	
+	        JLabel Background =new JLabel(IC.getImageIcon("selectTask(BG)"));
+	        Background.setSize(1920, 1080);
+	        Background.add(task);
+	        add(Background);
+	    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        setTitle("My Frame");
+	        setSize(1920, 1080);
+//	        setBackground(new Color(255,0,0));
+	        setUndecorated(true);
+	        setLocationRelativeTo(null); //중앙정렬
+	        setVisible(true);
+	    }
+	}
+	public static void main(String[] args) {
+		new MyFrame();
+//		frame.add(task);
+		
+	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
