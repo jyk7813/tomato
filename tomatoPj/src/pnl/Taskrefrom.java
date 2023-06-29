@@ -45,6 +45,7 @@ import com.mysql.cj.jdbc.result.UpdatableResultSet;
 
 import dbutil.DBUtil;
 import frame.MainFrame;
+import tomatoPj.Feedback;
 import tomatoPj.Task;
 import utility.FontData;
 import utility.IconData;
@@ -113,7 +114,8 @@ public class Taskrefrom extends JPanel{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		st = new SettingTask(task,this);
+		Feedback feedback = new Feedback(6,27,1,"대본수정");
+		st = new SettingTask(task,this,feedback);
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
@@ -405,7 +407,6 @@ public class Taskrefrom extends JPanel{
 		detail = new JPanel();
 		detail.setOpaque(false);
 		detail.setSize(new Dimension(631,235));
-//		detail.setBackground(new Color(255,0,0));
 		detail.setLocation(0,121);
 		detail.setLayout(null);
 		TaskUnderPanel.add(detail);
@@ -449,7 +450,7 @@ public class Taskrefrom extends JPanel{
 	    JLabel content = new JLabel(IC.getImageIcon("contentPanel_write"));
 	    content.setLocation(60,-10);
 	    
-	    contentText = new JTextArea("내용을 입력해주세요!");
+	    contentText = new JTextArea(st.setContent());
 	    if(task != null) {
 	    	contentText.setText(task.getContent());
 	    }
@@ -496,6 +497,7 @@ public class Taskrefrom extends JPanel{
                 scrollBar.setValue(newValue);
             }
         });
+	    
 	    content.setFont(FD.nanumFont(1));
 	    content.add(detailScrollPane);
 	    content.setSize(500, 250);
@@ -605,7 +607,7 @@ public class Taskrefrom extends JPanel{
 		JLabel feedBackLbl = new JLabel(IC.getImageIcon("contentPanel_write"));
 	    feedBackLbl.setLocation(60,0);
 
-	    feedBackText = new JTextArea();
+	    feedBackText = new JTextArea(st.setFeedback());
 	    feedBackText.setSize(495, 128);
 	    feedBackText.setBorder(null); // 테두리 제거
 	    feedBackText.setOpaque(false);

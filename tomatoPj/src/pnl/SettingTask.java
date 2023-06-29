@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 import frame.MainFrame;
+import tomatoPj.Feedback;
 import tomatoPj.Task;
 import utility.IconData;
 
@@ -11,11 +12,12 @@ public class SettingTask {
 	Task task;
 	Taskrefrom ts;
 	IconData IC;
-	public SettingTask(Task task,Taskrefrom ts) {
+	Feedback feedback;
+	public SettingTask(Task task,Taskrefrom ts,Feedback feedback) {
 		IC = new IconData();
 		this.task = task;
 		this.ts = ts;
-		
+		this.feedback = feedback;
 	}
 	
 	public String setUpdataDate() {
@@ -52,6 +54,20 @@ public class SettingTask {
 			System.out.println(200);
 			ts.stars[i].setIcon(IC.getImageIcon("starRed"));
 		}
+	}
+	public String setContent() {
+		String content = "내용을 입력해주세요!";
+		if(task != null) {
+		content = task.getContent();
+		}
+		return content;
+	}
+	public String setFeedback() {
+		String feedback = "피드백을 입력해주세요!";
+		if(feedback != null) {
+			feedback = this.feedback.getComment();
+		}
+		return feedback;
 	}
 
 }
