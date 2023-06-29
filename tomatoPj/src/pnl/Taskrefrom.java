@@ -45,6 +45,7 @@ import com.mysql.cj.jdbc.result.UpdatableResultSet;
 
 import dbutil.DBUtil;
 import frame.MainFrame;
+import tomatoPj.Feedback;
 import tomatoPj.Task;
 import utility.FontData;
 import utility.IconData;
@@ -87,21 +88,24 @@ public class Taskrefrom extends JPanel{
 	// 태그 패널
 	JPanel tagPnl;
 	int CountTag;
-	Task task;
+
 	
 	//Task 에 줘야하는거
+	Task task;
 	Timestamp updateDate;
 	
 	Image image;
 	JToggleButton star;
 	JToggleButton [] stars;
-	private SettingTask st;
+	SettingTask st;
 
 
-	public Taskrefrom(MainFrame mainFrame) {
+
+
+	public Taskrefrom(Task task) {
+
 		// 달력작업
 		// 모든 정보를 뭉쳐서 task 객체로 반환
-		System.out.println("제발 보내져라 진짜 ");
 		// 팝업창에 아이디 입력으로 추가. 
 		// 멤버 추가 로직고민
 		try {
@@ -110,10 +114,12 @@ public class Taskrefrom extends JPanel{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		st = new SettingTask(task,this);
+		Feedback feedback = new Feedback(6,27,1,"대본수정");
+		st = new SettingTask(task,this,feedback);
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
+		
 
 		//메인
 //		TaskMain();
@@ -126,9 +132,8 @@ public class Taskrefrom extends JPanel{
 		
 		// 날짜 세팅
 
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-//		String year = dateFormat.format(task.getUpdateDate());
-		
+
+
 		SetUpdateLbl(st.setUpdataDate());
 		UpdateMentLbl();
 		
@@ -173,6 +178,7 @@ public class Taskrefrom extends JPanel{
 		setOpaque(false);
 		
 	}
+	
 
 	
 	
@@ -203,7 +209,7 @@ public class Taskrefrom extends JPanel{
 	 */
 	public void StarSet() {
 		stars = new JToggleButton[5];
-//		Imoportance=2;
+
 
 		for (int i = 0; i < stars.length; i++) {
 			star = new JToggleButton(IC.getImageIcon("starGray"));
@@ -250,11 +256,9 @@ public class Taskrefrom extends JPanel{
 	 * @return JLabel
 	 */
 	public void SetUpdateLbl(String date) {
-//		if(task!=null) {
+
 			StartDate = new JLabel(date);
-//		}else {
-//			
-//		}
+
 
 		//Update date 라벨
 		
@@ -265,8 +269,9 @@ public class Taskrefrom extends JPanel{
 		StartDate.setFont(FD.nanumFont(16));
 		StarAndDate.add(StartDate);
 		
-//		String dateString = StartDate.getText();
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+
+		String dateString = StartDate.getText();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 
 	
 	}
@@ -402,7 +407,6 @@ public class Taskrefrom extends JPanel{
 		detail = new JPanel();
 		detail.setOpaque(false);
 		detail.setSize(new Dimension(631,235));
-//		detail.setBackground(new Color(255,0,0));
 		detail.setLocation(0,121);
 		detail.setLayout(null);
 		TaskUnderPanel.add(detail);
@@ -446,7 +450,7 @@ public class Taskrefrom extends JPanel{
 	    JLabel content = new JLabel(IC.getImageIcon("contentPanel_write"));
 	    content.setLocation(60,-10);
 	    
-	    contentText = new JTextArea("내용을 입력해주세요!");
+	    contentText = new JTextArea(st.setContent());
 	    if(task != null) {
 	    	contentText.setText(task.getContent());
 	    }
@@ -493,6 +497,7 @@ public class Taskrefrom extends JPanel{
                 scrollBar.setValue(newValue);
             }
         });
+	    
 	    content.setFont(FD.nanumFont(1));
 	    content.add(detailScrollPane);
 	    content.setSize(500, 250);
@@ -602,7 +607,7 @@ public class Taskrefrom extends JPanel{
 		JLabel feedBackLbl = new JLabel(IC.getImageIcon("contentPanel_write"));
 	    feedBackLbl.setLocation(60,0);
 
-	    feedBackText = new JTextArea();
+	    feedBackText = new JTextArea(st.setFeedback());
 	    feedBackText.setSize(495, 128);
 	    feedBackText.setBorder(null); // 테두리 제거
 	    feedBackText.setOpaque(false);
@@ -665,6 +670,7 @@ public class Taskrefrom extends JPanel{
 		try {
 			conn = DBUtil.getConnection();
 			String query = "select * from task where task_no = 27";
+
 			stmt = conn.prepareStatement(query);
 
 			rs = stmt.executeQuery();
@@ -691,38 +697,38 @@ public class Taskrefrom extends JPanel{
 
 
 
-//	public static class MyFrame extends JFrame {
-//		IconData IC;
-//	    public MyFrame() {
-//	    	IC = new IconData();
-//	    	Task testTask = null;
-//	    	Taskrefrom task;
-//			try {
-//				testTask = taskListBypjNo();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//			task = new Taskrefrom(testTask);
-//	    	
-//	    	
-//	        JLabel Background =new JLabel(IC.getImageIcon("selectTask(BG)"));
-//	        Background.setSize(1920, 1080);
-//	        Background.add(task);
-//	        add(Background);
-//	    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//	        setTitle("My Frame");
-//	        setSize(1920, 1080);
-////	        setBackground(new Color(255,0,0));
-//	        setUndecorated(true);
-//	        setLocationRelativeTo(null); //중앙정렬
-//	        setVisible(true);
-//	    }
-//	}
-//	public static void main(String[] args) {
-//		new MyFrame();
-////		frame.add(task);
-//		
-//	}
+	public static class MyFrame extends JFrame {
+		IconData IC;
+	    public MyFrame() {
+	    	IC = new IconData();
+	    	Task testTask = null;
+	    	Taskrefrom task;
+			try {
+				testTask = taskListBypjNo();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			task = new Taskrefrom(testTask);
+	    	
+	    	
+	        JLabel Background =new JLabel(IC.getImageIcon("selectTask(BG)"));
+	        Background.setSize(1920, 1080);
+	        Background.add(task);
+	        add(Background);
+	    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        setTitle("My Frame");
+	        setSize(1920, 1080);
+//	        setBackground(new Color(255,0,0));
+	        setUndecorated(true);
+	        setLocationRelativeTo(null); //중앙정렬
+	        setVisible(true);
+	    }
+	}
+	public static void main(String[] args) {
+		new MyFrame();
+//		frame.add(task);
+		
+	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
