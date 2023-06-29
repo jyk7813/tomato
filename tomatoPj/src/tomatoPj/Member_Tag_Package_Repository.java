@@ -24,18 +24,26 @@ public class Member_Tag_Package_Repository {
 		HashSet<Member> list = new HashSet<>();
 		try {
 			conn = DBUtil.getConnection();
-			String query = "SELECT * FROM `member_tag` WHERE `project_no` = ?";
+			String query = "SELECT * FROM `member` AS a\r\n"
+					+ "JOIN (\r\n"
+					+ "SELECT * FROM `member_tag` WHERE `project_no` = ?) AS b\r\n"
+					+ "ON a.member_no = b.member_no;";
 			stmt = conn.prepareStatement(query);
 			stmt.setInt(1, project_no);
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				int mt_no = rs.getInt("mt_no");
-				int project_noParse = rs.getInt("project_no");
 				int member_no = rs.getInt("member_no");
-				String color = rs.getString("color");
-				Member member = memberRepo.searchByMemberNo(member_no);
-				list.add(member);
+				String id = rs.getString("id");
+				String pwd = rs.getString("pwd");
+				String e_mail = rs.getString("e-mail");
+				String name = rs.getString("name");
+				String mbti = rs.getString("mbti");
+				int active = rs.getInt("active");
+				
+				//Member member = memberRepo.searchByMemberNo(member_no);
+				
+				list.add(new Member(member_no, id, pwd, e_mail, name, mbti, active));
 			}
 			
 		} finally {
