@@ -91,12 +91,12 @@ public class LoginPnl extends JPanel {
 		Image signUpImg = iconData.getImageIcon("signUp_btn").getImage();
 		Image signUpDarkImg = iconData.getImageIcon("signUp_btn3").getImage();
 		
+		Image logoutImg = iconData.getImageIcon("logout_btn").getImage();
+		Image logoutBrightImg = iconData.getImageIcon("logout_btn_white").getImage();
 		
 		idField = new JTextField("testid");
 		passwordField = new JPasswordField("test1234");
-
-		loginButton = new JButton();
-		signUpBtn = new JButton();
+		
 		idField = new JTextField();
 		passwordField = new JPasswordField();
 
@@ -107,10 +107,9 @@ public class LoginPnl extends JPanel {
 		signUpIcon = new ImageIcon(signUpImg);
 		signUpDarkIcon = new ImageIcon(signUpDarkImg);
 		
-		
-
 		loginButton = new JButton(loginIcon);
 		signUpBtn = new JButton(signUpIcon);
+		
 
 		idField.addKeyListener(enterKey());
 		passwordField.addKeyListener(enterKey());
