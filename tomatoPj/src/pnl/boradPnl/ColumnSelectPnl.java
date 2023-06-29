@@ -7,21 +7,32 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import frame.MainFrame;
+import utility.IconData;
+import utility.Utility;
 
 public class ColumnSelectPnl extends JPanel {
 	 private int columnCount = 0;
+	 private IconData iconData;
+	 private Utility utility;
 	/**
 	 * Create the panel.
 	 */
 	public ColumnSelectPnl(MainFrame mainFrame) {
+		iconData = new IconData();
+		utility = new Utility();
 		setLayout(null);
-		JPanel columnTitle = new JPanel();
-		columnTitle.setLayout(null);
-		columnTitle.setBounds(31, 0, 350, 101);
-		columnTitle.setOpaque(false);
+		JPanel columnTopPanel = new JPanel();
+		columnTopPanel.setLayout(null);
+		columnTopPanel.setBounds(31, 0, 350, 101);
+		columnTopPanel.setOpaque(false);
+		
+		
+		
+		
 		
 //		ColumnPnl columnPnl = new ColumnPnl();
 //		add(columnPnl);
@@ -31,12 +42,14 @@ public class ColumnSelectPnl extends JPanel {
 		AddColumnPnl addColumnPnl = new AddColumnPnl();
 		addColumnPnl.setBounds(0, 41, 350, 60);
 		addColumnPnl.setOpaque(false); // for testing
-		columnTitle.add(addColumnPnl);
-		add(columnTitle);
+		columnTopPanel.add(addColumnPnl);
+		add(columnTopPanel);
 		
 		JButton addBtn = new JButton();
 		addBtn.setBounds(0, 0, 350, 60);
 		addColumnPnl.add(addBtn);
+		utility.setButtonProperties(addBtn);
+		
 		addBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -45,7 +58,7 @@ public class ColumnSelectPnl extends JPanel {
 				ColumnPnl columnPnl = new ColumnPnl(mainFrame);
 				add(columnPnl);
 				columnPnl.setBounds(addColumnPnl.getX()+31, 0, 350, 940);
-				addColumnPnl.setBounds(addColumnPnl.getX()+31 + columnPnl.getWidth(), addColumnPnl.getY(), 350, 60);
+				addColumnPnl.setBounds(addColumnPnl.getX() + columnPnl.getWidth() + 20, addColumnPnl.getY(), 350, 60);
 				add(addColumnPnl);
 				revalidate();
 				repaint();
