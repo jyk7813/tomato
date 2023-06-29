@@ -8,6 +8,9 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -15,14 +18,19 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
+import frame.MainFrame;
+import tomatoPj.Member;
+import tomatoPj.Member_Tag_Package_Repository;
+import tomatoPj.Task;
 import utility.CalendarData;
 import utility.FontData;
 import utility.IconData;
 import utility.Utility;
 
-public class TestTodoPnl extends JFrame {
+public class TestTodoPnl extends JPanel{
+	private Image image;
+	
 	private final static IconData IC = new IconData();
 	private final static FontData FT = new FontData();
 	private final static Utility UT = new Utility();
@@ -183,3 +191,4 @@ public class TestTodoPnl extends JFrame {
 	}
 
 }
+

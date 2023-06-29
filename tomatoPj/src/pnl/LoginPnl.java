@@ -48,6 +48,8 @@ public class LoginPnl extends JPanel {
 	private ImageIcon loginIcon;
 	private ImageIcon loginDarkIcon;
 	private ImageIcon loginbrightIcon;
+	private ImageIcon signUpIcon;
+	private ImageIcon signUpDarkIcon;
 
 	private void setLoginMember(MainFrame mainFrame, Member member) {
 		LocalDateTime now = LocalDateTime.now();
@@ -83,9 +85,13 @@ public class LoginPnl extends JPanel {
 		utility = new Utility();
 		iconData = new IconData();
 		Image loginImg = iconData.getImageIcon("login_btn").getImage(); // 로그인 버튼 이미지 경로
-		Image loginDarkImg = iconData.getImageIcon("login_btn(clicked)").getImage(); // 어두운 버전의 로그인 버튼 이미지 경로
+		Image loginDarkImg = iconData.getImageIcon("login_btn(clicked)2").getImage(); // 어두운 버전의 로그인 버튼 이미지 경로
 		Image loginBrightImg = iconData.getImageIcon("login_btn(enter)").getImage(); // 어두운 버전의 로그인 버튼 이미지 경로
-
+		
+		Image signUpImg = iconData.getImageIcon("signUp_btn").getImage();
+		Image signUpDarkImg = iconData.getImageIcon("signUp_btn3").getImage();
+		
+		
 		idField = new JTextField("testid");
 		passwordField = new JPasswordField("test1234");
 
@@ -98,17 +104,21 @@ public class LoginPnl extends JPanel {
 		loginIcon = new ImageIcon(loginImg);
 		loginDarkIcon = new ImageIcon(loginDarkImg);
 		loginbrightIcon = new ImageIcon(loginBrightImg);
+		signUpIcon = new ImageIcon(signUpImg);
+		signUpDarkIcon = new ImageIcon(signUpDarkImg);
+		
 		
 
 		loginButton = new JButton(loginIcon);
+		signUpBtn = new JButton(signUpIcon);
 
 		idField.addKeyListener(enterKey());
 		passwordField.addKeyListener(enterKey());
 
-		loginButton.setBounds(897, 659, 126, 41);
-		signUpBtn.setBounds(927, 709, 66, 18);
-		idField.setBounds(842, 536, 255, 41);
-		passwordField.setBounds(842, 597, 255, 41);
+		loginButton.setBounds(896, 622, 126, 41);
+		signUpBtn.setBounds(896, 663, 126, 41);
+		idField.setBounds(870, 509, 255, 41);
+		passwordField.setBounds(870, 570, 255, 41);
 
 		idField.setFont(fontData.nanumFont(16));
 		passwordField.setFont(fontData.nanumFont(16));
@@ -165,6 +175,25 @@ public class LoginPnl extends JPanel {
 				loginButton.repaint();
 			}
 		});
+		
+		signUpBtn.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				signUpBtn.setIcon(signUpDarkIcon);
+				signUpBtn.repaint();
+			}
+			public void mouseEntered(MouseEvent me) {
+				System.out.println("마우스 들어감");
+				signUpBtn.setIcon(signUpDarkIcon);
+				signUpBtn.repaint();
+			}
+			public void mouseExited(MouseEvent me) {
+				signUpBtn.setIcon(signUpIcon);
+				signUpBtn.repaint();
+			}
+		});
+
 	}
 
 	private void signUpActionListener(MainFrame mainFrame) {
@@ -198,6 +227,7 @@ public class LoginPnl extends JPanel {
 					} else {
 						System.out.println("로그인실패");
 					}
+					mainFrame.loginMember.setPjListSize(mainFrame.loginMember.getPjList().size());
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 
