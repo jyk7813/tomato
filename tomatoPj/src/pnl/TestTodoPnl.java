@@ -28,7 +28,7 @@ import utility.FontData;
 import utility.IconData;
 import utility.Utility;
 
-public class TestTodoPnl extends JPanel{
+public class TestTodoPnl extends JFrame{
 	private Image image;
 	
 	private final static IconData IC = new IconData();
@@ -93,16 +93,14 @@ public class TestTodoPnl extends JPanel{
 		topBgPnl.setOpaque(false);
 
 		// 달력 패널 -----------------------------------------
-		JPanel calPnl = new JPanel();
-		calPnl.setBounds(164, 300, 857, 870);
-		calPnl.setLayout(null);
-		calPnl.setOpaque(false);
+//		JPanel calPnl = new JPanel();
+//		calPnl.setBounds(164, 300, 857, 870);
+//		calPnl.setLayout(null);
+//		calPnl.setOpaque(false);
 
 		// 달력 출력 패널 --------------------------------------
-//		printCal.setBounds(0, 0, 857, 870);
-//		printCal.setLayout(null);
-//		printCal.setOpaque(false);
-//		printCal.add(printCal);
+		printCal.setLayout(null);
+		printCal.setOpaque(false);
 
 //		JLABEL PRINTCURRENTMONTH = NEW JLABEL();
 //		STRING CURRENTMONTH = CD.GETCURRENTSELDATE("MONTHOFVALUE") + " 월";
@@ -112,7 +110,7 @@ public class TestTodoPnl extends JPanel{
 //		PRINTCURRENTMONTH.SETBOUNDS(120, 30, 50, 34);
 
 //		calPnl.add(printCurrentMonth);
-		calPnl.add(printCal);
+//		add(printCal);
 
 //		// 월선택 좌우버튼
 //		JButton selMonthbeforeBtn = UT.getBtn(50, 28, "before_btn");
@@ -121,14 +119,14 @@ public class TestTodoPnl extends JPanel{
 //		calPnl.add(selMonthnextBtn);
 
 		// 투두 리스트 패널 ------------------------------------
-		JPanel todoListPnl = new JPanel();
-		todoListPnl.setBounds(1026, 175, 857, 870);
-		todoListPnl.setLayout(null);
-		todoListPnl.setOpaque(false);
+//		JPanel todoListPnl = new JPanel();
+//		todoListPnl.setBounds(1026, 175, 857, 870);
+//		todoListPnl.setLayout(null);
+//		todoListPnl.setOpaque(false);
 
 		// 뷰 설정 토글 버튼
-		JButton toggleBtn = UT.getBtn(350, 0, "prijectAll_toggle");
-		todoListPnl.add(toggleBtn);
+		JButton toggleBtn = UT.getBtn(1380, 175, "prijectAll_toggle");
+		add(toggleBtn);
 		ActionListener listener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -144,18 +142,18 @@ public class TestTodoPnl extends JPanel{
 		toggleBtn.addActionListener(listener);
 
 		// 선택 버튼
-		JButton selBtn = UT.getBtn(785, 15, "projectOpne");
-		todoListPnl.add(selBtn);
+		JButton selBtn = UT.getBtn(1810, 190, "projectOpne");
+		add(selBtn);
 
-		// 현재 날짜 출력 라벨
-		JLabel currentDate = new JLabel();
-		String todoDate = CD.getCurrentDate();
-		currentDate.setText(todoDate);
-		currentDate.setFont(FT.nanumFontBold(18));
-		currentDate.setForeground(Color.DARK_GRAY);
-		currentDate.setBounds(90, 140, 240, 30);
+//		// 현재 날짜 출력 라벨
+//		JLabel currentDate = new JLabel();
+//		String todoDate = CD.getCurrentDate();
+//		currentDate.setText(todoDate);
+//		currentDate.setFont(FT.nanumFontBold(18));
+//		currentDate.setForeground(Color.DARK_GRAY);
+//		currentDate.setBounds(90, 140, 240, 30);
 
-		todoListPnl.add(currentDate);
+//		todoListPnl.add(currentDate);
 
 		calBgPnl.setBounds(164, 160, 1718, 870);
 		calBgPnl.setLayout(null);
@@ -164,8 +162,8 @@ public class TestTodoPnl extends JPanel{
 		// 배경 패널에 각 패널 붙이기 ------------------------------
 		bgPnl.add(topPnl); // 상단 패널
 		bgPnl.add(topBgPnl); // 상단 배경 패널
-		bgPnl.add(todoListPnl); // 투두 리스트 패널
-		bgPnl.add(calPnl); // 달력 패널
+//		bgPnl.add(todoListPnl); // 투두 리스트 패널
+		add(printCal); // 달력 패널
 		bgPnl.add(calBgPnl); // 메인 영역 배경 패널
 		// -----------------------------------------------
 		bgPnl.setBounds(0, 0, 1920, 1080);
@@ -182,7 +180,6 @@ public class TestTodoPnl extends JPanel{
 	}
 
 	private JPanel CalendarMain() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

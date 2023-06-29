@@ -1,199 +1,9 @@
 package pnl;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Calendar;
-
-import javax.rmi.CORBA.Util;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.text.Utilities;
-
+import utility.CalendarData;
 import utility.FontData;
+import utility.IconData;
 import utility.Utility;
-
-//public class CalendarMain extends JPanel implements ActionListener {
-
-//	JPanel printCalPnl = new JPanel();
-//	
-//	// ------------외형구현---------------
-//	Calendar cal; 
-//	int year, month, date;
-//	JPanel pane = new JPanel();
-//	Utility utilm = new Utility();
-//	FontData fontm = new FontData();
-//
-//	// 위에 버튼 추가
-//	JButton btn1 = utilm.getBtn(50, 28, "before_btn");
-//	JButton btn2 = utilm.getBtn(200, 28, "next_btn");
-//
-//	// 위에 라벨추가
-//	JLabel yearlb = new JLabel("년");
-//	JLabel monthlb = new JLabel("월");
-//
-//	// 년월 추가
-//	JComboBox<Integer> yearCombo = new JComboBox<Integer>();
-//	DefaultComboBoxModel<Integer> yearModel = new DefaultComboBoxModel<Integer>();
-//	JComboBox<Integer> monthCombo = new JComboBox<Integer>();
-//	DefaultComboBoxModel<Integer> monthModel = new DefaultComboBoxModel<Integer>();
-//	
-//	// 패널추가
-//	JPanel pane2 = new JPanel(new BorderLayout());
-//	JPanel title = new JPanel(new GridLayout(1, 7, 50, 70));
-//	String titleStr[] = { "일", "월", "화", "수", "목", "금", "토" };
-//	JPanel datePane = new JPanel(new GridLayout(0, 7, 50, 70));
-//
-//	// 화면디자인
-//	JPanel CalendarMain() {
-////		JFrame mainFrame = new JFrame();
-////		JPanel printCalPnl = new JPanel();
-//		
-//		// ------년도 월 구하기------------
-//		cal = Calendar.getInstance(); // 현재날짜
-//		year = cal.get(Calendar.YEAR);
-//		month = cal.get(Calendar.MONTH) + 1;
-//		date = cal.get(Calendar.DATE);
-//
-//		// 년
-//		for (int i = year - 100; i <= year + 50; i++) {
-//			yearModel.addElement(i);
-//		}
-//
-//		yearCombo.setModel(yearModel);
-//		yearCombo.setSelectedItem(year);
-//
-//		// 월
-//		for (int i = 1; i <= 12; i++) {
-//			monthModel.addElement(i);
-//		}
-//		monthCombo.setModel(monthModel);
-//		monthCombo.setSelectedItem(month);
-//
-//		// 월화수목금토일
-//		for (int i = 0; i < titleStr.length; i++) {
-//			JLabel lbl = new JLabel(titleStr[i], JLabel.CENTER);
-//			if (i == 0) {
-//				lbl.setFont(fontm.nanumFontBold(12));
-//				lbl.setForeground(Color.red);
-//			} else if (i == 6) {
-//				lbl.setFont(fontm.nanumFontBold(12));
-//				lbl.setForeground(Color.blue);
-//			}
-//			title.add(lbl);
-//		}
-//		// 날짜 출력
-//		day(year, month);
-//
-//		// ----------------------------
-//		pane.add(btn1);
-//		pane.add(yearCombo);
-//		pane.add(yearlb);
-//		pane.add(monthCombo);
-//		pane.add(monthlb);
-//		pane.add(btn2);
-//		add(BorderLayout.NORTH, pane);
-//		pane2.add(title, "North");
-//		pane2.add(datePane);
-//		add(BorderLayout.CENTER, pane2);
-//
-//		// 각종 명령어
-////        mainFrame.setVisible(true);
-////        mainFrame.setSize(857,870);
-////        mainFrame.setResizable(false);
-////        mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
-//
-//		// ----------기능구현----------
-//		btn1.addActionListener(this);
-//		btn2.addActionListener(this);
-//		yearCombo.addActionListener(this);
-//		monthCombo.addActionListener(this);
-//		
-//		return datePane;
-//	}
-//
-//	// 기능구현
-//	public void actionPerformed(ActionEvent e) {
-//		Object eventObj = e.getSource();
-//		if (eventObj instanceof JComboBox) {
-//			datePane.setVisible(false); 
-//			datePane.removeAll(); 
-//			day((Integer) yearCombo.getSelectedItem(), (Integer) monthCombo.getSelectedItem());
-//			datePane.setVisible(true); 
-//		} else if (eventObj instanceof JButton) {
-//			JButton eventBtn = (JButton) eventObj;
-//			int yy = (Integer) yearCombo.getSelectedItem();
-//			int mm = (Integer) monthCombo.getSelectedItem();
-//			if (eventBtn.equals(btn1)) { 
-//				if (mm == 1) {
-//					yy--;
-//					mm = 12;
-//				} else {
-//					mm--;
-//				}
-//			} else if (eventBtn.equals(btn2)) {
-//				if (mm == 12) {
-//					yy++;
-//					mm = 1;
-//				} else {
-//					mm++;
-//				}
-//			}
-//			yearCombo.setSelectedItem(yy);
-//			monthCombo.setSelectedItem(mm);
-//		}
-//	}
-//
-//	// 날짜출력
-//	public void day(int year, int month) {
-//		Calendar date = Calendar.getInstance();// 오늘날짜 + 시간
-//		date.set(year, month - 1, 1);
-//		int week = date.get(Calendar.DAY_OF_WEEK);
-//		int lastDay = date.getActualMaximum(Calendar.DAY_OF_MONTH);
-//
-//		// 공백출력
-//		for (int space = 1; space < week; space++) {
-//			datePane.add(new JLabel("\t"));
-//		}
-//
-//		// 날짜 출력
-//		for (int day = 1; day <= lastDay; day++) {
-//			JLabel lbl = new JLabel(String.valueOf(day), JLabel.CENTER);
-//			lbl.setFont(fontm.nanumFontBold(12));
-//			cal.set(year, month - 1, day);
-//			int Week = cal.get(Calendar.DAY_OF_WEEK);
-//			if (Week == 1) {
-//				lbl.setFont(fontm.nanumFontBold(12));
-//				lbl.setForeground(Color.red);
-//			} else if (Week == 7) {
-//				lbl.setFont(fontm.nanumFontBold(12));
-//				lbl.setForeground(Color.BLUE);
-//			}
-//			datePane.add(lbl);
-//		}
-//	}
-//
-//	// 실헹메소드
-//	public static void main(String[] args) {
-//		new CalendarMain();
-//	}
-//}
-
-//
-// 
-//
-//다른코드
-//
-//주석으로 설명상세히 적어놓음
-//
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -209,13 +19,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class CalendarSwing extends JFrame implements ItemListener, ActionListener {
+public class CalendarSwing extends JPanel implements ItemListener, ActionListener {
 	FontData fontManager = new FontData();
+	IconData iconManager = new IconData();
 	Utility utilManager = new Utility();
+	CalendarData calManager = new CalendarData();
 	Font fnt = fontManager.nanumFontBold(18);
 
 	// 상단 패널생성
-	JPanel selectPane = new JPanel(); 
+	JPanel selectPane = new JPanel();
 	JButton prevBtn = utilManager.getBtn(50, 28, "before_btn"); // 이전버튼
 	JButton nextBtn = utilManager.getBtn(295, 28, "next_btn"); // 다음버튼
 	JComboBox<Integer> yearCombo = new JComboBox<Integer>(); // 년도 콤보박스추가
@@ -223,9 +35,13 @@ public class CalendarSwing extends JFrame implements ItemListener, ActionListene
 	JLabel yearLBl = new JLabel("년"); // "년"을 표시할 라벨 추가
 	JLabel monthLBl = new JLabel("월"); // "월"을 표시할 라벨추가
 
+	// 투두 리스트 패널 ------------------------------------
+	JPanel todoListPnl = new JPanel();
+	JLabel currentDate = new JLabel(); // 현재 날짜 출력 라벨
+
 	JPanel centerPane = new JPanel();
 	JPanel dayPane = new JPanel(new GridLayout(0, 7, 50, 70));
-	
+
 	String[] title = { "일", "월", "화", "수", "목", "금", "토" };
 
 	// 달력관련 데이터
@@ -238,13 +54,13 @@ public class CalendarSwing extends JFrame implements ItemListener, ActionListene
 		date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아온다.
 		year = date.get(Calendar.YEAR); // 캘린더에서 년을 받아와서 미리생성해놓은 year에 주입한다.
 		month = date.get(Calendar.MONTH) + 1; // 월을 받아와서 month에 대입한다. +1을 하는 이유는 0~11이라
-	
-		// 상단
-		yearCombo.setBounds(95, 28, 80, 34); 
-		yearLBl.setBounds(185, 28, 50, 34); 
-		monthCombo.setBounds(215, 28, 50, 34); 
-		monthLBl.setBounds(275, 28, 50, 34); 
+		boolean toggleSwitch = true;
 		
+		// 상단
+		yearCombo.setBounds(95, 28, 80, 34);
+		yearLBl.setBounds(185, 28, 50, 34);
+		monthCombo.setBounds(215, 28, 50, 34);
+		monthLBl.setBounds(275, 28, 50, 34);
 		selectPane.add(prevBtn);
 		selectPane.add(yearCombo);
 		yearCombo.setFont(fnt);
@@ -255,12 +71,25 @@ public class CalendarSwing extends JFrame implements ItemListener, ActionListene
 		selectPane.add(monthLBl);
 		monthLBl.setFont(fnt);
 		selectPane.add(nextBtn);
-		
-		selectPane.setBounds(50, 50,850,870);
+		selectPane.setBounds(150, 170, 1718, 870);
 		selectPane.setLayout(null);
 		selectPane.setOpaque(false);
-		add(selectPane); 
-												
+
+		// 투두리스트 패널
+
+		todoListPnl.setBounds(500, 355, 857, 870);
+		todoListPnl.setLayout(null);
+		todoListPnl.setOpaque(false);
+		String todoDate = calManager.getCurrentDate();
+		currentDate.setText(todoDate);
+		currentDate.setFont(fnt);
+		currentDate.setForeground(Color.DARK_GRAY);
+		currentDate.setBounds(90, 140, 240, 30);
+
+		// 패널 붙이기
+		add(selectPane);
+		add(todoListPnl);
+
 		// 현재 년, 월 세팅
 		setYear();
 		setMonth();
@@ -277,7 +106,7 @@ public class CalendarSwing extends JFrame implements ItemListener, ActionListene
 		monthCombo.addItemListener(this);
 
 		setBounds(0, 0, 850, 870);
-//		setOpaque(false);
+		setOpaque(false);
 		setVisible(true);
 	}
 
@@ -405,8 +234,8 @@ public class CalendarSwing extends JFrame implements ItemListener, ActionListene
 		}
 	}
 
-	// 시작메소드
-	public static void main(String[] args) {
-		new CalendarSwing();
-	}
+//	// 시작메소드
+//	public static void main(String[] args) {
+//		new CalendarSwing();
+//	}
 }
