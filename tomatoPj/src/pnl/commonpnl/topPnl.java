@@ -32,8 +32,6 @@ public class topPnl extends JPanel {
 				mainFrame.showCard("todo");
 			}
 		});
-		
-		
 	}
 
 	@Override
@@ -41,5 +39,4 @@ public class topPnl extends JPanel {
 		
 		return new Dimension(1920,135);
 	}
-
 }
