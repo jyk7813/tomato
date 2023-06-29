@@ -55,7 +55,7 @@ public class TestTodoPnl extends JFrame{
 		// 메인 영역 배경 패널 ------------------------------------
 		JPanel calBgPnl = new JPanel() {
 			public void paintComponent(Graphics g) {
-				g.drawImage(IC.getImageIcon("calendarWeek").getImage(), 0, 0, null);
+				g.drawImage(IC.getImageIcon("calendarWeek3").getImage(), 0, 0, null);
 				setOpaque(false);
 				super.paintComponent(g);
 			}
@@ -84,14 +84,14 @@ public class TestTodoPnl extends JFrame{
 		topPnl.add(logoutBtn);
 		topPnl.setBounds(0, 0, 1920, 135);
 		topPnl.setLayout(null);
-		topPnl.setOpaque(true);
+		topPnl.setOpaque(false);
 
 		topBgPnl.setBounds(0, 0, 1920, 135);
 		topBgPnl.setLayout(null);
 		topBgPnl.setOpaque(false);
 
 		// 달력 출력 패널 --------------------------------------
-		printCal.setBounds(164, 175, 1718, 870);
+		printCal.setBounds(200, 135, 1718, 870);
 		printCal.setLayout(null);
 		printCal.setOpaque(false);
 

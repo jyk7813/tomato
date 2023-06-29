@@ -13,6 +13,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Calendar;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -25,37 +26,37 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 	Utility utilManager = new Utility();
 	CalendarData calManager = new CalendarData();
 	Font fnt = fontManager.nanumFontBold(18);
+	Font fnt2 = fontManager.nanumFontBold(15);
 
-	// 상단 패널생성
+	// 상단 패널 ---------------------------------------
 	JPanel selectPane = new JPanel();
-	JButton prevBtn = utilManager.getBtn(0, 10, "before_btn"); // 이전버튼
-	JButton nextBtn = utilManager.getBtn(250, 10, "next_btn"); // 다음버튼
-	JComboBox<Integer> yearCombo = new JComboBox<Integer>(); // 년도 콤보박스추가
-	JComboBox<Integer> monthCombo = new JComboBox<Integer>(); // 월 콤보박스 추가
-	JLabel yearLBl = new JLabel("년"); // "년"을 표시할 라벨 추가
-	JLabel monthLBl = new JLabel("월"); // "월"을 표시할 라벨추가
+	JButton prevBtn = utilManager.getBtn(0, 10, "before_btn"); 
+	JButton nextBtn = utilManager.getBtn(250, 10, "next_btn");
+	JComboBox<Integer> yearCombo = new JComboBox<Integer>(); 
+	JComboBox<Integer> monthCombo = new JComboBox<Integer>(); 
+	JLabel yearLBl = new JLabel("년"); 
+	JLabel monthLBl = new JLabel("월"); 
 
 	// 투두 리스트 패널 ------------------------------------
 	JPanel todoListPnl = new JPanel();
-	JLabel currentDate = new JLabel(); // 현재 날짜 출력 라벨
-	String todoDate; // 투두 표시 날짜 
+	JLabel currentDate = new JLabel(); 
+	String todoDate; // 투두 표시 날짜
 
+	// 달력 출력 패널 ------------------------------------
 	JPanel centerPane = new JPanel();
-	JPanel dayPane = new JPanel(new GridLayout(0, 7, 50, 70));
+	JPanel dayPane = new JPanel(new GridLayout(0, 7));
 
 	String[] title = { "일", "월", "화", "수", "목", "금", "토" };
 
-	// 달력관련 데이터
-	Calendar date; // 달력주입
-	int year; // 년과, 월 주입
+	Calendar date;
+	int year;
 	int month;
 
 	public CalendarSwing() {
-		super(); // super : 부모클래스로부터 상속받은 메소드를 자식클래스에 참조해서 사용하는 변수
+		super(); 
 		date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아온다.
-		year = date.get(Calendar.YEAR); // 캘린더에서 년을 받아와서 미리생성해놓은 year에 주입한다.
-		month = date.get(Calendar.MONTH) + 1; // 월을 받아와서 month에 대입한다. +1을 하는 이유는 0~11이라
-		boolean toggleSwitch = true;
+		year = date.get(Calendar.YEAR); 
+		month = date.get(Calendar.MONTH) + 1; 
 		
 		// 상단 패널 ---------------------------------------
 		yearCombo.setBounds(50, 10, 80, 34);
@@ -72,7 +73,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		selectPane.add(monthLBl);
 		monthLBl.setFont(fnt);
 		selectPane.add(nextBtn);
-		selectPane.setBounds(50, 15, 300, 300);
+		selectPane.setBounds(0, 30, 300, 300);
 		selectPane.setLayout(null);
 		selectPane.setOpaque(false);
 
@@ -82,25 +83,32 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		currentDate.setText(todoDate);
 		currentDate.setFont(fnt);
 		currentDate.setLayout(null);
-		currentDate.setBounds(20, 0, 240, 50);
+		currentDate.setBounds(0, 50, 240, 50);
 		
 		todoListPnl.add(currentDate);
 		todoListPnl.setBounds(920, 100, 760, 700);
 		todoListPnl.setLayout(null);
 		todoListPnl.setOpaque(false);
 		
-		
-		// 패널 붙이기 --------------------------------------
-		add(todoListPnl);
-		add(selectPane);
-
+		// 달력 출력 패널 ------------------------------------
 		// 현재 년, 월 세팅
 		setYear();
 		setMonth();
-
-		// 날짜만들기
-		centerPane.add(dayPane); 
 		setDay();
+		dayPane.setBounds(0, 0, 781, 733);
+		dayPane.setOpaque(false);
+		centerPane.add(dayPane); 
+		centerPane.setBounds(0, 130, 880, 750);
+		centerPane.setLayout(null);
+		centerPane.setOpaque(false);
+		
+		
+		
+		// 패널 붙이기 --------------------------------------
+		add(selectPane);
+		add(todoListPnl);
+		add(centerPane);
+
 
 		// 기능이벤트를 추가 ----------------------------------
 		prevBtn.addActionListener(this);
@@ -117,6 +125,8 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 
 	// 날짜셋팅
 	public void setDay() {
+		ImageIcon dayNull = iconManager.getImageIcon("calendarNull4Pnl");
+		ImageIcon dayImg = iconManager.getImageIcon("calendar4Pnl");
 		// 요일
 		date.set(year, month - 1, 1); // date를 세팅하는데, 일(day)를 1로 세팅한다.
 		int week = date.get(Calendar.DAY_OF_WEEK); // DAY_OF_WEEK는 일월화수목금토이며 이데이터를 받아와서 week에 넣는다.
@@ -126,14 +136,27 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 															// 마지막날을 불러온다.
 		// 공백
 		for (int s = 1; s < week; s++) { // 반복문을 돌린다.
+			JPanel box = new JPanel();
+			JLabel dayBox = new JLabel();
 			JLabel lbl = new JLabel(" "); // 들여쓰기
-			dayPane.add(lbl);
+			lbl.setBounds(0, 0, 20, 20);
+			lbl.setLayout(null);
+//			dayBox.setBounds(0, 0, 103, 116);
+//			dayBox.setLayout(null);
+			box.setOpaque(false);
+			box.add(lbl);
+			box.setBounds(0, 0, 100, 116);
+//			box.add(dayBox);
+			dayPane.add(box);
+			
 		}
 		// 날짜추가
 		for (int day = 1; day <= lastDay; day++) {
-			JLabel lbl = new JLabel(String.valueOf(day), JLabel.CENTER); // 라벨선언해주는데 String.value 는 형변환이다. JLabel을 가운데에
-																			// 입력하게둔다.
-			lbl.setFont(fnt); // 라벨에 폰트를 주입한다.
+			JLabel lbl = new JLabel(String.valueOf(day),JLabel.CENTER); // 라벨선언해주는데 String.value 는 형변환이다.
+			JPanel box = new JPanel();
+			JLabel dayBox = new JLabel();
+			dayBox.setIcon(dayImg);
+			lbl.setFont(fnt2);
 			// 출력하는 날짜에 대한 요일
 			date.set(Calendar.DATE, day); // 19 ->1
 			int w = date.get(Calendar.DAY_OF_WEEK); // 요일
@@ -141,7 +164,16 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 				lbl.setForeground(Color.red); // 일월화수목금토 (1~7) 1은 일요일이므로 일요일에 red색깔
 			if (w == 7)
 				lbl.setForeground(Color.blue); // 7이므로 blue색깔
-			dayPane.add(lbl);
+			lbl.setBounds(30, 0, 30, 30);
+//			dayBox.setBounds(0, 0, 103, 116);
+//			dayBox.setLayout(null);
+//			dayBox.setOpaque(false);
+			box.add(lbl);
+//			box.add(dayBox);
+			box.setBounds(0, 0, 100, 116);
+			box.setLayout(null);
+			box.setOpaque(false);
+			dayPane.add(box);
 		}
 	}
 
@@ -154,7 +186,6 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 				lbl.setForeground(Color.red); // setForeground폰트속성을 변경해주는데 쓰는것,
 			if (i == 6)
 				lbl.setForeground(Color.blue);
-//			titlePane.add(lbl); // 타이틀패널에 라벨을 추가시킨다.
 		}
 	}
 
