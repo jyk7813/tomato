@@ -41,32 +41,32 @@ public class TestTodoPnl extends JPanel{
 	// 달력 출력 패널 클래스 ------------------------------------
 	CalendarSwing printCal = new CalendarSwing();
 
-	public TestTodoPnl() {
+	public TestTodoPnl(MainFrame mainFrame) {
 
 		// 상단 배경 패널 ------------------------------------
 		JPanel topBgPnl = new JPanel() {
 			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
 				g.drawImage(IC.getImageIcon("topLine").getImage(), 0, 0, null);
 				setOpaque(false); // 이미지 불투명도 설정 : false = 불투명(이미지 표시) / true = 투명
-				super.paintComponent(g);
 			}
 		};
 
 		// 메인 영역 배경 패널 ------------------------------------
 		JPanel calBgPnl = new JPanel() {
 			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
 				g.drawImage(IC.getImageIcon("calendarWeek").getImage(), 0, 0, null);
 				setOpaque(false);
-				super.paintComponent(g);
 			}
 		};
 
 		// 배경 패널 -----------------------------------------
 		JPanel bgPnl = new JPanel() {
 			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
 				g.drawImage(IC.getImageIcon("Background").getImage(), 0, 0, null);
 				setOpaque(false);
-				super.paintComponent(g);
 			}
 		};
 
@@ -112,7 +112,7 @@ public class TestTodoPnl extends JPanel{
 //		PRINTCURRENTMONTH.SETBOUNDS(120, 30, 50, 34);
 
 //		calPnl.add(printCurrentMonth);
-		calPnl.add(printCal);
+//		calPnl.add(printCal);
 
 //		// 월선택 좌우버튼
 //		JButton selMonthbeforeBtn = UT.getBtn(50, 28, "before_btn");
@@ -170,13 +170,16 @@ public class TestTodoPnl extends JPanel{
 		// -----------------------------------------------
 		bgPnl.setBounds(0, 0, 1920, 1080);
 		bgPnl.setLayout(null);
-		getContentPane().add(bgPnl);
-		// -----------------------------------------------
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setUndecorated(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getContentPane().setLayout(null);
-		setVisible(true);
+		bgPnl.setOpaque(false);
+		setOpaque(false);
+		add(bgPnl);
+//		getContentPane().add(bgPnl);
+//		// -----------------------------------------------
+//		setExtendedState(JFrame.MAXIMIZED_BOTH);
+//		setUndecorated(true);
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		getContentPane().setLayout(null);
+//		setVisible(true);
 		// -----------------------------------------------
 
 	}
@@ -186,9 +189,9 @@ public class TestTodoPnl extends JPanel{
 		return null;
 	}
 
-	public static void main(String[] args) {
-		new TestTodoPnl();
-	}
+//	public static void main(String[] args) {
+//		new TestTodoPnl();
+//	}
 
 }
 
