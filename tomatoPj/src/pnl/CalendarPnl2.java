@@ -7,7 +7,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -41,7 +45,7 @@ public class CalendarPnl2 extends JPanel {
 		FD = new FontData();
 		JLabel cal2Lbl = new JLabel(IC.getImageIcon("calendarRight"));
 		cal2Lbl.setSize(326, 268);
-		cal2Lbl.setLocation(0, 0);
+		cal2Lbl.setLocation(605, 293);
 
 		monthInt = 6;
 		JLabel month = new JLabel(monthInt + "월");
@@ -181,7 +185,6 @@ public class CalendarPnl2 extends JPanel {
 			    public void mousePressed(MouseEvent e) {
 			    	JLabel clickedLabel = (JLabel) e.getSource();
 			        String labelText = clickedLabel.getText();
-			        
 			        String setMonth = String.valueOf(monthInt);
 			        if(labelText != null) {
 			        if(monthInt <10) {
@@ -191,14 +194,31 @@ public class CalendarPnl2 extends JPanel {
 			        if(Integer.valueOf(labelText)<10) {
 			        	labelText = "0"+clickedLabel.getText();
 			        }
-			       
-			        tr.deadLineDate.setText(2023+"."+setMonth+"."+labelText);
-			    }else{
-			    	System.out.println("널임");
+			 
+			        String updateDateString = tr.StartDate.getText();
+			        String deadLineString = 2023+"."+setMonth+"."+labelText;
+			        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+
+			        try {
+						Date updateDatetoTimestamp = dateFormat.parse(updateDateString);
+						Date deadLinetoTimestamp = dateFormat.parse(deadLineString);
+						
+						 int result = updateDatetoTimestamp.compareTo(deadLinetoTimestamp);
+						 if(result==-1) {
+	
+							 tr.deadLineDate.setText(deadLineString);        		    
+	            		    }else {
+	            		 
+	            		    }
+			        } catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					
+			    }
 			    }
 			    }
 			});
-			}
+		}
 	}
 	   public void showPreviousMonth(int monthInt) {
 	        showMonth(monthInt);
@@ -263,9 +283,27 @@ public class CalendarPnl2 extends JPanel {
 		        if(Integer.valueOf(labelText)<10) {
 		        	labelText = "0"+clickedLabel.getText();
 		        }
-		        System.out.println(1);
-		        tr.deadLineDate.setText(2023+"."+setMonth+"."+labelText);
-		        
+		       
+		       
+		        String updateDateString = tr.StartDate.getText();
+		        String deadLineString = 2023+"."+setMonth+"."+labelText;
+		        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+
+		        try {
+					Date updateDatetoTimestamp = dateFormat.parse(updateDateString);
+					Date deadLinetoTimestamp = dateFormat.parse(deadLineString);
+					
+					 int result = updateDatetoTimestamp.compareTo(deadLinetoTimestamp);
+					 if(result==-1) {
+						 tr.deadLineDate.setText(deadLineString);        		    
+            		    }else {
+            		    	
+            		    }
+		        } catch (ParseException e1) {
+
+					e1.printStackTrace();
+				
+		    }
 		    }else{
 		    	System.out.println("널임");
 		    	}	

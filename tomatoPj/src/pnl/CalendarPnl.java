@@ -255,31 +255,6 @@ public class CalendarPnl extends JPanel {
 		        }
 		        tr.StartDate.setText(2023+"."+setMonth+"."+labelText);
 		        tr.deadLineDate.setText(2023+"."+setMonth+"."+labelText);
-        
-		        int index = -1; // 인덱스 초기화
-		        for (int j = 0; j < dayJLabels.length; j++) {
-		            if (clickedLabel == dayJLabels[j]) {
-		                index = j;
-		                for (int i = 0; i < dayJLabels.length; i++) {
-		                    if (i <= index) {
-		                        cal2.dayJLabels[i].setOpaque(true);
-		                        cal2.dayJLabels[i].setBackground(new Color(128, 128, 128));
-		                        cal2.dayJLabels[i].removeMouseListener(cal2.ma); // 버튼 비활성화
-		  
-		                        cal2.before.setOpaque(true);
-		                        cal2.before.setBackground(new Color(128, 128, 128));
-		                        cal2.before.removeMouseListener(cal2.beforeMouse);
-		             
-		                    } else {
-		                        cal2.dayJLabels[i].setOpaque(false);
-		                        cal2.dayJLabels[i].setBackground(null);
-		                        cal2.dayJLabels[i].addMouseListener(cal2.ma);
-		                        
-		                    }
-		                }
-		                break; // 인덱스를 찾았으므로 반복문 종료
-		            }
-		        }
 		        
 		    }
 		    }
