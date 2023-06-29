@@ -12,7 +12,8 @@ public class Task {
 	private Timestamp updateDate;
 	private Timestamp deadLine;
 	private int active;
-	private List<Member>list;
+	private List<Member> list; // 이거말고 다른 멤버태그변수 만들어야함
+	private Feedback feedBack;
 	
 	public Task(String title, String content, int importance, Timestamp updateDate, Timestamp deadLine) {
 		super();

@@ -19,6 +19,7 @@ public class ColumnPnl extends JPanel {
 	private Utility utility;
 	private int taskCount = 0;
 	public ColumnTitlePnl columnTitlePnl;
+	public JButton addcardBtn;
 	
 	/**
 	 * Create the panel.
@@ -51,8 +52,7 @@ public class ColumnPnl extends JPanel {
 //		addColumnPnl.setOpaque(false); // for testing
 //		columnTitle.add(addColumnPnl);
 		
-		// 태스크 추가버튼
-		JButton addcardBtn = new JButton(iconData.getImageIcon("addcardicon"));
+		addcardBtn = new JButton(iconData.getImageIcon("addcardicon"));
 		addcardBtn.setBounds(0, 0, 350, 79);
 		utility.setButtonProperties(addcardBtn);
 

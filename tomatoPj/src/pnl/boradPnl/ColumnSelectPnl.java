@@ -71,6 +71,8 @@ public class ColumnSelectPnl extends JPanel {
 					add(addColumnPnl);
 					revalidate();
 					repaint();
+					// 태스크 생성
+					//columnPnl.addcardBtn.doClick();
 				}
 			}
 		});	
