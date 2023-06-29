@@ -9,11 +9,17 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import dbutil.LoginMember;
+import dbutil.SelectProjectInfo;
 import frame.MainFrame;
 import pnl.boradPnl.BoardselectPnl;
 import pnl.commonpnl.ProjectMemberPnl;
 import pnl.commonpnl.topPnl;
 import tomatoPj.Column;
+import tomatoPj.Member;
+import utility.Utility;
+
+import java.awt.BorderLayout;
 
 public class BoradPnl extends JPanel{
 	private Image image;

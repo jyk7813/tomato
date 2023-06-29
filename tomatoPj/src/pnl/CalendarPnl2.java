@@ -1,52 +1,63 @@
 package pnl;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Calendar;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import utility.FontData;
 import utility.IconData;
 
-public class CalendarPnl extends JPanel {
+public class CalendarPnl2 extends JPanel {
 	IconData IC;
 	FontData FD;
+	 JPanel cal2;
 	 int monthInt;
 	 JPanel dayOfMonth;
 	 JLabel dayJLabel;
-	private Calendar calendar;
-	private JLabel [] dayJLabels;
-	private int dayOfWeek;
-	private int dayOfWeek2;
-	private int daysInMonth;
+	Calendar calendar;
+	JLabel [] dayJLabels;
+	int dayOfWeek;
+	int dayOfWeek2;
+	int daysInMonth;
+	int Update;
+	int deadLine;
 	Taskrefrom tr;
-	CalendarPnl2 cal2;
-	private int settinJLbl;
-	public CalendarPnl(Taskrefrom tr,CalendarPnl2 cal2) {
-		 this.tr = tr;
-		 this.cal2 =cal2;
+	MouseListener ma;
+	MouseListener  beforeMouse;
+	JLabel before;
+	public CalendarPnl2(Taskrefrom tr) {
+		this.tr = tr;
 		IC = new IconData();
 		FD = new FontData();
-		JLabel cal1Lbl = new JLabel(IC.getImageIcon("calendarLeft"));
-		cal1Lbl.setSize(326, 268);
-		cal1Lbl.setLocation(0, 0);
-		cal1Lbl.setOpaque(false);
+		JLabel cal2Lbl = new JLabel(IC.getImageIcon("calendarRight"));
+		cal2Lbl.setSize(326, 268);
+		cal2Lbl.setLocation(0, 0);
+
 		monthInt = 6;
 		JLabel month = new JLabel(monthInt + "월");
 
+		
+		
+//	cal2lbl.setOpaque(false);
 		month.setFont(FD.nanumFontBold(20));
-		month.setForeground(new Color(36, 161, 138));
+		month.setForeground(new Color(235, 105, 97));
 		month.setSize(50, 30);
-		month.setLocation(135, 30);
+		month.setLocation(160, 30);
 
-		JLabel before = new JLabel("전달");
+		before = new JLabel("전달");
 		before.setSize(50, 50);
-		before.setLocation(95, 20);
-		before.addMouseListener(new MouseAdapter() {
+		before.setLocation(125, 20);
+		beforeMouse = new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				monthInt--;
@@ -57,11 +68,13 @@ public class CalendarPnl extends JPanel {
 				month.setText(monthInt + "월");
 				showPreviousMonth(monthInt);
 			}
-		});
+		};
+
+		before.addMouseListener(beforeMouse);
 
 		JLabel after = new JLabel("다음달");
 		after.setSize(50, 50);
-		after.setLocation(190, 20);
+		after.setLocation(205, 20);
 		after.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -71,6 +84,8 @@ public class CalendarPnl extends JPanel {
 					monthInt = 1;
 				}
 				month.setText(monthInt + "월");
+
+
 				showNextMonth(monthInt);
 			}
 		});
@@ -79,7 +94,7 @@ public class CalendarPnl extends JPanel {
 		weekPnl.setOpaque(false);
 		weekPnl.setLayout(null);
 		weekPnl.setSize(241, 20);
-		weekPnl.setLocation(30, 70);
+		weekPnl.setLocation(65, 70);
 
 		JLabel[] week = new JLabel[7];
 		String Strweek = "";
@@ -106,30 +121,29 @@ public class CalendarPnl extends JPanel {
 
 			weekPnl.add(week[i]);
 			week[0].setFont(FD.nanumFontBold(18));
-			week[0].setForeground(new Color(36, 161, 138));	
+			week[0].setForeground(new Color(235, 105, 97));
 			week[0].setLocation(week[0].getX(), 0);
 			// 일정 거리씩 띄우기
 			if (i > 0) {
 				week[i].setLocation(week[i - 1].getX() + 35, 0);
 				week[i].setFont(FD.nanumFontBold(18));
-				week[i].setForeground(new Color(36, 161, 138));		
+				week[i].setForeground(new Color(235, 105, 97));	
 				
 			}
 		}
 		settingCal();
-		dayOfMonth.setOpaque(false);
 		
-		cal1Lbl.add(month);
-		cal1Lbl.add(before);
-		cal1Lbl.add(after);
-		cal1Lbl.add(weekPnl);
-		cal1Lbl.add(dayOfMonth);
-		add(cal1Lbl);
-
+		dayOfMonth.setOpaque(false);
+		cal2Lbl.add(month);
+		cal2Lbl.add(before);
+		cal2Lbl.add(after);
+		cal2Lbl.add(weekPnl);
+		cal2Lbl.add(dayOfMonth);
+		add(cal2Lbl);
 		setSize(326, 268);
-		setLocation(0, 0);
+		setLocation(1010, -2);
+		setBackground(new Color(255,0,0));
 		setOpaque(false);
-		setLayout(null);
 		setVisible(true);
 	}
 
@@ -141,7 +155,7 @@ public class CalendarPnl extends JPanel {
 	    for (int i = 0; i < 42; i++) {
 	            JLabel dayJLabel = new JLabel();
 	            dayJLabels[i] = dayJLabel;
-//	            dayJLabels[i].setFont(FD.nanumFont(20));
+	            dayJLabels[i].setFont(FD.nanumFont(16));
 	            dayOfMonth.add(dayJLabels[i]);
 	        }
 	    for (JLabel label : dayJLabels) {
@@ -158,7 +172,6 @@ public class CalendarPnl extends JPanel {
 	    int index = dayOfWeek - 1;
 	    for (int i = 1; i <= daysInMonth; i++) {
 	        dayJLabels[index].setText(String.valueOf(i));
-            dayJLabels[index].setFont(FD.nanumFont(20));
 	        index++;
 	    }
 	    for(int i = 0; i <dayJLabels.length; i++) {
@@ -178,15 +191,14 @@ public class CalendarPnl extends JPanel {
 			        if(Integer.valueOf(labelText)<10) {
 			        	labelText = "0"+clickedLabel.getText();
 			        }
-			        tr.StartDate.setText(2023+"."+setMonth+"."+labelText);
+			       
+			        tr.deadLineDate.setText(2023+"."+setMonth+"."+labelText);
 			    }else{
 			    	System.out.println("널임");
 			    }
 			    }
 			});
 			}
-	    dayOfMonth.setSize(250, 160);
-		dayOfMonth.setLocation(65,100);
 	}
 	   public void showPreviousMonth(int monthInt) {
 	        showMonth(monthInt);
@@ -236,16 +248,14 @@ public class CalendarPnl extends JPanel {
 			dayOfWeek2++;
 			}			
 		}
-		for(int i = 0; i <dayJLabels.length; i++) {
-	
-		dayJLabels[i].addMouseListener(new MouseAdapter() {
+		ma = new MouseAdapter() {
 		    @Override
 		    public void mousePressed(MouseEvent e) {
 		    	JLabel clickedLabel = (JLabel) e.getSource();
 		        String labelText = clickedLabel.getText();
 		        
 		        String setMonth = String.valueOf(monthInt);
-		        if(labelText != null) {
+		    if(labelText != null) {
 		        if(monthInt <10) {
 		        	setMonth = "0"+monthInt;
 		        }else {
@@ -253,40 +263,21 @@ public class CalendarPnl extends JPanel {
 		        if(Integer.valueOf(labelText)<10) {
 		        	labelText = "0"+clickedLabel.getText();
 		        }
-		        tr.StartDate.setText(2023+"."+setMonth+"."+labelText);
+		        System.out.println(1);
 		        tr.deadLineDate.setText(2023+"."+setMonth+"."+labelText);
-        
-		        int index = -1; // 인덱스 초기화
-		        for (int j = 0; j < dayJLabels.length; j++) {
-		            if (clickedLabel == dayJLabels[j]) {
-		                index = j;
-		                for (int i = 0; i < dayJLabels.length; i++) {
-		                    if (i <= index) {
-		                        cal2.dayJLabels[i].setOpaque(true);
-		                        cal2.dayJLabels[i].setBackground(new Color(128, 128, 128));
-		                        cal2.dayJLabels[i].removeMouseListener(cal2.ma); // 버튼 비활성화
-		  
-		                        cal2.before.setOpaque(true);
-		                        cal2.before.setBackground(new Color(128, 128, 128));
-		                        cal2.before.removeMouseListener(cal2.beforeMouse);
-		             
-		                    } else {
-		                        cal2.dayJLabels[i].setOpaque(false);
-		                        cal2.dayJLabels[i].setBackground(null);
-		                        cal2.dayJLabels[i].addMouseListener(cal2.ma);
-		                        
-		                    }
-		                }
-		                break; // 인덱스를 찾았으므로 반복문 종료
-		            }
-		        }
 		        
+		    }else{
+		    	System.out.println("널임");
+		    	}	
 		    }
-		    }
-		});
+		};
+		for(int i = 0; i <dayJLabels.length; i++) {
+			dayJLabels[i].addMouseListener(ma);
 		}
 		dayOfMonth.setSize(250, 160);
-		dayOfMonth.setLocation(30,100);
+		dayOfMonth.setLocation(65,100);
+	
 	}
+
 
 }
