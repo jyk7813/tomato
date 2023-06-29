@@ -38,6 +38,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 	// 투두 리스트 패널 ------------------------------------
 	JPanel todoListPnl = new JPanel();
 	JLabel currentDate = new JLabel(); // 현재 날짜 출력 라벨
+	String todoDate; // 투두 표시 날짜 
 
 	JPanel centerPane = new JPanel();
 	JPanel dayPane = new JPanel(new GridLayout(0, 7, 50, 70));
@@ -56,7 +57,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		month = date.get(Calendar.MONTH) + 1; // 월을 받아와서 month에 대입한다. +1을 하는 이유는 0~11이라
 		boolean toggleSwitch = true;
 		
-		// 상단
+		// 상단 패널 ---------------------------------------
 		yearCombo.setBounds(50, 10, 80, 34);
 		yearLBl.setBounds(140, 10, 50, 34);
 		monthCombo.setBounds(170, 10, 50, 34);
@@ -75,18 +76,21 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		selectPane.setLayout(null);
 		selectPane.setOpaque(false);
 
-		// 투두리스트 패널
-		String todoDate = calManager.getCurrentDate();
+		// 투두리스트 패널 -----------------------------------
+		// 오늘 날짜 출력 라벨
+		todoDate = calManager.getCurrentDate();
 		currentDate.setText(todoDate);
 		currentDate.setFont(fnt);
 		currentDate.setLayout(null);
-		currentDate.setBounds(1026, 200, 240, 100);
-		todoListPnl.setBounds(1200, 300, 857, 870);
-		todoListPnl.setLayout(null);
-		todoListPnl.setOpaque(true);
-		todoListPnl.add(currentDate);
+		currentDate.setBounds(20, 0, 240, 50);
 		
-		// 패널 붙이기
+		todoListPnl.add(currentDate);
+		todoListPnl.setBounds(920, 100, 760, 700);
+		todoListPnl.setLayout(null);
+		todoListPnl.setOpaque(false);
+		
+		
+		// 패널 붙이기 --------------------------------------
 		add(todoListPnl);
 		add(selectPane);
 
@@ -95,16 +99,17 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		setMonth();
 
 		// 날짜만들기
-		centerPane.add(dayPane); // 센터패널에 날짜패널을 추가한다.
-		setDay(); // setDay()메소드를 호출한다.
+		centerPane.add(dayPane); 
+		setDay();
 
-		// ---------------------------기능이벤트를 추가-------------------------------
+		// 기능이벤트를 추가 ----------------------------------
 		prevBtn.addActionListener(this);
 		nextBtn.addActionListener(this);
-		// 년월 이벤트 다시등록
+		// 년월 이벤트 다시등록 --------------------------------
 		yearCombo.addItemListener(this);
 		monthCombo.addItemListener(this);
-
+		
+		// ---------------------------------------------
 		setBounds(0, 0, 1718, 870);
 		setOpaque(false);
 		setVisible(true);
