@@ -52,7 +52,7 @@ import utility.Utility;
 
 public class Taskrefrom extends JPanel{
 	// 중요도
-	private int Imoportance;
+	int Imoportance;
 	// 유틸 패키지
 	IconData IC;
 	FontData FD ;
@@ -64,7 +64,7 @@ public class Taskrefrom extends JPanel{
 	JPanel StarAndDate;
 	JLabel timeManagementNavi;
 	//시작날짜
-	JTextField StartDate;
+	JLabel StartDate;
 	//끝나는 날짜
 	JLabel deadLineDate;
 	//언더
@@ -93,14 +93,28 @@ public class Taskrefrom extends JPanel{
 	Timestamp updateDate;
 	
 	Image image;
+	JToggleButton star;
+	JToggleButton [] stars;
+	private SettingTask st;
 
 
-
-	public Taskrefrom() {
-		this.task = task;
+	public Taskrefrom(MainFrame mainFrame) {
+		// 달력작업
+		// 모든 정보를 뭉쳐서 task 객체로 반환
+		System.out.println("제발 보내져라 진짜 ");
+		// 팝업창에 아이디 입력으로 추가. 
+		// 멤버 추가 로직고민
+		try {
+			task =taskListBypjNo();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		st = new SettingTask(task,this);
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
+
 		//메인
 //		TaskMain();
 		TaskMainLbl();
@@ -108,17 +122,19 @@ public class Taskrefrom extends JPanel{
 		StarAndDate();
 		// 별세팅
 		StarSet();
+		st.SetStar();
+		
 		// 날짜 세팅
 
 //		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 //		String year = dateFormat.format(task.getUpdateDate());
 		
-		SetUpdateLbl("2023.06.22");
+		SetUpdateLbl(st.setUpdataDate());
 		UpdateMentLbl();
 		
 		//끝나는 날짜
-		String deadDate = "2023.07.03";
-		DeadLineDate(deadDate);
+
+		DeadLineDate(st.setDeadDate());
 		DeadLineDateAdd();
 		// 기간 바
 		TimeMangementBar();
@@ -186,24 +202,23 @@ public class Taskrefrom extends JPanel{
 	 *  
 	 */
 	public void StarSet() {
-		//별
-		JToggleButton [] Stars = new JToggleButton[5];
-		Imoportance=2;
+		stars = new JToggleButton[5];
+//		Imoportance=2;
 
-		for (int i = 0; i < Stars.length; i++) {
-			JToggleButton Star = new JToggleButton(IC.getImageIcon("starGray"));
-			Stars[i] = Star;
-			Star.setSize(20,21);
-			Star.setLocation(225+((i+1)*25), 28);
+		for (int i = 0; i < stars.length; i++) {
+			star = new JToggleButton(IC.getImageIcon("starGray"));
+			stars[i] = star;
+			star.setSize(20,21);
+			star.setLocation(225+((i+1)*25), 28);
 			MouseAdapter ma = new MouseAdapter() {
 				 @Override
 				    public void mousePressed(MouseEvent e) {
-						for (int i = 0; i < Stars.length; i++) {
-							Stars[i].setIcon(IC.getImageIcon("starGray"));
+						for (int i = 0; i < stars.length; i++) {
+							stars[i].setIcon(IC.getImageIcon("starGray"));
 						}
 						int index = 0;
 
-						 for (JToggleButton Star : Stars) {
+						 for (JToggleButton Star : stars) {
 							 JToggleButton SelectedStar = (JToggleButton)e.getSource();
 							 if(SelectedStar.equals(Star)) {
 								 Imoportance = index;
@@ -211,19 +226,23 @@ public class Taskrefrom extends JPanel{
 							 index++;
 						 }
 						 for(int j = 0;j <=Imoportance;j++) {
-							 Stars[j].setIcon(IC.getImageIcon("starRed"));
+							 stars[j].setIcon(IC.getImageIcon("starRed"));
 							 
-						 System.out.println(Imoportance+1);
 						 }
 
 					   }
 			
 			};
-			Star.addMouseListener(ma);
-			util.setButtonProperties(Star);
-			StarAndDate.add(Stars[i]);
+			
+//			System.out.println("확인용"+stars.length);
+			star.addMouseListener(ma);
+			util.setButtonProperties(star);
+			StarAndDate.add(stars[i]);
+//			System.out.println(100);
+		
 		}
 	}
+
 	/**
 	 * @author 이호재
 	 * @param FD
@@ -232,7 +251,7 @@ public class Taskrefrom extends JPanel{
 	 */
 	public void SetUpdateLbl(String date) {
 //		if(task!=null) {
-			StartDate = new JTextField(date);
+			StartDate = new JLabel(date);
 //		}else {
 //			
 //		}
@@ -246,35 +265,9 @@ public class Taskrefrom extends JPanel{
 		StartDate.setFont(FD.nanumFont(16));
 		StarAndDate.add(StartDate);
 		
-		String dateString = StartDate.getText();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-//		addComponentListener(new ComponentListener() {
-//
-//			@Override
-//			public void componentShown(ComponentEvent e) {
-//
-//			}
-//
-//			@Override
-//			public void componentResized(ComponentEvent e) {
-//			}
-//
-//			@Override
-//			public void componentMoved(ComponentEvent e) {
-//			}
-//
-//			@Override
-//			public void componentHidden(ComponentEvent e) {
-//				try {
-//					java.util.Date utilDate = dateFormat.parse(dateString);
-//					java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-//					updateDate = new Timestamp(sqlDate.getTime());
-//					System.out.println(updateDate);
-//				} catch (ParseException e2) {
-//					e2.printStackTrace();
-//				}
-//			}
-//		});
+//		String dateString = StartDate.getText();
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+
 	
 	}
 	/**
@@ -414,6 +407,7 @@ public class Taskrefrom extends JPanel{
 		detail.setLayout(null);
 		TaskUnderPanel.add(detail);
 	}
+	
 	private void scrollPaneSetLayout() {
 	    detailScrollPane.setLayout(new ScrollPaneLayout() {
 	        @Override
@@ -452,7 +446,11 @@ public class Taskrefrom extends JPanel{
 	    JLabel content = new JLabel(IC.getImageIcon("contentPanel_write"));
 	    content.setLocation(60,-10);
 	    
-	    contentText = new JTextArea();
+	    contentText = new JTextArea("내용을 입력해주세요!");
+	    if(task != null) {
+	    	contentText.setText(task.getContent());
+	    }
+//	    
 	    contentText.setSize(495, 160);
 	    contentText.setBorder(null); // 테두리 제거
 	    contentText.setOpaque(false);
@@ -666,7 +664,7 @@ public class Taskrefrom extends JPanel{
 
 		try {
 			conn = DBUtil.getConnection();
-			String query = "select * from task where task_no = 1";
+			String query = "select * from task where task_no = 27";
 			stmt = conn.prepareStatement(query);
 
 			rs = stmt.executeQuery();
