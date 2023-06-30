@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import frame.MainFrame;
+import pnl.commonpnl.TopMainPnl;
 import tomatoPj.Member;
 import tomatoPj.Member_Tag_Package_Repository;
 import tomatoPj.Task;
@@ -37,7 +38,7 @@ public class TestTodoPnl extends JPanel{
 	private final static CalendarData CD = new CalendarData();
 
 	private boolean toggleSwitch = true;
-
+	
 	// 달력 출력 패널 클래스 ------------------------------------
 	CalendarSwing printCal = new CalendarSwing();
 
@@ -71,24 +72,25 @@ public class TestTodoPnl extends JPanel{
 		};
 
 		// 상단 패널 -----------------------------------------
-		JPanel topPnl = new JPanel();
+		TopMainPnl topPnl = new TopMainPnl(mainFrame);
+//		JPanel topPnl = new JPanel();
 
 		// 메뉴 이동 버튼
-		JButton logoBtn = UT.getBtnRoll(100, 45, "topLogo");
-		topPnl.add(logoBtn);
-		JButton kanbanMenuBtn = UT.getBtnRoll(820, 60, "navi_board2");
-		topPnl.add(kanbanMenuBtn);
-		JButton todoMenuBtn = UT.getBtnRoll(1020, 60, "navi_planner2");
-		topPnl.add(todoMenuBtn);
-		JButton logoutBtn = UT.getBtnRoll(1649, 40, "logout_btn");
-		topPnl.add(logoutBtn);
+//		JButton logoBtn = UT.getBtnRoll(100, 45, "topLogo");
+//		topPnl.add(logoBtn);
+//		JButton kanbanMenuBtn = UT.getBtnRoll(820, 60, "navi_board2");
+//		topPnl.add(kanbanMenuBtn);
+//		JButton todoMenuBtn = UT.getBtnRoll(1020, 60, "navi_planner2");
+//		topPnl.add(todoMenuBtn);
+//		JButton logoutBtn = UT.getBtnRoll(1649, 40, "logout_btn");
+//		topPnl.add(logoutBtn);
 		topPnl.setBounds(0, 0, 1920, 135);
-		topPnl.setLayout(null);
+//		topPnl.setLayout(null);
 		topPnl.setOpaque(false);
 
-		topBgPnl.setBounds(0, 0, 1920, 135);
-		topBgPnl.setLayout(null);
-		topBgPnl.setOpaque(false);
+//		topBgPnl.setBounds(0, 0, 1920, 135);
+//		topBgPnl.setLayout(null);
+//		topBgPnl.setOpaque(false);
 
 		// 달력 출력 패널 --------------------------------------
 		printCal.setBounds(200, 135, 1718, 870);
@@ -122,7 +124,7 @@ public class TestTodoPnl extends JPanel{
 
 		// 배경 패널에 각 패널 붙이기 ------------------------------
 		bgPnl.add(topPnl); // 상단 패널
-		bgPnl.add(topBgPnl); // 상단 배경 패널
+//		bgPnl.add(topBgPnl); // 상단 배경 패널
 		add(printCal); // 달력 패널
 		bgPnl.add(calBgPnl); // 메인 영역 배경 패널
 		// -----------------------------------------------
