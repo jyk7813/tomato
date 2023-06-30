@@ -22,6 +22,7 @@ public class LogoutBtn extends JButton {
     
     public LogoutBtn(MainFrame mainFrame) {
         iconData = new IconData();
+        utility = new Utility();
         
         logoutIcon = iconData.getImageIcon("logout_btn");
         logoutBrightIcon = iconData.getImageIcon("logout_btn_white");

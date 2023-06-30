@@ -11,39 +11,39 @@ import frame.MainFrame;
 import pnl.commonpnl.TopMainPnl;
 import utility.IconData;
 
-public class CanBanBtn extends JButton {
+public class TodoBtn extends JButton {
 	private IconData iconData;
-	private ImageIcon canBanBrightIcon;
-	private ImageIcon canbanIcon;
+	private ImageIcon todoBrightIcon;
+	private ImageIcon todoIcon;
 
-	public CanBanBtn(MainFrame mainFrame, TopMainPnl topMainPnl) {
+	public TodoBtn(MainFrame mainFrame, TopMainPnl topMainPnl) {
 		iconData = new IconData();
 
-		canbanIcon = iconData.getImageIcon("canbangray");
-		canBanBrightIcon = iconData.getImageIcon("canbanwhite");
+		todoIcon = iconData.getImageIcon("navi_todo");
+		todoBrightIcon = iconData.getImageIcon("navi_todo_white");
 
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				CanBanBtn.this.setIcon(canBanBrightIcon); // LogoutBtn 객체를 참조
+				TodoBtn.this.setIcon(todoBrightIcon); // LogoutBtn 객체를 참조
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				CanBanBtn.this.setIcon(canbanIcon); // LogoutBtn 객체를 참조
+				TodoBtn.this.setIcon(todoIcon); // LogoutBtn 객체를 참조
 			}
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				topMainPnl.showCard("SelectedCanban");
+				mainFrame.showCard("todo");
 
 			}
 
 		});
 
 		// JButton에 아이콘을 설정합니다.
-		this.setIcon(canbanIcon);
+		this.setIcon(todoIcon);
 	}
 
 	@Override
