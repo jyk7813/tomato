@@ -57,7 +57,7 @@ public class TestTodoPnl extends JPanel{
 		JPanel calBgPnl = new JPanel() {
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(IC.getImageIcon("calendarWeek").getImage(), 0, 0, null);
+				g.drawImage(IC.getImageIcon("calendarWeekBg").getImage(), 0, 0, null);
 				setOpaque(false);
 			}
 		};
