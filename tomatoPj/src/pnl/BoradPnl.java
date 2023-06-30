@@ -67,12 +67,4 @@ public class BoradPnl extends JPanel{
 		g.drawImage(image, 0, 0, this);
 	}
 	
-//	private void removeAllProjectPanels() {
-//		for (Component comp : panel_2.getComponents()) {
-//		    panel_2.remove(comp);
-//		}
-//		panel_2.revalidate();
-//		panel_2.repaint();
-//	}
-	
 }
