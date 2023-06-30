@@ -28,7 +28,7 @@ import utility.FontData;
 import utility.IconData;
 import utility.Utility;
 
-public class TestTodoPnl extends JFrame{
+public class TestTodoPnl extends JPanel{
 	private Image image;
 	
 	private final static IconData IC = new IconData();

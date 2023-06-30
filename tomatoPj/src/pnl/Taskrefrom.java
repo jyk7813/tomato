@@ -117,7 +117,7 @@ public class Taskrefrom extends JPanel {
 
 	public Taskrefrom(Task task,MainFrame mainFrame) {
 		Taskrefrom tr = this;
-//		 태그 받아오는 db 함수 필요함
+//		 태그 받아오는 db 함수 필요함s
 // 		 피드백 도 받아 와야함.
 		add(pnl());
 
@@ -155,6 +155,7 @@ public class Taskrefrom extends JPanel {
 						e2.printStackTrace();
 					}
 					returnTask = new Task(title, contentText.getText(), returnImoportance, updateDate, deadLine);
+					System.out.println(returnTask);
 					mainFrame.showCard("columnSelect");
 				}
 			}
