@@ -19,7 +19,7 @@ import utility.IconData;
 public class CalendarPnl extends JPanel {
 	IconData IC;
 	FontData FD;
-	 int monthInt;
+	 int monthInt;	
 	 JPanel dayOfMonth;
 	 JLabel dayJLabel;
 	private Calendar calendar;

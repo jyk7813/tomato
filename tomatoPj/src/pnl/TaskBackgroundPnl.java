@@ -11,17 +11,22 @@ import tomatoPj.Task;
 public class TaskBackgroundPnl extends JPanel{
 	private Image image;
 	private Task task;
-	
+	public Taskrefrom taskrefrom;
 	public TaskBackgroundPnl(Image image, MainFrame mainFrame) {
 		
 		
 		this.image = image;
 		setLayout(null);
 
-		Taskrefrom taskrefrom = new Taskrefrom(task,mainFrame);
+		taskrefrom = new Taskrefrom(mainFrame);
 
 		add(taskrefrom);
 		
+	}
+	public Taskrefrom TaskBackgroundPnl() {
+		
+		return taskrefrom;
+	
 	}
 	@Override
 	protected void paintComponent(Graphics g) {

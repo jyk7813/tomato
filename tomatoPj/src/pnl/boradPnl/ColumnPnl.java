@@ -41,9 +41,9 @@ public class ColumnPnl extends JPanel {
 			}
 
 		}  catch(NullPointerException e2) {
-//			System.out.println("캐치당했습니다");
+
 		} 
-//		System.out.println(taskList.size());
+
 		iconData = new IconData();
 		utility = new Utility();
 		

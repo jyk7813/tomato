@@ -1,6 +1,7 @@
 package frame;
 
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.KeyboardFocusManager;
@@ -24,7 +25,11 @@ import pnl.LoginPnl;
 import pnl.ProjectSelectPnl;
 import pnl.SignUpPnl;
 import pnl.TaskBackgroundPnl;
+import pnl.Taskrefrom;
 import pnl.TestTodoPnl;
+import tomatoPj.Column;
+import tomatoPj.Feedback;
+import tomatoPj.Task;
 import utility.IconData;
 
 public class MainFrame extends JFrame {
@@ -37,7 +42,9 @@ public class MainFrame extends JFrame {
 	private Image projectImage;
 	private Image boradImage;
 	private Image taskImage;
-	public boolean columnActive = true;
+	public boolean columnActive = false;
+	public TaskBackgroundPnl TBP;
+	
 	
 	/**
 	 * Launch the application.
@@ -103,11 +110,12 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void addPnl() {
+		TBP = new TaskBackgroundPnl(taskImage, this);
 		JPanel loginPnl = new LoginPnl(loginImage,this);
 		JPanel signUpPnl = new SignUpPnl(signImage,this);
 		JPanel projectPnl = new ProjectSelectPnl(projectImage, this);
 		JPanel boradPnl = new BoradPnl(boradImage, this);
-		JPanel taskPnl = new TaskBackgroundPnl(taskImage, this);
+		JPanel taskPnl = TBP;
 		JPanel todoPnl = new TestTodoPnl(this);
 		
 		getContentPane().setLayout(new CardLayout(0, 0));
@@ -119,6 +127,16 @@ public class MainFrame extends JFrame {
 		getContentPane().add(todoPnl,"todo");
 		
 	}
-
+	public void setTask(Task task,Column column,Feedback feedback) {
+		Taskrefrom myUpPnl = TBP.taskrefrom;
+		TBP.taskrefrom.settingTask(myUpPnl, task, column, feedback);
+	}
+	 public boolean isPanelVisible(JPanel panel) {
+	        // 현재 보여지는 카드 패널 가져오기
+	        Component currentPanel = this.getComponent(0);
+	        
+	        // 현재 보여지는 카드 패널과 인자로 전달된 패널이 동일한지 확인
+	        return currentPanel == panel;
+	    }
 
 }

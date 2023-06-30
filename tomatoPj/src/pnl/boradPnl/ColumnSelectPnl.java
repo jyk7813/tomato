@@ -66,25 +66,19 @@ public class ColumnSelectPnl extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				// System.out.println("pj_no " + mainFrame.pjInfo.getProject_no());
 				List<Column> col = mainFrame.pjInfo.getCol();
-				// System.out.println("크기" + col.size());
 
-				if (col.size() > 0) {
+				if (col.size() > 0 && mainFrame.columnActive == true) {
 					Collections.sort(col, (a, b) -> a.getColumn_index() - b.getColumn_index());
 					for (Column column : col) {
 						columnCount++;
-						if (column != null) {
-							System.out.println("이호재가 확인합니다");
-						}
 						List<Task> taskList = new ArrayList<>();
 						try {
 							taskList = taskRepo.taskListByColNo(column.getColumn_no());
 						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column,taskList);
+						ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column, taskList);
 						add(columnPnl);
 						columnPnl.setBounds(addColumnPnl.getX() + 31, 0, 350, 940);
 						addColumnPnl.setBounds(addColumnPnl.getX() + columnPnl.getWidth() + 20, addColumnPnl.getY(),
@@ -92,13 +86,18 @@ public class ColumnSelectPnl extends JPanel {
 						add(addColumnPnl);
 						revalidate();
 						repaint();
-
 					}
+					mainFrame.columnActive = false;
 				} else {
 					Collections.sort(col, (a, b) -> a.getColumn_index() - b.getColumn_index());
-					Column column = colRepo.addColumn(mainFrame.pjInfo.getProject_no());
+					Column column = colRepo.addColumn(mainFrame.pjInfo.getProject_no(), mainFrame.pjInfo.getCol().size());
+					try {
+						mainFrame.pjInfo.setCol(colRepo.selectByColNo(mainFrame.pjInfo.getProject_no()));
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					
 					List<Task> taskList = new ArrayList<>();
-					//System.out.println(column);
 					ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column, taskList);
 					add(columnPnl);
 					columnPnl.setBounds(addColumnPnl.getX() + 31, 0, 350, 940);
@@ -107,7 +106,7 @@ public class ColumnSelectPnl extends JPanel {
 					add(addColumnPnl);
 					revalidate();
 					repaint();
-
+					
 				}
 
 			}
