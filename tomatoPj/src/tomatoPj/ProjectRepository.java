@@ -49,8 +49,6 @@ public class ProjectRepository {
 			DBUtil.close(conn);
 		}
 	}
-	
-	public List<PrintPlann>
 
 	public List<Column> returnProjectColumn(int project_no) throws SQLException {
 		Connection conn = null;

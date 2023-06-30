@@ -9,10 +9,6 @@ public class PrintPlanner {
 	private String update; // 태스크 시작일자
 	private String deadLine; // 태스크 종료일자
 	
-	public PrintPlanner() {
-		List<Member>
-		List <Task>
-	}
 	
 	public PrintPlanner(int pk, String select, String title, String update, String deadLine) {
 		super();
