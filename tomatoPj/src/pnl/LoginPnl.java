@@ -1,5 +1,6 @@
 package pnl;
 
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -50,6 +52,8 @@ public class LoginPnl extends JPanel {
 	private ImageIcon loginbrightIcon;
 	private ImageIcon signUpIcon;
 	private ImageIcon signUpDarkIcon;
+	private ImageIcon loginErrorIcon;
+	private JLabel loginErrorLbl;
 
 	private void setLoginMember(MainFrame mainFrame, Member member) {
 		LocalDateTime now = LocalDateTime.now();
@@ -94,6 +98,8 @@ public class LoginPnl extends JPanel {
 		Image logoutImg = iconData.getImageIcon("logout_btn").getImage();
 		Image logoutBrightImg = iconData.getImageIcon("logout_btn_white").getImage();
 		
+		Image loginErrorImg = iconData.getImageIcon("loginError").getImage();
+		
 		idField = new JTextField("testid");
 		passwordField = new JPasswordField("test1234");
 		
@@ -106,9 +112,12 @@ public class LoginPnl extends JPanel {
 		loginbrightIcon = new ImageIcon(loginBrightImg);
 		signUpIcon = new ImageIcon(signUpImg);
 		signUpDarkIcon = new ImageIcon(signUpDarkImg);
+
+		loginErrorIcon = new ImageIcon(loginErrorImg);
 		
 		loginButton = new JButton(loginIcon);
 		signUpBtn = new JButton(signUpIcon);
+		loginErrorLbl = new JLabel(loginErrorIcon);
 		
 
 		idField.addKeyListener(enterKey());
@@ -118,6 +127,7 @@ public class LoginPnl extends JPanel {
 		signUpBtn.setBounds(896, 663, 126, 41);
 		idField.setBounds(870, 509, 255, 41);
 		passwordField.setBounds(870, 570, 255, 41);
+
 
 		idField.setFont(fontData.nanumFont(16));
 		passwordField.setFont(fontData.nanumFont(16));
@@ -135,6 +145,8 @@ public class LoginPnl extends JPanel {
 		add(signUpBtn);
 		add(idField);
 		add(passwordField);
+		
+		add(loginErrorLbl);
 		
 		addComponentListener(new ComponentListener() {
 
@@ -225,6 +237,7 @@ public class LoginPnl extends JPanel {
 						mainFrame.showCard("projectSelect");
 					} else {
 						System.out.println("로그인실패");
+						loginErrorLbl.setBounds(831, 724, 258, 50);
 					}
 					mainFrame.loginMember.setPjListSize(mainFrame.loginMember.getPjList().size());
 				} catch (SQLException e1) {
