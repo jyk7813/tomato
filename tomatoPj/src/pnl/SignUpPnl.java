@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
@@ -179,23 +180,13 @@ public class SignUpPnl extends JPanel {
 		add(btn);
 		add(backBtn);
 
-		addComponentListener(new ComponentListener() {
+		addComponentListener(new ComponentAdapter() {
+		
 			@Override
 			public void componentShown(ComponentEvent e) {
 				idField.requestFocusInWindow();
 			}
 
-			@Override
-			public void componentResized(ComponentEvent e) {
-			}
-
-			@Override
-			public void componentMoved(ComponentEvent e) {
-			}
-
-			@Override
-			public void componentHidden(ComponentEvent e) {
-			}
 		});
 	}
 	/*
