@@ -42,6 +42,7 @@ public class ProjectPnl extends JPanel {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		mainFrame.columnActive = true;
     }
     
     public ProjectPnl(MainFrame mainFrame, int project_no, String title) {
