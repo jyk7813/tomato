@@ -50,6 +50,7 @@ public class TestTodoPnl extends JPanel{
 	private final static Utility UT = new Utility();
 	private final static CalendarData CD = new CalendarData();
 	private PrintPlanner pp;
+	private Project selectPj;
 	private boolean toggleSwitch = true;
 	
 	
@@ -89,11 +90,28 @@ public class TestTodoPnl extends JPanel{
 						System.out.println("투두오류");
 						e1.printStackTrace();
 					}
-//				} else {
+				} else {
+					try {
+						List<Task> taskOfPj = tr.taskListBypjNo(selectPj.getProject_no());
+						List<Member> memsOfPj = new ArrayList<>();
+						List<Member> memOfTask = new ArrayList<>(); 
+							
+						
+//						tkAll = tr.taskListBypjNo(firstPj.getProject_no());
+//						List<Member> memsOfTask = new ArrayList<>();
+//						for(Task t : tkAll) {
+//							memsOfTask.addAll(t.getList());
+//							for(Member m : memsOfTask) {
+//								PrintPlanner p = new PrintPlanner(m.getMember_no(), m.getName(), 
+//							}
+//						}
 					
-//					tkAll = tr.taskListBypjNo(firstPj.getProject_no());
 					
-//					List<Member> mem;
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					
+					List<Member> mem;
 //					for(Task tkList : tkAll) {
 //						tkList.getList();
 //						for(Member mbList : tkList) {
