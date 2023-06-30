@@ -11,6 +11,41 @@ import dbutil.DBUtil;
 
 public class MemberRepository {
 	
+	// 프로젝트 넘버를 넘기면 해당 프로젝트에 참여된 모든 멤버 리스트 리턴
+	// 06/30 지윤씨 여기에요///////////////////////////
+	public List<Member> getMemberBypj_no(int project_no) throws SQLException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<Member> list = new ArrayList<>();
+		try {
+			conn = DBUtil.getConnection();
+			String query = "SELECT * FROM `member` AS a\r\n" + 
+					"JOIN (\r\n" + 
+					"SELECT * FROM `member_tag` WHERE `project_no` = ? ) AS b\r\n" + 
+					"ON a.member_no = b.member_no";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, project_no);
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				int member_no = rs.getInt("member_no");
+				String id = rs.getString("id");
+				String pwd = rs.getString("pwd");
+				String e_mail = rs.getString("e-mail");
+				String name = rs.getString("name");
+				String mbti = rs.getString("mbti");
+				int active = rs.getInt("active");
+				list.add(new Member(member_no, id, pwd, e_mail, name, mbti, active));
+			}
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+		return list;
+	}
+	
 	
 	public List<Member> selectAll(Connection conn) throws SQLException {
 		PreparedStatement stmt = null;
