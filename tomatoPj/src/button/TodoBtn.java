@@ -10,18 +10,21 @@ import javax.swing.JButton;
 import frame.MainFrame;
 import pnl.commonpnl.TopMainPnl;
 import utility.IconData;
+import utility.Utility;
 
 public class TodoBtn extends JButton {
 	private IconData iconData;
 	private ImageIcon todoBrightIcon;
 	private ImageIcon todoIcon;
+	private Utility utility;
 
 	public TodoBtn(MainFrame mainFrame, TopMainPnl topMainPnl) {
 		iconData = new IconData();
+		utility = new Utility();
 
-		todoIcon = iconData.getImageIcon("navi_todo");
-		todoBrightIcon = iconData.getImageIcon("navi_todo_white");
-
+		todoIcon = iconData.getImageIcon("navi_planner");
+		todoBrightIcon = iconData.getImageIcon("navi_planner_white");
+		utility.setButtonProperties(this);
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -34,9 +37,14 @@ public class TodoBtn extends JButton {
 			}
 
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
+			public void mousePressed(MouseEvent arg0) {
+				mainFrame.getContentPane().removeAll();
+				mainFrame.addPnl();
+				topMainPnl.addPnl(mainFrame);
+				topMainPnl.showCard("SelectedTodo");
 				mainFrame.showCard("todo");
+				revalidate();
+				repaint();
 
 			}
 

@@ -50,10 +50,11 @@ public class SettingTask {
 		return updateDate;
 	}
 	public void SetStar() {
+		if(task != null) {
 		for(int i = 0; i<task.getImportance(); i++) {
-			System.out.println(200);
 			ts.returnImoportance= task.getImportance();
 			ts.stars[i].setIcon(IC.getImageIcon("starRed"));
+		}
 		}
 	}
 	public String setContent() {

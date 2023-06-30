@@ -39,6 +39,7 @@ public class CalendarPnl2 extends JPanel {
 	MouseListener ma;
 	MouseListener  beforeMouse;
 	JLabel before;
+	JLabel month;
 	public CalendarPnl2(Taskrefrom tr) {
 		this.tr = tr;
 		IC = new IconData();
@@ -48,7 +49,7 @@ public class CalendarPnl2 extends JPanel {
 		cal2Lbl.setLocation(605, 293);
 
 		monthInt = 6;
-		JLabel month = new JLabel(monthInt + "월");
+		month = new JLabel(monthInt + "월");
 
 		
 		
@@ -58,9 +59,9 @@ public class CalendarPnl2 extends JPanel {
 		month.setSize(50, 30);
 		month.setLocation(160, 30);
 
-		before = new JLabel("전달");
-		before.setSize(50, 50);
-		before.setLocation(125, 20);
+		before = new JLabel(IC.getImageIcon("calendarRed_back"));
+		before.setSize(18, 18);
+		before.setLocation(125, 35);
 		beforeMouse = new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -76,9 +77,9 @@ public class CalendarPnl2 extends JPanel {
 
 		before.addMouseListener(beforeMouse);
 
-		JLabel after = new JLabel("다음달");
-		after.setSize(50, 50);
-		after.setLocation(205, 20);
+		JLabel after = new JLabel(IC.getImageIcon("calendarRed_next"));
+		after.setSize(18, 18);
+		after.setLocation(205, 35);
 		after.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
