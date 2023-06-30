@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.text.Utilities;
 
 import frame.MainFrame;
+import utility.CalendarData;
 import utility.FontData;
 import utility.IconData;
 import utility.Utility;
@@ -117,7 +118,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		dayPane.setBounds(0, 0, 781, 733);
 		dayPane.setOpaque(false);
 		centerPane.add(dayPane); 
-		centerPane.setBounds(0, 130, 880, 750);
+		centerPane.setBounds(0, 130, 770, 750);
 		centerPane.setLayout(null);
 		centerPane.setOpaque(false);
 		
