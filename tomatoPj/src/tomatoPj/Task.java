@@ -2,6 +2,7 @@ package tomatoPj;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Task {
@@ -34,6 +35,7 @@ public class Task {
 		this.deadLine = deadLine;
 		this.active = active;
 	}
+	
 	public int getTask_no() {
 		return task_no;
 	}
