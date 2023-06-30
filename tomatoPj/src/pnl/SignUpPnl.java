@@ -29,6 +29,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import button.AddPictureBtn;
 import dbutil.DBUtil;
 import frame.MainFrame;
 import tomatoPj.MemberRepository;
@@ -52,7 +53,8 @@ public class SignUpPnl extends JPanel {
 	private Utility utility;
 	private IconData iconData;
 	private JLabel[] checkLbl;
-	private JButton inputImgBtn;
+	private AddPictureBtn addPictureBtn;
+	public JLabel testLbl;
 	
 	public SignUpPnl(Image image, MainFrame mainFrame) {
 		regex = new Regex();
@@ -72,45 +74,18 @@ public class SignUpPnl extends JPanel {
 		btn = new JButton();
 		btn.setBackground(Color.BLACK);
 		backBtn = new JButton(iconData.getImageIcon("login_logo"));
+		addPictureBtn = new AddPictureBtn(this);
+		testLbl = new JLabel();
+		
 		for (int i = 0; i < checkLbl.length; i++) {
 			checkLbl[i] = new JLabel();
 		} 
-		inputImgBtn = new JButton("응애 나 이미지버튼");
+		addPictureBtn.setBounds(30, 30, 30, 30);
 		
-//		inputImgBtn.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				JFileChooser fileChooser = new JFileChooser();
-//				FileNameExtensionFilter filter = new FileNameExtensionFilter("Image files",
-//						ImageIO.getReaderFileSuffixes());
-//				fileChooser.setFileFilter(filter);
-//				int returnValue = fileChooser.showOpenDialog(null);
-//				if (returnValue == JFileChooser.APPROVE_OPTION) {
-//					File selectedFile = fileChooser.getSelectedFile();
-//					double bytes = selectedFile.length();
-//					double kilobytes = bytes / 1024;
-//					double megabytes = kilobytes / 1024;
-//
-//					BufferedImage originalImage;
-//					try {
-//						originalImage = ImageIO.read(selectedFile);
-//
-//						int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
-//
-//						BufferedImage resizedImage = resizeImage(originalImage, type);
-//						ImageIcon imageIcon = new ImageIcon(resizedImage);
-//
-//						registeredImage.setIcon(imageIcon);
-//
-//					} catch (IOException e1) {
-//						e1.printStackTrace();
-//					}
-//
-//					imageRoot.setText(selectedFile.getAbsolutePath());
-//				}
-//			}
-//		});
+		
+		testLbl = new JLabel();
+		testLbl.setBounds(960, 600, 60, 60);
+		add(testLbl);
 		
 		signUpActionListener(mainFrame);
 		settingTextField();
@@ -179,6 +154,7 @@ public class SignUpPnl extends JPanel {
 		add(nameField);
 		add(btn);
 		add(backBtn);
+		add(addPictureBtn);
 
 		addComponentListener(new ComponentAdapter() {
 		
