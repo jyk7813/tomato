@@ -52,6 +52,7 @@ public class SettingTask {
 	public void SetStar() {
 		for(int i = 0; i<task.getImportance(); i++) {
 			System.out.println(200);
+			ts.returnImoportance= task.getImportance();
 			ts.stars[i].setIcon(IC.getImageIcon("starRed"));
 		}
 	}

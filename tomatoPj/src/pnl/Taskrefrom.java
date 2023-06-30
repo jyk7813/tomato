@@ -1,5 +1,7 @@
 package pnl;
 
+
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -7,6 +9,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -15,39 +19,52 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 import dbutil.DBUtil;
+import frame.MainFrame;
 import tomatoPj.Feedback;
+import tomatoPj.Function_Tag;
+import tomatoPj.Member;
 import tomatoPj.Task;
 import utility.FontData;
 import utility.IconData;
 import utility.Utility;
 
 public class Taskrefrom extends JPanel {
-	// 중요도
-	int Imoportance;
 	// 유틸 패키지
 	IconData IC;
 	FontData FD;
 	Utility util;
 
 	// 메인 패널
+	JPanel pnl;
 	JLabel TaskPnlMainLbl;
 	// 별과 날자
 	JPanel StarAndDate;
 	JLabel timeManagementNavi;
+	int Imoportance;
+	// 별리셋용 Imoportance
 	// 시작날짜
 	JLabel StartDate;
 	// 끝나는 날짜
@@ -61,10 +78,11 @@ public class Taskrefrom extends JPanel {
 //	JLabel memberIcon;
 	int Count;
 	// 내용 패널
+	JTextField taskTitle;
 	JPanel detail;
 	JScrollPane detailScrollPane;
 	JTextArea contentText;
-
+	JPopupMenu popupMenu;
 	// 피드백 패널
 	JPanel feedBack;
 	JScrollPane feedBackscrollPane;
@@ -72,27 +90,111 @@ public class Taskrefrom extends JPanel {
 	// 태그 패널
 	JPanel tagPnl;
 	int CountTag;
-
-	// Task 에 줘야하는거
-	Task task;
-	Timestamp updateDate;
-
 	Image image;
 	JToggleButton star;
 	JToggleButton[] stars;
 	SettingTask st;
-	
+	// 폰트 사이즈 조정
+	int FontSize;
+	// Task 에 줘야하는거
+	String title;
+	Timestamp updateDate;
+	Timestamp deadLine;
+	int returnImoportance;
+	// 돌려주는 테스크.
+	Task returnTask;
 	// 캘린더 2
 	CalendarPnl2 cal2;
-	public Taskrefrom(Task task) {
+	CalendarPnl cal;
+	// 받는 정보들
+	// 멤버목록 테스크 목록
+	MainFrame MF;
+	Task TakeTask;
+	List<Member> memberList;
+	List<Function_Tag> Function_Tag_List;
 
+	CardLayout cardLayout;
+
+	public Taskrefrom(Task task, MainFrame mainFrame) {
+		Taskrefrom tr = this;
+//		 태그 받아오는 db 함수 필요함
+// 		 피드백 도 받아 와야함.
 		add(pnl());
-		add(cal2 = new CalendarPnl2(this));
-		CalendarPnl cal = new CalendarPnl(this,cal2);
-		add(cal);
 
-		setSize(1338, 727);
-		setLocation(292, 294);
+		add(cal2 = new CalendarPnl2(this));
+		cal2.setLocation(1305, 291);
+		cal = new CalendarPnl(this, cal2);
+		cal.setLocation(292, 292);
+		add(cal);
+		MouseAdapter outsideClickListener = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// 패널 외부 클릭 이벤트 발생 시 실행할 코드 작성
+				if (e.getSource() == this) {
+				} else {
+					title = taskTitle.getText();
+					String updateDateString = StartDate.getText();
+					String deadLineString = deadLineDate.getText();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+					try {
+						Date updateDatetoTimestamp = dateFormat.parse(updateDateString);
+						Date deadLinetoTimestamp = dateFormat.parse(deadLineString);
+						int result = updateDatetoTimestamp.compareTo(deadLinetoTimestamp);
+						if (result <= 0) {
+
+							updateDate = new Timestamp(updateDatetoTimestamp.getTime());
+							deadLine = new Timestamp(deadLinetoTimestamp.getTime());
+						} else {
+							updateDate = new Timestamp(updateDatetoTimestamp.getTime());
+							deadLine = null;
+						}
+
+						// 변환된 Timestamp 객체 사용
+					} catch (ParseException e2) {
+						// 날짜 포맷이 잘못된 경우 예외 처리
+						e2.printStackTrace();
+					}
+					returnTask = new Task(title, contentText.getText(), returnImoportance, updateDate, deadLine);
+					mainFrame.showCard("columnSelect");
+				}
+			}
+		};
+
+		// 프레임에 패널 외부 클릭 리스너 추가
+		addMouseListener(outsideClickListener);
+
+		// pnl에 대한 클릭 액션 추가
+		pnl.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// 클릭 이벤트 발생 시 실행할 코드 작성
+				// 예시: pnl이 클릭되었을 때의 동작 처리
+				System.out.println("pnl이 클릭되었습니다.");
+			}
+		});
+
+		// cal에 대한 클릭 액션 추가
+		cal.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// 클릭 이벤트 발생 시 실행할 코드 작성
+				// 예시: cal이 클릭되었을 때의 동작 처리
+				System.out.println("cal이 클릭되었습니다.");
+			}
+		});
+
+		// cal2에 대한 클릭 액션 추가
+		cal2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// 클릭 이벤트 발생 시 실행할 코드 작성
+				// 예시: cal2가 클릭되었을 때의 동작 처리
+				System.out.println("cal2가 클릭되었습니다.");
+			}
+		});
+
+		setSize(1920, 1080);
+		setLocation(0, 0);
 		setLayout(null);
 		setVisible(true);
 		setOpaque(false);
@@ -100,23 +202,23 @@ public class Taskrefrom extends JPanel {
 	}
 
 	public JPanel pnl() {
-		JPanel pnl = new JPanel();
+		pnl = new JPanel();
 		// 달력작업
 		// 모든 정보를 뭉쳐서 task 객체로 반환
 		// 팝업창에 아이디 입력으로 추가.
 		// 멤버 추가 로직고민
 		try {
-			task = taskListBypjNo();
+			TakeTask = taskListBypjNo();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Feedback feedback = new Feedback(6, 27, 1, "대본수정");
-		st = new SettingTask(task, this, feedback);
+		st = new SettingTask(TakeTask, this, feedback);
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
-
+		togglePanel();
 		// 메인
 //		TaskMain();
 		TaskMainLbl();
@@ -144,11 +246,13 @@ public class Taskrefrom extends JPanel {
 		ProTitleAndMember();
 		MemberPnl();
 		selectMember();
+		TaskTitle();
 		// 내용 패널
 		detailPnl();
 		detailTextFiled();
 		scrollPaneSetLayout();
-
+		detailFontLbl();
+		detailFontBox();
 		// tag
 		TagPnl();
 		TagSet();
@@ -159,14 +263,25 @@ public class Taskrefrom extends JPanel {
 
 		TaskPnlMainLbl.add(StarAndDate);
 		TaskPnlMainLbl.add(TaskUnderPanel);
-		
 
 		pnl.add(TaskPnlMainLbl);
-	
 
-		pnl.setBounds(350, 0, 631, 725);
+		pnl.setBounds(645, 293, 631, 725);
 		pnl.setOpaque(false);
 		return pnl;
+	}
+
+	public void togglePanel() {
+		boolean isVisible = pnl.isVisible();
+
+		if (isVisible) {
+			// 패널이 이미 켜져있을 때의 동작
+			System.out.println("패널이 이미 켜져있습니다.");
+		} else {
+			// 패널을 켜는 동작
+			pnl.setVisible(true);
+			System.out.println("패널을 켭니다.");
+		}
 	}
 
 	public void TaskMainLbl() {
@@ -174,7 +289,7 @@ public class Taskrefrom extends JPanel {
 		TaskPnlMainLbl.setSize(631, 725);
 		TaskPnlMainLbl.setLocation(645, 290);
 		TaskPnlMainLbl.setLayout(new BoxLayout(TaskPnlMainLbl, BoxLayout.Y_AXIS));
-//		TaskPnlMainLbl.setOpaque(false);
+		TaskPnlMainLbl.setOpaque(false);
 	}
 
 	/**
@@ -216,6 +331,7 @@ public class Taskrefrom extends JPanel {
 						JToggleButton SelectedStar = (JToggleButton) e.getSource();
 						if (SelectedStar.equals(Star)) {
 							Imoportance = index;
+							returnImoportance = index + 1;
 						}
 						index++;
 					}
@@ -228,11 +344,9 @@ public class Taskrefrom extends JPanel {
 
 			};
 
-//			System.out.println("확인용"+stars.length);
 			star.addMouseListener(ma);
 			util.setButtonProperties(star);
 			StarAndDate.add(stars[i]);
-//			System.out.println(100);
 
 		}
 	}
@@ -255,9 +369,6 @@ public class Taskrefrom extends JPanel {
 		StartDate.setForeground(new Color(36, 161, 138));
 		StartDate.setFont(FD.nanumFont(16));
 		StarAndDate.add(StartDate);
-
-		String dateString = StartDate.getText();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 
 	}
 
@@ -345,12 +456,22 @@ public class Taskrefrom extends JPanel {
 		TaskUnderPanel.add(proTitleAndMember);
 	}
 
+	public void TaskTitle() {
+		taskTitle = new JTextField(TakeTask.getTitle());
+		taskTitle.setBorder(null);
+		taskTitle.setFont(FD.nanumFontBold(20));
+		taskTitle.setSize(200, 53);
+		taskTitle.setLocation(60, -10);
+
+		proTitleAndMember.add(taskTitle);
+	}
+
 	public void MemberPnl() {
 		MemberPnl = new JPanel();
 		MemberPnl.setOpaque(false);
 		MemberPnl.setLayout(null);
 		MemberPnl.setSize(499, 94);
-		MemberPnl.setLocation(60, 20);
+		MemberPnl.setLocation(60, 30);
 		proTitleAndMember.add(MemberPnl);
 	}
 
@@ -403,6 +524,54 @@ public class Taskrefrom extends JPanel {
 		TaskUnderPanel.add(detail);
 	}
 
+	public void detailFontLbl() {
+		JLabel detailFontLbl = new JLabel("FontSize");
+		detailFontLbl.setFont(FD.nanumFontBold(12));
+		detailFontLbl.setSize(80, 50);
+		detailFontLbl.setLocation(5, 0);
+		detail.add(detailFontLbl);
+	}
+
+	public void detailFontBox() {
+		JTextField detailFontBox = new JTextField();
+		detailFontBox.setFont(FD.nanumFontBold(13));
+		detailFontBox.setDocument(new PlainDocument() {
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+				if (str == null) {
+					return;
+				}
+
+				try {
+					if (getLength() + str.length() <= 2) {
+						FontSize = Integer.parseInt(str);
+						super.insertString(offs, str, a);
+					}
+				} catch (NumberFormatException e) {
+					// 입력된 값이 정수가 아닌 경우 처리할 로직을 작성하세요.
+					// 예를 들어, 경고 메시지를 표시하거나 입력을 무시할 수 있습니다.
+				}
+			}
+		});
+		detailFontBox.setSize(30, 25);
+		detailFontBox.setLocation(15, 35);
+		detail.add(detailFontBox);
+
+		JButton change = new JButton("버튼");
+		change.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				contentText.setFont(FD.nanumFont(Integer.valueOf(detailFontBox.getText())));
+			}
+		});
+		change.setSize(18, 18);
+		change.setLocation(20, 60);
+		detail.add(change);
+
+	}
+
 	private void scrollPaneSetLayout() {
 		detailScrollPane.setLayout(new ScrollPaneLayout() {
 			@Override
@@ -439,11 +608,18 @@ public class Taskrefrom extends JPanel {
 
 	public void detailTextFiled() {
 		JLabel content = new JLabel(IC.getImageIcon("contentPanel_write"));
-		content.setLocation(60, -10);
+
+		JFrame toggleFrame = new JFrame("Toggle Window");
+		toggleFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		toggleFrame.setSize(300, 200);
+		toggleFrame.setLayout(null);
 
 		contentText = new JTextArea(st.setContent());
-		if (task != null) {
-			contentText.setText(task.getContent());
+		contentText.setFont(FD.nanumFont(18));
+		content.setLocation(60, -10);
+
+		if (TakeTask != null) {
+			contentText.setText(TakeTask.getContent());
 		}
 //	    
 		contentText.setSize(495, 160);
@@ -602,12 +778,14 @@ public class Taskrefrom extends JPanel {
 		feedBackLbl.setLocation(60, 0);
 
 		feedBackText = new JTextArea(st.setFeedback());
+		feedBackText.setFont(FD.nanumFont(18));
 		feedBackText.setSize(495, 128);
 		feedBackText.setBorder(null); // 테두리 제거
 		feedBackText.setOpaque(false);
 		feedBackText.setLineWrap(true); // 줄바꿈 활성화
 
 		feedBackscrollPane = new JScrollPane(feedBackText);
+		feedBackscrollPane.setFont(FD.nanumFont(18));
 		feedBackscrollPane.setSize(495, 128);
 		feedBackscrollPane.setBorder(null);
 		feedBackscrollPane.setOpaque(false);
@@ -645,13 +823,13 @@ public class Taskrefrom extends JPanel {
 			}
 		});
 		feedBackLbl.setFont(FD.nanumFont(1));
-		feedBackLbl.add(feedBackscrollPane);
+
 		feedBackLbl.setSize(482, 72);
 //	    content.setLocation(0, 0);
 
 		// contentText의 위치 조정
 		feedBackscrollPane.setLocation(10, 40); // 원하는 위치로 조정
-
+		feedBackscrollPane.setFont(FD.nanumFont(18));
 		feedBack.add(feedBackLbl);
 	}
 
@@ -663,7 +841,7 @@ public class Taskrefrom extends JPanel {
 
 		try {
 			conn = DBUtil.getConnection();
-			String query = "select * from task where task_no = 27";
+			String query = "select * from task where task_no = 36";
 
 			stmt = conn.prepareStatement(query);
 
@@ -689,39 +867,40 @@ public class Taskrefrom extends JPanel {
 		return task;
 	}
 
-	public static class MyFrame extends JFrame {
-		IconData IC;
-
-		public MyFrame() {
-			IC = new IconData();
-			Task testTask = null;
-			Taskrefrom task;
-			try {
-				testTask = taskListBypjNo();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			task = new Taskrefrom(testTask);
-
-			JLabel Background = new JLabel(IC.getImageIcon("selectTask(BG)"));
-
-			Background.setSize(1920, 1080);
-			Background.add(task);
-			add(Background);
-			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setTitle("My Frame");
-			setSize(1920, 1080);
-			setBackground(new Color(255, 0, 0));
-			setLayout(null);
-			setVisible(true);
-		}
-	}
-
-	public static void main(String[] args) {
-		new MyFrame();
-//		frame.add(task);
-
-	}
+//	public static class MyFrame extends JFrame {
+//		IconData IC;
+//
+//		public MyFrame() {
+//			IC = new IconData();
+//			MainFrame mainFrame;
+//			Task testTask = null;
+//			Taskrefrom task;
+//			try {
+//				testTask = taskListBypjNo();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			task = new Taskrefrom(testTask);
+//
+//			JLabel Background = new JLabel(IC.getImageIcon("selectTask(BG)"));
+//
+//			Background.setSize(1920, 1080);
+//			Background.add(task);
+//			add(Background);
+//			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//			setTitle("My Frame");
+//			setSize(1920, 1080);
+//			setBackground(new Color(255, 0, 0));
+//			setLayout(null);
+//			setVisible(true);
+//		}
+//	}
+//
+//	public static void main(String[] args) {
+//		new MyFrame();
+////		frame.add(task);
+//
+//	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
