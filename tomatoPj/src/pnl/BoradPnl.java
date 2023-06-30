@@ -44,13 +44,14 @@ public class BoradPnl extends JPanel{
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-				List<Column> col = mainFrame.pjInfo.getCol();
+				//List<Column> col = mainFrame.pjInfo.getCol();
 				
-				panel_2.columnSelectPnl.thisCol = col.get(0);
-				title = col.get(0).getTitle();
-				System.out.println("제목이없어? " + col.get(0).getTitle());
+//				panel_2.columnSelectPnl.thisCol = col.get(0);
+//				title = col.get(0).getTitle();
+//				System.out.println("제목이없어? " + col.get(0).getTitle());
 				
 				int size = mainFrame.pjInfo.getCol().size();
+				
 				if(size>0) {
 					panel_2.columnSelectPnl.addBtn.doClick();
 				}
@@ -66,13 +67,5 @@ public class BoradPnl extends JPanel{
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, this);
 	}
-	
-//	private void removeAllProjectPanels() {
-//		for (Component comp : panel_2.getComponents()) {
-//		    panel_2.remove(comp);
-//		}
-//		panel_2.revalidate();
-//		panel_2.repaint();
-//	}
 	
 }

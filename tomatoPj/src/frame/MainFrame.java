@@ -6,6 +6,8 @@ import java.awt.Image;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -29,6 +31,13 @@ public class MainFrame extends JFrame {
 	private IconData iconData;
 	public LoginMember loginMember;
 	public SelectProjectInfo pjInfo;
+	private Image loginImage;
+	private Image signImage;
+	private Image projectImage;
+	private Image boradImage;
+	private Image taskImage;
+	public boolean columnActive = true;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -76,24 +85,29 @@ public class MainFrame extends JFrame {
 			}
 		});
         
-		Image loginImage = iconData.getImageIcon("login(BG)remake2").getImage();
-		Image signImage = iconData.getImageIcon("signup(BG)remake2").getImage();
-		Image projectImage = iconData.getImageIcon("projectSelect(BG)remake").getImage();
-		Image boradImage = iconData.getImageIcon("Background").getImage();
-		Image taskImage = iconData.getImageIcon("selectTask(BG)").getImage();
+        // frame의 타이틀 바를 숨깁니다.
+        setUndecorated(true);
+        
+		loginImage = iconData.getImageIcon("login(BG)remake2").getImage();
+		signImage = iconData.getImageIcon("signup(BG)remake2").getImage();
+		projectImage = iconData.getImageIcon("projectSelect(BG)remake").getImage();
+		boradImage = iconData.getImageIcon("Background").getImage();
+		taskImage = iconData.getImageIcon("selectTask(BG)").getImage();
 //		Image todoImage = iconData.getImageIcon("Background").getImage();
+		addPnl();
 		
+		
+		
+	}
+	
+	public void addPnl() {
 		JPanel loginPnl = new LoginPnl(loginImage,this);
 		JPanel signUpPnl = new SignUpPnl(signImage,this);
 		JPanel projectPnl = new ProjectSelectPnl(projectImage, this);
 		JPanel boradPnl = new BoradPnl(boradImage, this);
 		JPanel taskPnl = new TaskBackgroundPnl(taskImage, this);
 		JPanel todoPnl = new TestTodoPnl(this);
-
-
-		// frame의 타이틀 바를 숨깁니다.
-		setUndecorated(true);
-
+		
 		getContentPane().setLayout(new CardLayout(0, 0));
 		getContentPane().add(loginPnl,"login");
 		getContentPane().add(signUpPnl,"signUp");
@@ -102,7 +116,7 @@ public class MainFrame extends JFrame {
 		getContentPane().add(taskPnl,"task");
 		getContentPane().add(todoPnl,"todo");
 		
-		
 	}
+
 
 }

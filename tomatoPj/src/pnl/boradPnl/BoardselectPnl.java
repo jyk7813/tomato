@@ -40,12 +40,12 @@ public class BoardselectPnl extends JPanel {
 //        add(columnSelectPnl);
         scrollPane.setViewportView(columnSelectPnl);
         
-        addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentShown(ComponentEvent e) {
-				removeAllProjectPanels();
-			}
-		});
+//        addComponentListener(new ComponentAdapter() {
+//			@Override
+//			public void componentShown(ComponentEvent e) {
+//				removeAllProjectPanels();
+//			}
+//		});
         
         
         
@@ -67,13 +67,13 @@ public class BoardselectPnl extends JPanel {
 //        
         
     }
-    private void removeAllProjectPanels() {
-		for (Component comp : columnSelectPnl.getComponents()) {
-			columnSelectPnl.remove(comp);
-		}
-		columnSelectPnl.revalidate();
-		columnSelectPnl.repaint();
-	}
+//    private void removeAllProjectPanels() {
+//		for (Component comp : columnSelectPnl.getComponents()) {
+//			columnSelectPnl.remove(comp);
+//		}
+//		columnSelectPnl.revalidate();
+//		columnSelectPnl.repaint();
+//	}
     
 
     
