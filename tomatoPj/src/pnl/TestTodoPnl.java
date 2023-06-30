@@ -89,11 +89,17 @@ public class TestTodoPnl extends JPanel{
 						System.out.println("투두오류");
 						e1.printStackTrace();
 					}
-//				} else {
+				} else {
+					try {
+						tkAll = tr.taskListBypjNo(firstPj.getProject_no());
 					
-//					tkAll = tr.taskListBypjNo(firstPj.getProject_no());
 					
-//					List<Member> mem;
+					
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					
+					List<Member> mem;
 //					for(Task tkList : tkAll) {
 //						tkList.getList();
 //						for(Member mbList : tkList) {
