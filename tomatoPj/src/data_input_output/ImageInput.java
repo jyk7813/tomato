@@ -1,8 +1,10 @@
 package data_input_output;
 
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,6 +14,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.MetadataException;
+import com.drew.metadata.exif.ExifIFD0Directory;
 
 public class ImageInput {
 	
@@ -30,46 +39,92 @@ public class ImageInput {
 	        File selectedFile = fileChooser.getSelectedFile();
 
 	        try {
-	            // Convert the image to PNG format
-	            convertImageToPNG(selectedFile);
-
-	            BufferedImage originalImage = ImageIO.read(selectedFile);
+	            BufferedImage originalImage = rotateImageIfRequired(selectedFile);
 	            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	            ImageIO.write(originalImage, "png", baos); // If your image is in .png format, change "jpg" to "png"
+	            ImageIO.write(originalImage, "png", baos); 
 	            imageBytes = baos.toByteArray();
-	        } catch (IOException e) {
+	        } catch (IOException | ImageProcessingException e) {
 	            e.printStackTrace();
-	        }
+	        } catch (MetadataException e) {
+				e.printStackTrace();
+			}
 	    }
 
 	    return imageBytes;
 	}
+
+	private static BufferedImage rotateImageIfRequired(File imgFile) throws IOException, ImageProcessingException, MetadataException {
+	    BufferedImage originalImage = ImageIO.read(imgFile);
+	    int orientation = getOrientation(imgFile);
+
+	    switch (orientation) {
+	        case 1:
+	            return originalImage;
+	        case 3:
+	            return rotateImage(originalImage, 180);
+	        case 6:
+	            return rotateImage(originalImage, 90);
+	        case 8:
+	            return rotateImage(originalImage, -90);
+	        default:
+	            return originalImage;
+	    }
+	}
+
+	private static int getOrientation(File imgFile) throws IOException, ImageProcessingException, MetadataException {
+	    Metadata metadata = ImageMetadataReader.readMetadata(imgFile);
+	    Directory directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+	    int orientation = 1;
+	    if (directory != null && directory.containsTag(ExifIFD0Directory.TAG_ORIENTATION)) {
+	        orientation = directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
+	    }
+	    return orientation;
+	}
+
+	private static BufferedImage rotateImage(BufferedImage originalImage, double degrees) {
+	    AffineTransform transform = new AffineTransform();
+	    transform.rotate(Math.toRadians(degrees), originalImage.getWidth() / 2, originalImage.getHeight() / 2);
+
+	    AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
+	    return op.filter(originalImage, null);
+	}
+
 	
 	public byte[] resizeImage(byte[] originalImageBytes) {
 	    byte[] resizedImageBytes = null;
 
 	    try {
-	        // 바이트 배열을 BufferedImage로 변환
+	        // Convert byte array to BufferedImage
 	        ByteArrayInputStream bais = new ByteArrayInputStream(originalImageBytes);
 	        BufferedImage originalImage = ImageIO.read(bais);
 
-	        // 이미지를 60x60 사이즈로 리사이징
-	        BufferedImage resizedImage = new BufferedImage(60, 60, originalImage.getType());
-	        Graphics2D g2 = resizedImage.createGraphics();
-	        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	        g2.drawImage(originalImage, 0, 0, 60, 60, null);
-	        g2.dispose();
+	        // Create a square canvas larger than the original image
+	        int maxDimension = Math.max(originalImage.getWidth(), originalImage.getHeight());
+	        BufferedImage squareImage = new BufferedImage(maxDimension, maxDimension, BufferedImage.TYPE_INT_ARGB);
 
-	        // 원형으로 자르기
-	        BufferedImage circleBuffer = new BufferedImage(60, 60, BufferedImage.TYPE_INT_ARGB);
-	        Graphics2D g2d = circleBuffer.createGraphics();
-	        g2d.setClip(new Ellipse2D.Float(0, 0, 60, 60));
-	        g2d.drawImage(resizedImage, 0, 0, 60, 60, null);
-	        g2d.dispose();
+	        // Calculate the position of the original image on the canvas (to center it)
+	        int x = (maxDimension - originalImage.getWidth()) / 2;
+	        int y = (maxDimension - originalImage.getHeight()) / 2;
 
-	        // BufferedImage를 바이트 배열로 다시 변환
+	        // Draw the original image onto the canvas
+	        Graphics2D g = squareImage.createGraphics();
+	        g.drawImage(originalImage, x, y, null);
+
+	        // Create a circular clip
+	        g.setClip(new Ellipse2D.Float(0, 0, maxDimension, maxDimension));
+
+	        // Draw the circular clip onto the image
+	        g.drawImage(squareImage, 0, 0, maxDimension, maxDimension, null);
+	        g.dispose();
+
+	        // Resize the image to 60x60 while maintaining the aspect ratio
+	        Image scaledImage = squareImage.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+	        BufferedImage bufferedScaledImage = new BufferedImage(60, 60, BufferedImage.TYPE_INT_ARGB);
+	        bufferedScaledImage.getGraphics().drawImage(scaledImage, 0, 0, null);
+
+	        // Convert BufferedImage back to byte array
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        ImageIO.write(circleBuffer, "png", baos);  // If your image is in .jpg format, change "png" to "jpg"
+	        ImageIO.write(bufferedScaledImage, "png", baos);
 	        resizedImageBytes = baos.toByteArray();
 	    } catch (IOException e) {
 	        e.printStackTrace();
@@ -77,6 +132,10 @@ public class ImageInput {
 
 	    return resizedImageBytes;
 	}
+
+
+
+
 	public void convertImageToPNG(File imageFile) {
 	    try {
 	        BufferedImage image = ImageIO.read(imageFile);
