@@ -18,9 +18,11 @@ public class LogoutBtn extends JButton {
     private IconData iconData;
     private ImageIcon logoutBrightIcon;
     private ImageIcon logoutIcon;
+    private Utility utility;
     
     public LogoutBtn(MainFrame mainFrame) {
         iconData = new IconData();
+        utility = new Utility();
         
         logoutIcon = iconData.getImageIcon("logout_btn");
         logoutBrightIcon = iconData.getImageIcon("logout_btn_white");
@@ -46,6 +48,8 @@ public class LogoutBtn extends JButton {
 				
 			}
         });
+        
+        utility.setButtonProperties(this);
         
         // JButton에 아이콘을 설정합니다.
         this.setIcon(logoutIcon);
