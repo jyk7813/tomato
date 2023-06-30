@@ -158,9 +158,8 @@ public class TaskRepository {
 	}
 
 	// col_no파라미터로 보내면 해당 들고있는 taskList리턴
-	/////////////////////여기작업해야됨 06/30 /////////////////
-	public List<Task> taskListByColNo(Connection conn, int column_no) throws SQLException {
-		//Connection conn = null;
+	public List<Task> taskListByColNo(int column_no) throws SQLException {
+		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		List<Task> list = new ArrayList<>();
@@ -182,7 +181,6 @@ public class TaskRepository {
 				int importance = rs.getInt("importance");
 				Timestamp updateDate = rs.getTimestamp("updateDate");
 				Timestamp deadLine = rs.getTimestamp("deadLine");
-
 				int active = rs.getInt("active");
 				list.add(new Task(task_no, title, content, importance, updateDate, deadLine, active));
 			}

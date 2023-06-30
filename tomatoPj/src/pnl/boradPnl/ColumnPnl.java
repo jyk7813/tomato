@@ -1,10 +1,12 @@
 package pnl.boradPnl;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -12,7 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import frame.MainFrame;
-import pnl.projectpnl.ProjectPnl;
+import tomatoPj.Column;
+import tomatoPj.Task;
+import tomatoPj.TaskRepository;
 import utility.IconData;
 import utility.Utility;
 
@@ -22,11 +26,18 @@ public class ColumnPnl extends JPanel {
 	private int taskCount = 0;
 	public ColumnTitlePnl columnTitlePnl;
 	public JButton addcardBtn;
-	
+	public Task task;
+	private TaskRepository taskRepo;
 	/**
 	 * Create the panel.
 	 */
-	public ColumnPnl(MainFrame mainFrame, String colTitle) {
+	public ColumnPnl(MainFrame mainFrame, String colTitle, Column column) {
+		List<Task> taskList = new ArrayList<>();
+		try {
+			taskList = taskRepo.taskListByColNo(column.getColumn_no());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 		iconData = new IconData();
 		utility = new Utility();
 		
@@ -38,7 +49,14 @@ public class ColumnPnl extends JPanel {
 		columnTop.setPreferredSize(new Dimension(350,101));
 		columnTop.setOpaque(false);
 		
-		columnTitlePnl = new ColumnTitlePnl(mainFrame, colTitle);
+		String columntitle;
+		if (colTitle != null) {
+			columntitle = "title";
+		} else {
+			columntitle = colTitle;
+		}
+		
+		columnTitlePnl = new ColumnTitlePnl(mainFrame, columntitle);
 		columnTitlePnl.setBounds(0, 41, 350, 80);
 		columnTop.add(columnTitlePnl);
 		
@@ -84,7 +102,7 @@ public class ColumnPnl extends JPanel {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
 		        taskCount++;
-		        TaskPnl taskPnl = new TaskPnl(mainFrame);
+		        TaskPnl taskPnl = new TaskPnl(mainFrame, column, task);
 		        taskPnl.setBounds(0, 80 * (taskCount - 1), 350, 80); 
 		        panel.add(taskPnl);
 		        
@@ -95,6 +113,23 @@ public class ColumnPnl extends JPanel {
 		        panel.repaint();
 		    }
 		});
+		/*
+		if(taskList.size() > 0) {
+			for(Task task : taskList) {
+				//addcardBtn.doClick();
+				 taskCount++;
+			        TaskPnl taskPnl = new TaskPnl(mainFrame, column, task);
+			        taskPnl.setBounds(0, 80 * (taskCount - 1), 350, 80); 
+			        panel.add(taskPnl);
+			        
+			        // Update the position of the addcardBtn
+			        addcardBtn.setLocation(addcardBtn.getX(), 80 * taskCount);
+			        
+			        panel.revalidate();
+			        panel.repaint();
+			}
+		}*/
+		
 		
 		
 
