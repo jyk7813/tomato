@@ -18,7 +18,7 @@ public class TaskBackgroundPnl extends JPanel{
 		this.image = image;
 		setLayout(null);
 
-		Taskrefrom taskrefrom = new Taskrefrom(task);
+		Taskrefrom taskrefrom = new Taskrefrom(task,mainFrame);
 
 		add(taskrefrom);
 		

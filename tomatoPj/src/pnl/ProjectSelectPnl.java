@@ -80,7 +80,7 @@ public class ProjectSelectPnl extends JPanel {
 		centerPnl = new JLayeredPane();
 		centerPnl.setOpaque(false);
 		centerPnl.setLayout(null); // Necessary for JScrollPane to function correctly
-		logoutBtn.setLocation(1649, 33);
+		
 		
 		ProjectSelectWestPnl westPnl = new ProjectSelectWestPnl() {
 			@Override
@@ -118,8 +118,8 @@ public class ProjectSelectPnl extends JPanel {
 				
 			}
 		});
+		northPanel.setLayout(null);
 		
-		northPanel.add(logoutBtn);
 		centerPnl.add(addProjectBtn, new Integer(3)); // Add jButton to a higher layer
 		utility.setButtonProperties(addProjectBtn);
 
@@ -136,12 +136,14 @@ public class ProjectSelectPnl extends JPanel {
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false); // Add this line
 		scrollPane.setBorder(null);
+		logoutBtn.setBounds(1649,33,150,70);
 		
 		add(scrollPane, BorderLayout.CENTER); // Add the JScrollPane to the main panel
 		add(northPanel, BorderLayout.NORTH);
 		add(westPnl, BorderLayout.WEST);
 		add(eastPnl, BorderLayout.EAST);
-
+		northPanel.add(logoutBtn);
+		
 		addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent e) {
