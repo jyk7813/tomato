@@ -2,12 +2,10 @@ package pnl.commonpnl;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.KeyboardFocusManager;
 
 import javax.swing.JPanel;
 
 import frame.MainFrame;
-import pnl.boradPnl.AddColumnPnl;
 
 public class TopMainPnl extends JPanel {
 	private TopCanbanSelectedPnl topCanbanSelectedPnl;
