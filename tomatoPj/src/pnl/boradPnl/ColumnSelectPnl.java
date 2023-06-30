@@ -83,6 +83,7 @@ public class ColumnSelectPnl extends JPanel {
 						add(addColumnPnl);
 						revalidate();
 						repaint();
+					//	columnPnl.addcardBtn.doClick();
 
 					}
 				} else {

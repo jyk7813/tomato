@@ -83,7 +83,7 @@ public class ColumnRepository {
 			stmt = conn.prepareStatement("INSERT INTO `column` VALUES()");
 			stmt.executeUpdate();
 			
-			stmt2 = conn.prepareStatement("SELECT `column_no` FROM `column` ORDER BY column_no DESC");
+			stmt2 = conn.prepareStatement("SELECT `column_no`,title FROM `column` ORDER BY column_no DESC");
 			rs = stmt2.executeQuery();
 			rs.next();
 			int column_no = rs.getInt("column_no");

@@ -33,10 +33,14 @@ public class ColumnPnl extends JPanel {
 	 */
 	public ColumnPnl(MainFrame mainFrame, String colTitle, Column column) {
 		List<Task> taskList = new ArrayList<>();
+		System.out.println("제목띠" + colTitle);
+		System.out.println("컬럼띠" + column);
 		try {
 			taskList = taskRepo.taskListByColNo(column.getColumn_no());
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+		}catch(NullPointerException e2) {
+			
 		}
 		iconData = new IconData();
 		utility = new Utility();
@@ -50,7 +54,7 @@ public class ColumnPnl extends JPanel {
 		columnTop.setOpaque(false);
 		
 		String columntitle;
-		if (colTitle != null) {
+		if (colTitle == null) {
 			columntitle = "title";
 		} else {
 			columntitle = colTitle;
@@ -101,6 +105,7 @@ public class ColumnPnl extends JPanel {
 		addcardBtn.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
+
 		        taskCount++;
 		        TaskPnl taskPnl = new TaskPnl(mainFrame, column, task);
 		        taskPnl.setBounds(0, 80 * (taskCount - 1), 350, 80); 
@@ -113,8 +118,9 @@ public class ColumnPnl extends JPanel {
 		        panel.repaint();
 		    }
 		});
-		/*
+		
 		if(taskList.size() > 0) {
+			//System.out.println("님혹시작동함?");
 			for(Task task : taskList) {
 				//addcardBtn.doClick();
 				 taskCount++;
@@ -128,7 +134,7 @@ public class ColumnPnl extends JPanel {
 			        panel.revalidate();
 			        panel.repaint();
 			}
-		}*/
+		}
 		
 		
 		
