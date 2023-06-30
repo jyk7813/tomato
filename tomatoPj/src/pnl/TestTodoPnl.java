@@ -180,6 +180,7 @@ public class TestTodoPnl extends JPanel{
 
 		// 상단 패널 -----------------------------------------
 		TopMainPnl topPnl = new TopMainPnl(mainFrame);
+		topPnl.showCard("SelectedTodo");
 		topPnl.setBounds(0, 0, 1920, 135);
 		topPnl.setOpaque(false);
 
