@@ -37,6 +37,11 @@ public class MainFrame extends JFrame {
 	private Image projectImage;
 	private Image boradImage;
 	private Image taskImage;
+	public boolean columnActive = true;
+	
+	/**
+	 * Launch the application.
+	 */
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import frame.MainFrame;
+import tomatoPj.Column;
 import pnl.Taskrefrom;
 import tomatoPj.Task;
 import utility.IconData;
@@ -23,7 +24,7 @@ public class TaskPnl extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public TaskPnl(MainFrame mainFrame) {
+	public TaskPnl(MainFrame mainFrame, Column column, Task task) {
 		iconData = new IconData();
 		utility = new Utility();
 
@@ -31,7 +32,17 @@ public class TaskPnl extends JPanel {
 		this.image = iconData.getImageIcon("boardMiddle_opaque").getImage();
 		setLayout(null);
 		setOpaque(false);
-		jButton = new JButton();
+		String tasktitle;
+		//System.out.println("야!!!!!!" + task.equals(null));
+		if(task!=null) { 
+			tasktitle = "title";
+		} else {
+			tasktitle = task.getTitle();
+		}
+		
+		
+		
+		JButton jButton = new JButton(tasktitle);
 		jButton.setBounds(0, 0, 360, 80);
 		add(jButton);
 		utility.setButtonProperties(jButton);

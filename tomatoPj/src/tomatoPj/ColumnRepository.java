@@ -68,4 +68,51 @@ public class ColumnRepository {
 		
 	}
 	
+	// 나좀살려줘
+	// 컬럼추가(db에 동시에 저장), 컬럼객체 리턴
+	public Column addColumn(int project_no) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		PreparedStatement stmt2 = null;
+		PreparedStatement stmt3 = null;
+		PreparedStatement stmt4 = null;
+		ResultSet rs = null;
+		Column column = null;
+		try {
+			conn = DBUtil.getConnection();
+			stmt = conn.prepareStatement("INSERT INTO `column` VALUES()");
+			stmt.executeUpdate();
+			
+			stmt2 = conn.prepareStatement("SELECT `column_no` FROM `column` ORDER BY column_no DESC");
+			rs = stmt2.executeQuery();
+			rs.next();
+			int column_no = rs.getInt("column_no");
+			
+			stmt3 = conn.prepareStatement("INSERT INTO `project_column` (`project_no`, `column_no`) VALUES (?,?)");
+			stmt3.setInt(1, project_no);
+			stmt3.setInt(2, column_no);
+			stmt3.executeUpdate();
+			
+			stmt4 = conn.prepareStatement("SELECT * FROM `column` WHERE `column_no` = ?");
+			stmt4.setInt(1, column_no);
+			String title = rs.getString("title");
+			int column_index = rs.getInt("column_Index");
+			int active = rs.getInt("active");
+			
+			return new Column(column_no, title, column_index, active);
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(stmt);
+			DBUtil.close(stmt2);
+			DBUtil.close(stmt3);
+			DBUtil.close(stmt4);
+			DBUtil.close(conn);
+		}
+		return column;
+	}
+	
 }

@@ -21,6 +21,10 @@ public class Column {
 		this.active = active;
 	}
 	
+	public Column() {
+		
+	}
+	
 	public int getColumn_no() {
 		return column_no;
 	}
