@@ -41,32 +41,32 @@ public class TestTodoPnl extends JFrame{
 	// 달력 출력 패널 클래스 ------------------------------------
 	CalendarSwing printCal = new CalendarSwing();
 
-	public TestTodoPnl() {
+	public TestTodoPnl(MainFrame mainFrame) {
 
 		// 상단 배경 패널 ------------------------------------
 		JPanel topBgPnl = new JPanel() {
 			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
 				g.drawImage(IC.getImageIcon("topLine").getImage(), 0, 0, null);
 				setOpaque(false); // 이미지 불투명도 설정 : false = 불투명(이미지 표시) / true = 투명
-				super.paintComponent(g);
 			}
 		};
 
 		// 메인 영역 배경 패널 ------------------------------------
 		JPanel calBgPnl = new JPanel() {
 			public void paintComponent(Graphics g) {
-				g.drawImage(IC.getImageIcon("calendarWeekBg").getImage(), 0, 0, null);
-				setOpaque(false);
 				super.paintComponent(g);
+				g.drawImage(IC.getImageIcon("calendarWeek").getImage(), 0, 0, null);
+				setOpaque(false);
 			}
 		};
 
 		// 배경 패널 -----------------------------------------
 		JPanel bgPnl = new JPanel() {
 			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
 				g.drawImage(IC.getImageIcon("Background").getImage(), 0, 0, null);
 				setOpaque(false);
-				super.paintComponent(g);
 			}
 		};
 
@@ -115,8 +115,6 @@ public class TestTodoPnl extends JFrame{
 		toggleBtn.addActionListener(listener);
 
 		// 선택 버튼
-		JButton selBtn = UT.getBtn(1810, 190, "projectOpne");
-		add(selBtn);
 
 		calBgPnl.setBounds(164, 160, 1718, 870);
 		calBgPnl.setLayout(null);
@@ -130,20 +128,18 @@ public class TestTodoPnl extends JFrame{
 		// -----------------------------------------------
 		bgPnl.setBounds(0, 0, 1920, 1080);
 		bgPnl.setLayout(null);
-		getContentPane().add(bgPnl);
-		// -----------------------------------------------
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setUndecorated(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getContentPane().setLayout(null);
+		bgPnl.setOpaque(false);
+		setLayout(null);
+		setOpaque(false);
+		add(bgPnl);
+//		getContentPane().add(bgPnl);
+//		// -----------------------------------------------
+//		setExtendedState(JFrame.MAXIMIZED_BOTH);
+//		setUndecorated(true);
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		getContentPane().setLayout(null);
 		setVisible(true);
 		// -----------------------------------------------
-
 	}
-
-	public static void main(String[] args) {
-		new TestTodoPnl();
-	}
-
 }
 

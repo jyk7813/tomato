@@ -1,6 +1,22 @@
 package pnl;
 
-import utility.CalendarData;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Calendar;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.text.Utilities;
+
+import frame.MainFrame;
 import utility.FontData;
 import utility.IconData;
 import utility.Utility;
@@ -91,6 +107,9 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		todoListPnl.setOpaque(false);
 		
 		// 달력 출력 패널 ------------------------------------
+		add(selectPane); 
+		setLayout(null);
+												
 		// 현재 년, 월 세팅
 		setYear();
 		setMonth();
@@ -113,9 +132,9 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		// 년월 이벤트 다시등록 --------------------------------
 		yearCombo.addItemListener(this);
 		monthCombo.addItemListener(this);
-		
 		// ---------------------------------------------
 		setBounds(0, 0, 1718, 870);
+
 		setOpaque(false);
 		setVisible(true);
 	}
@@ -262,5 +281,4 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			month++;
 		}
 	}
-	
 }

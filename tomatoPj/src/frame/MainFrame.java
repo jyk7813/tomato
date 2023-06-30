@@ -79,7 +79,7 @@ public class MainFrame extends JFrame {
 		Image loginImage = iconData.getImageIcon("login(BG)remake2").getImage();
 		Image signImage = iconData.getImageIcon("signup(BG)remake2").getImage();
 		Image projectImage = iconData.getImageIcon("projectSelect(BG)remake").getImage();
-		Image boradImage = iconData.getImageIcon("selectColumn(BG)").getImage();
+		Image boradImage = iconData.getImageIcon("Background").getImage();
 		Image taskImage = iconData.getImageIcon("selectTask(BG)").getImage();
 //		Image todoImage = iconData.getImageIcon("Background").getImage();
 		

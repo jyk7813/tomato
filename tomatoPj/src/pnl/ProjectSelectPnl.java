@@ -2,6 +2,7 @@ package pnl;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -28,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+import button.LogoutBtn;
 import dbutil.SelectProjectInfo;
 import frame.MainFrame;
 import pnl.projectpnl.ProjectPnl;
@@ -48,7 +50,7 @@ public class ProjectSelectPnl extends JPanel {
 	private IconData iconData;
 	private Utility utility;
 	private JLayeredPane centerPnl;
-	private JButton jButton;
+	private JButton addProjectBtn;
 	private JScrollPane scrollPane;
 	private MemberRepository memberRepo;
 	private HashSet<Member> memberList;
@@ -57,6 +59,7 @@ public class ProjectSelectPnl extends JPanel {
 	private ColumnRepository colRepo;
 	private SelectProjectInfo pjInfo;
 	private TaskRepository taskRepo;
+	private LogoutBtn logoutBtn;
 	
 	
 	
@@ -72,11 +75,13 @@ public class ProjectSelectPnl extends JPanel {
 		utility = new Utility();
 		pjInfo = new SelectProjectInfo();
 		setLayout(new BorderLayout(0, 0));
+		logoutBtn = new LogoutBtn(mainFrame);
 
 		centerPnl = new JLayeredPane();
 		centerPnl.setOpaque(false);
 		centerPnl.setLayout(null); // Necessary for JScrollPane to function correctly
-
+		
+		
 		ProjectSelectWestPnl westPnl = new ProjectSelectWestPnl() {
 			@Override
 			public Dimension getPreferredSize() {
@@ -101,10 +106,11 @@ public class ProjectSelectPnl extends JPanel {
 				return new Dimension(1920, 135);
 			}
 		};
-		jButton = new JButton(iconData.getImageIcon("blankAdd"));
-		jButton.setBounds(0, 55, 900, 216);
+		
+		addProjectBtn = new JButton(iconData.getImageIcon("blankAdd"));
+		addProjectBtn.setBounds(0, 55, 900, 216);
 
-		jButton.addActionListener(new ActionListener() {
+		addProjectBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//addPanel();
@@ -112,9 +118,10 @@ public class ProjectSelectPnl extends JPanel {
 				
 			}
 		});
-
-		centerPnl.add(jButton, new Integer(3)); // Add jButton to a higher layer
-		utility.setButtonProperties(jButton);
+		northPanel.setLayout(null);
+		
+		centerPnl.add(addProjectBtn, new Integer(3)); // Add jButton to a higher layer
+		utility.setButtonProperties(addProjectBtn);
 
 		// Create JScrollPane and add the centerPnl to it
 		scrollPane = new JScrollPane(centerPnl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -129,15 +136,18 @@ public class ProjectSelectPnl extends JPanel {
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false); // Add this line
 		scrollPane.setBorder(null);
-
+		logoutBtn.setBounds(1649,33,150,70);
+		
 		add(scrollPane, BorderLayout.CENTER); // Add the JScrollPane to the main panel
 		add(northPanel, BorderLayout.NORTH);
 		add(westPnl, BorderLayout.WEST);
 		add(eastPnl, BorderLayout.EAST);
-
+		northPanel.add(logoutBtn);
+		
 		addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent e) {
+				removeAllProjectPanels();
 				loginMemberSetting();
 				
 			}
@@ -162,6 +172,8 @@ public class ProjectSelectPnl extends JPanel {
 	
 	// 프로젝트 선택화면에 띄우기 위함
 	private void loginMemberSetting() {
+		mainFrame.loginMember.getPjList().clear();
+		
 		List<Task> list = new ArrayList<>();
 		int a = mainFrame.loginMember.getMember_no();
 		try {
@@ -290,14 +302,25 @@ public class ProjectSelectPnl extends JPanel {
 	private void addPanel(int project_no, String title) {
 		
 		ProjectPnl projectPnl = new ProjectPnl(mainFrame, project_no, title);
-		projectPnl.setBounds(0, jButton.getY(), 900, 216); // Set the position to current jButton position
+		projectPnl.setBounds(0, addProjectBtn.getY(), 900, 216); // Set the position to current jButton position
 		centerPnl.add(projectPnl, new Integer(2)); // Add projectPnl to a lower layer
-		jButton.setLocation(jButton.getX(), jButton.getY() + projectPnl.getHeight() + 10); // Move jButton down
+		addProjectBtn.setLocation(addProjectBtn.getX(), addProjectBtn.getY() + projectPnl.getHeight() + 10); // Move jButton down
 
 		// Update the preferred size of the centerPnl and validate the JScrollPane
-		centerPnl.setPreferredSize(new Dimension(centerPnl.getWidth(), jButton.getY() + jButton.getHeight()));
+		centerPnl.setPreferredSize(new Dimension(centerPnl.getWidth(), addProjectBtn.getY() + addProjectBtn.getHeight()));
 		scrollPane.validate();
 		centerPnl.repaint();
+	}
+	private void removeAllProjectPanels() {
+	    for (Component comp : centerPnl.getComponents()) {
+	        if (comp instanceof ProjectPnl) {
+	            centerPnl.remove(comp);
+	        }
+	    }
+	    // Reset the location of the addProjectBtn
+	    addProjectBtn.setLocation(addProjectBtn.getX(), 55);
+	    centerPnl.revalidate();
+	    centerPnl.repaint();
 	}
 
 	@Override
