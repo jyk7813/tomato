@@ -29,7 +29,7 @@ public class MainFrame extends JFrame {
 	private IconData iconData;
 	public LoginMember loginMember;
 	public SelectProjectInfo pjInfo;
-	/**
+	/*
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {

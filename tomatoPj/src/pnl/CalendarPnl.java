@@ -186,7 +186,7 @@ public class CalendarPnl extends JPanel {
 			});
 			}
 	    dayOfMonth.setSize(250, 160);
-		dayOfMonth.setLocation(65,100);
+		dayOfMonth.setLocation(30,100);
 	}
 	   public void showPreviousMonth(int monthInt) {
 	        showMonth(monthInt);
@@ -254,6 +254,7 @@ public class CalendarPnl extends JPanel {
 		        	labelText = "0"+clickedLabel.getText();
 		        }
 		        tr.StartDate.setText(2023+"."+setMonth+"."+labelText);
+		        cal2.monthInt = monthInt;
 		        tr.deadLineDate.setText(2023+"."+setMonth+"."+labelText);
         
 		        int index = -1; // 인덱스 초기화
