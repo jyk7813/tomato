@@ -115,7 +115,7 @@ public class Taskrefrom extends JPanel {
 
 	CardLayout cardLayout;
 
-	public Taskrefrom(Task task, MainFrame mainFrame) {
+	public Taskrefrom(Task task,MainFrame mainFrame) {
 		Taskrefrom tr = this;
 //		 태그 받아오는 db 함수 필요함
 // 		 피드백 도 받아 와야함.
