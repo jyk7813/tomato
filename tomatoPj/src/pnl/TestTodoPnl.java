@@ -59,95 +59,9 @@ public class TestTodoPnl extends JPanel{
 	
 	public TestTodoPnl(MainFrame mainFrame) {
 		addComponentListener(new ComponentListener() {
-			TaskRepository tr = new TaskRepository();
-			MemberRepository mr = new MemberRepository();
-			ProjectRepository pr = new ProjectRepository();
 			@Override
 			public void componentShown(ComponentEvent e) {
-				List<Project> pjListOfUser = mainFrame.loginMember.getPjList(); // 로그인한 유저의 모든 프로젝트
-				List<Task> tkListOfUser = mainFrame.loginMember.getTakeTaskList(); // 로그인한 유저의 모든 프로젝트의 모든 태스크
-				List<Task> tkAll;
-				List<Member> mbAll;
-				List<PrintPlanner> printList;
-				Collections.sort(pjListOfUser, (a, b) -> a.getProject_no() - b.getProject_no());
-				Project firstPj = pjListOfUser.get(0);
-				String strUpdate = "";
-				String strDeadLine = "";
-				if (toggleSwitch) {
-					printList = new ArrayList<>();
-					try {
-					 for(Project pjList : pjListOfUser) {
-							tkAll = tr.taskListBypjNo(pjList.getProject_no());
-							for(Task tkList : tkAll) {
-								strUpdate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(tkList.getUpdateDate());
-								strDeadLine = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(tkList.getDeadLine());
-								PrintPlanner p = new PrintPlanner(pjList.getProject_no(), pjList.getTitle(), tkList.getTitle(), strUpdate, strDeadLine);
-								printList.add(p);
-								System.out.println(p);
-							}
-					 }
-					} catch (SQLException e1) {
-						System.out.println("투두오류");
-						e1.printStackTrace();
-					}
-				} else {
-					try {
-						List<Task> taskOfPj = tr.taskListBypjNo(selectPj.getProject_no());
-						List<Member> memsOfPj = new ArrayList<>();
-						List<Member> memOfTask = new ArrayList<>(); 
-							
-						
-//						tkAll = tr.taskListBypjNo(firstPj.getProject_no());
-//						List<Member> memsOfTask = new ArrayList<>();
-//						for(Task t : tkAll) {
-//							memsOfTask.addAll(t.getList());
-//							for(Member m : memsOfTask) {
-//								PrintPlanner p = new PrintPlanner(m.getMember_no(), m.getName(), 
-//							}
-//						}
-					
-					
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					}
-					
-					List<Member> mem;
-//					for(Task tkList : tkAll) {
-//						tkList.getList();
-//						for(Member mbList : tkList) {
-//							
-//						}
-//					}
-					
-//					try {
-//					 for(Project pjList : pjListOfUser) {
-//							tkAll = tr.taskListBypjNo(pjList.getProject_no());
-////							mbAll = mr.returnMemberPj(member_no)
-//							for(Task tkList : tkAll) {
-//								for(Member mbList : tkList)
-//								strUpdate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(tkList.getUpdateDate());
-//								strDeadLine = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(tkList.getDeadLine());
-//								PrintPlanner p = new PrintPlanner(pjList.getProject_no(), pjList.getTitle(), tkList.getTitle(), strUpdate, strDeadLine);
-//								printList.add(p);
-//								System.out.println(p);
-//							}
-//					 }
-//					} catch (SQLException e1) {
-//						System.out.println("투두오류");
-//						e1.printStackTrace();
-//					}
-				}
-//				for(Project pj : pjListOfUser) {
-//					System.out.println(pj.getTitle());
-//					try {
-//						List<Task> tkOfPj = tr.taskListBypjNo(pj.getProject_no());
-//						for(Task tk : tkOfPj) {
-//							System.out.println("투두에서확인" + tk.getTitle());
-//						}
-//					} catch (SQLException e1) {
-//						e1.printStackTrace();
-//					}
-//				}
+				setView(toggleSwitch);
 			}
 
 			@Override
@@ -171,6 +85,8 @@ public class TestTodoPnl extends JPanel{
 //				setOpaque(false); // 이미지 불투명도 설정 : false = 불투명(이미지 표시) / true = 투명
 //			}
 //		};
+		
+		
 
 		// 메인 영역 배경 패널 ------------------------------------
 		JPanel calBgPnl = new JPanel() {
@@ -309,5 +225,68 @@ public class TestTodoPnl extends JPanel{
 		setVisible(true);
 		// -----------------------------------------------
 	}
+	
+	// 페이지 전환 메소드 (전체 프로젝트 / 프로젝트 별) ---------------
+			public void setView (Boolean toggleSwitch) {
+				TaskRepository tr = new TaskRepository();
+				MemberRepository mr = new MemberRepository();
+				ProjectRepository pr = new ProjectRepository();
+				MainFrame mainFrame = new MainFrame();
+
+				List<Project> pjListOfUser = mainFrame.loginMember.getPjList(); // 로그인한 유저의 모든 프로젝트
+				List<Task> tkListOfUser = mainFrame.loginMember.getTakeTaskList(); // 로그인한 유저의 모든 프로젝트의 모든 태스크
+				List<Task> tkAll;
+				List<Member> mbAll;
+				List<PrintPlanner> printList = null;
+				Collections.sort(pjListOfUser, (a, b) -> a.getProject_no() - b.getProject_no());
+				
+				Project firstPj = pjListOfUser.get(0);
+				String strUpdate = "";
+				String strDeadLine = "";
+				if (toggleSwitch) {
+					printList = new ArrayList<>();
+					try {
+						for(Project pjList : pjListOfUser) {
+							tkAll = tr.taskListBypjNo(pjList.getProject_no());
+							for(Task tkList : tkAll) {
+								strUpdate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(tkList.getUpdateDate());
+								strDeadLine = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(tkList.getDeadLine());
+								PrintPlanner p = new PrintPlanner(pjList.getProject_no(), pjList.getTitle(), tkList.getTitle(), strUpdate, strDeadLine);
+								printList.add(p);
+								System.out.println(p);
+							}
+						}
+					} catch (SQLException e1) {
+						System.out.println("투두오류");
+						e1.printStackTrace();
+					}
+				} else {
+					try {
+						List<Member> memsOfPj = mr.getMemberBypj_no(firstPj.getProject_no());
+						List<Task> taskOfPj = tr.taskListBypjNo(firstPj.getProject_no());
+						List<Member> memOfTask; 
+						for(Member m : memsOfPj) {
+							for(Task t : taskOfPj) {
+								memOfTask = t.getList();
+								for(Member mOft : memOfTask) {
+									if(m.getMember_no() == mOft.getMember_no()) {
+										String strUpdate1 = "";
+										String strDeadLine1 = "";
+										strUpdate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(t.getUpdateDate());
+										strDeadLine = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(t.getDeadLine());
+										PrintPlanner p = new PrintPlanner(m.getMember_no(), m.getName(), t.getTitle(), strUpdate, strDeadLine);
+										printList.add(p);
+										System.out.println(p);
+									}
+								}
+							}
+						}
+						
+					} catch (SQLException e1) {
+						System.out.println("투두오류");
+						e1.printStackTrace();
+					}
+				}	
+			}
 }
 
