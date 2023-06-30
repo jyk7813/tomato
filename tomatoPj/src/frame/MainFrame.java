@@ -42,7 +42,7 @@ public class MainFrame extends JFrame {
 	private Image projectImage;
 	private Image boradImage;
 	private Image taskImage;
-	public boolean columnActive = true;
+	public boolean columnActive = false;
 	public TaskBackgroundPnl TBP;
 	
 	
