@@ -50,6 +50,7 @@ public class TestTodoPnl extends JPanel{
 	private final static Utility UT = new Utility();
 	private final static CalendarData CD = new CalendarData();
 	private PrintPlanner pp;
+	private Project selectPj;
 	private boolean toggleSwitch = true;
 	
 	
@@ -91,8 +92,19 @@ public class TestTodoPnl extends JPanel{
 					}
 				} else {
 					try {
-						tkAll = tr.taskListBypjNo(firstPj.getProject_no());
-					
+						List<Task> taskOfPj = tr.taskListBypjNo(selectPj.getProject_no());
+						List<Member> memsOfPj = new ArrayList<>();
+						List<Member> memOfTask = new ArrayList<>(); 
+							
+						
+//						tkAll = tr.taskListBypjNo(firstPj.getProject_no());
+//						List<Member> memsOfTask = new ArrayList<>();
+//						for(Task t : tkAll) {
+//							memsOfTask.addAll(t.getList());
+//							for(Member m : memsOfTask) {
+//								PrintPlanner p = new PrintPlanner(m.getMember_no(), m.getName(), 
+//							}
+//						}
 					
 					
 					} catch (SQLException e1) {
