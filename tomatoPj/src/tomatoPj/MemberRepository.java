@@ -12,6 +12,7 @@ import dbutil.DBUtil;
 public class MemberRepository {
 	
 	// 프로젝트 넘버를 넘기면 해당 프로젝트에 참여된 모든 멤버 리스트 리턴
+	// 06/30 지윤씨 여기에요///////////////////////////
 	public List<Member> getMemberBypj_no(int project_no) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
