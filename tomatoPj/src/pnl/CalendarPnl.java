@@ -29,7 +29,7 @@ public class CalendarPnl extends JPanel {
 	private int daysInMonth;
 	Taskrefrom tr;
 	CalendarPnl2 cal2;
-	private int settinJLbl;
+	
 	public CalendarPnl(Taskrefrom tr,CalendarPnl2 cal2) {
 		 this.tr = tr;
 		 this.cal2 =cal2;

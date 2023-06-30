@@ -19,6 +19,7 @@ public class SettingTask {
 	IconData IC;
 	Feedback feedback;
 	Column column;
+	
 	public SettingTask(Taskrefrom ts,Task task,Column column,Feedback feedback) {
 		dbutil = new DBUtil();
 		IC = new IconData();

@@ -26,25 +26,20 @@ public class TaskPnl extends JPanel {
 	private Image image;
 	private Utility utility;
 	private JButton jButton;
-	Taskrefrom tr;
 	SelectProjectInfo pjInfo;
 	MainFrame mainFrame;
 	// 자기참조용
 	public JButton jButton2;
-	TaskPnl taskPnl;
-	public boolean isButtonClicked;
+
 	// 테스크 클릭 버튼
 	/**
 	 * Create the panel.
 	 */
 	public TaskPnl(MainFrame mainFrame, Column column, Task task) {
-		taskPnl = this;
-		isButtonClicked = false;
 		this.mainFrame = mainFrame;
 		iconData = new IconData();
 		utility = new Utility();
 		this.pjInfo = mainFrame.pjInfo;
-		tr = mainFrame.TBP.taskrefrom;
 		
 		
 		// 넌이제부터 태스크야 알았어?
@@ -76,7 +71,6 @@ public class TaskPnl extends JPanel {
 					System.out.println(task.toString());
 					
 				}
-				isButtonClicked = true;
 				mainFrame.setTask(task, column, feedback);
 				mainFrame.showCard("task");
 				
