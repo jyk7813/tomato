@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import frame.MainFrame;
+import pnl.Taskrefrom;
+import tomatoPj.Task;
 import utility.IconData;
 import utility.Utility;
 
@@ -16,7 +18,8 @@ public class TaskPnl extends JPanel {
 	private IconData iconData;
 	private Image image;
 	private Utility utility;
-
+	private JButton jButton;
+	Taskrefrom tr;
 	/**
 	 * Create the panel.
 	 */
@@ -28,7 +31,7 @@ public class TaskPnl extends JPanel {
 		this.image = iconData.getImageIcon("boardMiddle_opaque").getImage();
 		setLayout(null);
 		setOpaque(false);
-		JButton jButton = new JButton();
+		jButton = new JButton();
 		jButton.setBounds(0, 0, 360, 80);
 		add(jButton);
 		utility.setButtonProperties(jButton);
@@ -37,7 +40,11 @@ public class TaskPnl extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+//				tr.settingNewTask();
+			
 				mainFrame.showCard("task");
+				
 			}
 		});
 
