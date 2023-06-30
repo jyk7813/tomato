@@ -90,7 +90,7 @@ public class MainFrame extends JFrame {
         // frame의 타이틀 바를 숨깁니다.
         setUndecorated(true);
         
-		loginImage = iconData.getImageIcon("login(BG)remake2").getImage();
+		loginImage = iconData.getImageIcon("login(BG)remake3").getImage();
 		signImage = iconData.getImageIcon("signup(BG)remake2").getImage();
 		projectImage = iconData.getImageIcon("projectSelect(BG)remake").getImage();
 		boradImage = iconData.getImageIcon("Background").getImage();
