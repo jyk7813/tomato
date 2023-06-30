@@ -105,7 +105,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
       centerPane.add(dayPane); 
       centerPane.setBounds(0, 130, 790, 750);
       centerPane.setLayout(null);
-      centerPane.setOpaque(true);
+      centerPane.setOpaque(false);
       
       // 패널 붙이기 --------------------------------------
       add(selectPane);

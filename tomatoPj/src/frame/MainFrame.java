@@ -31,6 +31,7 @@ public class MainFrame extends JFrame {
 	private IconData iconData;
 	public LoginMember loginMember;
 	public SelectProjectInfo pjInfo;
+
 	private Image loginImage;
 	private Image signImage;
 	private Image projectImage;
@@ -41,6 +42,7 @@ public class MainFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

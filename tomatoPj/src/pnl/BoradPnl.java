@@ -1,7 +1,6 @@
 package pnl;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ComponentAdapter;
@@ -13,7 +12,7 @@ import javax.swing.JPanel;
 import frame.MainFrame;
 import pnl.boradPnl.BoardselectPnl;
 import pnl.commonpnl.ProjectMemberPnl;
-import pnl.commonpnl.topPnl;
+import pnl.commonpnl.TopMainPnl;
 import tomatoPj.Column;
 
 public class BoradPnl extends JPanel{
@@ -27,7 +26,7 @@ public class BoradPnl extends JPanel{
 		this.image = image;
 		setLayout(new BorderLayout(0, 0));
 		
-		topPnl topPnl = new topPnl(mainFrame);
+		TopMainPnl topPnl = new TopMainPnl(mainFrame);
 		add(topPnl, BorderLayout.NORTH);
 		
 		ProjectMemberPnl projectMemberPnl = new ProjectMemberPnl();
@@ -51,7 +50,6 @@ public class BoradPnl extends JPanel{
 //				System.out.println("제목이없어? " + col.get(0).getTitle());
 				
 				int size = mainFrame.pjInfo.getCol().size();
-				
 				if(size>0) {
 					panel_2.columnSelectPnl.addBtn.doClick();
 				}

@@ -4,8 +4,10 @@ import java.util.List;
 
 import tomatoPj.Member;
 import tomatoPj.Project;
+import tomatoPj.Task;
 
 public class todoObjList {
-	List<Project> projectList;
+	Project project;
 	List<Member> memberList;
+	List<Task> taskList;
 }
