@@ -129,43 +129,10 @@ public class Taskrefrom extends JPanel {
 	TaskPnl btnTask;
 	private JLabel content;
 	private JPanel taglist;
-	public Taskrefrom(Task task,MainFrame mainFrame) {
-		Taskrefrom tr = this;
-		
+	public Taskrefrom(MainFrame mainFrame) {		
 //		 태그 받아오는 db 함수 필요함s
 // 		 피드백 도 받아 와야함.
 		add(pnl());
-		if(this.isShowing()) {
-		System.out.println("창이 켜졌답니다 짜잔~ from task line130");
-		}
-		addComponentListener(new ComponentListener() {
-			@Override
-			public void componentShown(ComponentEvent e) {
-
-//				try {
-//					memberList = taskRepo.searchMemberByTask_no(task.getTask_no());
-//					Function_Tag_List = taskRepo.searchFunction_tagByTask_no(task.getTask_no());
-//				} catch (SQLException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-				
-			}
-
-			@Override
-			public void componentResized(ComponentEvent e) {
-			}
-
-			@Override
-			public void componentMoved(ComponentEvent e) {
-			}
-
-			@Override
-			public void componentHidden(ComponentEvent e) {
-			}
-		});
-	
-
 		add(cal2 = new CalendarPnl2(this));
 		cal2.setLocation(1305, 291);
 		cal = new CalendarPnl(this, cal2);
@@ -200,7 +167,7 @@ public class Taskrefrom extends JPanel {
 						e2.printStackTrace();
 					}
 					returnTask = new Task(title, contentText.getText(), returnImoportance, updateDate, deadLine);
-					System.out.println(returnTask);
+
 					mainFrame.getContentPane().removeAll();
 			        mainFrame.addPnl();
 					mainFrame.showCard("columnSelect");
@@ -256,21 +223,9 @@ public class Taskrefrom extends JPanel {
 		// 모든 정보를 뭉쳐서 task 객체로 반환
 		// 팝업창에 아이디 입력으로 추가.
 		// 멤버 추가 로직고민
-		try {
-			if(TakeTask != null) {
-			settingTask(taskListBypjNo(),memberList,Function_Tag_List,feedbak);
-			}else {
-				settingTask();
-			}
-			
-		} catch (SQLException e ) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch(NullPointerException e2){
-			
-		}
+		
 		Feedback feedback = new Feedback(6, 27, 1, "대본수정");
-		st = new SettingTask(TakeTask, this, feedback);
+//		st = new SettingTask(TakeTask, this, feedback);
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
@@ -282,16 +237,16 @@ public class Taskrefrom extends JPanel {
 		StarAndDate();
 		// 별세팅
 		StarSet();
-		st.SetStar();
+//		st.SetStar();
 
 		// 날짜 세팅
-
-		SetUpdateLbl(st.setUpdataDate());
+//		st.setUpdataDate()
+		SetUpdateLbl("1111.11.11");
 		UpdateMentLbl();
 
 		// 끝나는 날짜
 
-		DeadLineDate(st.setDeadDate());
+		DeadLineDate("2222.22.22");
 		DeadLineDateAdd();
 		// 기간 바
 		TimeMangementBar();
@@ -329,11 +284,14 @@ public class Taskrefrom extends JPanel {
 		return pnl;
 	}
 
-	public void settingTask(Task task,List<Member> memberList,List<Function_Tag> Function_Tag_List,Feedback feedbak) {
-			TakeTask = task;
-			this.memberList =memberList;
-			this.Function_Tag_List = Function_Tag_List;
-			this.feedbak = feedbak;
+	public void settingTask(Task task,Feedback feedbak) {
+		try {
+		System.out.println(task+ "task에 잘 도착했습니다~" );
+		}catch(Exception e){
+			System.out.println("님 팅겼어요");
+		}
+//			TakeTask = task;
+//			this.feedbak = feedbak;
 			
 	}
 	public void settingTask() {
@@ -344,11 +302,10 @@ public class Taskrefrom extends JPanel {
 
 		if (isVisible) {
 			// 패널이 이미 켜져있을 때의 동작
-			System.out.println("패널이 이미 켜져있습니다.");
 		} else {
 			// 패널을 켜는 동작
 			pnl.setVisible(true);
-			System.out.println("패널을 켭니다.");
+
 		}
 	}
 
@@ -711,7 +668,7 @@ public class Taskrefrom extends JPanel {
 		toggleFrame.setSize(300, 200);
 		toggleFrame.setLayout(null);
 
-		contentText = new JTextArea(st.setContent());
+		contentText = new JTextArea("내용을 입력해주세요");
 		contentText.setFont(FD.nanumFont(18));
 		content.setLocation(60, -10);
 
@@ -891,7 +848,8 @@ public class Taskrefrom extends JPanel {
 		JLabel feedBackLbl = new JLabel(IC.getImageIcon("feedback"));
 		feedBackLbl.setLocation(60, 0);
 
-		feedBackText = new JTextArea(st.setFeedback());
+		feedBackText = new JTextArea("피드백을 입력해주세요"
+				+ "");
 		feedBackText.setFont(FD.nanumFont(20));
 		feedBackText.setSize(350, 40);
 		feedBackText.setBorder(null); // 테두리 제거
