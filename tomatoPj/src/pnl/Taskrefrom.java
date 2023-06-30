@@ -128,6 +128,7 @@ public class Taskrefrom extends JPanel {
 	
 	TaskPnl btnTask;
 	private JLabel content;
+	private JPanel taglist;
 	public Taskrefrom(Task task,MainFrame mainFrame) {
 		Taskrefrom tr = this;
 		
@@ -312,6 +313,7 @@ public class Taskrefrom extends JPanel {
 		// tag
 		TagPnl();
 		TagSet();
+		tagList();
 		// feedback
 		feedBack();
 		feedBackTextFiled();
@@ -780,48 +782,65 @@ public class Taskrefrom extends JPanel {
 //		TagPnl.setBackground(new Color(255,0,0));
 		TaskUnderPanel.add(tagPnl);
 	}
-
 	public void TagSet() {
 		JLabel plusTag = new JLabel(IC.getImageIcon("addMember_btn"));
 		plusTag.setSize(30, 30);
 		plusTag.setLocation(87, 10);
 		plusTag.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				JLabel tagIcon = new JLabel(IC.getImageIcon("tag"));
-				JLabel tagText = new JLabel("기획");
-				tagText.setSize(70, 20);
-				tagText.setLocation(20, 5);
-				tagIcon.add(tagText);
-				tagIcon.addMouseListener(new MouseAdapter() {
-					public void mousePressed(MouseEvent e) {
-						tagPnl.remove(tagIcon);
-						tagPnl.revalidate();
-						tagPnl.repaint();
-						CountTag--;
-						plusTag.setVisible(true);
-						plusTag.setLocation(87 + ((CountTag * 1) * 100), 10);
-					}
-				});
-				tagPnl.add(tagIcon);
-				tagIcon.setSize(80, 30);
-				tagIcon.setLocation(64 + ((CountTag * 1) * 90), 10);
-				plusTag.setLocation(87 + ((CountTag + 1 * 1) * 100), 10);
-
-				// 아이콘들 간의 간격을 위한 빈 공간 컴포넌트 추가
-
-				tagPnl.revalidate();
-				tagPnl.repaint();
-				CountTag++;
-
-				if (CountTag >= 5) {
-					plusTag.setVisible(false);
-				} else {
-				}
+//				JLabel tagIcon = new JLabel(IC.getImageIcon("tag"));
+//				JLabel tagText = new JLabel("기획");
+//				tagText.setSize(70, 20);
+//				tagText.setLocation(20, 5);
+//				tagIcon.add(tagText);
+//				tagIcon.addMouseListener(new MouseAdapter() {
+//					public void mousePressed(MouseEvent e) {
+//						tagPnl.remove(tagIcon);
+//						tagPnl.revalidate();
+//						tagPnl.repaint();
+//						CountTag--;
+//						plusTag.setVisible(true);
+//						plusTag.setLocation(87 + ((CountTag * 1) * 100), 10);
+//					}
+//				});
+//				tagPnl.add(tagIcon);
+//				tagIcon.setSize(80, 30);
+//				tagIcon.setLocation(64 + ((CountTag * 1) * 90), 10);
+//				plusTag.setLocation(87 + ((CountTag + 1 * 1) * 100), 10);
+//
+//				// 아이콘들 간의 간격을 위한 빈 공간 컴포넌트 추가
+//
+//				tagPnl.revalidate();
+//				tagPnl.repaint();
+//				CountTag++;
+//
+//				if (CountTag >= 5) {
+//					plusTag.setVisible(false);
+//				} else {
+//				}
+				taglist.setOpaque(true);
 			}
 		});
 
 		tagPnl.add(plusTag);
 
+	}
+	public void tagList() {
+		taglist = new JPanel();
+		taglist.setSize(200,200);
+		taglist.setLocation(plus.getX()+130,plus.getY());
+//		taglist.setBackground(new Color(255,0,0));
+		taglist.setVisible(true);
+		taglist.setOpaque(false);
+		tagPnl.add(taglist);
+		taglist.addMouseListener(new MouseAdapter() {
+			
+			public void mousePressed(MouseEvent e) {
+//				System.out.println(e.getClickCount());
+			taglist.setOpaque(false);	
+			}
+		});
+		
 	}
 
 	public void feedBack() {
