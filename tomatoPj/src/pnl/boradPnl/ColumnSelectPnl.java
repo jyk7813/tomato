@@ -88,7 +88,7 @@ public class ColumnSelectPnl extends JPanel {
 				} else {
 					Collections.sort(col, (a, b) -> a.getColumn_index() - b.getColumn_index());
 					Column column = colRepo.addColumn(mainFrame.pjInfo.getProject_no());
-
+					//System.out.println(column);
 					ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column);
 					add(columnPnl);
 					columnPnl.setBounds(addColumnPnl.getX() + 31, 0, 350, 940);

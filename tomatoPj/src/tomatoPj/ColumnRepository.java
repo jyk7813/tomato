@@ -98,6 +98,7 @@ public class ColumnRepository {
 			String title = rs.getString("title");
 			int column_index = rs.getInt("column_Index");
 			int active = rs.getInt("active");
+			
 			return new Column(column_no, title, column_index, active);
 			
 			
