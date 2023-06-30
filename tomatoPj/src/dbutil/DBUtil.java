@@ -10,6 +10,8 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import tomatoPj.Task;
+
 public class DBUtil {
 	private static final Properties PROPS = new Properties();
 	private static DataSource dataSource;
