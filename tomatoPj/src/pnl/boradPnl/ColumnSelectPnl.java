@@ -74,8 +74,17 @@ public class ColumnSelectPnl extends JPanel {
 					Collections.sort(col, (a, b) -> a.getColumn_index() - b.getColumn_index());
 					for (Column column : col) {
 						columnCount++;
-
-						ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column);
+						if (column != null) {
+							System.out.println("이호재가 확인합니다");
+						}
+						List<Task> taskList = new ArrayList<>();
+						try {
+							taskList = taskRepo.taskListByColNo(column.getColumn_no());
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column,taskList);
 						add(columnPnl);
 						columnPnl.setBounds(addColumnPnl.getX() + 31, 0, 350, 940);
 						addColumnPnl.setBounds(addColumnPnl.getX() + columnPnl.getWidth() + 20, addColumnPnl.getY(),
@@ -88,8 +97,9 @@ public class ColumnSelectPnl extends JPanel {
 				} else {
 					Collections.sort(col, (a, b) -> a.getColumn_index() - b.getColumn_index());
 					Column column = colRepo.addColumn(mainFrame.pjInfo.getProject_no());
+					List<Task> taskList = new ArrayList<>();
 					//System.out.println(column);
-					ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column);
+					ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column, taskList);
 					add(columnPnl);
 					columnPnl.setBounds(addColumnPnl.getX() + 31, 0, 350, 940);
 					addColumnPnl.setBounds(addColumnPnl.getX() + columnPnl.getWidth() + 20, addColumnPnl.getY(), 350,

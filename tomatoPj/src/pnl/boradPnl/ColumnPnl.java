@@ -28,16 +28,22 @@ public class ColumnPnl extends JPanel {
 	public JButton addcardBtn;
 	public Task task;
 	private TaskRepository taskRepo;
+	List<Task> taskList;
 	/**
 	 * Create the panel.
 	 */
-	public ColumnPnl(MainFrame mainFrame, String colTitle, Column column) {
-		List<Task> taskList = new ArrayList<>();
+	public ColumnPnl(MainFrame mainFrame, String colTitle, Column column,List<Task> taskList) {
+	
 		try {
-			taskList = taskRepo.taskListByColNo(column.getColumn_no());
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
+			if(column != null) {
+			this.taskList = taskList;
+			System.out.println(taskList.size());
+			}
+
+		}  catch(NullPointerException e2) {
+//			System.out.println("캐치당했습니다");
+		} 
+//		System.out.println(taskList.size());
 		iconData = new IconData();
 		utility = new Utility();
 		
@@ -50,7 +56,7 @@ public class ColumnPnl extends JPanel {
 		columnTop.setOpaque(false);
 		
 		String columntitle;
-		if (colTitle != null) {
+		if (colTitle == null) {
 			columntitle = "title";
 		} else {
 			columntitle = colTitle;
@@ -113,7 +119,7 @@ public class ColumnPnl extends JPanel {
 		        panel.repaint();
 		    }
 		});
-		/*
+		
 		if(taskList.size() > 0) {
 			for(Task task : taskList) {
 				//addcardBtn.doClick();
@@ -128,7 +134,7 @@ public class ColumnPnl extends JPanel {
 			        panel.revalidate();
 			        panel.repaint();
 			}
-		}*/
+		}
 		
 		
 		

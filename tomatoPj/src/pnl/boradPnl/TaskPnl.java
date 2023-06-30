@@ -34,7 +34,7 @@ public class TaskPnl extends JPanel {
 		setOpaque(false);
 		String tasktitle;
 		//System.out.println("야!!!!!!" + task.equals(null));
-		if(task!=null) { 
+		if(task==null) { 
 			tasktitle = "title";
 		} else {
 			tasktitle = task.getTitle();
