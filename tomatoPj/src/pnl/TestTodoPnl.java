@@ -73,6 +73,7 @@ public class TestTodoPnl extends JPanel{
 
 		// 상단 패널 -----------------------------------------
 		TopMainPnl topPnl = new TopMainPnl(mainFrame);
+		topPnl.showCard("SelectedTodo");
 //		JPanel topPnl = new JPanel();
 
 		// 메뉴 이동 버튼
