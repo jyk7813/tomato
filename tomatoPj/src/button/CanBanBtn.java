@@ -10,18 +10,20 @@ import javax.swing.JButton;
 import frame.MainFrame;
 import pnl.commonpnl.TopMainPnl;
 import utility.IconData;
+import utility.Utility;
 
 public class CanBanBtn extends JButton {
 	private IconData iconData;
 	private ImageIcon canBanBrightIcon;
 	private ImageIcon canbanIcon;
+	private Utility utility;
 
 	public CanBanBtn(MainFrame mainFrame, TopMainPnl topMainPnl) {
 		iconData = new IconData();
-
+		utility = new Utility();
 		canbanIcon = iconData.getImageIcon("canbangray");
 		canBanBrightIcon = iconData.getImageIcon("canbanwhite");
-
+		utility.setButtonProperties(this);
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -34,10 +36,14 @@ public class CanBanBtn extends JButton {
 			}
 
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
+			public void mousePressed(MouseEvent arg0) {
+				mainFrame.getContentPane().removeAll();
+				mainFrame.addPnl();
+				topMainPnl.addPnl(mainFrame);
 				topMainPnl.showCard("SelectedCanban");
-
+				mainFrame.showCard("columnSelect");
+				revalidate();
+				repaint();
 			}
 
 		});

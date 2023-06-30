@@ -36,6 +36,7 @@ public class ProjectPnl extends JPanel {
 			for (Member mem : mtPackageRepo.returnMemberByPj_no(project_no)) {
 				mainFrame.pjInfo.getMemberList().add(mem);
 			}
+					
 			mainFrame.pjInfo.setCol(colRepo.selectByColNo(project_no));
 			mainFrame.pjInfo.setTask(taskRepo.taskListBypjNo(project_no));
 		} catch (SQLException e1) {

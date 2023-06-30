@@ -2,15 +2,10 @@ package pnl.commonpnl;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import frame.MainFrame;
-import utility.Utility;
 
 public class TopMainPnl extends JPanel {
 	private TopCanbanSelectedPnl topCanbanSelectedPnl;
@@ -22,6 +17,11 @@ public class TopMainPnl extends JPanel {
         cardLayout = new CardLayout(); // CardLayout 객체를 초기화
 		setLayout(cardLayout); // setLayout에 cardLayout 객체를 넣어줌
 		
+		addPnl(mainFrame);
+		setOpaque(false);
+	}
+
+	public void addPnl(MainFrame mainFrame) {
 		topCanbanSelectedPnl = new TopCanbanSelectedPnl(mainFrame,this);
 		topTodoSelectedPnl = new TopTodoSelectedPnl(mainFrame,this);
 		
@@ -32,6 +32,8 @@ public class TopMainPnl extends JPanel {
 
 	public void showCard(String cardName) {
 		cardLayout.show(this, cardName); // CardLayout 객체를 사용하여 카드를 전환		
+		revalidate();
+		repaint();
 	}
 
 	@Override

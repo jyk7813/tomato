@@ -39,7 +39,7 @@ public class LogoutBtn extends JButton {
             }
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				mainFrame.getContentPane().removeAll();
 				mainFrame.loginMember = new LoginMember();
 		        mainFrame.pjInfo = new SelectProjectInfo();

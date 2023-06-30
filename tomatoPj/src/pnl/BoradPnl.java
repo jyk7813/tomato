@@ -43,7 +43,7 @@ public class BoradPnl extends JPanel{
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-				List<Column> col = mainFrame.pjInfo.getCol();
+				//List<Column> col = mainFrame.pjInfo.getCol();
 				
 //				panel_2.columnSelectPnl.thisCol = col.get(0);
 //				title = col.get(0).getTitle();
