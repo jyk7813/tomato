@@ -72,8 +72,6 @@ public class ColumnSelectPnl extends JPanel {
 					Collections.sort(col, (a, b) -> a.getColumn_index() - b.getColumn_index());
 					for (Column column : col) {
 						columnCount++;
-						if (column != null) {
-						}
 						List<Task> taskList = new ArrayList<>();
 						try {
 							taskList = taskRepo.taskListByColNo(column.getColumn_no());
