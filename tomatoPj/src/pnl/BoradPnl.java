@@ -51,6 +51,7 @@ public class BoradPnl extends JPanel{
 //				System.out.println("제목이없어? " + col.get(0).getTitle());
 				
 				int size = mainFrame.pjInfo.getCol().size();
+				System.out.println(size);
 				if(size>0) {
 					panel_2.columnSelectPnl.addBtn.doClick();
 				}

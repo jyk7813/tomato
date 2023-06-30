@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,9 +47,9 @@ public class CalendarPnl extends JPanel {
 		month.setSize(50, 30);
 		month.setLocation(135, 30);
 
-		JLabel before = new JLabel("전달");
-		before.setSize(50, 50);
-		before.setLocation(95, 20);
+		JLabel before = new JLabel(IC.getImageIcon("calendarGreen_back"));
+		before.setSize(18, 18);
+		before.setLocation(95, 35);
 		before.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -59,9 +63,9 @@ public class CalendarPnl extends JPanel {
 			}
 		});
 
-		JLabel after = new JLabel("다음달");
-		after.setSize(50, 50);
-		after.setLocation(190, 20);
+		JLabel after = new JLabel(IC.getImageIcon("calendarGreen_next"));
+		after.setSize(18, 18);
+		after.setLocation(190, 35);
 		after.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -179,6 +183,7 @@ public class CalendarPnl extends JPanel {
 			        	labelText = "0"+clickedLabel.getText();
 			        }
 			        tr.StartDate.setText(2023+"."+setMonth+"."+labelText);
+			        tr.deadLineDate.setText(2023+"."+setMonth+"."+labelText);
 			    }else{
 			    	System.out.println("널임");
 			    }
@@ -253,9 +258,31 @@ public class CalendarPnl extends JPanel {
 		        if(Integer.valueOf(labelText)<10) {
 		        	labelText = "0"+clickedLabel.getText();
 		        }
-		        tr.StartDate.setText(2023+"."+setMonth+"."+labelText);
-		        cal2.monthInt = monthInt;
-		        tr.deadLineDate.setText(2023+"."+setMonth+"."+labelText);
+		     
+		        String upDateString = 2023+"."+setMonth+"."+labelText;
+		        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+
+		        try {
+		        	Timestamp tt = new Timestamp(System.currentTimeMillis());
+		        	Date today = (Date)tt;
+					Date upDate = dateFormat.parse(upDateString);
+					
+					 int result = today.compareTo(upDate);
+					 if(result==-1|| result == 0) {
+						 
+						 tr.StartDate.setText(upDateString);
+						 tr.deadLineDate.setText(upDateString);
+						 cal2.monthInt = monthInt;
+						 cal2.month.setText(cal2.monthInt + "월");
+						 cal2.showMonth(cal2.monthInt);
+            		    }else {
+            		    	
+            		    }
+		        } catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				
+		    }
 		        
 		    }
 		    }
