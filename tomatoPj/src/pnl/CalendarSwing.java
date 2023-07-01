@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -149,12 +150,9 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
          JLabel lbl = new JLabel(" ");
          lbl.setBounds(0, 0, 20, 20);
          lbl.setLayout(null);
-//         dayBox.setBounds(0, 0, 103, 116);
-//         dayBox.setLayout(null);
          box.setOpaque(false);
          box.add(lbl);
          box.setBounds(0, 0, 100, 116);
-//         box.add(dayBox);
          dayPane.add(box);
          
       }
@@ -186,11 +184,10 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
          dayPane.add(box);
       }
       
-      
+//      Collections.sort(ppList);
 //      JLabel barText = new JLabel();
-//      JPanel barDraw = new JPanel();
+//      JPanel barDraw;
 //      JPanel bar = new JPanel();
-//      bar.setBounds(0,0,0,0);
 //      for(int i = 0; i < ppList.size(); i ++) {
 //    	  int upDateYear;
 //    	  int upDateMonth;

@@ -2,7 +2,7 @@ package utility;
 
 import java.security.Timestamp;
 
-public class PrintPlanner {
+public class PrintPlanner implements Comparable<PrintPlanner>{
 	private int pk; // 프로젝트 no / 멤버 no
 	private String select; // 프로젝트 이름 / 멤버 이름
 	private String title; // 프로젝트의 태스크명 / 멤버의 태스크명
@@ -100,5 +100,14 @@ public class PrintPlanner {
 	public String toString() {
 		return "PrintPlanner [pk=" + pk + ", select=" + select + ", title=" + title + ", update=" + update
 				+ ", deadLine=" + deadLine + "]";
+	}
+	
+	@Override
+	public int compareTo(PrintPlanner p) {
+		if(p.pk < pk) {
+			return 1;
+		} else if (p.pk > pk) {
+			return -1;
+		} return 0;
 	}
 }
