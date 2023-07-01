@@ -533,6 +533,7 @@ public class Taskrefrom extends JPanel {
 		;
 
 		proTitleAndMember.add(taskTitleLbl);
+		
 	}
 
 	public void CalomnTitle() {
