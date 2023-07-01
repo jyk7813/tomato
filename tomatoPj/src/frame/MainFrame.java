@@ -44,6 +44,7 @@ public class MainFrame extends JFrame {
 	private Image taskImage;
 	public boolean columnActive = false;
 	public TaskBackgroundPnl TBP;
+	public JPanel projectPnl;
 	
 	
 	/**
@@ -114,7 +115,7 @@ public class MainFrame extends JFrame {
 		
 		JPanel loginPnl = new LoginPnl(loginImage,this);
 		JPanel signUpPnl = new SignUpPnl(signImage,this);
-		JPanel projectPnl = new ProjectSelectPnl(projectImage, this);
+		projectPnl = new ProjectSelectPnl(projectImage, this);
 		JPanel boradPnl = new BoradPnl(boradImage, this);
 		JPanel taskPnl = TBP;
 		JPanel todoPnl = new TestTodoPnl(this);

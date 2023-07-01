@@ -95,8 +95,6 @@ public class LoginPnl extends JPanel {
 		Image signUpImg = iconData.getImageIcon("signUp_btn").getImage();
 		Image signUpDarkImg = iconData.getImageIcon("signUp_btn3").getImage();
 		
-		Image logoutImg = iconData.getImageIcon("logout_btn").getImage();
-		Image logoutBrightImg = iconData.getImageIcon("logout_btn_white").getImage();
 		
 		Image loginErrorImg = iconData.getImageIcon("loginError").getImage();
 		

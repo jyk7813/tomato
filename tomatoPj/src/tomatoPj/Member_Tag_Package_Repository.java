@@ -40,10 +40,11 @@ public class Member_Tag_Package_Repository {
 				String name = rs.getString("name");
 				String mbti = rs.getString("mbti");
 				int active = rs.getInt("active");
+				byte[] image = rs.getBytes("image");
 				
 				//Member member = memberRepo.searchByMemberNo(member_no);
 				
-				list.add(new Member(member_no, id, pwd, e_mail, name, mbti, active));
+				list.add(new Member(member_no, id, pwd, e_mail, name, mbti, active, image));
 			}
 			
 		} finally {

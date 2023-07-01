@@ -7,27 +7,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import button.AddPictureBtn;
 import dbutil.DBUtil;
@@ -229,7 +226,7 @@ public class SignUpPnl extends JPanel {
 							conn = DBUtil.getConnection();
 							if (mr.dupliIdCheck(conn, idField.getText())) {
 								mr.signUp(conn, idField.getText(), regex.pwdToString(passwordField),
-										emailField.getText(), nameField.getText(), null);
+										emailField.getText(), nameField.getText(), null, getImageBytesFromLabel(testLbl));
 								System.out.println("회원가입성공");
 								mainFrame.showCard("login");
 								clearTextField();
@@ -268,4 +265,30 @@ public class SignUpPnl extends JPanel {
 //	        g.drawImage(image, 0, 0, this); // see javadoc for more info on the parameters
 //	    }
 //	}
+	public byte[] getImageBytesFromLabel(JLabel label) {
+	    byte[] imageBytes = null;
+	    try {
+	        // Get the icon from the label
+	        Icon icon = label.getIcon();
+	        
+	        // Convert the icon to a BufferedImage
+	        BufferedImage bi = new BufferedImage(
+	            icon.getIconWidth(),
+	            icon.getIconHeight(),
+	            BufferedImage.TYPE_INT_RGB);
+	        Graphics g = bi.createGraphics();
+	        icon.paintIcon(null, g, 0, 0);
+	        g.dispose();
+	        
+	        // Convert the BufferedImage to a byte array
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        ImageIO.write(bi, "png", baos);  // Change "png" to the format of your image
+	        imageBytes = baos.toByteArray();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return imageBytes;
+	}
+
 }

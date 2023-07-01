@@ -82,7 +82,7 @@ public class ProjectSelectPnl extends JPanel {
 		centerPnl.setLayout(null); // Necessary for JScrollPane to function correctly
 		
 		
-		ProjectSelectWestPnl westPnl = new ProjectSelectWestPnl() {
+		ProjectSelectWestPnl westPnl = new ProjectSelectWestPnl(mainFrame) {
 			@Override
 			public Dimension getPreferredSize() {
 				setOpaque(false);
@@ -149,7 +149,7 @@ public class ProjectSelectPnl extends JPanel {
 			public void componentShown(ComponentEvent e) {
 				removeAllProjectPanels();
 				loginMemberSetting();
-				
+				westPnl.projectMemberPnl.myInfoPnl.settingMyInfopnl();
 			}
 
 			@Override
