@@ -6,6 +6,8 @@ public class Feedback {
 	private int member_no;
 	private String comment;
 	// auto 인크리먼트를 제외한 생성자
+
+	
 	public Feedback(String comment) {
 		super();
 		this.comment = comment;
