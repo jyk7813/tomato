@@ -3,7 +3,9 @@ package pnl;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -104,12 +106,16 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
       setYear();
       setMonth();
       setDay();
+      barPane.setBounds(0, 0, 790, 750);
+      barPane.setOpaque(false);
+      centerPane.add(barPane); 
       dayPane.setBounds(0, 0, 781, 733);
       dayPane.setOpaque(false);
       centerPane.add(dayPane); 
       centerPane.setBounds(0, 130, 790, 750);
       centerPane.setLayout(null);
       centerPane.setOpaque(false);
+      
       
       // 패널 붙이기 --------------------------------------
       add(selectPane);
@@ -131,8 +137,6 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 
    // 날짜셋팅
    public void setDay() {
-      ImageIcon dayNull = iconManager.getImageIcon("calendarNull4Pnl");
-      ImageIcon dayImg = iconManager.getImageIcon("calendar4Pnl");
       // 요일
       date.set(year, month - 1, 1); // date를 세팅하는데, 일(day)을 1로 세팅
       int week = date.get(Calendar.DAY_OF_WEEK); // 일월화수목금토
@@ -142,7 +146,6 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
       // 공백처리
       for (int s = 1; s < week; s++) { 
          JPanel box = new JPanel();
-         JLabel dayBox = new JLabel();
          JLabel lbl = new JLabel(" ");
          lbl.setBounds(0, 0, 20, 20);
          lbl.setLayout(null);
@@ -156,11 +159,16 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
          
       }
       
+      JPanel[] barBox = new JPanel[32];
       // 날짜출력
       for (int day = 1; day <= lastDay; day++) {
-         JLabel lbl = new JLabel(String.valueOf(day),JLabel.CENTER);
-         JPanel box = new JPanel();
-         lbl.setFont(fnt2);
+    	 JPanel box = new JPanel();
+    	 barBox[day] = new JPanel();
+    	 barBox[day].setBounds(0, 30, 100, 116);
+    	 barBox[day].setLayout(null);
+    	 barBox[day].setOpaque(false);
+    	 JLabel lbl = new JLabel(String.valueOf(day),JLabel.CENTER);
+    	 lbl.setFont(fnt2);
          // 출력하는 날짜에 대한 요일
          date.set(Calendar.DATE, day);
          int w = date.get(Calendar.DAY_OF_WEEK); // 요일
@@ -170,13 +178,54 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
             lbl.setForeground(Color.blue); // 7 = 토요일
          lbl.setBounds(30, 0, 30, 30);
          box.add(lbl);
+         box.add(barBox[day]);
          box.setBounds(0, 0, 100, 116);
          box.setLayout(null);
          box.setOpaque(false);
+         
          dayPane.add(box);
       }
+      
+      
+//      JLabel barText = new JLabel();
+//      JPanel barDraw = new JPanel();
+//      JPanel bar = new JPanel();
+//      bar.setBounds(0,0,0,0);
+//      for(int i = 0; i < ppList.size(); i ++) {
+//    	  int upDateYear;
+//    	  int upDateMonth;
+//    	  int upDateday;
+//    	  String deadDateYear;
+//    	  String deadDateMonth;
+//    	  String deadDateday;
+//    	  for(PrintPlanner pp : ppList) {
+//    		  upDateYear  = Integer.parseInt(pp.getUpdate().substring(0,4));
+//    		  upDateMonth = Integer.parseInt(pp.getUpdate().substring(5,2));
+//    		  upDateday = Integer.parseInt(pp.getUpdate().substring(8,2));
+//    		  if(year == upDateYear) {
+//    			  if(month == upDateMonth) {
+//    			  }
+//    		  }
+//    	  
+//    	  }
+//      }
    }
-
+   
+   public JPanel drawBar(int i, String str) {
+	   JPanel pnl = new JPanel() {
+		   String imgSrc = "calendarBar_" + str + i;
+		   Image barColor = iconManager.getImageIcon(imgSrc).getImage();
+		   public void paintComonent(Graphics g) {
+			   g.drawImage(barColor, 0, 0, null);
+		   }
+	   };
+	   pnl.setBounds(0, 0, 110, 116);
+	   pnl.setLayout(null);
+	   pnl.setOpaque(false);
+	   return pnl;
+   }
+   
+   
    // 년도세팅
    public void setYear() {
       for (int i = year - 50; i < year + 20; i++) { 
