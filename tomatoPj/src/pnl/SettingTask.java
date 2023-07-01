@@ -20,18 +20,24 @@ public class SettingTask {
 	Feedback feedback;
 	Column column;
 	MainFrame MF;
-	public SettingTask(MainFrame mainFrame,Taskrefrom ts,Task task,Column column,Feedback feedback) {
+	public SettingTask(Taskrefrom ts,Task task,Column column,Feedback feedback) {
 		dbutil = new DBUtil();
 		IC = new IconData();
 		this.task = task;
+		ts.TakeTask = task;
 		this.ts = ts;
 		this.feedback = feedback;
 		this.column = column;
+		this.MF = MF;
+	}
+	public void setUsingMemberNum() {
+		ts.useingMemberNum = MF.loginMember.getMember().getMember_no();
 	}
 	public void settingPKAndAc() {
 		ts.task_Pk = task.getTask_no();
 		ts.Active = task.getActive();
 	}
+	
 	public String setUpdataDate() {
 		String updateDate = "";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -93,18 +99,13 @@ public class SettingTask {
 	
 	public void setFeedback() {
 		ts.feedBackText.setText("피드백을 입력해주세요");
-	
+
 		if(feedback != null) {
 		ts.TakeFeedBack = feedback;
-		ts.returnFeedBack_PK = feedback.getTask_no();
+		ts.returnFeedBack_PK = feedback.getFeedback_no();
 		ts.returnFeedBack_Task_no = task.getTask_no();
 		System.out.println(feedback);
 		ts.feedBackText.setText(feedback.getComment());
 		}
-		
-	}
-	public void setUsingMemberNum() {
-		ts.useingMemberNum = MF.loginMember.getMember_no();
-		
-	}
+}
 }

@@ -127,10 +127,12 @@ public class Taskrefrom extends JPanel {
 
 	
 	Taskrefrom tr;
-	boolean isButtonClicked;
+	
 	private JLabel content;
 	private JPanel taglist;
 	JTextField calomnTitle;
+	
+
 
 	public Taskrefrom(MainFrame mainFrame) {
 
@@ -171,25 +173,25 @@ public class Taskrefrom extends JPanel {
 						// 날짜 포맷이 잘못된 경우 예외 처리
 						e2.printStackTrace();
 					}
-					System.out.println(TakeFeedBack);
-					System.out.println("feedback 왔나요.");
+
 					
-					if(task_Pk == 0) {
-					returnTask = new Task(title, contentText.getText(), returnImoportance, updateDate, deadLine);
-					
+					if(TakeTask== null) {
+						returnTask = new Task(title, contentText.getText(), returnImoportance, updateDate, deadLine);
+
 					}else {
-					returnTask = new Task(task_Pk,title, contentText.getText(), returnImoportance, updateDate, deadLine,Active);
-					
+						returnTask = new Task(task_Pk,title, contentText.getText(), returnImoportance, updateDate, deadLine,Active);
+
 					}
 					
 					if(TakeFeedBack == null) {
 						
-						returnFeedBack = new Feedback(returnFeedBack_Task_no,useingMemberNum,feedBackText.getText());		
+						returnFeedBack = new Feedback(returnFeedBack_Task_no,1,feedBackText.getText());		
 						System.out.println("새로운 테스크에 작성");
 						System.out.println(returnFeedBack);
 					}
 					else {
-						returnFeedBack = new Feedback(returnFeedBack_Task_no, returnFeedBack_Task_no, 3, feedBackText.getText());
+						returnFeedBack = new Feedback(returnFeedBack_PK, returnFeedBack_Task_no, 3, feedBackText.getText());
+
 					}
 					
 					mainFrame.getContentPane().removeAll();
@@ -249,7 +251,7 @@ public class Taskrefrom extends JPanel {
 		// 팝업창에 아이디 입력으로 추가.
 		// 멤버 추가 로직고민
 
-		st = new SettingTask(MF,this, TakeTask, column, TakeFeedBack);
+		st = new SettingTask(this, TakeTask, column, TakeFeedBack);
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
@@ -312,9 +314,9 @@ public class Taskrefrom extends JPanel {
 	public void settingTask(Taskrefrom myUpPnl, Task task, Column column, Feedback feedback) {
 		try {
 			
-			st = new SettingTask(MF,myUpPnl, task, column, feedback);
+			st = new SettingTask(myUpPnl, task, column, feedback);
 			
-			st.setUsingMemberNum();
+//			st.setUsingMemberNum();
 			
 			st.settingPKAndAc();
 			// 별세팅
