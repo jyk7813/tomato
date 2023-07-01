@@ -64,7 +64,8 @@ public class TagRepository {
 				String name = rs.getString("name");
 				String mbti = rs.getString("mbti");
 				int active = rs.getInt("active");
-				list.add(new Member(member_no, id, pwd, e_mail, name, mbti, active));
+				byte[] image = rs.getBytes("image");
+				list.add(new Member(member_no, id, pwd, e_mail, name, mbti, active, image));
 			}
 		} finally {
 			DBUtil.close(rs);

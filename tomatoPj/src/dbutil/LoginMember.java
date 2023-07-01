@@ -2,6 +2,7 @@ package dbutil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import tomatoPj.Member;
@@ -17,7 +18,7 @@ public class LoginMember {
 	private int pjListSize;
 	// 로그인한 멤버가 참여중인 프로젝트들의 모든 태스크
 	private List<Task> takeTaskList;
-	
+
 	public List<Task> getTakeTaskList() {
 		return takeTaskList;
 	}
@@ -46,10 +47,12 @@ public class LoginMember {
 	public LoginMember() {
 	}
 
+
 	@Override
 	public String toString() {
 		return "LoginMember [member=" + member + ", member_no=" + member_no + ", pjList=" + pjList + ", loginTime="
-				+ loginTime + "]";
+				+ loginTime + ", pjListSize=" + pjListSize + ", takeTaskList=" + takeTaskList + ", image="
+				+ "]";
 	}
 
 	public Member getMember() {

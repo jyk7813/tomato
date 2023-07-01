@@ -29,7 +29,7 @@ public class BoradPnl extends JPanel{
 		TopMainPnl topPnl = new TopMainPnl(mainFrame);
 		add(topPnl, BorderLayout.NORTH);
 		
-		ProjectMemberPnl projectMemberPnl = new ProjectMemberPnl();
+		ProjectMemberPnl projectMemberPnl = new ProjectMemberPnl(mainFrame);
 		
 		add(projectMemberPnl, BorderLayout.WEST);
 		projectMemberPnl.setOpaque(false);

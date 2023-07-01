@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 
+import frame.MainFrame;
 import utility.IconData;
 
 import java.awt.Color;
@@ -13,12 +14,12 @@ import java.awt.GridLayout;
 public class ProjectMemberPnl extends JPanel {
 	private IconData iconData;
 	private ProjectTitlePnl projectTitlePnl;
-	private MyInfoPnl myInfoPnl;
+	public MyInfoPnl myInfoPnl;
 	private MemberListPnl memberPnl;
 	/**
 	 * Create the panel.
 	 */
-	public ProjectMemberPnl() {
+	public ProjectMemberPnl(MainFrame mainFrame) {
 		iconData = new IconData();
 		setLayout(null);
 		
@@ -35,7 +36,7 @@ public class ProjectMemberPnl extends JPanel {
 		panel.add(projectTitlePnl);
 		projectTitlePnl.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		myInfoPnl = new MyInfoPnl();
+		myInfoPnl = new MyInfoPnl(mainFrame);
 		myInfoPnl.setBackground(new Color(0,0,0,0));
 		myInfoPnl.setBounds(0, 200, 130, 140);
 		panel.add(myInfoPnl);

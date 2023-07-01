@@ -3,6 +3,8 @@ package tomatoPj;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 public class Member {
 	private int member_no;
 	private String id;
@@ -13,8 +15,21 @@ public class Member {
 	private int active;
 	private List<Project> project;
 	private List<Feedback> feedback;
+	private byte[] image;
 	
-	public Member(int member_no, String id, String pwd, String e_mail, String name, String mbti, int active) {
+//	public Member(int member_no, String id, String pwd, String e_mail, String name, String mbti, int active) {
+//		super();
+//		this.member_no = member_no;
+//		this.id = id;
+//		this.pwd = pwd;
+//		this.e_mail = e_mail;
+//		this.name = name;
+//		this.mbti = mbti;
+//		this.active = active;
+//		this.project = new ArrayList<>();
+//		this.feedback = new ArrayList<>();
+//	}
+	public Member(int member_no, String id, String pwd, String e_mail, String name, String mbti, int active, byte[] image) {
 		super();
 		this.member_no = member_no;
 		this.id = id;
@@ -25,6 +40,13 @@ public class Member {
 		this.active = active;
 		this.project = new ArrayList<>();
 		this.feedback = new ArrayList<>();
+		this.image = image;
+	}
+	public byte[] getImage() {
+		return image;
+	}
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 	public Member(String id, String pwd, String e_mail, String name, String mbti) {
 		super();
