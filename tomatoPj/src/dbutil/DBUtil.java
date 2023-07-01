@@ -75,4 +75,8 @@ public class DBUtil {
 			}
 		}
 	}
+	
+	public static Task throwTask(Task task) {
+		return task;
+	}
 }

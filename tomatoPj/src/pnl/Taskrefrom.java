@@ -2,26 +2,30 @@ package pnl;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,7 +38,6 @@ import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import dbutil.DBUtil;
 import frame.MainFrame;
 import tomatoPj.Column;
 import tomatoPj.Feedback;
@@ -60,6 +63,7 @@ public class Taskrefrom extends JPanel {
 	JLabel timeManagementNavi;
 	int Imoportance;
 	// 별리셋용 Imoportance
+	
 	// 시작날짜
 	JLabel StartDate;
 	// 끝나는 날짜
@@ -92,33 +96,43 @@ public class Taskrefrom extends JPanel {
 	// 폰트 사이즈 조정
 	int FontSize;
 	// Task 에 줘야하는거
+	int task_Pk;
 	String title;
 	Timestamp updateDate;
 	Timestamp deadLine;
 	int returnImoportance;
+	int Active;
 	// 돌려주는 테스크.
 	Task returnTask;
 	// 캘린더 2
 	CalendarPnl2 cal2;
 	CalendarPnl cal;
 	// 받는 정보들
+	Task TakeTask;
+	Feedback TakeFeedBack;
 	// 멤버목록 테스크 목록
 	MainFrame MF;
-	Task TakeTask;
 
 	TaskRepository taskRepo;
 	List<Member> memberList;
 	List<Function_Tag> Function_Tag_List;
-	Feedback feedbak;
 
 	Column column;
 	CardLayout cardLayout;
+	
+	int returnFeedBack_PK;
+	int returnFeedBack_Task_no;
+	int useingMemberNum;
+	Feedback returnFeedBack;
 
+	
 	Taskrefrom tr;
-	boolean isButtonClicked;
+	
 	private JLabel content;
 	private JPanel taglist;
 	JTextField calomnTitle;
+	
+
 
 	public Taskrefrom(MainFrame mainFrame) {
 
@@ -133,7 +147,7 @@ public class Taskrefrom extends JPanel {
 
 		MouseAdapter outsideClickListener = new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				// 패널 외부 클릭 이벤트 발생 시 실행할 코드 작성
 				if (e.getSource() == this) {
 				} else {
@@ -159,8 +173,27 @@ public class Taskrefrom extends JPanel {
 						// 날짜 포맷이 잘못된 경우 예외 처리
 						e2.printStackTrace();
 					}
-					returnTask = new Task(title, contentText.getText(), returnImoportance, updateDate, deadLine);
 
+					
+					if(TakeTask== null) {
+						returnTask = new Task(title, contentText.getText(), returnImoportance, updateDate, deadLine);
+
+					}else {
+						returnTask = new Task(task_Pk,title, contentText.getText(), returnImoportance, updateDate, deadLine,Active);
+
+					}
+					
+					if(TakeFeedBack == null) {
+						
+						returnFeedBack = new Feedback(returnFeedBack_Task_no,1,feedBackText.getText());		
+						System.out.println("새로운 테스크에 작성");
+						System.out.println(returnFeedBack);
+					}
+					else {
+						returnFeedBack = new Feedback(returnFeedBack_PK, returnFeedBack_Task_no, 3, feedBackText.getText());
+
+					}
+					
 					mainFrame.getContentPane().removeAll();
 					mainFrame.addPnl();
 					mainFrame.showCard("columnSelect");
@@ -218,12 +251,11 @@ public class Taskrefrom extends JPanel {
 		// 팝업창에 아이디 입력으로 추가.
 		// 멤버 추가 로직고민
 
-		Feedback feedback = new Feedback(6, 27, 1, "대본수정");
-		st = new SettingTask(this, TakeTask, column, feedback);
+		st = new SettingTask(this, TakeTask, column, TakeFeedBack);
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
-		togglePanel();
+
 		// 메인
 //		TaskMain();
 		TaskMainLbl();
@@ -231,7 +263,7 @@ public class Taskrefrom extends JPanel {
 		StarAndDate();
 		// 별세팅
 		StarSet();
-		st.SetStar();
+
 
 		// 날짜 세팅
 
@@ -261,8 +293,9 @@ public class Taskrefrom extends JPanel {
 		detailFontBox();
 		// tag
 		TagPnl();
+		
 		TagSet();
-		tagList();
+
 		// feedback
 		feedBack();
 		feedBackTextFiled();
@@ -280,8 +313,12 @@ public class Taskrefrom extends JPanel {
 
 	public void settingTask(Taskrefrom myUpPnl, Task task, Column column, Feedback feedback) {
 		try {
-
+			
 			st = new SettingTask(myUpPnl, task, column, feedback);
+			
+//			st.setUsingMemberNum();
+			
+			st.settingPKAndAc();
 			// 별세팅
 			st.SetStar();
 			// 시작 날짜 세팅
@@ -302,21 +339,8 @@ public class Taskrefrom extends JPanel {
 
 	}
 
-	public void settingTask() {
 
-	}
 
-	public void togglePanel() {
-		boolean isVisible = pnl.isVisible();
-
-		if (isVisible) {
-			// 패널이 이미 켜져있을 때의 동작
-		} else {
-			// 패널을 켜는 동작
-			pnl.setVisible(true);
-
-		}
-	}
 
 	public void TaskMainLbl() {
 		TaskPnlMainLbl = new JLabel(IC.getImageIcon("contentPanel"));
@@ -524,7 +548,7 @@ public class Taskrefrom extends JPanel {
 		calomnTitle.setOpaque(false);
 		calomnTitle.setSize(200, 53);
 		calomnTitle.setLocation(15, 17);
-		;
+		
 
 		CalomnTitleLbl.setSize(200, 62);
 		CalomnTitleLbl.setLocation(60, -3);
@@ -733,7 +757,6 @@ public class Taskrefrom extends JPanel {
 		content.setFont(FD.nanumFont(FontSize));
 		content.add(detailScrollPane);
 		content.setSize(500, 250);
-//	    content.setLocation(0, 0);
 
 		// contentText의 위치 조정
 		detailScrollPane.setLocation(10, 40); // 원하는 위치로 조정
@@ -747,7 +770,7 @@ public class Taskrefrom extends JPanel {
 		tagPnl.setLocation(0, 355);
 		tagPnl.setLayout(null);
 		tagPnl.setOpaque(false);
-//		TagPnl.setBackground(new Color(255,0,0));
+
 		TaskUnderPanel.add(tagPnl);
 	}
 
@@ -757,67 +780,103 @@ public class Taskrefrom extends JPanel {
 		plusTag.setLocation(87, 10);
 		plusTag.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-//				JLabel tagIcon = new JLabel(IC.getImageIcon("tag"));
-//				JLabel tagText = new JLabel("기획");
-//				tagText.setSize(70, 20);
-//				tagText.setLocation(20, 5);
-//				tagIcon.add(tagText);
-//				tagIcon.addMouseListener(new MouseAdapter() {
-//					public void mousePressed(MouseEvent e) {
-//						tagPnl.remove(tagIcon);
-//						tagPnl.revalidate();
-//						tagPnl.repaint();
-//						CountTag--;
-//						plusTag.setVisible(true);
-//						plusTag.setLocation(87 + ((CountTag * 1) * 100), 10);
-//					}
-//				});
-//				tagPnl.add(tagIcon);
-//				tagIcon.setSize(80, 30);
-//				tagIcon.setLocation(64 + ((CountTag * 1) * 90), 10);
-//				plusTag.setLocation(87 + ((CountTag + 1 * 1) * 100), 10);
-//
-//				// 아이콘들 간의 간격을 위한 빈 공간 컴포넌트 추가
-//
-//				tagPnl.revalidate();
-//				tagPnl.repaint();
-//				CountTag++;
-//
-//				if (CountTag >= 5) {
-//					plusTag.setVisible(false);
-//				} else {
-//				}
-				taglist.setOpaque(true);
+				List<Function_Tag> list =Function_Tag_List();
+				JDialog dialog = new JDialog();
+					dialog.setSize(100,50*list.size());
+					dialog.setModal(false);
+					dialog.setUndecorated(true);
+					dialog.setLayout(null);
+					dialog.setVisible(true);
+					dialog.isAlwaysOnTop();
+				JLabel tagbackGround = new JLabel(IC.getImageIcon("calendarRight"));
+					tagbackGround.setSize(100,50*list.size());
+					dialog.add(tagbackGround);
+					dialog.setLocationRelativeTo(TaskUnderPanel);
+					
+						
+				for(int i =0 ;i<list.size();i++) {
+					Function_Tag tag2 = list.get(i);
+					JLabel tagIcon = new JLabel(IC.getImageIcon("tag"));
+					JLabel tagText = new JLabel(tag2.getText());
+					tagText.setSize(70, 30);
+					tagText.setLocation(0,0);
+					
+					tagIcon.addMouseListener(new MouseAdapter() {
+						public void mousePressed(MouseEvent e) {
+				        	JLabel tagIcon = new JLabel(IC.getImageIcon("tag"));
+				        	JLabel tagText = new JLabel(tag2.getText());
+				        	tagText.setSize(70,20);
+				        	tagText.setLocation(20,5);
+				        	tagIcon.add(tagText);		           		            
+				        	tagIcon.addMouseListener(new MouseAdapter() {
+				        		public void mousePressed(MouseEvent e) {
+				        	        tagPnl.remove(tagIcon); // tagIcon 제거
+				        	        tagPnl.revalidate();
+				        	        tagPnl.repaint();
+				        	        CountTag--;
+
+				        	        // 아이콘들 왼쪽 정렬
+				        	        Component[] components = tagPnl.getComponents();
+				        	        int x = 0;
+				        	        for (int i = 0; i < components.length; i++) {
+				        	            if (components[i] instanceof JLabel) {
+				        	                JLabel icon = (JLabel) components[i];
+				        	                icon.setLocation(x, 10);
+				        	                x += 90;
+				        	            }
+				        	        }
+
+				        	        plusTag.setVisible(true);
+				        	        plusTag.setLocation(87 + (CountTag * 100), 10);
+				        	    }
+				        	});
+				        	tagPnl.add(tagIcon);
+				        	CountTag = 0;
+				        	tagIcon.setSize(80,30);
+				        	tagIcon.setLocation(64+((CountTag*1)*90),10);
+				            plusTag.setLocation(87+((CountTag+1*1)*100),10);
+				            
+				            // 아이콘들 간의 간격을 위한 빈 공간 컴포넌트 추가
+				            
+				            tagPnl.revalidate();
+				            tagPnl.repaint();
+				            CountTag += 90;
+				            
+				            if(CountTag >=5) {
+				            	plusTag.setVisible(false);
+				            }else {
+				            }
+				        }
+					});
+					tagIcon.add(tagText);
+
+
+					tagIcon.setSize(new Dimension(80, 30));
+					tagIcon.setLocation(10,10+(i*50));
+					tagbackGround.add(tagIcon);
+				}
 			}
 		});
 
 		tagPnl.add(plusTag);
 
 	}
-
-	public void tagList() {
-		taglist = new JPanel();
-		taglist.setSize(200, 200);
-		taglist.setLocation(plus.getX() + 130, plus.getY());
-//		taglist.setBackground(new Color(255,0,0));
-		taglist.setVisible(true);
-		taglist.setOpaque(false);
-		tagPnl.add(taglist);
-		taglist.addMouseListener(new MouseAdapter() {
-
-			public void mousePressed(MouseEvent e) {
-//				System.out.println(e.getClickCount());
-				taglist.setOpaque(false);
-			}
-		});
-
+	public List<Function_Tag> Function_Tag_List(){
+		List<Function_Tag> list = new ArrayList<>();
+		Function_Tag FT = new Function_Tag(1,22,"red","db파트");
+		Function_Tag FT2 = new Function_Tag(2,22,"bule","로직파트");
+		Function_Tag FT3 = new Function_Tag(3,22,"yello","gui파트");
+		list.add(FT);
+		list.add(FT2);
+		list.add(FT3);
+		return list;
 	}
+
 
 	public void feedBack() {
 		feedBack = new JPanel();
 		feedBack.setSize(629, 172);
 		feedBack.setLocation(0, 425);
-//		feedBack.setBackground(new Color(0,255,0));
 		feedBack.setOpaque(false);
 		TaskUnderPanel.add(feedBack);
 	}
@@ -861,7 +920,7 @@ public class Taskrefrom extends JPanel {
 		JLabel feedBackLbl = new JLabel(IC.getImageIcon("feedback"));
 		feedBackLbl.setLocation(60, 0);
 
-		feedBackText = new JTextArea("피드백을 입력해주세요" + "");
+		feedBackText = new JTextArea("피드백을 입력해주세요");
 		feedBackText.setFont(FD.nanumFont(20));
 		feedBackText.setSize(350, 40);
 		feedBackText.setBorder(null); // 테두리 제거
@@ -909,7 +968,7 @@ public class Taskrefrom extends JPanel {
 		feedBackLbl.setFont(FD.nanumFont(1));
 
 		feedBackLbl.setSize(482, 72);
-//	    content.setLocation(0, 0);
+
 		feedBackLbl.add(feedBackscrollPane);
 		// contentText의 위치 조정
 		feedBackscrollPane.setLocation(63, 47); // 원하는 위치로 조정
@@ -917,74 +976,7 @@ public class Taskrefrom extends JPanel {
 		feedBack.add(feedBackLbl);
 	}
 
-	public static Task taskListBypjNo() throws SQLException {
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		Task task = null;
 
-		try {
-			conn = DBUtil.getConnection();
-			String query = "select * from task where task_no = 36";
-
-			stmt = conn.prepareStatement(query);
-
-			rs = stmt.executeQuery();
-
-			if (rs.next()) {
-				int task_no = rs.getInt("task_no");
-				String title = rs.getString("title");
-				String content = rs.getString("content");
-				int importance = rs.getInt("importance");
-				Timestamp updateDate = rs.getTimestamp("updateDate");
-				Timestamp deadLine = rs.getTimestamp("deadLine");
-				int active = rs.getInt("active");
-				task = new Task(task_no, title, content, importance, updateDate, deadLine, active);
-				return task;
-			}
-
-		} finally {
-			DBUtil.close(rs);
-			DBUtil.close(stmt);
-			DBUtil.close(conn);
-		}
-		return task;
-	}
-//
-//	public static class MyFrame extends JFrame {
-//		IconData IC;
-//
-//		public MyFrame() {
-//			IC = new IconData();
-//			MainFrame mainFrame;
-//			Task testTask = null;
-//			Taskrefrom task;
-//			try {
-//				testTask = taskListBypjNo();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//			task = new Taskrefrom(testTask);
-//
-//			JLabel Background = new JLabel(IC.getImageIcon("selectTask(BG)"));
-//
-//			Background.setSize(1920, 1080);
-//			Background.add(task);
-//			add(Background);
-//			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//			setTitle("My Frame");
-//			setSize(1920, 1080);
-//			setBackground(new Color(255, 0, 0));
-//			setLayout(null);
-//			setVisible(true);
-//		}
-//	}
-//
-//	public static void main(String[] args) {
-//		new MyFrame();
-////		frame.add(task);
-//
-//	}
 
 	@Override
 	protected void paintComponent(Graphics g) {

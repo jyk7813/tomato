@@ -12,6 +12,12 @@ public class Function_Tag {
 		this.color = color;
 		this.text = text;
 	}
+	public Function_Tag(int task_no, String color, String text) {
+		super();
+		this.task_no = task_no;
+		this.color = color;
+		this.text = text;
+	}
 	public int getNo() {
 		return no;
 	}
