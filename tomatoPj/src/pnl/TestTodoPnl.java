@@ -56,13 +56,15 @@ public class TestTodoPnl extends JPanel {
 	private TaskRepository tr = new TaskRepository();
 	private ProjectRepository pr = new ProjectRepository();
 	private MemberRepository mr = new MemberRepository();
-
+	
+	List<PrintPlanner> ppList = new ArrayList<>();
+	
 	public TestTodoPnl(MainFrame mainFrame) {
 		addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent e) {
 				System.out.println("투두창확인");
-				setView(toggleSwitch, mainFrame);
+				setView(mainFrame);
 			}
 
 			@Override
@@ -77,7 +79,7 @@ public class TestTodoPnl extends JPanel {
 			public void componentHidden(ComponentEvent e) {
 			}
 		});
-
+		
 		// 메인 영역 배경 패널 ------------------------------------
 		JPanel calBgPnl = new JPanel() {
 			public void paintComponent(Graphics g) {
@@ -114,19 +116,7 @@ public class TestTodoPnl extends JPanel {
 		printCal.setLayout(null);
 		printCal.setOpaque(false);
 
-//		// 막대바 출력 패널 -------------------------------------
-//		JPanel barPnl = new JPanel();
-//		barPnl.setBounds(200, 135, 768, 730);
-//		barPnl.setLayout(null);
-//		barPnl.setOpaque(false);
-//		JPanel barBox = new JPanel();
-//		barBox.setBounds(0, 0, 90, 110);
-//		barBox.setLayout(null);
-//		barBox.setOpaque(false);
-//		String barName = "";
-//		String barColor = "";
-//		ImageIcon barDraw;
-//		barPnl.add(barBox);
+		// 막대바 출력 패널 -------------------------------------
 
 		// 투두 리스트 패널 ------------------------------------
 		JPanel todoListPnl = new JPanel();
@@ -145,11 +135,13 @@ public class TestTodoPnl extends JPanel {
 				if (toggleSwitch) {
 					toggleBtn.setIcon(IC.getImageIcon("prijectEach_toggle"));
 					toggleSwitch = false;
-					setView(toggleSwitch, mainFrame);
+					setView(mainFrame);
+					testPrint();
 				} else {
 					toggleBtn.setIcon(IC.getImageIcon("prijectAll_toggle"));
 					toggleSwitch = true;
-					setView(toggleSwitch, mainFrame);
+					setView(mainFrame);
+					testPrint();
 				}
 			}
 		};
@@ -180,10 +172,11 @@ public class TestTodoPnl extends JPanel {
 	}
 
 	// 페이지 전환 메소드 (전체 프로젝트 / 프로젝트 별) ---------------
-	public void setView(Boolean toggleSwitch, MainFrame mainFrame) {
+	public List<PrintPlanner> setView(MainFrame mainFrame) {
 		List<Project> pjOfUser = mainFrame.loginMember.getPjList();
 		// toggleSwitch = true = 전체 프로젝트
 		if (toggleSwitch) {
+			ppList.clear();
 			List<Task> tkOfPj;
 			for (Project p : pjOfUser) {
 				try {
@@ -192,19 +185,19 @@ public class TestTodoPnl extends JPanel {
 						String update = t.getUpdateDate().toString();
 						String deadLine = t.getDeadLine().toString();
 						PrintPlanner pp = new PrintPlanner(p.getProject_no(), p.getTitle(), t.getTitle(), update, deadLine);
-						System.out.println("전체 프로젝트 : ");
-						System.out.println(pp);
-						System.out.println("----------------------");
+						ppList.add(pp);
 					}
 				} catch (SQLException e) {
 					System.out.println("투두오류1: 전체프로젝트 리스트 전달 실패");
 					e.printStackTrace();
 				}
 			}
+			return ppList;
 		// 프로젝트 별	
 		} else {
 			List<Task> tkOfPj2;
 			List<Member> mOfTask;
+			ppList.clear();
 			for(Project p : pjOfUser) {
 				try {
 					tkOfPj2 = tr.taskListBypjNo(p.getProject_no());
@@ -214,9 +207,7 @@ public class TestTodoPnl extends JPanel {
 							String update = t.getUpdateDate().toString();
 							String deadLine = t.getDeadLine().toString();
 							PrintPlanner pp = new PrintPlanner(m.getMember_no(), m.getName(), t.getTitle(), update, deadLine);
-							System.out.println("프로젝트 별 : " + p.getTitle());
-							System.out.println(pp);
-							System.out.println("----------------------");
+							ppList.add(pp);
 						}
 					}
 				} catch (SQLException e) {
@@ -224,6 +215,25 @@ public class TestTodoPnl extends JPanel {
 					e.printStackTrace();
 				}
 			}
+			return ppList;
+		}
+	}
+	
+	public void testPrint() {
+		if(toggleSwitch) {
+			System.out.println("전체 프로젝트");
+			for(PrintPlanner pp : ppList) {
+				System.out.println(pp);
+			}
+			System.out.println("-----------------------");
+		} else {
+			for(PrintPlanner pp : ppList) {
+				System.out.println("프로젝트 별: " + pp.getTitle());
+				System.out.println(pp);
+			}
+			System.out.println("-----------------------");
 		}
 	}
 }
+
+

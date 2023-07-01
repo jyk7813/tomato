@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 //import javax.rmi.CORBA.Util;
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
 import utility.CalendarData;
 import utility.FontData;
 import utility.IconData;
+import utility.PrintPlanner;
 import utility.Utility;
 
 public class CalendarSwing extends JPanel implements ItemListener, ActionListener {
@@ -29,6 +31,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
    CalendarData calManager = new CalendarData();
    Font fnt = fontManager.nanumFontBold(18);
    Font fnt2 = fontManager.nanumFontBold(15);
+   List<PrintPlanner> ppList;
 
    // 상단 패널 ---------------------------------------
    JPanel selectPane = new JPanel();
@@ -47,6 +50,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
    // 달력 출력 패널 ------------------------------------
    JPanel centerPane = new JPanel();
    JPanel dayPane = new JPanel(new GridLayout(0, 7));
+   JPanel barPane = new JPanel();
 
    String[] title = { "일", "월", "화", "수", "목", "금", "토" };
 
@@ -151,12 +155,11 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
          dayPane.add(box);
          
       }
+      
       // 날짜출력
       for (int day = 1; day <= lastDay; day++) {
          JLabel lbl = new JLabel(String.valueOf(day),JLabel.CENTER);
          JPanel box = new JPanel();
-         JLabel dayBox = new JLabel();
-         dayBox.setIcon(dayImg);
          lbl.setFont(fnt2);
          // 출력하는 날짜에 대한 요일
          date.set(Calendar.DATE, day);
@@ -166,29 +169,13 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
          if (w == 7)
             lbl.setForeground(Color.blue); // 7 = 토요일
          lbl.setBounds(30, 0, 30, 30);
-//         dayBox.setBounds(0, 0, 103, 116);
-//         dayBox.setLayout(null);
-//         dayBox.setOpaque(false);
          box.add(lbl);
-//         box.add(dayBox);
          box.setBounds(0, 0, 100, 116);
          box.setLayout(null);
          box.setOpaque(false);
          dayPane.add(box);
       }
    }
-
-   // 월화수목금토일 출력
-//   public void setCalendarTitle() { 
-//      for (int i = 0; i < title.length; i++) { 
-//         JLabel lbl = new JLabel(title[i], JLabel.CENTER); 
-//         lbl.setFont(fnt); 
-//         if (i == 0)
-//            lbl.setForeground(Color.red); 
-//         if (i == 6)
-//            lbl.setForeground(Color.blue);
-//      }
-//   }
 
    // 년도세팅
    public void setYear() {
@@ -267,4 +254,38 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
          month++;
       }
    }
+   
+//   public JPanel printBar() {
+//		JPanel barPnl = new JPanel();
+//		JPanel barBox = new JPanel();
+//		barPnl.setBounds(200, 135, 768, 730);
+//		barPnl.setLayout(null);
+//		barPnl.setOpaque(false);
+//		barBox.setBounds(0, 0, 90, 110);
+//		barBox.setLayout(null);
+//		barBox.setOpaque(false);
+//		String barName = "";
+//		String barColor = "";
+//		ImageIcon barDraw;
+//		barPnl.add(barBox);
+//		
+//		if(toggleSwitch) {
+//			for(PrintPlanner p : ppList) {
+//				System.out.println("전체 프로젝트 : ");
+//				System.out.println(p);
+//				System.out.println("----------------------");
+//			}
+//		} else {
+//			for(PrintPlanner p : ppList) {
+//				System.out.println("프로젝트 별 : " + p.getTitle());
+//				System.out.println(p);
+//				System.out.println("----------------------");
+//			}
+//		}
+//		setBounds(0, 0, 768, 730);
+//		setLayout(null);
+//		setOpaque(false);
+//		
+//		return printBar;
+//	}
 }
