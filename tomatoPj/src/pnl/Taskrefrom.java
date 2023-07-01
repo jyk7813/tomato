@@ -2,6 +2,7 @@ package pnl;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -16,9 +17,12 @@ import java.awt.event.MouseWheelEvent;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -92,28 +96,35 @@ public class Taskrefrom extends JPanel {
 	// 폰트 사이즈 조정
 	int FontSize;
 	// Task 에 줘야하는거
+	int task_Pk;
 	String title;
 	Timestamp updateDate;
 	Timestamp deadLine;
 	int returnImoportance;
+	int Active;
 	// 돌려주는 테스크.
 	Task returnTask;
 	// 캘린더 2
 	CalendarPnl2 cal2;
 	CalendarPnl cal;
 	// 받는 정보들
+	Task TakeTask;
+	Feedback TakeFeedBack;
 	// 멤버목록 테스크 목록
 	MainFrame MF;
-	Task TakeTask;
 
 	TaskRepository taskRepo;
 	List<Member> memberList;
 	List<Function_Tag> Function_Tag_List;
-	Feedback feedbak;
 
 	Column column;
 	CardLayout cardLayout;
+	
+	int returnFeedBack_PK;
+	int returnFeedBack_Task_no;
+	Feedback returnFeedBack;
 
+	
 	Taskrefrom tr;
 	boolean isButtonClicked;
 	private JLabel content;
@@ -133,7 +144,7 @@ public class Taskrefrom extends JPanel {
 
 		MouseAdapter outsideClickListener = new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				// 패널 외부 클릭 이벤트 발생 시 실행할 코드 작성
 				if (e.getSource() == this) {
 				} else {
@@ -159,8 +170,29 @@ public class Taskrefrom extends JPanel {
 						// 날짜 포맷이 잘못된 경우 예외 처리
 						e2.printStackTrace();
 					}
+					System.out.println(TakeFeedBack);
+					System.out.println("feedback 왔나요.");
+					
+					if(task_Pk == 0) {
 					returnTask = new Task(title, contentText.getText(), returnImoportance, updateDate, deadLine);
-
+					
+					}else {
+					returnTask = new Task(task_Pk,title, contentText.getText(), returnImoportance, updateDate, deadLine,Active);
+					
+					}
+					if(TakeFeedBack == null) {
+						System.out.println(mainFrame.loginMember.getMember().getId());
+						System.out.println(mainFrame.loginMember.getMember_no());
+						int i =mainFrame.loginMember.getMember_no();
+						System.out.println("피드백 객체 확인");
+						returnFeedBack = new Feedback(returnFeedBack_Task_no,i,feedBackText.getText());		
+						System.out.println("새로운 테스크에 작성");
+						System.out.println(returnFeedBack);
+					}
+					else {
+						returnFeedBack = new Feedback(returnFeedBack_Task_no, returnFeedBack_Task_no, 3, feedBackText.getText());
+					}
+					
 					mainFrame.getContentPane().removeAll();
 					mainFrame.addPnl();
 					mainFrame.showCard("columnSelect");
@@ -218,7 +250,7 @@ public class Taskrefrom extends JPanel {
 		// 팝업창에 아이디 입력으로 추가.
 		// 멤버 추가 로직고민
 
-		st = new SettingTask(this, TakeTask, column, feedbak);
+		st = new SettingTask(this, TakeTask, column, TakeFeedBack);
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
@@ -260,6 +292,7 @@ public class Taskrefrom extends JPanel {
 		detailFontBox();
 		// tag
 		TagPnl();
+		
 		TagSet();
 
 		// feedback
@@ -279,8 +312,10 @@ public class Taskrefrom extends JPanel {
 
 	public void settingTask(Taskrefrom myUpPnl, Task task, Column column, Feedback feedback) {
 		try {
-
+			
 			st = new SettingTask(myUpPnl, task, column, feedback);
+			
+			st.settingPKAndAc();
 			// 별세팅
 			st.SetStar();
 			// 시작 날짜 세팅
@@ -741,37 +776,97 @@ public class Taskrefrom extends JPanel {
 		plusTag.setLocation(87, 10);
 		plusTag.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				JPanel tagAddPnl = new JPanel();
-					JButton btn = new JButton("종료");
-					JDialog tagDialog = new JDialog();
-					btn.setSize(80,80);
-					btn.setLocation(0,0);
-					tagAddPnl.add(btn);
-					btn.addActionListener(new ActionListener() {
-						
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							// TODO Auto-generated method stub
-							tagDialog.dispose();
-						}
-					});
-						tagDialog.setLocationRelativeTo(pnl);
-						tagDialog.setModal(false); // 비모달 대화상자로 설정
-						tagDialog.setVisible(true);
-						tagDialog.setSize(500,500);
-						tagDialog.setLocation(0,0);
-						tagDialog.setTitle("Dialog Title");
-						tagDialog.add(tagAddPnl);
-						add(tagDialog);
-				
+				List<Function_Tag> list =Function_Tag_List();
+				JDialog dialog = new JDialog();
+					dialog.setSize(100,50*list.size());
+					dialog.setModal(false);
+					dialog.setUndecorated(true);
+					dialog.setLayout(null);
+					dialog.setVisible(true);
+					dialog.isAlwaysOnTop();
+				JLabel tagbackGround = new JLabel(IC.getImageIcon("calendarRight"));
+					tagbackGround.setSize(100,50*list.size());
+					dialog.add(tagbackGround);
+					dialog.setLocationRelativeTo(TaskUnderPanel);
 					
+						
+				for(int i =0 ;i<list.size();i++) {
+					Function_Tag tag2 = list.get(i);
+					JLabel tagIcon = new JLabel(IC.getImageIcon("tag"));
+					JLabel tagText = new JLabel(tag2.getText());
+					tagText.setSize(70, 30);
+					tagText.setLocation(0,0);
+					
+					tagIcon.addMouseListener(new MouseAdapter() {
+						public void mousePressed(MouseEvent e) {
+				        	JLabel tagIcon = new JLabel(IC.getImageIcon("tag"));
+				        	JLabel tagText = new JLabel(tag2.getText());
+				        	tagText.setSize(70,20);
+				        	tagText.setLocation(20,5);
+				        	tagIcon.add(tagText);		           		            
+				        	tagIcon.addMouseListener(new MouseAdapter() {
+				        		public void mousePressed(MouseEvent e) {
+				        	        tagPnl.remove(tagIcon); // tagIcon 제거
+				        	        tagPnl.revalidate();
+				        	        tagPnl.repaint();
+				        	        CountTag--;
+
+				        	        // 아이콘들 왼쪽 정렬
+				        	        Component[] components = tagPnl.getComponents();
+				        	        int x = 0;
+				        	        for (int i = 0; i < components.length; i++) {
+				        	            if (components[i] instanceof JLabel) {
+				        	                JLabel icon = (JLabel) components[i];
+				        	                icon.setLocation(x, 10);
+				        	                x += 90;
+				        	            }
+				        	        }
+
+				        	        plusTag.setVisible(true);
+				        	        plusTag.setLocation(87 + (CountTag * 100), 10);
+				        	    }
+				        	});
+				        	tagPnl.add(tagIcon);
+				        	CountTag = 0;
+				        	tagIcon.setSize(80,30);
+				        	tagIcon.setLocation(64+((CountTag*1)*90),10);
+				            plusTag.setLocation(87+((CountTag+1*1)*100),10);
+				            
+				            // 아이콘들 간의 간격을 위한 빈 공간 컴포넌트 추가
+				            
+				            tagPnl.revalidate();
+				            tagPnl.repaint();
+				            CountTag += 90;
+				            
+				            if(CountTag >=5) {
+				            	plusTag.setVisible(false);
+				            }else {
+				            }
+				        }
+					});
+					tagIcon.add(tagText);
+
+
+					tagIcon.setSize(new Dimension(80, 30));
+					tagIcon.setLocation(10,10+(i*50));
+					tagbackGround.add(tagIcon);
+				}
 			}
 		});
 
 		tagPnl.add(plusTag);
 
 	}
-
+	public List<Function_Tag> Function_Tag_List(){
+		List<Function_Tag> list = new ArrayList<>();
+		Function_Tag FT = new Function_Tag(1,22,"red","db파트");
+		Function_Tag FT2 = new Function_Tag(2,22,"bule","로직파트");
+		Function_Tag FT3 = new Function_Tag(3,22,"yello","gui파트");
+		list.add(FT);
+		list.add(FT2);
+		list.add(FT3);
+		return list;
+	}
 
 
 	public void feedBack() {
@@ -821,7 +916,7 @@ public class Taskrefrom extends JPanel {
 		JLabel feedBackLbl = new JLabel(IC.getImageIcon("feedback"));
 		feedBackLbl.setLocation(60, 0);
 
-		feedBackText = new JTextArea("피드백을 입력해주세요" + "");
+		feedBackText = new JTextArea("피드백을 입력해주세요");
 		feedBackText.setFont(FD.nanumFont(20));
 		feedBackText.setSize(350, 40);
 		feedBackText.setBorder(null); // 테두리 제거
@@ -869,7 +964,7 @@ public class Taskrefrom extends JPanel {
 		feedBackLbl.setFont(FD.nanumFont(1));
 
 		feedBackLbl.setSize(482, 72);
-//	    content.setLocation(0, 0);
+
 		feedBackLbl.add(feedBackscrollPane);
 		// contentText의 위치 조정
 		feedBackscrollPane.setLocation(63, 47); // 원하는 위치로 조정

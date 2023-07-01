@@ -28,7 +28,10 @@ public class SettingTask {
 		this.feedback = feedback;
 		this.column = column;
 	}
-	
+	public void settingPKAndAc() {
+		ts.task_Pk = task.getTask_no();
+		ts.Active = task.getActive();
+	}
 	public String setUpdataDate() {
 		String updateDate = "";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -88,12 +91,15 @@ public class SettingTask {
 		}
 		}
 	
-	public String setFeedback() {
-		String feedback = "피드백을 입력해주세요!";
+	public void setFeedback() {
+		ts.feedBackText.setText("피드백을 입력해주세요");
+	
 		if(feedback != null) {
-			feedback = this.feedback.getComment();
+		ts.TakeFeedBack = feedback;
+		ts.returnFeedBack_PK = feedback.getTask_no();
+		ts.returnFeedBack_Task_no = task.getTask_no();
+		System.out.println(feedback);
+		ts.feedBackText.setText(feedback.getComment());
 		}
-		return feedback;
 	}
-
 }
