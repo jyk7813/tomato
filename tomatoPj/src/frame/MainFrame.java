@@ -112,6 +112,7 @@ public class MainFrame extends JFrame {
 	
 	public void addPnl() {
 		TBP = new TaskBackgroundPnl(taskImage, this);
+		
 		JPanel loginPnl = new LoginPnl(loginImage,this);
 		JPanel signUpPnl = new SignUpPnl(signImage,this);
 		projectPnl = new ProjectSelectPnl(projectImage, this);

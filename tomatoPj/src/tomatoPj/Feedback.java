@@ -6,7 +6,7 @@ public class Feedback {
 	private int member_no;
 	private String comment;
 	// auto 인크리먼트를 제외한 생성자
-	public Feedback(String comment) {
+	public Feedback(int task_no, int member_no,String comment) {
 		super();
 		this.comment = comment;
 	}
@@ -49,6 +49,12 @@ public class Feedback {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	@Override
+	public String toString() {
+		return "Feedback [feedback_no=" + feedback_no + ", task_no=" + task_no + ", member_no=" + member_no
+				+ ", comment=" + comment + "]";
 	}
 	
 	
