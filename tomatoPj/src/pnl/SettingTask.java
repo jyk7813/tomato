@@ -19,8 +19,8 @@ public class SettingTask {
 	IconData IC;
 	Feedback feedback;
 	Column column;
-	
-	public SettingTask(Taskrefrom ts,Task task,Column column,Feedback feedback) {
+	MainFrame MF;
+	public SettingTask(MainFrame mainFrame,Taskrefrom ts,Task task,Column column,Feedback feedback) {
 		dbutil = new DBUtil();
 		IC = new IconData();
 		this.task = task;
@@ -101,5 +101,10 @@ public class SettingTask {
 		System.out.println(feedback);
 		ts.feedBackText.setText(feedback.getComment());
 		}
+		
+	}
+	public void setUsingMemberNum() {
+		ts.useingMemberNum = MF.loginMember.getMember_no();
+		
 	}
 }

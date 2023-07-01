@@ -122,6 +122,7 @@ public class Taskrefrom extends JPanel {
 	
 	int returnFeedBack_PK;
 	int returnFeedBack_Task_no;
+	int useingMemberNum;
 	Feedback returnFeedBack;
 
 	
@@ -180,12 +181,10 @@ public class Taskrefrom extends JPanel {
 					returnTask = new Task(task_Pk,title, contentText.getText(), returnImoportance, updateDate, deadLine,Active);
 					
 					}
+					
 					if(TakeFeedBack == null) {
-						System.out.println(mainFrame.loginMember.getMember().getId());
-						System.out.println(mainFrame.loginMember.getMember_no());
-						int i =mainFrame.loginMember.getMember_no();
-						System.out.println("피드백 객체 확인");
-						returnFeedBack = new Feedback(returnFeedBack_Task_no,i,feedBackText.getText());		
+						
+						returnFeedBack = new Feedback(returnFeedBack_Task_no,useingMemberNum,feedBackText.getText());		
 						System.out.println("새로운 테스크에 작성");
 						System.out.println(returnFeedBack);
 					}
@@ -250,7 +249,7 @@ public class Taskrefrom extends JPanel {
 		// 팝업창에 아이디 입력으로 추가.
 		// 멤버 추가 로직고민
 
-		st = new SettingTask(this, TakeTask, column, TakeFeedBack);
+		st = new SettingTask(MF,this, TakeTask, column, TakeFeedBack);
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
@@ -313,7 +312,9 @@ public class Taskrefrom extends JPanel {
 	public void settingTask(Taskrefrom myUpPnl, Task task, Column column, Feedback feedback) {
 		try {
 			
-			st = new SettingTask(myUpPnl, task, column, feedback);
+			st = new SettingTask(MF,myUpPnl, task, column, feedback);
+			
+			st.setUsingMemberNum();
 			
 			st.settingPKAndAc();
 			// 별세팅

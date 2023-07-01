@@ -72,6 +72,7 @@ public class TaskPnl extends JPanel {
 					
 				}
 				mainFrame.setTask(task, column, feedback);
+				System.out.println(task);
 				mainFrame.showCard("task");
 				
 				revalidate();
