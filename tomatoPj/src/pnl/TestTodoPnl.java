@@ -52,19 +52,24 @@ public class TestTodoPnl extends JPanel {
 	private PrintPlanner pp;
 	private Project selectPj;
 	private boolean toggleSwitch = true;
-
+	
 	private TaskRepository tr = new TaskRepository();
 	private ProjectRepository pr = new ProjectRepository();
 	private MemberRepository mr = new MemberRepository();
-	
 	List<PrintPlanner> ppList = new ArrayList<>();
+	List<Project> pjOfUser;
+	
+	public TestTodoPnl() {
+		
+	}
 	
 	public TestTodoPnl(MainFrame mainFrame) {
 		addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent e) {
+				pjOfUser = mainFrame.loginMember.getPjList();
 				System.out.println("투두창확인");
-				setView(mainFrame);
+				setView();
 			}
 
 			@Override
@@ -135,12 +140,12 @@ public class TestTodoPnl extends JPanel {
 				if (toggleSwitch) {
 					toggleBtn.setIcon(IC.getImageIcon("prijectEach_toggle"));
 					toggleSwitch = false;
-					setView(mainFrame);
+					setView();
 					testPrint();
 				} else {
 					toggleBtn.setIcon(IC.getImageIcon("prijectAll_toggle"));
 					toggleSwitch = true;
-					setView(mainFrame);
+					setView();
 					testPrint();
 				}
 			}
@@ -172,8 +177,7 @@ public class TestTodoPnl extends JPanel {
 	}
 
 	// 페이지 전환 메소드 (전체 프로젝트 / 프로젝트 별) ---------------
-	public List<PrintPlanner> setView(MainFrame mainFrame) {
-		List<Project> pjOfUser = mainFrame.loginMember.getPjList();
+	public List<PrintPlanner> setView() {
 		// toggleSwitch = true = 전체 프로젝트
 		if (toggleSwitch) {
 			ppList.clear();

@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +35,6 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
    CalendarData calManager = new CalendarData();
    Font fnt = fontManager.nanumFontBold(18);
    Font fnt2 = fontManager.nanumFontBold(15);
-   List<PrintPlanner> ppList;
 
    // 상단 패널 ---------------------------------------
    JPanel selectPane = new JPanel();
@@ -63,6 +63,8 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 
    public CalendarSwing() {
       super(); 
+//      TestTodoPnl todoManager = new TestTodoPnl();
+//      List<PrintPlanner> ppList2 = todoManager.setView();
       date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아옴
       year = date.get(Calendar.YEAR); 
       month = date.get(Calendar.MONTH) + 1; 
@@ -104,6 +106,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
       setLayout(null);
                                     
       // 현재 년, 월 세팅
+//      List<PrintPlanner> currentPpList = new ArrayList<>();
       setYear();
       setMonth();
       setDay();
@@ -164,7 +167,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
     	 barBox[day] = new JPanel();
     	 barBox[day].setBounds(0, 30, 100, 116);
     	 barBox[day].setLayout(null);
-    	 barBox[day].setOpaque(false);
+    	 barBox[day].setOpaque(true);
     	 JLabel lbl = new JLabel(String.valueOf(day),JLabel.CENTER);
     	 lbl.setFont(fnt2);
          // 출력하는 날짜에 대한 요일
