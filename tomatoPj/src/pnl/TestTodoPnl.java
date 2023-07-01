@@ -42,26 +42,27 @@ import utility.IconData;
 import utility.PrintPlanner;
 import utility.Utility;
 
-public class TestTodoPnl extends JPanel{
-	private Image image;
-	
+public class TestTodoPnl extends JPanel {
 	private final static IconData IC = new IconData();
 	private final static FontData FT = new FontData();
 	private final static Utility UT = new Utility();
 	private final static CalendarData CD = new CalendarData();
+
+	private Image image;
 	private PrintPlanner pp;
 	private Project selectPj;
 	private boolean toggleSwitch = true;
-	
-	
-	// 달력 출력 패널 클래스 ------------------------------------
-	CalendarSwing printCal = new CalendarSwing();
-	
+
+	private TaskRepository tr = new TaskRepository();
+	private ProjectRepository pr = new ProjectRepository();
+	private MemberRepository mr = new MemberRepository();
+
 	public TestTodoPnl(MainFrame mainFrame) {
 		addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-				setView(toggleSwitch);
+				System.out.println("투두창확인");
+				setView(toggleSwitch, mainFrame);
 			}
 
 			@Override
@@ -76,17 +77,6 @@ public class TestTodoPnl extends JPanel{
 			public void componentHidden(ComponentEvent e) {
 			}
 		});
-		
-//		// 상단 배경 패널 ------------------------------------
-//		JPanel topBgPnl = new JPanel() {
-//			public void paintComponent(Graphics g) {
-//				super.paintComponent(g);
-//				g.drawImage(IC.getImageIcon("topLine").getImage(), 0, 0, null);
-//				setOpaque(false); // 이미지 불투명도 설정 : false = 불투명(이미지 표시) / true = 투명
-//			}
-//		};
-		
-		
 
 		// 메인 영역 배경 패널 ------------------------------------
 		JPanel calBgPnl = new JPanel() {
@@ -112,60 +102,40 @@ public class TestTodoPnl extends JPanel{
 		topPnl.setBounds(0, 0, 1920, 135);
 		topPnl.setOpaque(false);
 
-
 		// 달력 패널 -----------------------------------------
 		JPanel calPnl = new JPanel();
 		calPnl.setBounds(164, 300, 857, 870);
 		calPnl.setLayout(null);
 		calPnl.setOpaque(false);
 
+		// 달력 출력 패널 --------------------------------------
+		CalendarSwing printCal = new CalendarSwing();
+		printCal.setBounds(200, 135, 1718, 870);
+		printCal.setLayout(null);
+		printCal.setOpaque(false);
+
+//		// 막대바 출력 패널 -------------------------------------
+//		JPanel barPnl = new JPanel();
+//		barPnl.setBounds(200, 135, 768, 730);
+//		barPnl.setLayout(null);
+//		barPnl.setOpaque(false);
+//		JPanel barBox = new JPanel();
+//		barBox.setBounds(0, 0, 90, 110);
+//		barBox.setLayout(null);
+//		barBox.setOpaque(false);
+//		String barName = "";
+//		String barColor = "";
+//		ImageIcon barDraw;
+//		barPnl.add(barBox);
+
 		// 투두 리스트 패널 ------------------------------------
 		JPanel todoListPnl = new JPanel();
 		todoListPnl.setBounds(1026, 175, 857, 870);
 		todoListPnl.setLayout(null);
 		todoListPnl.setOpaque(false);
-		
-		// 달력 출력 패널 --------------------------------------
-		printCal.setBounds(200, 135, 1718, 870);
-		printCal.setLayout(null);
-		printCal.setOpaque(false);
-		
-		
-		// 막대바 출력 패널 -------------------------------------
-		JPanel barPnl = new JPanel();
-		barPnl.setBounds(200, 135, 768, 730);
-		barPnl.setLayout(null);
-		barPnl.setOpaque(false);
-		JPanel barBox = new JPanel();
-		barBox.setBounds(0, 0, 90, 110);
-		barBox.setLayout(null);
-		barBox.setOpaque(false);
-//		List<Project> pjListOfUser = null; // 로그인한 유저의 모든 프로젝트
-//		List<Task> tkListOfUser = mainFrame.loginMember.getTakeTaskList(); // 로그인한 유저의 모든 프로젝트의 모든 태스크
-		String barName = "";
-		String barColor = "";
-		ImageIcon barDraw;
-//		if(mainFrame.loginMember.getPjList() != null) {
-//			for(Project pj : pjListOfUser) {
-//				System.out.println(pj.getTitle());
-//				try {
-//					List<Task> tkOfPj = tr.taskListBypjNo(pj.getProject_no());
-//					for(Task tk : tkOfPj) {
-//						System.out.println("투두에서확인" + tk.getTitle());
-//					}
-//				} catch (SQLException e1) {
-//					e1.printStackTrace();
-//				}
-//			}
-//		}
-		
-		barPnl.add(barBox);
-		
-		
-	
-		
+
 		// 투두리스트 출력 패널 ----------------------------------
-		
+
 		// 뷰 설정 토글 버튼
 		JButton toggleBtn = UT.getBtn(350, 0, "prijectAll_toggle");
 		todoListPnl.add(toggleBtn);
@@ -175,9 +145,11 @@ public class TestTodoPnl extends JPanel{
 				if (toggleSwitch) {
 					toggleBtn.setIcon(IC.getImageIcon("prijectEach_toggle"));
 					toggleSwitch = false;
+					setView(toggleSwitch, mainFrame);
 				} else {
 					toggleBtn.setIcon(IC.getImageIcon("prijectAll_toggle"));
 					toggleSwitch = true;
+					setView(toggleSwitch, mainFrame);
 				}
 			}
 		};
@@ -187,26 +159,14 @@ public class TestTodoPnl extends JPanel{
 		JButton selBtn = UT.getBtn(785, 15, "projectOpne");
 		todoListPnl.add(selBtn);
 
-//		// 현재 날짜 출력 라벨
-//		JLabel currentDate = new JLabel();
-//		String todoDate = CD.getCurrentDate();
-//		currentDate.setText(todoDate);
-//		currentDate.setFont(FT.nanumFontBold(18));
-//		currentDate.setForeground(Color.DARK_GRAY);
-//		currentDate.setBounds(90, 140, 240, 30);
-//		currentDate.setOpaque(false);
-//		todoListPnl.add(currentDate);
-
 		calBgPnl.setBounds(164, 160, 1718, 870);
 		calBgPnl.setLayout(null);
 		calBgPnl.setOpaque(false);
 
 		// 배경 패널에 각 패널 붙이기 ------------------------------
 		bgPnl.add(topPnl); // 상단 패널
-//		bgPnl.add(topBgPnl); // 상단 배경 패널
 		bgPnl.add(todoListPnl); // 투두 리스트 패널
 		bgPnl.add(calPnl); // 달력 패널
-		bgPnl.add(barPnl); // 막대바 출력 패널
 		add(printCal); // 달력 패널
 		bgPnl.add(calBgPnl); // 메인 영역 배경 패널
 		// -----------------------------------------------
@@ -216,77 +176,54 @@ public class TestTodoPnl extends JPanel{
 		setLayout(null);
 		setOpaque(false);
 		add(bgPnl);
-//		getContentPane().add(bgPnl);
-//		// -----------------------------------------------
-//		setExtendedState(JFrame.MAXIMIZED_BOTH);
-//		setUndecorated(true);
-//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		getContentPane().setLayout(null);
 		setVisible(true);
-		// -----------------------------------------------
 	}
-	
+
 	// 페이지 전환 메소드 (전체 프로젝트 / 프로젝트 별) ---------------
-			public void setView (Boolean toggleSwitch) {
-				TaskRepository tr = new TaskRepository();
-				MemberRepository mr = new MemberRepository();
-				ProjectRepository pr = new ProjectRepository();
-				MainFrame mainFrame = new MainFrame();
-
-				List<Project> pjListOfUser = mainFrame.loginMember.getPjList(); // 로그인한 유저의 모든 프로젝트
-				List<Task> tkListOfUser = mainFrame.loginMember.getTakeTaskList(); // 로그인한 유저의 모든 프로젝트의 모든 태스크
-				List<Task> tkAll;
-				List<Member> mbAll;
-				List<PrintPlanner> printList = null;
-				Collections.sort(pjListOfUser, (a, b) -> a.getProject_no() - b.getProject_no());
-				
-				Project firstPj = pjListOfUser.get(0);
-				String strUpdate = "";
-				String strDeadLine = "";
-				if (toggleSwitch) {
-					printList = new ArrayList<>();
-					try {
-						for(Project pjList : pjListOfUser) {
-							tkAll = tr.taskListBypjNo(pjList.getProject_no());
-							for(Task tkList : tkAll) {
-								strUpdate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(tkList.getUpdateDate());
-								strDeadLine = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(tkList.getDeadLine());
-								PrintPlanner p = new PrintPlanner(pjList.getProject_no(), pjList.getTitle(), tkList.getTitle(), strUpdate, strDeadLine);
-								printList.add(p);
-								System.out.println(p);
-							}
-						}
-					} catch (SQLException e1) {
-						System.out.println("투두오류");
-						e1.printStackTrace();
+	public void setView(Boolean toggleSwitch, MainFrame mainFrame) {
+		List<Project> pjOfUser = mainFrame.loginMember.getPjList();
+		// toggleSwitch = true = 전체 프로젝트
+		if (toggleSwitch) {
+			List<Task> tkOfPj;
+			for (Project p : pjOfUser) {
+				try {
+					tkOfPj = tr.taskListBypjNo(p.getProject_no());
+					for (Task t : tkOfPj) {
+						String update = t.getUpdateDate().toString();
+						String deadLine = t.getDeadLine().toString();
+						PrintPlanner pp = new PrintPlanner(p.getProject_no(), p.getTitle(), t.getTitle(), update, deadLine);
+						System.out.println("전체 프로젝트 : ");
+						System.out.println(pp);
+						System.out.println("----------------------");
 					}
-				} else {
-					try {
-						List<Member> memsOfPj = mr.getMemberBypj_no(firstPj.getProject_no());
-						List<Task> taskOfPj = tr.taskListBypjNo(firstPj.getProject_no());
-						List<Member> memOfTask; 
-						for(Member m : memsOfPj) {
-							for(Task t : taskOfPj) {
-								memOfTask = t.getList();
-								for(Member mOft : memOfTask) {
-									if(m.getMember_no() == mOft.getMember_no()) {
-										String strUpdate1 = "";
-										String strDeadLine1 = "";
-										strUpdate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(t.getUpdateDate());
-										strDeadLine = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(t.getDeadLine());
-										PrintPlanner p = new PrintPlanner(m.getMember_no(), m.getName(), t.getTitle(), strUpdate, strDeadLine);
-										printList.add(p);
-										System.out.println(p);
-									}
-								}
-							}
-						}
-						
-					} catch (SQLException e1) {
-						System.out.println("투두오류");
-						e1.printStackTrace();
-					}
-				}	
+				} catch (SQLException e) {
+					System.out.println("투두오류1: 전체프로젝트 리스트 전달 실패");
+					e.printStackTrace();
+				}
 			}
+		// 프로젝트 별	
+		} else {
+			List<Task> tkOfPj2;
+			List<Member> mOfTask;
+			for(Project p : pjOfUser) {
+				try {
+					tkOfPj2 = tr.taskListBypjNo(p.getProject_no());
+					for(Task t : tkOfPj2) {
+						mOfTask = tr.searchMemberByTask_no(t.getTask_no());
+						for(Member m : mOfTask) {
+							String update = t.getUpdateDate().toString();
+							String deadLine = t.getDeadLine().toString();
+							PrintPlanner pp = new PrintPlanner(m.getMember_no(), m.getName(), t.getTitle(), update, deadLine);
+							System.out.println("프로젝트 별 : " + p.getTitle());
+							System.out.println(pp);
+							System.out.println("----------------------");
+						}
+					}
+				} catch (SQLException e) {
+					System.out.println("투두오류2: 전체프로젝트 리스트 전달 실패");
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }
-
