@@ -36,6 +36,7 @@ public class TaskPnl extends JPanel {
 	 * Create the panel.
 	 */
 	public TaskPnl(MainFrame mainFrame, Column column, Task task) {
+		
 		this.mainFrame = mainFrame;
 		iconData = new IconData();
 		utility = new Utility();
