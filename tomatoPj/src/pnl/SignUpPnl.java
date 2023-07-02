@@ -20,6 +20,7 @@ import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -52,8 +53,24 @@ public class SignUpPnl extends JPanel {
 	private JLabel[] checkLbl;
 	private AddPictureBtn addPictureBtn;
 	public JLabel testLbl;
+	private ImageIcon possible;
+	private ImageIcon impossible;
+	private ImageIcon idIcon;
+	private ImageIcon pwdIcon;
+	private ImageIcon pwddupliIcon;
+	private ImageIcon emailIcon;
+	private ImageIcon nameIcon;
+	
+	private boolean idRegex=false;
+	private boolean pwdRegex=false;
+	private boolean pwdDuRegex=false;
+	private boolean emailRegex=false;
+	private boolean nameRegex=false;
+	
 	
 	public SignUpPnl(Image image, MainFrame mainFrame) {
+		
+		
 		regex = new Regex();
 		mr = new MemberRepository();
 		this.image = image;
@@ -63,6 +80,9 @@ public class SignUpPnl extends JPanel {
 		checkLbl = new JLabel[5];
 		setLayout(null);
 
+		possible = iconData.getImageIcon("project_check");
+		impossible = iconData.getImageIcon("delete_btn");
+		
 		idField = new JTextField("아이디");
 		passwordField = new JPasswordField("비밀번호");
 		checkPasswordField = new JPasswordField("비밀번호 확인");
@@ -162,12 +182,48 @@ public class SignUpPnl extends JPanel {
 
 		});
 	}
-	/*
-	 * public JTextField getIdField() { return idField; }
-	 * 
-	 * public void setIdField(JTextField idField) { this.idField = idField; }
-	 */
 
+	
+	//////////////////07/03작업 이어서 할것/////////////////
+	private boolean CheckRegex(ActionEvent e) {
+		//boolean check;
+		if(e.getSource().equals(idField)) {
+			if(regex.regexId(idField.getText())) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
+	}
+	
+	public ActionListener textFieldTimeCheck() {
+		ActionListener a = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 Thread thread = new Thread() {
+	                    @Override
+	                    public void run() {
+	                        try {
+	                            Thread.sleep(2000);
+	                        } catch (InterruptedException e) {
+	                            e.printStackTrace();
+	                        }
+	                        CheckRegex(e);
+	                      
+	                    }
+	                };
+
+	                thread.start();
+				
+			}
+		};
+		return a;
+	}
+	
+	
+	
 	public KeyListener enterKey() {
 		return new KeyAdapter() {
 			@Override
@@ -189,6 +245,12 @@ public class SignUpPnl extends JPanel {
 	}
 
 	private void settingTextField() {
+		idField.addActionListener(textFieldTimeCheck());
+		passwordField.addActionListener(textFieldTimeCheck());
+		checkPasswordField.addActionListener(textFieldTimeCheck());
+		nameField.addActionListener(textFieldTimeCheck());
+		emailField.addActionListener(textFieldTimeCheck());
+		
 		idField.addKeyListener(enterKey());
 		passwordField.addKeyListener(enterKey());
 		checkPasswordField.addKeyListener(enterKey());
@@ -252,19 +314,6 @@ public class SignUpPnl extends JPanel {
 		g.drawImage(image, 0, 0, this);
 	}
 
-//	public class ImagePanel extends JPanel {
-//	    private Image image;
-//
-//	    public ImagePanel(Image image) {
-//	        this.image = image;
-//	    }
-//
-//	    @Override
-//	    protected void paintComponent(Graphics g) {
-//	        super.paintComponent(g);
-//	        g.drawImage(image, 0, 0, this); // see javadoc for more info on the parameters
-//	    }
-//	}
 	public byte[] getImageBytesFromLabel(JLabel label) {
 	    byte[] imageBytes = null;
 	    try {
