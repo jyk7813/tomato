@@ -176,6 +176,7 @@ public class Taskrefrom extends JPanel {
 
 					
 					if(TakeTask== null) {
+						System.out.println("새로운 테스크");
 						returnTask = new Task(title, contentText.getText(), returnImoportance, updateDate, deadLine);
 
 					}else {
@@ -186,17 +187,19 @@ public class Taskrefrom extends JPanel {
 					if(TakeFeedBack == null) {
 						
 						returnFeedBack = new Feedback(returnFeedBack_Task_no,1,feedBackText.getText());		
-						System.out.println("새로운 테스크에 작성");
-						System.out.println(returnFeedBack);
+
+						System.out.println(returnFeedBack + "예" );
 					}
 					else {
 						returnFeedBack = new Feedback(returnFeedBack_PK, returnFeedBack_Task_no, 3, feedBackText.getText());
 
+						System.out.println(returnFeedBack);
 					}
 					
-					mainFrame.getContentPane().removeAll();
-					mainFrame.addPnl();
+					
 					mainFrame.showCard("columnSelect");
+					st.reset();
+					System.out.println("나갈때 실행 됐음");
 				}
 			}
 		};
@@ -317,6 +320,9 @@ public class Taskrefrom extends JPanel {
 			st = new SettingTask(myUpPnl, task, column, feedback);
 			
 //			st.setUsingMemberNum();
+			if(task == null) {
+				st.reset();
+			}
 			
 			st.settingPKAndAc();
 			// 별세팅

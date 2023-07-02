@@ -71,10 +71,11 @@ public class TaskPnl extends JPanel {
 					System.out.println(task.toString());
 					
 				}
-				mainFrame.setTask(task, column, feedback);
+				System.out.println(" 보내주는 task");
 				System.out.println(task);
+				mainFrame.setTask(task, column, feedback);
 				mainFrame.showCard("task");
-				
+			
 				revalidate();
 				repaint();
 			}

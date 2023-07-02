@@ -28,7 +28,11 @@ public class SettingTask {
 		this.ts = ts;
 		this.feedback = feedback;
 		this.column = column;
-		this.MF = MF;
+	}
+	public void reset() {
+		task =null;
+		ts.TakeTask = null;
+		this.feedback = null;
 	}
 	public void setUsingMemberNum() {
 		ts.useingMemberNum = MF.loginMember.getMember().getMember_no();
@@ -104,7 +108,7 @@ public class SettingTask {
 		ts.TakeFeedBack = feedback;
 		ts.returnFeedBack_PK = feedback.getFeedback_no();
 		ts.returnFeedBack_Task_no = task.getTask_no();
-		System.out.println(feedback);
+
 		ts.feedBackText.setText(feedback.getComment());
 		}
 }
