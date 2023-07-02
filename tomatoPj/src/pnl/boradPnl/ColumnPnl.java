@@ -1,11 +1,10 @@
 package pnl.boradPnl;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -67,19 +66,8 @@ public class ColumnPnl extends JPanel {
 		columnTop.add(columnTitlePnl);
 		
 		
-//		JPanel columnTitleSet = new JPanel();
-//		columnTitleSet.setLayout(null);
-//		columnTitleSet.setBounds(0, 0, 350, 101);
-//		columnTitleSet.setOpaque(false);
-//		columnTitle.add(columnTitleSet);
-//		
-//		AddColumnPnl addColumnPnl = new AddColumnPnl();
-//		addColumnPnl.setBounds(0, 41, 350, 60);
-//		addColumnPnl.setOpaque(false); // for testing
-//		columnTitle.add(addColumnPnl);
-		
 		JButton deleteBtn = new JButton();
-		//deleteBtn.setBounds(taskCount, taskCount, taskCount, taskCount);
+
 		addcardBtn = new JButton(iconData.getImageIcon("addcardicon"));
 		addcardBtn.setBounds(0, 0, 350, 79);
 		utility.setButtonProperties(addcardBtn);
@@ -95,7 +83,8 @@ public class ColumnPnl extends JPanel {
 		panel.setLayout(null);
 		panel.setOpaque(false);
 		panel.add(addcardBtn);
-
+		
+		//columnUnderPnl.add(addcardBtn);
 		JScrollPane scrollPane = new JScrollPane(panel);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
