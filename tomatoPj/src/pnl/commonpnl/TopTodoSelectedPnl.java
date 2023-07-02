@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import button.CanBanBtn;
+import button.HomeBtn;
 import button.LogoutBtn;
 import frame.MainFrame;
 import utility.IconData;
@@ -17,6 +18,10 @@ public class TopTodoSelectedPnl extends JPanel {
     public TopTodoSelectedPnl(MainFrame mainFrame, TopMainPnl topMainPnl) {
     	iconData = new IconData();
         setLayout(null);
+        
+		HomeBtn homeBtn = new HomeBtn(mainFrame);
+		homeBtn.setBounds(300, 0, 150, 150);
+		add(homeBtn);
         
         CanBanBtn canBanBtn = new CanBanBtn(mainFrame, topMainPnl);
         canBanBtn.setBounds(813, 38, 102, 60);
