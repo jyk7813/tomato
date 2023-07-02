@@ -176,6 +176,7 @@ public class Taskrefrom extends JPanel {
 
 					
 					if(TakeTask== null) {
+		
 						returnTask = new Task(title, contentText.getText(), returnImoportance, updateDate, deadLine);
 
 					}else {
@@ -186,15 +187,20 @@ public class Taskrefrom extends JPanel {
 					if(TakeFeedBack == null) {
 						
 						returnFeedBack = new Feedback(returnFeedBack_Task_no,1,feedBackText.getText());		
-						System.out.println("새로운 테스크에 작성");
-						System.out.println(returnFeedBack);
+
+						
 					}
 					else {
 						returnFeedBack = new Feedback(returnFeedBack_PK, returnFeedBack_Task_no, 3, feedBackText.getText());
-
 					}
-					
+			
+
+					st.reset();
+
+				
 					mainFrame.showCard("columnSelect");
+
+					
 				}
 			}
 		};
@@ -206,10 +212,7 @@ public class Taskrefrom extends JPanel {
 		pnl.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// 클릭 이벤트 발생 시 실행할 코드 작성
-				// 예시: pnl이 클릭되었을 때의 동작 처리
-				System.out.println(TakeTask);
-				System.out.println("pnl이 클릭되었습니다.");
+
 			}
 		});
 
@@ -217,9 +220,7 @@ public class Taskrefrom extends JPanel {
 		cal.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// 클릭 이벤트 발생 시 실행할 코드 작성
-				// 예시: cal이 클릭되었을 때의 동작 처리
-				System.out.println("cal이 클릭되었습니다.");
+
 			}
 		});
 
@@ -227,9 +228,7 @@ public class Taskrefrom extends JPanel {
 		cal2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// 클릭 이벤트 발생 시 실행할 코드 작성
-				// 예시: cal2가 클릭되었을 때의 동작 처리
-				System.out.println("cal2가 클릭되었습니다.");
+
 			}
 		});
 
@@ -255,7 +254,7 @@ public class Taskrefrom extends JPanel {
 		util = new Utility();
 
 		// 메인
-//		TaskMain();
+
 		TaskMainLbl();
 		// 별 날짜
 		StarAndDate();
@@ -311,12 +310,11 @@ public class Taskrefrom extends JPanel {
 
 	public void settingTask(Taskrefrom myUpPnl, Task task, Column column, Feedback feedback) {
 		try {
-			
+
 			st = new SettingTask(myUpPnl, task, column, feedback);
 			
-//			st.setUsingMemberNum();
-			
 			st.settingPKAndAc();
+
 			// 별세팅
 			st.SetStar();
 			// 시작 날짜 세팅
@@ -331,14 +329,12 @@ public class Taskrefrom extends JPanel {
 			st.setContent();
 			// 피드백 세팅
 			st.setFeedback();
+
+	
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
-
 	}
-
-
-
 
 	public void TaskMainLbl() {
 		TaskPnlMainLbl = new JLabel(IC.getImageIcon("contentPanel"));
@@ -513,11 +509,9 @@ public class Taskrefrom extends JPanel {
 	}
 
 	public void TaskTitle() {
-		if (TakeTask != null) {
-			taskTitle = new JTextField(TakeTask.getTitle());
-		} else {
-			taskTitle = new JTextField("타이틀");
-		}
+	
+		taskTitle = new JTextField("타이틀");
+
 		JLabel taskTitleLbl = new JLabel(IC.getImageIcon("taskTitle"));
 		taskTitleLbl.setSize(290, 62);
 		taskTitleLbl.setLocation(275, -3);
@@ -537,9 +531,6 @@ public class Taskrefrom extends JPanel {
 	public void CalomnTitle() {
 		JLabel CalomnTitleLbl = new JLabel(IC.getImageIcon("columnTitle"));
 		calomnTitle = new JTextField("칼럼 제목 들어가야함");
-		if (column != null) {
-			calomnTitle = new JTextField(TakeTask.getTitle());
-		}
 
 		calomnTitle.setBorder(null);
 		calomnTitle.setFont(FD.nanumFontBold(18));
@@ -583,6 +574,7 @@ public class Taskrefrom extends JPanel {
 						MemberPnl.repaint();
 						Count--;
 						plus.setVisible(true);
+						
 						plus.setLocation(0 + ((Count * 1) * 100), 15);
 					}
 				});
@@ -847,8 +839,8 @@ public class Taskrefrom extends JPanel {
 				        }
 					});
 					tagIcon.add(tagText);
-
-
+					
+					
 					tagIcon.setSize(new Dimension(80, 30));
 					tagIcon.setLocation(10,10+(i*50));
 					tagbackGround.add(tagIcon);

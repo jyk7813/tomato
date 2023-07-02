@@ -48,7 +48,6 @@ public class TaskPnl extends JPanel {
 		setLayout(null);
 		setOpaque(false);
 		String tasktitle;
-		//System.out.println("야!!!!!!" + task.equals(null));
 		
 			if(task==null) { 
 			tasktitle = "title";
@@ -68,14 +67,20 @@ public class TaskPnl extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Feedback feedback = new Feedback(6, 27, 1, "대본수정");
-				if(task != null) {
-					System.out.println(task.toString());
-					
-				}
-				mainFrame.setTask(task, column, feedback);
-				System.out.println(task);
-				mainFrame.showCard("task");
 				
+				if(task !=null) {
+					System.out.println("주는 칼럼 제목1");
+					System.out.println(column.getTitle());
+				mainFrame.setTask(task, column, feedback);
+				mainFrame.showCard("task");
+				}
+				if (task == null){
+					System.out.println("주는 칼럼 제목2");
+					System.out.println(column.getTitle());
+					mainFrame.setTask(task, column, feedback);
+					mainFrame.showCard("task");
+				}
+			
 				revalidate();
 				repaint();
 			}
