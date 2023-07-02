@@ -44,9 +44,9 @@ public class MainFrame extends JFrame {
 	private Image taskImage;
 	public boolean columnActive = false;
 	public TaskBackgroundPnl TBP;
-	public JPanel projectPnl;
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	public String selectedProjectTitle;
+	public ProjectSelectPnl projectPnl;
 
 	/**
 	 * Launch the application.

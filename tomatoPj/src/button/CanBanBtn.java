@@ -36,7 +36,7 @@ public class CanBanBtn extends JButton {
 			}
 
 			@Override
-			public void mousePressed(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent arg0) {
 				mainFrame.getContentPane().removeAll();
 				mainFrame.addPnl();
 				topMainPnl.addPnl(mainFrame);

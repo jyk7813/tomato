@@ -19,10 +19,11 @@ public class BoradPnl extends JPanel{
 	private Image image;
 	private BoardselectPnl panel_2;
 	private String title;
+	private MainFrame mainFrame;
 	
 	public BoradPnl(Image image, MainFrame mainFrame) {
 		
-		
+		this.mainFrame = mainFrame;
 		this.image = image;
 		setLayout(new BorderLayout(0, 0));
 		
@@ -48,7 +49,7 @@ public class BoradPnl extends JPanel{
 //				panel_2.columnSelectPnl.thisCol = col.get(0);
 //				title = col.get(0).getTitle();
 //				System.out.println("제목이없어? " + col.get(0).getTitle());
-				
+				projectMemberPnl.myInfoPnl.settingMyInfopnl();
 				int size = mainFrame.pjInfo.getCol().size();
 				if(size>0) {
 					panel_2.columnSelectPnl.addBtn.doClick();

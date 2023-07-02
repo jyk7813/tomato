@@ -27,7 +27,6 @@ public class MyInfoPnl extends JPanel {
 		iconData = new IconData();
 		this.image = iconData.getImageIcon("mini_bar").getImage();
 		
-		
 		setOpaque(false);
 		
 	}

@@ -62,10 +62,11 @@ public class ProjectPnl extends JPanel {
         
         JButton btnNewButton = new JButton(title);
         btnNewButton.addActionListener(new ActionListener() {
-			
+		
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {
+					insertPjInfo(mainFrame, project_no, title);
 					mainFrame.setSelectedProjectTitle(title);
 					System.out.println(mainFrame.getSelectedProjectTitle());
 				} else {

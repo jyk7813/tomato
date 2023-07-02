@@ -42,7 +42,7 @@ public class ProjectMemberPnl extends JPanel {
 		panel.add(myInfoPnl);
 		myInfoPnl.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		memberPnl = new MemberListPnl();
+		memberPnl = new MemberListPnl(mainFrame);
 		memberPnl.setBackground(new Color(0,0,0,0));
 		memberPnl.setOpaque(false);
 		memberPnl.setBounds(0, 360, 130, 553);
