@@ -18,7 +18,7 @@ public class SettingTask {
 	Taskrefrom ts;
 	IconData IC;
 	Feedback feedback;
-	Column column;
+	Column Takecolumn;
 	MainFrame MF;
 	public SettingTask(Taskrefrom ts,Task task,Column column,Feedback feedback) {
 		dbutil = new DBUtil();
@@ -27,7 +27,8 @@ public class SettingTask {
 		ts.TakeTask = task;
 		this.ts = ts;
 		this.feedback = feedback;
-		this.column = column;
+		this.Takecolumn = column;
+
 	}
 	
 	public void reset() {
@@ -38,6 +39,7 @@ public class SettingTask {
 		ts.task_Pk = 0;
 		ts.Active = 0;
 		
+
 		String updateDate = "";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 		Timestamp tt = new Timestamp(System.currentTimeMillis());
@@ -54,18 +56,24 @@ public class SettingTask {
 			ts.returnImoportance=0;
 			ts.stars[i].setIcon(IC.getImageIcon("starGray"));
 		}
-		
+
+		ts.taskTitle.setText("제목을 입력해주세요");
 		ts.contentText.setText("내용을 입력해주세요");
 		ts.feedBackText.setText("피드백을 입력해주세요");
 		
 		
 	}
 	public void setUsingMemberNum() {
+
 		ts.useingMemberNum = MF.loginMember.getMember().getMember_no();
 	}
 	public void settingPKAndAc() {
+		if(task != null) {
 		ts.task_Pk = task.getTask_no();
 		ts.Active = task.getActive();
+		}
+	
+		
 	}
 	
 	public String setUpdataDate() {
@@ -108,11 +116,15 @@ public class SettingTask {
 		}
 	}
 	public void setTitle() {
+		
 		if(task != null) {
 			ts.taskTitle.setText(task.getTitle());
+		}else if(task == null) {
+			ts.taskTitle.setText("제목을 입력해주세요");
 		}
 	}
 	public String setContent() {
+		System.out.println("소코마데다");
 		String content = "내용을 입력해주세요!";
 		if(task != null) {
 		content = task.getContent();
@@ -121,16 +133,15 @@ public class SettingTask {
 		return content;
 	}
 	public void setColTitle() {
-		if(column != null) {
-		String calomnTitle = column.getTitle();
+		String calomnTitle = Takecolumn.getTitle();
 		ts.calomnTitle.setText(calomnTitle);
-		}
+
 		}
 	
 	public void setFeedback() {
 		ts.feedBackText.setText("피드백을 입력해주세요");
 
-		if(feedback != null) {
+		if(feedback != null && task != null) {
 		ts.TakeFeedBack = feedback;
 		ts.returnFeedBack_PK = feedback.getFeedback_no();
 		ts.returnFeedBack_Task_no = task.getTask_no();

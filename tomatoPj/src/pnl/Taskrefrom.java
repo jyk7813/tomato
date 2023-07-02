@@ -176,7 +176,7 @@ public class Taskrefrom extends JPanel {
 
 					
 					if(TakeTask== null) {
-						System.out.println("새로운 테스크");
+		
 						returnTask = new Task(title, contentText.getText(), returnImoportance, updateDate, deadLine);
 
 					}else {
@@ -188,17 +188,18 @@ public class Taskrefrom extends JPanel {
 						
 						returnFeedBack = new Feedback(returnFeedBack_Task_no,1,feedBackText.getText());		
 
-						System.out.println(returnFeedBack + "예" );
+						
 					}
 					else {
 						returnFeedBack = new Feedback(returnFeedBack_PK, returnFeedBack_Task_no, 3, feedBackText.getText());
-
-						System.out.println(returnFeedBack);
 					}
 			
+
 					st.reset();
+
+				
 					mainFrame.showCard("columnSelect");
-					System.out.println("나갈때 실행 됐음");
+
 					
 				}
 			}
@@ -211,10 +212,7 @@ public class Taskrefrom extends JPanel {
 		pnl.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// 클릭 이벤트 발생 시 실행할 코드 작성
-				// 예시: pnl이 클릭되었을 때의 동작 처리
-				System.out.println(TakeTask);
-				System.out.println("pnl이 클릭되었습니다.");
+
 			}
 		});
 
@@ -222,9 +220,7 @@ public class Taskrefrom extends JPanel {
 		cal.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// 클릭 이벤트 발생 시 실행할 코드 작성
-				// 예시: cal이 클릭되었을 때의 동작 처리
-				System.out.println("cal이 클릭되었습니다.");
+
 			}
 		});
 
@@ -232,9 +228,7 @@ public class Taskrefrom extends JPanel {
 		cal2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// 클릭 이벤트 발생 시 실행할 코드 작성
-				// 예시: cal2가 클릭되었을 때의 동작 처리
-				System.out.println("cal2가 클릭되었습니다.");
+
 			}
 		});
 
@@ -316,16 +310,11 @@ public class Taskrefrom extends JPanel {
 
 	public void settingTask(Taskrefrom myUpPnl, Task task, Column column, Feedback feedback) {
 		try {
-			
+
 			st = new SettingTask(myUpPnl, task, column, feedback);
 			
-
-			if(task == null) {
-				System.out.println(2);
-				st.reset();
-			}else {
-			
 			st.settingPKAndAc();
+
 			// 별세팅
 			st.SetStar();
 			// 시작 날짜 세팅
@@ -340,16 +329,11 @@ public class Taskrefrom extends JPanel {
 			st.setContent();
 			// 피드백 세팅
 			st.setFeedback();
-			}
+
+	
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
-
-	}
-
-
-	public void resetTask() {
-		st.reset();
 	}
 
 	public void TaskMainLbl() {
@@ -526,7 +510,7 @@ public class Taskrefrom extends JPanel {
 
 	public void TaskTitle() {
 	
-			taskTitle = new JTextField("타이틀");
+		taskTitle = new JTextField("타이틀");
 
 		JLabel taskTitleLbl = new JLabel(IC.getImageIcon("taskTitle"));
 		taskTitleLbl.setSize(290, 62);
