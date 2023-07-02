@@ -19,7 +19,6 @@ public class ProjectTitlePnl extends JPanel {
 	private FontData fontData;
 	private Image image;
 	private JLabel projectTiltleLbl;
-	private MainFrame mainFrame;
 
 	/**
 	 * Create the panel.
@@ -27,7 +26,6 @@ public class ProjectTitlePnl extends JPanel {
 	public ProjectTitlePnl(MainFrame mainFrame) {
 		iconData = new IconData();
 		fontData = new FontData();
-		this.mainFrame = mainFrame;
 		this.image = iconData.getImageIcon("mini_bar").getImage();
 
 		setOpaque(false);
