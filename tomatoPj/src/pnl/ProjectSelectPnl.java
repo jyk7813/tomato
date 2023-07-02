@@ -32,6 +32,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import button.LogoutBtn;
 import dbutil.SelectProjectInfo;
 import frame.MainFrame;
+import pnl.commonpnl.ProjectTitlePnl;
 import pnl.projectpnl.ProjectPnl;
 import pnl.projectpnl.ProjectSelectWestPnl;
 import tomatoPj.ColumnRepository;
@@ -82,7 +83,7 @@ public class ProjectSelectPnl extends JPanel {
 		centerPnl.setLayout(null); // Necessary for JScrollPane to function correctly
 		
 		
-		ProjectSelectWestPnl westPnl = new ProjectSelectWestPnl() {
+		ProjectSelectWestPnl westPnl = new ProjectSelectWestPnl(mainFrame) {
 			@Override
 			public Dimension getPreferredSize() {
 				setOpaque(false);
@@ -149,7 +150,7 @@ public class ProjectSelectPnl extends JPanel {
 			public void componentShown(ComponentEvent e) {
 				removeAllProjectPanels();
 				loginMemberSetting();
-				
+				westPnl.projectMemberPnl.myInfoPnl.settingMyInfopnl();
 			}
 
 			@Override

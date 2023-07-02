@@ -2,13 +2,10 @@ package pnl.commonpnl;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import button.CanBanBtn;
+import button.HomeBtn;
 import button.LogoutBtn;
 import button.TodoBtn;
 import frame.MainFrame;
@@ -22,6 +19,11 @@ public class TopCanbanSelectedPnl extends JPanel {
 		iconData = new IconData();
 		setLayout(null);
 
+		HomeBtn homeBtn = new HomeBtn(mainFrame);
+		homeBtn.setBounds(300, 0, 150, 150);
+		add(homeBtn);
+		
+		
 		TodoBtn todo = new TodoBtn(mainFrame, topMainPnl);
 		todo.setBounds(1025, 38, 102, 60);
 		add(todo);

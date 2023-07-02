@@ -62,7 +62,7 @@ public class Taskrefrom extends JPanel {
 	JPanel StarAndDate;
 	JLabel timeManagementNavi;
 	int Imoportance;
-	// 별리셋용 Imoportance
+	// 별리셋용 Imoportance 
 	
 	// 시작날짜
 	JLabel StartDate;
@@ -195,11 +195,11 @@ public class Taskrefrom extends JPanel {
 
 						System.out.println(returnFeedBack);
 					}
-					
-					
-					mainFrame.showCard("columnSelect");
+			
 					st.reset();
+					mainFrame.showCard("columnSelect");
 					System.out.println("나갈때 실행 됐음");
+					
 				}
 			}
 		};
@@ -260,7 +260,7 @@ public class Taskrefrom extends JPanel {
 		util = new Utility();
 
 		// 메인
-//		TaskMain();
+
 		TaskMainLbl();
 		// 별 날짜
 		StarAndDate();
@@ -319,10 +319,11 @@ public class Taskrefrom extends JPanel {
 			
 			st = new SettingTask(myUpPnl, task, column, feedback);
 			
-//			st.setUsingMemberNum();
+
 			if(task == null) {
+				System.out.println(2);
 				st.reset();
-			}
+			}else {
 			
 			st.settingPKAndAc();
 			// 별세팅
@@ -339,6 +340,7 @@ public class Taskrefrom extends JPanel {
 			st.setContent();
 			// 피드백 세팅
 			st.setFeedback();
+			}
 		} catch (Exception e) {
 
 		}
@@ -346,7 +348,9 @@ public class Taskrefrom extends JPanel {
 	}
 
 
-
+	public void resetTask() {
+		st.reset();
+	}
 
 	public void TaskMainLbl() {
 		TaskPnlMainLbl = new JLabel(IC.getImageIcon("contentPanel"));
@@ -521,11 +525,9 @@ public class Taskrefrom extends JPanel {
 	}
 
 	public void TaskTitle() {
-		if (TakeTask != null) {
-			taskTitle = new JTextField(TakeTask.getTitle());
-		} else {
+	
 			taskTitle = new JTextField("타이틀");
-		}
+
 		JLabel taskTitleLbl = new JLabel(IC.getImageIcon("taskTitle"));
 		taskTitleLbl.setSize(290, 62);
 		taskTitleLbl.setLocation(275, -3);
@@ -545,9 +547,6 @@ public class Taskrefrom extends JPanel {
 	public void CalomnTitle() {
 		JLabel CalomnTitleLbl = new JLabel(IC.getImageIcon("columnTitle"));
 		calomnTitle = new JTextField("칼럼 제목 들어가야함");
-		if (column != null) {
-			calomnTitle = new JTextField(TakeTask.getTitle());
-		}
 
 		calomnTitle.setBorder(null);
 		calomnTitle.setFont(FD.nanumFontBold(18));
@@ -591,6 +590,7 @@ public class Taskrefrom extends JPanel {
 						MemberPnl.repaint();
 						Count--;
 						plus.setVisible(true);
+						
 						plus.setLocation(0 + ((Count * 1) * 100), 15);
 					}
 				});
@@ -855,8 +855,8 @@ public class Taskrefrom extends JPanel {
 				        }
 					});
 					tagIcon.add(tagText);
-
-
+					
+					
 					tagIcon.setSize(new Dimension(80, 30));
 					tagIcon.setLocation(10,10+(i*50));
 					tagbackGround.add(tagIcon);

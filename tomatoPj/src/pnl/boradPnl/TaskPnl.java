@@ -73,8 +73,14 @@ public class TaskPnl extends JPanel {
 				}
 				System.out.println(" 보내주는 task");
 				System.out.println(task);
+				if(task !=null) {
 				mainFrame.setTask(task, column, feedback);
 				mainFrame.showCard("task");
+				}else if (task == null){
+					mainFrame.TBP.taskrefrom.resetTask();
+
+					mainFrame.showCard("task");
+				}
 			
 				revalidate();
 				repaint();

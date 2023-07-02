@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 
 import dbutil.SelectProjectInfo;
 import frame.MainFrame;
+import pnl.commonpnl.ProjectTitlePnl;
 import tomatoPj.ColumnRepository;
 import tomatoPj.Member;
 import tomatoPj.Member_Tag_Package_Repository;
@@ -45,6 +46,11 @@ public class ProjectPnl extends JPanel {
 		mainFrame.columnActive = true;
     }
     
+    public String getTitle(MainFrame mainFrame, int project_no, String title) {
+    	mainFrame.pjInfo = new SelectProjectInfo(project_no, title, null, null);
+    	return mainFrame.pjInfo.getTitle();
+	}
+    
     public ProjectPnl(MainFrame mainFrame, int project_no, String title) {
     	mtPackageRepo = new Member_Tag_Package_Repository();
     	colRepo = new ColumnRepository();
@@ -59,8 +65,13 @@ public class ProjectPnl extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				insertPjInfo(mainFrame, project_no, title);
-				mainFrame.showCard("columnSelect");
+				if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {
+					mainFrame.setSelectedProjectTitle(title);
+					System.out.println(mainFrame.getSelectedProjectTitle());
+				} else {
+					insertPjInfo(mainFrame, project_no, title);
+					mainFrame.showCard("columnSelect");
+				}
 			}
 		});
         add(btnNewButton, BorderLayout.CENTER);

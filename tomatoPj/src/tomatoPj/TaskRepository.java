@@ -32,7 +32,6 @@ public class TaskRepository {
 
 			for (int i = 0; i < member_noArray.size(); i++) {
 				stmt.setInt(1, project_no);
-				// stmt.setInt(2, member_noArray.get(i));
 				stmt.setObject(2, member_noArray.get(i), Types.INTEGER);
 				rs = stmt.executeQuery();
 
@@ -78,7 +77,8 @@ public class TaskRepository {
 				String name = rs.getString("name");
 				String mbti = rs.getString("mbti");
 				int active = rs.getInt("active");
-				list.add(new Member(member_no, id, pwd, e_mail, name, mbti, active));
+				byte[] image = rs.getBytes("image");
+				list.add(new Member(member_no, id, pwd, e_mail, name, mbti, active,image));
 			}
 
 		} finally {

@@ -36,7 +36,8 @@ public class MemberRepository {
 				String name = rs.getString("name");
 				String mbti = rs.getString("mbti");
 				int active = rs.getInt("active");
-				list.add(new Member(member_no, id, pwd, e_mail, name, mbti, active));
+				byte[] image = rs.getBytes("image");
+				list.add(new Member(member_no, id, pwd, e_mail, name, mbti, active, image));
 			}
 		} finally {
 			DBUtil.close(rs);
@@ -65,7 +66,8 @@ public class MemberRepository {
 				String name = rs.getString("name");
 				String mbti = rs.getString("mbti");
 				int active = rs.getInt("active");
-				list.add(new Member(member_no, id, pwd, e_mail, name, mbti, active));
+				byte[] image = rs.getBytes("image");
+				list.add(new Member(member_no, id, pwd, e_mail, name, mbti, active,image));
 			}
 		} finally {
 			DBUtil.close(rs);
@@ -122,15 +124,16 @@ public class MemberRepository {
 	 * @param mbti
 	 * @return
 	 */
-	public int signUp(Connection conn, String id, String pwd, String e_mail, String name, String mbti) {
+	public int signUp(Connection conn, String id, String pwd, String e_mail, String name, String mbti, byte[] image) {
 		PreparedStatement stmt = null;
 		try {
-			stmt = conn.prepareStatement("INSERT INTO `member` (id, pwd, `e-mail`, name, mbti) VALUES (?, ?, ?, ?, ?)");
+			stmt = conn.prepareStatement("INSERT INTO `member` (id, pwd, `e-mail`, name, mbti, image) VALUES (?, ?, ?, ?, ?, ?)");
 			stmt.setString(1, id);
 			stmt.setString(2, pwd);
 			stmt.setString(3, e_mail);
 			stmt.setString(4, name);
 			stmt.setString(5, mbti);
+			stmt.setBytes(6, image);
 			return stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -166,10 +169,11 @@ public class MemberRepository {
 				String name = rs.getString("name");
 				String mbti = rs.getString("mbti");
 				int active = rs.getInt("active");
+				byte[] image = rs.getBytes("image");
 				if(inputId.equals(id) && inputPwd.equals(pwd)) {
-					member = new Member(member_no, id, pwd, e_mail, name, mbti, active);
+					member = new Member(member_no, id, pwd, e_mail, name, mbti, active, image);
 					break;
-				}
+				}									
 			}
 		} finally {
 			DBUtil.close(rs);
@@ -230,9 +234,10 @@ public class MemberRepository {
 				String name = rs.getString("name");
 				String mbti = rs.getString("mbti");
 				int active = rs.getInt("active");
+				byte[] image = rs.getBytes("image");
 				
 				
-				member = new Member(member_noParse, id, pwd, e_mail, name, mbti, active);
+				member = new Member(member_noParse, id, pwd, e_mail, name, mbti, active, image);
 			}
 		} finally {
 			DBUtil.close(rs);

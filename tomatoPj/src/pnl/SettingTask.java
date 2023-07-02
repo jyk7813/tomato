@@ -29,10 +29,36 @@ public class SettingTask {
 		this.feedback = feedback;
 		this.column = column;
 	}
+	
 	public void reset() {
 		task =null;
 		ts.TakeTask = null;
 		this.feedback = null;
+		ts.useingMemberNum = 0;
+		ts.task_Pk = 0;
+		ts.Active = 0;
+		
+		String updateDate = "";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+		Timestamp tt = new Timestamp(System.currentTimeMillis());
+		updateDate = dateFormat.format(tt);
+		ts.StartDate.setText(updateDate);
+		
+		String updateDate2 = "";
+		
+		Timestamp tt2 = new Timestamp(System.currentTimeMillis());
+		updateDate2 = dateFormat.format(tt2);
+		ts.deadLineDate.setText(updateDate2);
+		
+		for(int i = 0; i<5; i++) {
+			ts.returnImoportance=0;
+			ts.stars[i].setIcon(IC.getImageIcon("starGray"));
+		}
+		
+		ts.contentText.setText("내용을 입력해주세요");
+		ts.feedBackText.setText("피드백을 입력해주세요");
+		
+		
 	}
 	public void setUsingMemberNum() {
 		ts.useingMemberNum = MF.loginMember.getMember().getMember_no();
