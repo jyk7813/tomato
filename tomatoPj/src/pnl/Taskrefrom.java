@@ -62,7 +62,7 @@ public class Taskrefrom extends JPanel {
 	JPanel StarAndDate;
 	JLabel timeManagementNavi;
 	int Imoportance;
-	// 별리셋용 Imoportance
+	// 별리셋용 Imoportance 
 	
 	// 시작날짜
 	JLabel StartDate;
