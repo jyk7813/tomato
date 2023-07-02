@@ -32,7 +32,6 @@ public class TaskRepository {
 
 			for (int i = 0; i < member_noArray.size(); i++) {
 				stmt.setInt(1, project_no);
-				// stmt.setInt(2, member_noArray.get(i));
 				stmt.setObject(2, member_noArray.get(i), Types.INTEGER);
 				rs = stmt.executeQuery();
 
