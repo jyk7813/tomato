@@ -32,6 +32,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import button.LogoutBtn;
 import dbutil.SelectProjectInfo;
 import frame.MainFrame;
+import pnl.commonpnl.ProjectTitlePnl;
 import pnl.projectpnl.ProjectPnl;
 import pnl.projectpnl.ProjectSelectWestPnl;
 import tomatoPj.ColumnRepository;

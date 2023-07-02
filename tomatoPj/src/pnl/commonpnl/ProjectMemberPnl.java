@@ -30,7 +30,7 @@ public class ProjectMemberPnl extends JPanel {
 		panel.setLayout(null);
 		
 		
-		projectTitlePnl = new ProjectTitlePnl();
+		projectTitlePnl = new ProjectTitlePnl(mainFrame);
 		projectTitlePnl.setBackground(new Color(0,0,0,0));
 		projectTitlePnl.setBounds(0, 40, 130, 140);
 		panel.add(projectTitlePnl);

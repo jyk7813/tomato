@@ -194,8 +194,6 @@ public class Taskrefrom extends JPanel {
 
 					}
 					
-					mainFrame.getContentPane().removeAll();
-					mainFrame.addPnl();
 					mainFrame.showCard("columnSelect");
 				}
 			}
