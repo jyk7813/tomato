@@ -48,8 +48,8 @@ public class LoginPnl extends JPanel {
 	private FontData fontData;
 	private Member member;
 	private MemberRepository mr;
-	private JTextField idField;
-	private JPasswordField passwordField;
+	private MyTextField idField;
+	private MyPwdField passwordField;
 	private ImageIcon loginIcon;
 	private ImageIcon loginDarkIcon;
 	private ImageIcon loginbrightIcon;
@@ -57,7 +57,8 @@ public class LoginPnl extends JPanel {
 	private ImageIcon signUpDarkIcon;
 	private ImageIcon loginErrorIcon;
 	private JLabel loginErrorLbl;
-
+	//private MyTextField mytextfield;
+	
 	private void setLoginMember(MainFrame mainFrame, Member member) {
 		LocalDateTime now = LocalDateTime.now();
 		try {
@@ -101,13 +102,13 @@ public class LoginPnl extends JPanel {
 		
 		Image loginErrorImg = iconData.getImageIcon("loginError").getImage();
 		
-		idField = new JTextField();
-		passwordField = new JPasswordField();
+		idField = new MyTextField("로그인", loginButton);
+		//passwordField = new JPasswordField();
+		passwordField = new MyPwdField("패스워드", loginButton);
 		///////////
 		
-		idField.setText("아이디를 입력해주세요");
-		idField.setForeground(Color.gray);
-		
+		//idField.setText("아이디를 입력해주세요");
+		//idField.setForeground(Color.gray);
 		
 		
 		System.out.println("왜안돼");
@@ -136,7 +137,6 @@ public class LoginPnl extends JPanel {
 		idField.setBounds(870, 509, 255, 41);
 		passwordField.setBounds(870, 570, 255, 41);
 
-
 		idField.setFont(fontData.nanumFont(16));
 		passwordField.setFont(fontData.nanumFont(16));
 
@@ -148,11 +148,12 @@ public class LoginPnl extends JPanel {
 		
 		utility.setButtonProperties(idField);
 		utility.setButtonProperties(passwordField);
-
+		
 		add(loginButton);
 		add(signUpBtn);
 		add(idField);
 		add(passwordField);
+		
 		
 		add(loginErrorLbl);
 		
