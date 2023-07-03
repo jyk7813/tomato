@@ -3,6 +3,8 @@ package popup;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
@@ -18,11 +20,12 @@ import utility.IconData;
 import utility.Utility;
 
 public class MemberAddPopup extends JDialog {
-	JTextField idInsertTextField;
-	JButton addMemberBtn;
+	public JTextField idInsertTextField;
+	public JButton addMemberBtn;
 	MainFrame mainFrame;
 	Utility utility;
 	private IconData iconData = new IconData();
+	private int num;
 
 	public MemberAddPopup() {
 		utility = new Utility();
@@ -56,6 +59,8 @@ public class MemberAddPopup extends JDialog {
 		setBackground(new Color(0, 0, 0, 0));
 		setVisible(true);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		
 
 		// WindowFocusListener를 추가합니다.
 		this.addWindowFocusListener(new WindowFocusListener() {
@@ -72,4 +77,6 @@ public class MemberAddPopup extends JDialog {
 			}
 		});
 	}
+
+	
 }

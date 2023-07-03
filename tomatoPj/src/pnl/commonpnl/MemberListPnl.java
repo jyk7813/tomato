@@ -21,6 +21,7 @@ import button.PlusBtn;
 import frame.MainFrame;
 import popup.MemberAddPopup;
 import tomatoPj.Member;
+import tomatoPj.MemberRepository;
 import utility.FontData;
 import utility.IconData;
 
@@ -36,106 +37,139 @@ public class MemberListPnl extends JPanel {
 	private List<Member> members = new ArrayList<>();
 	private MemberPnl memberPnl;
 	private MainFrame mainFrame;
-	
+	private MemberRepository memberRepository;
 
 	/**
 	 * Create the panel.
 	 */
 	public MemberListPnl(MainFrame mainFrame) {
+		memberRepository = new MemberRepository();
 		iconData = new IconData();
 		fontData = new FontData();
 		this.mainFrame = mainFrame;
 		this.image = iconData.getImageIcon("long_bar").getImage();
 		setOpaque(false);
-		
+
 		setLayout(null);
 
 		addPnl();
-	    
 
-	    plusBtn = new PlusBtn();
-	    plusBtn.setBounds(0, 10, 40, 40);  // Set initial bounds
-	    memberAddPnl.add(plusBtn);
-	    
-	    plusBtn.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            if (count < MAX_MEMBER_SIZE) {
-	            	count++;
-	            	MemberAddPopup memberAddPopup = new MemberAddPopup();
-	            	memberAddPopup.setVisible(true);
-	            	memberAddPopup.setLocation(plusBtn.getX() + 100, plusBtn.getY()+500);
-	            	memberAddPopup.setAlwaysOnTop(true);
-	                addPanel();
-	            } else {
-	                plusBtn.setVisible(false);
-	            }
-	        }
-	    });
+		plusBtn = new PlusBtn();
+		plusBtn.setBounds(0, 10, 40, 40); // Set initial bounds
+		memberAddPnl.add(plusBtn);
 
-	    mainFrame.addPropertyChangeListener(new PropertyChangeListener() {
-	        @Override
-	        public void propertyChange(PropertyChangeEvent evt) {
-	            removeAll();
-	            addPnl();
-	            members = mainFrame.pjInfo.getMemberList();
+		plusBtn.addActionListener(new ActionListener() {
+			private MemberAddPopup memberAddPopup;
 
-	            // Clear the memberPnls list
-	            memberPnls.clear();
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (count < MAX_MEMBER_SIZE) {
+					count++;
+					memberAddPopup = new MemberAddPopup();
+					memberAddPopup.setAlwaysOnTop(true);
+					memberAddPopup.setVisible(true);
+					memberAddPopup.setLocation(plusBtn.getX() + 100, plusBtn.getY() + 500);
+					memberAddPopup.addMemberBtn.addActionListener(new ActionListener() {
 
-	            for (Member member : members) {
-	            	if (MemberListPnl.this.mainFrame.loginMember.getMember().equals(member)) {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							memberRepository.addProjectMember(mainFrame.pjInfo.getProject_no(),
+									memberAddPopup.idInsertTextField.getText());
+							removeAll();
+							addPnl();
+							members = mainFrame.pjInfo.getMemberList();
+
+							// Clear the memberPnls list
+							memberPnls.clear();
+
+							for (Member member : members) {
+								if (MemberListPnl.this.mainFrame.loginMember.getMember().equals(member)) {
+									continue;
+								}
+								MemberPnl memberPnl = new MemberPnl(member, mainFrame);
+								memberPnls.add(memberPnl);
+							}
+							for (MemberPnl memberPnl : memberPnls) {
+								memberPnl.setPreferredSize(new Dimension(90, 90));
+								memberAddPnl.add(memberPnl);
+							}
+							memberAddPnl.remove(plusBtn);
+
+							// Make the plusBtn visible if member count is less than MAX_MEMBER_SIZE
+							plusBtn.setVisible(members.size() <= MAX_MEMBER_SIZE);
+
+							memberAddPnl.revalidate();
+							memberAddPnl.repaint();
+							memberAddPnl.add(plusBtn);
+							count = memberPnls.size();
+							memberAddPopup.dispose();
+						}
+					});
+					
+//					memberAddPopup.dispose();
+				} else {
+					plusBtn.setVisible(false);
+				}
+			}
+		});
+
+		mainFrame.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				removeAll();
+				addPnl();
+				members = mainFrame.pjInfo.getMemberList();
+
+				// Clear the memberPnls list
+				memberPnls.clear();
+
+				for (Member member : members) {
+					if (MemberListPnl.this.mainFrame.loginMember.getMember().equals(member)) {
 						continue;
 					}
-	                MemberPnl memberPnl = new MemberPnl(member,mainFrame);
-	                memberPnls.add(memberPnl);
-	            }
-	            for (MemberPnl memberPnl : memberPnls) {
-	                memberPnl.setPreferredSize(new Dimension(90, 90));
-	                memberAddPnl.add(memberPnl);
-	            }
-	            memberAddPnl.remove(plusBtn);
+					MemberPnl memberPnl = new MemberPnl(member, mainFrame);
+					memberPnls.add(memberPnl);
+				}
+				for (MemberPnl memberPnl : memberPnls) {
+					memberPnl.setPreferredSize(new Dimension(90, 90));
+					memberAddPnl.add(memberPnl);
+				}
+				memberAddPnl.remove(plusBtn);
 
-	            // Make the plusBtn visible if member count is less than MAX_MEMBER_SIZE
-	            plusBtn.setVisible(members.size() <= MAX_MEMBER_SIZE);
+				// Make the plusBtn visible if member count is less than MAX_MEMBER_SIZE
+				plusBtn.setVisible(members.size() <= MAX_MEMBER_SIZE);
 
-	            memberAddPnl.revalidate();
-	            memberAddPnl.repaint();
-	            memberAddPnl.add(plusBtn);
-	            count = memberPnls.size();
-	        }
-	    });
+				memberAddPnl.revalidate();
+				memberAddPnl.repaint();
+				memberAddPnl.add(plusBtn);
+				count = memberPnls.size();
+			}
+		});
 
-	    
-	    
-	    
 	}
+
 	private void addPanel() {
-	    memberPnl = new MemberPnl();
-	    memberPnl.setPreferredSize(new Dimension(80, 80));
+		memberPnl = new MemberPnl();
+		memberPnl.setPreferredSize(new Dimension(80, 80));
 
-	    memberAddPnl.remove(plusBtn);
-	    memberAddPnl.add(memberPnl);
-	    memberAddPnl.add(plusBtn);
+		memberAddPnl.remove(plusBtn);
+		memberAddPnl.add(memberPnl);
+		memberAddPnl.add(plusBtn);
 
-	    memberAddPnl.revalidate();
-	    memberAddPnl.repaint();
-	    
-	    if (count >= MAX_MEMBER_SIZE) {
-	        plusBtn.setVisible(false);
-	    }
+		memberAddPnl.revalidate();
+		memberAddPnl.repaint();
+
+		if (count >= MAX_MEMBER_SIZE) {
+			plusBtn.setVisible(false);
+		}
 	}
-
-
-
-
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, null);
 	}
-	
+
 	private void addPnl() {
 
 		JPanel memberTitleLbl = new JPanel();
