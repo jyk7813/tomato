@@ -40,204 +40,197 @@ import utility.CalendarData;
 import utility.FontData;
 import utility.IconData;
 import utility.PrintPlanner;
+import utility.PrintPlannerList;
 import utility.Utility;
 
 public class TestTodoPnl extends JPanel {
-	private final static IconData IC = new IconData();
-	private final static FontData FT = new FontData();
-	private final static Utility UT = new Utility();
-	private final static CalendarData CD = new CalendarData();
+   private final static IconData IC = new IconData();
+   private final static FontData FT = new FontData();
+   private final static Utility UT = new Utility();
+   private final static CalendarData CD = new CalendarData();
 
-	private Image image;
-	private PrintPlanner pp;
-	private Project selectPj;
-	private static boolean toggleSwitch = true;
-	
-	private TaskRepository tr = new TaskRepository();
-	private ProjectRepository pr = new ProjectRepository();
-	private MemberRepository mr = new MemberRepository();
-	static List<PrintPlanner> ppList = new ArrayList<>();
-	static List<Project> pjOfUser;
-	
-	public TestTodoPnl() {
-		
-	}
-	
-	public TestTodoPnl(MainFrame mainFrame) {
-		addComponentListener(new ComponentListener() {
-			@Override
-			public void componentShown(ComponentEvent e) {
-				pjOfUser = mainFrame.loginMember.getPjList();
-				System.out.println("투두창확인");
-				setView();
-			}
+   private Image image;
+   private PrintPlanner pp;
+   private Project selectPj;
+   private boolean toggleSwitch = true;
 
-			@Override
-			public void componentResized(ComponentEvent e) {
-			}
+//   private TaskRepository tr = new TaskRepository();
+//   private ProjectRepository pr = new ProjectRepository();
+//   private MemberRepository mr = new MemberRepository();
+//   static List<PrintPlanner> ppList = new ArrayList<>();
+//   static List<Project> pjOfUser;
+   PrintPlannerList ppr = new PrintPlannerList();
 
-			@Override
-			public void componentMoved(ComponentEvent e) {
-			}
+   public TestTodoPnl() {
 
-			@Override
-			public void componentHidden(ComponentEvent e) {
-			}
-		});
-		
-		// 메인 영역 배경 패널 ------------------------------------
-		JPanel calBgPnl = new JPanel() {
-			public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.drawImage(IC.getImageIcon("calendarWeekBg").getImage(), 0, 0, null);
-				setOpaque(false);
-			}
-		};
+   }
 
-		// 배경 패널 -----------------------------------------
-		JPanel bgPnl = new JPanel() {
-			public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.drawImage(IC.getImageIcon("Background").getImage(), 0, 0, null);
-				setOpaque(false);
-			}
-		};
+   public TestTodoPnl(MainFrame mainFrame) {
+      addComponentListener(new ComponentListener() {
+         @Override
+         public void componentShown(ComponentEvent e) {
+            System.out.println("투두창확인");
+//            System.out.println(mainFrame.loginMember.getMember_no());
+            ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch);
+            ppr.testPrint(ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch));
+         }
 
-		// 상단 패널 -----------------------------------------
-		TopMainPnl topPnl = new TopMainPnl(mainFrame);
-		topPnl.showCard("SelectedTodo");
-		topPnl.setBounds(0, 0, 1920, 135);
-		topPnl.setOpaque(false);
+         @Override
+         public void componentResized(ComponentEvent e) {
+         }
 
-		// 달력 패널 -----------------------------------------
-		JPanel calPnl = new JPanel();
-		calPnl.setBounds(164, 300, 857, 870);
-		calPnl.setLayout(null);
-		calPnl.setOpaque(false);
+         @Override
+         public void componentMoved(ComponentEvent e) {
+         }
 
-		// 달력 출력 패널 --------------------------------------
-		CalendarSwing printCal = new CalendarSwing();
-		printCal.setBounds(200, 135, 1718, 870);
-		printCal.setLayout(null);
-		printCal.setOpaque(false);
+         @Override
+         public void componentHidden(ComponentEvent e) {
+         }
+      });
 
-		// 막대바 출력 패널 -------------------------------------
+      // 메인 영역 배경 패널 ------------------------------------
+      JPanel calBgPnl = new JPanel() {
+         public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(IC.getImageIcon("calendarWeekBg").getImage(), 0, 0, null);
+            setOpaque(false);
+         }
+      };
 
-		// 투두 리스트 패널 ------------------------------------
-		JPanel todoListPnl = new JPanel();
-		todoListPnl.setBounds(1026, 175, 857, 870);
-		todoListPnl.setLayout(null);
-		todoListPnl.setOpaque(false);
+      // 배경 패널 -----------------------------------------
+      JPanel bgPnl = new JPanel() {
+         public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(IC.getImageIcon("Background").getImage(), 0, 0, null);
+            setOpaque(false);
+         }
+      };
 
-		// 투두리스트 출력 패널 ----------------------------------
+      // 상단 패널 -----------------------------------------
+      TopMainPnl topPnl = new TopMainPnl(mainFrame);
+      topPnl.showCard("SelectedTodo");
+      topPnl.setBounds(0, 0, 1920, 135);
+      topPnl.setOpaque(false);
 
-		// 뷰 설정 토글 버튼
-		JButton toggleBtn = UT.getBtn(350, 0, "prijectAll_toggle");
-		todoListPnl.add(toggleBtn);
-		ActionListener listener = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (toggleSwitch) {
-					toggleBtn.setIcon(IC.getImageIcon("prijectEach_toggle"));
-					toggleSwitch = false;
-					setView();
-					testPrint();
-				} else {
-					toggleBtn.setIcon(IC.getImageIcon("prijectAll_toggle"));
-					toggleSwitch = true;
-					setView();
-					testPrint();
-				}
-			}
-		};
-		toggleBtn.addActionListener(listener);
+      // 달력 패널 -----------------------------------------
+      JPanel calPnl = new JPanel();
+      calPnl.setBounds(164, 300, 857, 870);
+      calPnl.setLayout(null);
+      calPnl.setOpaque(false);
 
-		// 선택 버튼
-		JButton selBtn = UT.getBtn(785, 15, "projectOpne");
-		todoListPnl.add(selBtn);
+      // 달력 출력 패널 --------------------------------------
+      CalendarSwing printCal = new CalendarSwing();
+      printCal.setBounds(200, 135, 1718, 870);
+      printCal.setLayout(null);
+      printCal.setOpaque(false);
 
-		calBgPnl.setBounds(164, 160, 1718, 870);
-		calBgPnl.setLayout(null);
-		calBgPnl.setOpaque(false);
+      // 막대바 출력 패널 -------------------------------------
 
-		// 배경 패널에 각 패널 붙이기 ------------------------------
-		bgPnl.add(topPnl); // 상단 패널
-		bgPnl.add(todoListPnl); // 투두 리스트 패널
-		bgPnl.add(calPnl); // 달력 패널
-		add(printCal); // 달력 패널
-		bgPnl.add(calBgPnl); // 메인 영역 배경 패널
-		// -----------------------------------------------
-		bgPnl.setBounds(0, 0, 1920, 1080);
-		bgPnl.setLayout(null);
-		bgPnl.setOpaque(false);
-		setLayout(null);
-		setOpaque(false);
-		add(bgPnl);
-		setVisible(true);
-	}
+      // 투두 리스트 패널 ------------------------------------
+      JPanel todoListPnl = new JPanel();
+      todoListPnl.setBounds(1026, 175, 857, 870);
+      todoListPnl.setLayout(null);
+      todoListPnl.setOpaque(false);
 
-	// 페이지 전환 메소드 (전체 프로젝트 / 프로젝트 별) ---------------
-	public List<PrintPlanner> setView() {
-		// toggleSwitch = true = 전체 프로젝트
-		if (toggleSwitch) {
-			ppList.clear();
-			List<Task> tkOfPj;
-			for (Project p : pjOfUser) {
-				try {
-					tkOfPj = tr.taskListBypjNo(p.getProject_no());
-					for (Task t : tkOfPj) {
-						String update = t.getUpdateDate().toString();
-						String deadLine = t.getDeadLine().toString();
-						PrintPlanner pp = new PrintPlanner(p.getProject_no(), p.getTitle(), t.getTitle(), update, deadLine);
-						ppList.add(pp);
-					}
-				} catch (SQLException e) {
-					System.out.println("투두오류1: 전체프로젝트 리스트 전달 실패");
-					e.printStackTrace();
-				}
-			}
-			return ppList;
-		// 프로젝트 별	
-		} else {
-			List<Task> tkOfPj2;
-			List<Member> mOfTask;
-			ppList.clear();
-			for(Project p : pjOfUser) {
-				try {
-					tkOfPj2 = tr.taskListBypjNo(p.getProject_no());
-					for(Task t : tkOfPj2) {
-						mOfTask = tr.searchMemberByTask_no(t.getTask_no());
-						for(Member m : mOfTask) {
-							String update = t.getUpdateDate().toString();
-							String deadLine = t.getDeadLine().toString();
-							PrintPlanner pp = new PrintPlanner(m.getMember_no(), m.getName(), t.getTitle(), update, deadLine);
-							ppList.add(pp);
-						}
-					}
-				} catch (SQLException e) {
-					System.out.println("투두오류2: 전체프로젝트 리스트 전달 실패");
-					e.printStackTrace();
-				}
-			}
-			return ppList;
-		}
-	}
-	
-	public static void testPrint() {
-		if(toggleSwitch) {
-			System.out.println("전체 프로젝트");
-			for(PrintPlanner pp : ppList) {
-				System.out.println(pp);
-			}
-			System.out.println("-----------------------");
-		} else {
-			for(PrintPlanner pp : ppList) {
-				System.out.println("프로젝트 별: " + pp.getTitle());
-				System.out.println(pp);
-			}
-			System.out.println("-----------------------");
-		}
-	}
+      // 투두리스트 출력 패널 ----------------------------------
+
+      // 뷰 설정 토글 버튼
+      JButton toggleBtn = UT.getBtn(350, 0, "prijectAll_toggle");
+      todoListPnl.add(toggleBtn);
+      ActionListener listener = new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            if (toggleSwitch) {
+               toggleBtn.setIcon(IC.getImageIcon("prijectEach_toggle"));
+               toggleSwitch = false;
+               ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch);
+               ppr.testPrint(ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch));
+            } else {
+               toggleBtn.setIcon(IC.getImageIcon("prijectAll_toggle"));
+               toggleSwitch = true;
+               ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch);
+               ppr.testPrint(ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch));
+            }
+         }
+      };
+      toggleBtn.addActionListener(listener);
+
+      // 선택 버튼
+      JButton selBtn = UT.getBtn(785, 15, "projectOpne");
+      todoListPnl.add(selBtn);
+
+      calBgPnl.setBounds(164, 160, 1718, 870);
+      calBgPnl.setLayout(null);
+      calBgPnl.setOpaque(false);
+
+      // 배경 패널에 각 패널 붙이기 ------------------------------
+      bgPnl.add(topPnl); // 상단 패널
+      bgPnl.add(todoListPnl); // 투두 리스트 패널
+      bgPnl.add(calPnl); // 달력 패널
+      add(printCal); // 달력 패널
+      bgPnl.add(calBgPnl); // 메인 영역 배경 패널
+      // -----------------------------------------------
+      bgPnl.setBounds(0, 0, 1920, 1080);
+      bgPnl.setLayout(null);
+      bgPnl.setOpaque(false);
+      setLayout(null);
+      setOpaque(false);
+      add(bgPnl);
+      setVisible(true);
+   }
+
+//   // 페이지 전환 메소드 (전체 프로젝트 / 프로젝트 별) ---------------
+//   public List<PrintPlanner> setView() {
+//      // toggleSwitch = true = 전체 프로젝트
+//      if (toggleSwitch) {
+//         ppList.clear();
+//         List<Task> tkOfPj;
+//         for (Project p : pjOfUser) {
+//            try {
+//               tkOfPj = tr.taskListBypjNo(p.getProject_no());
+//               for (Task t : tkOfPj) {
+//                  String update = t.getUpdateDate().toString();
+//                  String deadLine = t.getDeadLine().toString();
+//                  PrintPlanner pp = new PrintPlanner(p.getProject_no(), p.getTitle(), t.getTitle(), update,
+//                        deadLine);
+//                  ppList.add(pp);
+//               }
+//            } catch (SQLException e) {
+//               System.out.println("투두오류1: 전체프로젝트 리스트 전달 실패");
+//               e.printStackTrace();
+//            }
+//         }
+//         return ppList;
+//         // 프로젝트 별
+//      } else {
+//         List<Task> tkOfPj2;
+//         List<Member> mOfTask;
+//         ppList.clear();
+//         for (Project p : pjOfUser) {
+//            try {
+//               tkOfPj2 = tr.taskListBypjNo(p.getProject_no());
+//               for (Task t : tkOfPj2) {
+//                  mOfTask = tr.searchMemberByTask_no(t.getTask_no());
+//                  for (Member m : mOfTask) {
+//                     String update = t.getUpdateDate().toString();
+//                     String deadLine = t.getDeadLine().toString();
+//                     PrintPlanner pp = new PrintPlanner(m.getMember_no(), m.getName(), t.getTitle(), update,
+//                           deadLine);
+//                     ppList.add(pp);
+//                  }
+//               }
+//            } catch (SQLException e) {
+//               System.out.println("투두오류2: 전체프로젝트 리스트 전달 실패");
+//               e.printStackTrace();
+//            }
+//         }
+//         return ppList;
+//      }
+//   }
+//
+//   public static void testPrint() {
+//      for (PrintPlanner pp : ppList) {
+//         System.out.println(pp);
+//      }
+//   }
 }
-
-
