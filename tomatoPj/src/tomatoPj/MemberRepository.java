@@ -101,15 +101,48 @@ public class MemberRepository {
 				}
 			}
 			return true;
-//			a = rs.getString("id");
-//			if(a.equals(null)) {
-//				return false;
-//			} else {
-//				return true;
-//			}
 		} finally {
 			DBUtil.close(rs);
 			DBUtil.close(stmt);
+		}
+	}
+	
+	// 특정프로젝트에 함께하는 멤버추가 
+	// 07/03 하태씨 이거쓰면됨
+	public void addProjectMember(int project_no, String id) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		PreparedStatement stmt2 = null;
+		ResultSet rs = null;
+		
+		
+		try {
+			System.out.println("실행됨");
+			conn = DBUtil.getConnection();
+			if(!dupliIdCheck(conn, id)) {
+				String sql = "SELECT `member_no` FROM `member` WHERE id = ?";
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, id);
+				rs = stmt.executeQuery();
+			}
+			rs.next(); 
+			int member_no = rs.getInt("member_no");
+			String sql2 = "INSERT INTO `member_tag` (`project_no`, `member_no`)\r\n" + 
+					"VALUES (?,?)";
+			stmt2 = conn.prepareStatement(sql2);
+			stmt2.setInt(1, project_no);
+			stmt2.setInt(2, member_no);
+			stmt2.executeUpdate();
+			
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(stmt);
+			DBUtil.close(stmt2);
+			DBUtil.close(conn);
 		}
 	}
 	

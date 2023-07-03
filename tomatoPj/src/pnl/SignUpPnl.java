@@ -26,6 +26,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 
 import button.AddPictureBtn;
 import dbutil.DBUtil;
@@ -61,6 +64,12 @@ public class SignUpPnl extends JPanel {
 	private ImageIcon emailIcon;
 	private ImageIcon nameIcon;
 	
+	private JLabel idcheckLbl;
+	private JLabel pwdcheckLbl;
+	private JLabel pwd2checkLbl;
+	private JLabel emailcheckLbl;
+	private JLabel namecheckLbl;
+	
 	private boolean idRegex=false;
 	private boolean pwdRegex=false;
 	private boolean pwdDuRegex=false;
@@ -70,6 +79,11 @@ public class SignUpPnl extends JPanel {
 	
 	public SignUpPnl(Image image, MainFrame mainFrame) {
 		
+		idcheckLbl = new JLabel();
+		pwdcheckLbl = new JLabel();
+		pwd2checkLbl = new JLabel();
+		emailcheckLbl = new JLabel();
+		namecheckLbl = new JLabel();
 		
 		regex = new Regex();
 		mr = new MemberRepository();
@@ -88,6 +102,9 @@ public class SignUpPnl extends JPanel {
 		checkPasswordField = new JPasswordField("비밀번호 확인");
 		nameField = new JTextField("이름");
 		emailField = new JTextField("이메일");
+		
+		
+		
 		btn = new JButton();
 		btn.setBackground(Color.BLACK);
 		backBtn = new JButton(iconData.getImageIcon("login_logo"));
@@ -173,56 +190,269 @@ public class SignUpPnl extends JPanel {
 		add(backBtn);
 		add(addPictureBtn);
 
+		add(idcheckLbl);
+		add(pwdcheckLbl);
+		add(pwd2checkLbl);
+		add(emailcheckLbl);
+		add(namecheckLbl);
 		addComponentListener(new ComponentAdapter() {
 		
 			@Override
 			public void componentShown(ComponentEvent e) {
 				idField.requestFocusInWindow();
+//				idcheckLbl.setIcon(possible);
+//				pwdcheckLbl.setIcon(possible);
+//				pwd2checkLbl.setIcon(possible);
+//				emailcheckLbl.setIcon(possible);
+//				namecheckLbl.setIcon(possible);
 			}
 
 		});
-	}
-
-	
-	//////////////////07/03작업 이어서 할것/////////////////
-	private boolean CheckRegex(ActionEvent e) {
-		//boolean check;
-		if(e.getSource().equals(idField)) {
-			if(regex.regexId(idField.getText())) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return false;
-	}
-	
-	public ActionListener textFieldTimeCheck() {
-		ActionListener a = new ActionListener() {
-			
+		idField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void removeUpdate(DocumentEvent e) {
+				Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                            if(regex.regexId(idField.getText())) {
+                				idcheckLbl.setIcon(possible);
+                				idRegex = true;
+                			} else {
+                				idcheckLbl.setIcon(impossible);
+                				idRegex = false;
+                			}
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                thread.start();
+		
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
 				 Thread thread = new Thread() {
 	                    @Override
 	                    public void run() {
 	                        try {
-	                            Thread.sleep(2000);
+	                            Thread.sleep(1000);
+	                            if(regex.regexId(idField.getText())) {
+	                				idcheckLbl.setIcon(possible);
+	                				idRegex = true;
+	                			} else {
+	                				idcheckLbl.setIcon(impossible);
+	                				idRegex = false;
+	                			}
 	                        } catch (InterruptedException e) {
 	                            e.printStackTrace();
 	                        }
-	                        CheckRegex(e);
-	                      
 	                    }
 	                };
-
 	                thread.start();
+			
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+		
+			}
+		});
+		passwordField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				 Thread thread = new Thread() {
+	                    @Override
+	                    public void run() {
+	                        try {
+	                            Thread.sleep(1000);
+	                            if (regex.regexPassword(regex.pwdToString(passwordField))) {
+	                            	pwdcheckLbl.setIcon(possible);
+	                            	pwdRegex = true;
+	                            } else {
+	                            	pwdcheckLbl.setIcon(impossible);
+	                            	pwdRegex = false;
+	                            }
+	                        } catch (InterruptedException e) {
+	                            e.printStackTrace();
+	                        }
+	                    }
+	                };
+	                thread.start();
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				 Thread thread = new Thread() {
+	                    @Override
+	                    public void run() {
+	                        try {
+	                            Thread.sleep(1000);
+	                            if (regex.regexPassword(regex.pwdToString(passwordField))) {
+	                            	pwdcheckLbl.setIcon(possible);
+	                            	pwdRegex = true;
+	                            } else {
+	                            	pwdcheckLbl.setIcon(impossible);
+	                            	pwdRegex = false;
+	                            }
+	                        } catch (InterruptedException e) {
+	                            e.printStackTrace();
+	                        }
+	                    }
+	                };
+	                thread.start();
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
 				
 			}
-		};
-		return a;
+		});
+		checkPasswordField.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                            if(regex.pwdToString(passwordField).equals((regex.pwdToString(checkPasswordField)))) {
+                            	pwd2checkLbl.setIcon(possible);
+                            	pwdDuRegex = true;
+                            } else {
+                            	pwd2checkLbl.setIcon(impossible);
+                            	pwdDuRegex = false;
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                thread.start();
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                            if(regex.pwdToString(passwordField).equals((regex.pwdToString(checkPasswordField)))) {
+                            	pwd2checkLbl.setIcon(possible);
+                            	pwdDuRegex = true;
+                            } else {
+                            	pwd2checkLbl.setIcon(impossible);
+                            	pwdDuRegex = false;
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                thread.start();
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+			}
+		});
+		emailField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                            if(regex.regexEmail(emailField.getText())) {
+                            	emailcheckLbl.setIcon(possible);
+                            	emailRegex = true;
+                            } else {
+                            	emailcheckLbl.setIcon(impossible);
+                            	emailRegex = false;
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                thread.start();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                            if(regex.regexEmail(emailField.getText())) {
+                            	emailcheckLbl.setIcon(possible);
+                            	emailRegex = true;
+                            } else {
+                            	emailcheckLbl.setIcon(impossible);
+                            	emailRegex = false;
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                thread.start();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+			}
+		});
+		nameField.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                            if(regex.regexName(nameField.getText())) {
+                            	namecheckLbl.setIcon(possible);
+                            	nameRegex = true;
+                            } else {
+                            	namecheckLbl.setIcon(impossible);
+                            	nameRegex = false;
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                thread.start();
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                            if(regex.regexName(nameField.getText())) {
+                            	namecheckLbl.setIcon(possible);
+                            	nameRegex = true;
+                            } else {
+                            	namecheckLbl.setIcon(impossible);
+                            	nameRegex = false;
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                thread.start();
+				
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+			}
+		});
 	}
-	
-	
 	
 	public KeyListener enterKey() {
 		return new KeyAdapter() {
@@ -242,15 +472,15 @@ public class SignUpPnl extends JPanel {
 		checkPasswordField.setText("");
 		nameField.setText("");
 		emailField.setText("");
+		
+		idcheckLbl.setIcon(possible);
+		pwdcheckLbl.setIcon(possible);
+		pwd2checkLbl.setIcon(possible);
+		emailcheckLbl.setIcon(possible);
+		namecheckLbl.setIcon(possible);
 	}
 
 	private void settingTextField() {
-		idField.addActionListener(textFieldTimeCheck());
-		passwordField.addActionListener(textFieldTimeCheck());
-		checkPasswordField.addActionListener(textFieldTimeCheck());
-		nameField.addActionListener(textFieldTimeCheck());
-		emailField.addActionListener(textFieldTimeCheck());
-		
 		idField.addKeyListener(enterKey());
 		passwordField.addKeyListener(enterKey());
 		checkPasswordField.addKeyListener(enterKey());
@@ -265,6 +495,13 @@ public class SignUpPnl extends JPanel {
 		btn.setBounds(898, 826, 126, 41);
 		backBtn.setBounds(761, 193, 399, 90);
 
+		idcheckLbl.setBounds(1100, 360, 50, 50);
+		pwdcheckLbl.setBounds(1100, 471, 50, 50);
+		pwd2checkLbl.setBounds(1100, 544, 50, 50);
+		emailcheckLbl.setBounds(1100, 649, 50, 50);
+		namecheckLbl.setBounds(1100, 710, 50, 50);
+		
+		
 		idField.setFont(fontData.nanumFont(16));
 		passwordField.setFont(fontData.nanumFont(16));
 		checkPasswordField.setFont(fontData.nanumFont(16));
@@ -282,24 +519,19 @@ public class SignUpPnl extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if (regex.regexPassword(regex.pwdToString(passwordField))
-							&& regex.regexEmail(emailField.getText())) {
-						if (regex.pwdToString(passwordField).equals(regex.pwdToString(checkPasswordField))) {
-							conn = DBUtil.getConnection();
-							if (mr.dupliIdCheck(conn, idField.getText())) {
-								mr.signUp(conn, idField.getText(), regex.pwdToString(passwordField),
-										emailField.getText(), nameField.getText(), null, getImageBytesFromLabel(testLbl));
-								System.out.println("회원가입성공");
-								mainFrame.showCard("login");
-								clearTextField();
-							} else {
-								System.out.println("아이디 중복");
-							}
+					conn = DBUtil.getConnection();
+					if (idRegex==true && pwdRegex==true && pwdDuRegex==true && emailRegex==true && nameRegex==true) {
+						if (mr.dupliIdCheck(conn, idField.getText())) {
+							mr.signUp(conn, idField.getText(), regex.pwdToString(passwordField),
+									emailField.getText(), nameField.getText(), null, getImageBytesFromLabel(testLbl));
+							System.out.println("회원가입성공");
+							mainFrame.showCard("login");
+							clearTextField();
 						} else {
-							System.out.println("비밀번호 일치하지않음");
+							System.out.println("아이디 중복");
 						}
 					} else {
-						System.out.println("이메일, 패스워드 regex통과불가");
+						System.out.println("전부 true가 아님");
 					}
 				} catch (SQLException e1) {
 					e1.printStackTrace();
@@ -335,6 +567,8 @@ public class SignUpPnl extends JPanel {
 	        imageBytes = baos.toByteArray();
 	    } catch (IOException e) {
 	        e.printStackTrace();
+	    } catch (NullPointerException e2) {
+	    	imageBytes = null;
 	    }
 	    
 	    return imageBytes;
