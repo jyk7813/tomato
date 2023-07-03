@@ -77,6 +77,7 @@ public class ColumnRepository {
 			String sql = "DELETE FROM `column` WHERE column_no = ?";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, column_no);
+			System.out.println("컬럼삭제완료");
 			return stmt.executeUpdate();
 			
 			
