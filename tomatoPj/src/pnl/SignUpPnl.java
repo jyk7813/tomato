@@ -43,13 +43,13 @@ public class SignUpPnl extends JPanel {
 	private Image image;
 	private FontData fontData;
 	private MemberRepository mr;
-	private JTextField idField;
 	private Regex regex;
 	private JButton btn;
-	private JPasswordField passwordField;
-	private JPasswordField checkPasswordField;
-	private JTextField nameField;
-	private JTextField emailField;
+	private MyTextField idField;
+	private MyPwdField passwordField;
+	private MyPwdField checkPasswordField;
+	private MyTextField nameField;
+	private MyTextField emailField;
 	private JButton backBtn;
 	private Utility utility;
 	private IconData iconData;
@@ -58,11 +58,6 @@ public class SignUpPnl extends JPanel {
 	public JLabel testLbl;
 	private ImageIcon possible;
 	private ImageIcon impossible;
-	private ImageIcon idIcon;
-	private ImageIcon pwdIcon;
-	private ImageIcon pwddupliIcon;
-	private ImageIcon emailIcon;
-	private ImageIcon nameIcon;
 	
 	private JLabel idcheckLbl;
 	private JLabel pwdcheckLbl;
@@ -97,11 +92,11 @@ public class SignUpPnl extends JPanel {
 		possible = iconData.getImageIcon("project_check");
 		impossible = iconData.getImageIcon("delete_btn");
 		
-		idField = new JTextField("아이디");
-		passwordField = new JPasswordField("비밀번호");
-		checkPasswordField = new JPasswordField("비밀번호 확인");
-		nameField = new JTextField("이름");
-		emailField = new JTextField("이메일");
+		idField = new MyTextField("아이디", btn);
+		passwordField = new MyPwdField("비밀번호", btn);
+		checkPasswordField = new MyPwdField("비밀번호확인", btn);
+		nameField = new MyTextField("이름", btn);
+		emailField = new MyTextField("이메일", btn);
 		
 		
 		
