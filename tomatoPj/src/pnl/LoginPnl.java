@@ -1,5 +1,6 @@
 package pnl;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -25,6 +26,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import dbutil.DBUtil;
 import dbutil.LoginMember;
@@ -98,11 +101,18 @@ public class LoginPnl extends JPanel {
 		
 		Image loginErrorImg = iconData.getImageIcon("loginError").getImage();
 		
-		idField = new JTextField("testid");
-		passwordField = new JPasswordField("test1234");
-		
 		idField = new JTextField();
 		passwordField = new JPasswordField();
+		///////////
+		
+		idField.setText("아이디를 입력해주세요");
+		idField.setForeground(Color.gray);
+		
+		
+		
+		System.out.println("왜안돼");
+		
+
 
 
 		loginIcon = new ImageIcon(loginImg);
@@ -205,6 +215,7 @@ public class LoginPnl extends JPanel {
 
 	}
 
+	
 	private void signUpActionListener(MainFrame mainFrame) {
 		signUpBtn.addActionListener(new ActionListener() {
 
