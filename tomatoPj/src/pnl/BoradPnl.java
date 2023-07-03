@@ -54,7 +54,7 @@ public class BoradPnl extends JPanel{
 				System.out.println(mainFrame.pjInfo);
 				int size = mainFrame.pjInfo.getCol().size();
 				if(size>0) {
-					panel_2.columnSelectPnl.addBtn.doClick();
+					panel_2.columnSelectPnl.columnSetting();
 				}
 			}
 		});
