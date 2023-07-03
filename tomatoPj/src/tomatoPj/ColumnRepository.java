@@ -68,6 +68,27 @@ public class ColumnRepository {
 		
 	}
 	
+	public int deleteColumn(int column_no) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "DELETE FROM `column` WHERE column_no = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, column_no);
+			return stmt.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+		return 0;
+	}
+	
 	// 나좀살려줘
 	// 컬럼추가(db에 동시에 저장), 컬럼객체 리턴
 	public Column addColumn(int project_no, int column_index) {
