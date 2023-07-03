@@ -48,6 +48,24 @@ public class MemberRepository {
 	}
 	
 	
+	// 프로젝트와 멤버 관계 끊기
+		public int deletePjMember(int project_no, int member_no) throws SQLException {
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			try {
+				conn = DBUtil.getConnection();
+				String query = "DELETE FROM `member_tag`\r\n"
+						+ "WHERE project_no = ? AND member_no = ?";
+				stmt = conn.prepareStatement(query);
+				return stmt.executeUpdate();
+
+			} finally {
+				DBUtil.close(stmt);
+				DBUtil.close(conn);
+			}
+			
+		}
+	
 	public List<Member> selectAll(Connection conn) throws SQLException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
