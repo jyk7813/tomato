@@ -64,8 +64,6 @@ public class ProjectSelectPnl extends JPanel {
 	public ProjectSelectWestPnl westPnl;
 	public ProjectPnl projectPnl;
 	
-	
-	
 	public ProjectSelectPnl(Image image, MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		taskRepo = new TaskRepository();
@@ -82,7 +80,7 @@ public class ProjectSelectPnl extends JPanel {
 
 		centerPnl = new JLayeredPane();
 		centerPnl.setOpaque(false);
-		centerPnl.setLayout(null); // Necessary for JScrollPane to function correctly
+		centerPnl.setLayout(null);
 		
 		
 		westPnl = new ProjectSelectWestPnl(mainFrame) {
@@ -116,7 +114,6 @@ public class ProjectSelectPnl extends JPanel {
 		addProjectBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//addPanel();
 				mainFrame.showCard("columnSelect");
 				
 			}
