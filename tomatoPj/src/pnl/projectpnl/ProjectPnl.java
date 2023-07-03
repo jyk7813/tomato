@@ -6,7 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -17,7 +19,9 @@ import tomatoPj.ColumnRepository;
 import tomatoPj.Member;
 import tomatoPj.Member_Tag_Package_Repository;
 import tomatoPj.TaskRepository;
+import utility.FontData;
 import utility.IconData;
+import utility.Utility;
 
 public class ProjectPnl extends JPanel {
     private IconData iconData = new IconData();
@@ -26,6 +30,9 @@ public class ProjectPnl extends JPanel {
     private Member_Tag_Package_Repository mtPackageRepo;
     private ColumnRepository colRepo;
     private TaskRepository taskRepo;
+    private ImageIcon pjBack;
+    private Utility util;
+    private FontData fontData;
     
     // 프로젝트선택시 해당정보 보관
     public void insertPjInfo(MainFrame mainFrame, int project_no, String title) {
@@ -52,6 +59,10 @@ public class ProjectPnl extends JPanel {
 	}
     
     public ProjectPnl(MainFrame mainFrame, int project_no, String title) {
+    	fontData = new FontData();
+    	util = new Utility();
+    	pjBack = iconData.getImageIcon("project_bar");
+    	
     	mtPackageRepo = new Member_Tag_Package_Repository();
     	colRepo = new ColumnRepository();
     	taskRepo = new TaskRepository();
@@ -61,6 +72,11 @@ public class ProjectPnl extends JPanel {
         setLayout(new BorderLayout(0, 0));
         
         JButton btnNewButton = new JButton(title);
+      
+        btnNewButton.setIcon(pjBack);
+        btnNewButton.setText(title);
+        btnNewButton.setHorizontalTextPosition(JButton.CENTER);
+        btnNewButton.setFont(fontData.nanumFont(27));
         btnNewButton.addActionListener(new ActionListener() {
 		
 			@Override
@@ -76,6 +92,7 @@ public class ProjectPnl extends JPanel {
 			}
 		});
         add(btnNewButton, BorderLayout.CENTER);
+        util.setButtonProperties(btnNewButton);
     }
 
     @Override
