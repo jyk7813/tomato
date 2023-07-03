@@ -65,9 +65,9 @@ public class ColumnSelectPnl extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				System.out.println("추가버튼 진입");
 				List<Column> col = mainFrame.pjInfo.getCol();
-
+				System.out.println(col);
 				if (col.size() > 0 && mainFrame.columnActive == true) {
 					Collections.sort(col, (a, b) -> a.getColumn_index() - b.getColumn_index());
 					for (Column column : col) {
@@ -80,7 +80,7 @@ public class ColumnSelectPnl extends JPanel {
 						}
 						ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column, taskList);
 						add(columnPnl);
-						columnPnl.setBounds(addColumnPnl.getX() + 31, 0, 350, 940);
+						columnPnl.setBounds(addColumnPnl.getX(), 0, 350, 940);
 						addColumnPnl.setBounds(addColumnPnl.getX() + columnPnl.getWidth() + 20, addColumnPnl.getY(),
 								350, 60);
 						add(addColumnPnl);
