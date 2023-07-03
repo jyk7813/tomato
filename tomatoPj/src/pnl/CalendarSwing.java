@@ -26,6 +26,7 @@ import utility.CalendarData;
 import utility.FontData;
 import utility.IconData;
 import utility.PrintPlanner;
+import utility.PrintPlannerList;
 import utility.Utility;
 
 public class CalendarSwing extends JPanel implements ItemListener, ActionListener {
@@ -60,9 +61,13 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
    Calendar date;
    int year;
    int month;
+   
+   TestTodoPnl ttp = new TestTodoPnl();
+   PrintPlannerList ppl = new PrintPlannerList();
 
    public CalendarSwing() {
       super(); 
+      System.out.println(ttp.getToggle());
       date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아옴
       year = date.get(Calendar.YEAR); 
       month = date.get(Calendar.MONTH) + 1; 
