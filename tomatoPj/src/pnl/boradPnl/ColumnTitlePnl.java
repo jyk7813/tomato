@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import button.deleteColBtn;
 import frame.MainFrame;
 import tomatoPj.Column;
 import utility.IconData;
@@ -17,11 +18,11 @@ public class ColumnTitlePnl extends JPanel {
 	private Image image;
 	public JLabel titleLbl;
 	public String colTitle;
-	
+	private deleteColBtn deletecolBtn;
 	/**
 	 * Create the panel.
 	 */
-	public ColumnTitlePnl(MainFrame mainFrame, String colTitle) {
+	public ColumnTitlePnl(MainFrame mainFrame, String colTitle, int column_no) {
 		
 		iconData = new IconData();
 
@@ -33,6 +34,7 @@ public class ColumnTitlePnl extends JPanel {
 		titleLbl.setBounds(0, 0, 350, 60);
 		add(titleLbl);
 
+		
 	}
 
 

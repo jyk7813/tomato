@@ -40,6 +40,7 @@ import tomatoPj.Member;
 import tomatoPj.MemberRepository;
 import tomatoPj.Member_Tag_Package_Repository;
 import tomatoPj.Project;
+import tomatoPj.ProjectRepository;
 import tomatoPj.Task;
 import tomatoPj.TaskRepository;
 import utility.IconData;
@@ -63,11 +64,11 @@ public class ProjectSelectPnl extends JPanel {
 	private LogoutBtn logoutBtn;
 	public ProjectSelectWestPnl westPnl;
 	public ProjectPnl projectPnl;
-	
-	
+	private ProjectRepository pjRepo;
 	
 	public ProjectSelectPnl(Image image, MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
+		pjRepo = new ProjectRepository();
 		taskRepo = new TaskRepository();
 		memberRepo = new MemberRepository();
 		mtPackageRepo = new Member_Tag_Package_Repository();
@@ -82,7 +83,7 @@ public class ProjectSelectPnl extends JPanel {
 
 		centerPnl = new JLayeredPane();
 		centerPnl.setOpaque(false);
-		centerPnl.setLayout(null); // Necessary for JScrollPane to function correctly
+		centerPnl.setLayout(null);
 		
 		
 		westPnl = new ProjectSelectWestPnl(mainFrame) {
@@ -116,7 +117,12 @@ public class ProjectSelectPnl extends JPanel {
 		addProjectBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//addPanel();
+				try {
+					pjRepo.generateProject("신규프로젝트", mainFrame.loginMember.getMember_no());
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+					System.out.println("제대로안만들어짐");
+				}
 				mainFrame.showCard("columnSelect");
 				
 			}

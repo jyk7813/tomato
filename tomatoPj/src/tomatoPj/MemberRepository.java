@@ -48,6 +48,26 @@ public class MemberRepository {
 	}
 	
 	
+	// 프로젝트와 멤버 관계 끊기
+		public int deletePjMember(int project_no, int member_no) throws SQLException {
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			try {
+				conn = DBUtil.getConnection();
+				String query = "DELETE FROM `member_tag`\r\n"
+						+ "WHERE project_no = ? AND member_no = ?";
+				stmt = conn.prepareStatement(query);
+				stmt.setInt(1, project_no);
+				stmt.setInt(2, member_no);
+				return stmt.executeUpdate();
+
+			} finally {
+				DBUtil.close(stmt);
+				DBUtil.close(conn);
+			}
+			
+		}
+	
 	public List<Member> selectAll(Connection conn) throws SQLException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -227,7 +247,10 @@ public class MemberRepository {
 		List<Project> list = new ArrayList<>();
 		try {
 			conn = DBUtil.getConnection();
-			String query = "SELECT * FROM `project` WHERE member_no = ?";
+			String query = "SELECT * FROM `project` AS a\r\n"
+					+ "JOIN (\r\n"
+					+ "SELECT * FROM member_tag WHERE member_no = ? ) AS b\r\n"
+					+ "ON a.project_no = b.project_no";
 			stmt = conn.prepareStatement(query);
 			stmt.setInt(1, member_no);
 			rs = stmt.executeQuery();

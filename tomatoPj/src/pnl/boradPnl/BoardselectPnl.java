@@ -16,7 +16,7 @@ import tomatoPj.Column;
 public class BoardselectPnl extends JPanel {
 	
     public ColumnSelectPnl columnSelectPnl;
-
+    
 	/**
      * Create the panel.
      */
