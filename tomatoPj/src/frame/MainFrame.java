@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
 	private IconData iconData;
 	public LoginMember loginMember;
 	public SelectProjectInfo pjInfo;
-
+	public SelectProjectInfo tempInfo;
 	private Image loginImage;
 	private Image signImage;
 	private Image projectImage;

@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import button.PlusBtn;
+import dbutil.SelectProjectInfo;
 import frame.MainFrame;
 import popup.MemberAddPopup;
 import tomatoPj.Member;
@@ -75,33 +76,6 @@ public class MemberListPnl extends JPanel {
 						public void actionPerformed(ActionEvent e) {
 							memberRepository.addProjectMember(mainFrame.pjInfo.getProject_no(),
 									memberAddPopup.idInsertTextField.getText());
-							removeAll();
-							addPnl();
-							members = mainFrame.pjInfo.getMemberList();
-
-							// Clear the memberPnls list
-							memberPnls.clear();
-
-							for (Member member : members) {
-								if (MemberListPnl.this.mainFrame.loginMember.getMember().equals(member)) {
-									continue;
-								}
-								MemberPnl memberPnl = new MemberPnl(member, mainFrame);
-								memberPnls.add(memberPnl);
-							}
-							for (MemberPnl memberPnl : memberPnls) {
-								memberPnl.setPreferredSize(new Dimension(90, 90));
-								memberAddPnl.add(memberPnl);
-							}
-							memberAddPnl.remove(plusBtn);
-
-							// Make the plusBtn visible if member count is less than MAX_MEMBER_SIZE
-							plusBtn.setVisible(members.size() <= MAX_MEMBER_SIZE);
-
-							memberAddPnl.revalidate();
-							memberAddPnl.repaint();
-							memberAddPnl.add(plusBtn);
-							count = memberPnls.size();
 							memberAddPopup.dispose();
 						}
 					});
@@ -110,16 +84,14 @@ public class MemberListPnl extends JPanel {
 				} else {
 					plusBtn.setVisible(false);
 				}
-			}
-		});
-
-		mainFrame.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				removeAll();
+				System.out.println("되긴 하니?");
+				mainFrame.tempInfo = mainFrame.pjInfo;
+				mainFrame.pjInfo = new SelectProjectInfo();
+				mainFrame.pjInfo = mainFrame.tempInfo; 
+				mainFrame.tempInfo = null;
 				addPnl();
 				members = mainFrame.pjInfo.getMemberList();
-
+				System.out.println(members);
 				// Clear the memberPnls list
 				memberPnls.clear();
 
@@ -143,6 +115,40 @@ public class MemberListPnl extends JPanel {
 				memberAddPnl.repaint();
 				memberAddPnl.add(plusBtn);
 				count = memberPnls.size();
+			
+			}
+		});
+
+		mainFrame.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				addPnl();
+				members = mainFrame.pjInfo.getMemberList();
+
+				// Clear the memberPnls list
+				memberPnls.clear();
+				if (members != null) {
+					for (Member member : members) {
+						if (MemberListPnl.this.mainFrame.loginMember.getMember().equals(member)) {
+							continue;
+						}
+						MemberPnl memberPnl = new MemberPnl(member, mainFrame);
+						memberPnls.add(memberPnl);
+					}
+					for (MemberPnl memberPnl : memberPnls) {
+						memberPnl.setPreferredSize(new Dimension(90, 90));
+						memberAddPnl.add(memberPnl);
+					}
+					memberAddPnl.remove(plusBtn);
+					
+					// Make the plusBtn visible if member count is less than MAX_MEMBER_SIZE
+					plusBtn.setVisible(members.size() <= MAX_MEMBER_SIZE);
+					
+					memberAddPnl.revalidate();
+					memberAddPnl.repaint();
+					memberAddPnl.add(plusBtn);
+					count = memberPnls.size();
+				}
 			}
 		});
 
@@ -171,7 +177,7 @@ public class MemberListPnl extends JPanel {
 	}
 
 	private void addPnl() {
-
+		this.removeAll();
 		JPanel memberTitleLbl = new JPanel();
 		memberTitleLbl.setBounds(0, 0, 130, 70);
 		memberTitleLbl.setOpaque(false);
