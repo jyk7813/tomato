@@ -43,15 +43,13 @@ public class ColumnSelectPnl extends JPanel {
 		// this.colTitle = colTitle;
 		iconData = new IconData();
 		utility = new Utility();
+		columnPnls = new ArrayList<>();
 		setLayout(null);
 		JPanel columnTopPanel = new JPanel();
 		columnTopPanel.setLayout(null);
 		columnTopPanel.setBounds(31, 0, 350, 101);
 		columnTopPanel.setOpaque(false);
 
-//		ColumnPnl columnPnl = new ColumnPnl();
-//		add(columnPnl);
-//		columnPnl.setBounds(31, 0, 350, 940);
 		setOpaque(false);
 
 		addColumnPnl = new AddColumnPnl();
@@ -70,26 +68,9 @@ public class ColumnSelectPnl extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				columnSetting();
 			}
 		});
-
-		/*
-		 * List<Column> col = mainFrame.pjInfo.getCol(); if(col.size() > 0) {
-		 * Collections.sort(col, (a, b) -> a.getColumn_index() - b.getColumn_index());
-		 * for (Column column : col) { columnCount++; List<Task> taskList = new
-		 * ArrayList<>(); try { taskList =
-		 * taskRepo.taskListByColNo(column.getColumn_no()); } catch (SQLException e1) {
-		 * e1.printStackTrace(); }
-		 * 
-		 * ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column,
-		 * taskList); add(columnPnl); columnPnl.setBounds(addColumnPnl.getX()+31, 0,
-		 * 350, 940); addColumnPnl.setBounds(addColumnPnl.getX() + columnPnl.getWidth()
-		 * + 20, addColumnPnl.getY(), 350, 60); add(addColumnPnl); revalidate();
-		 * repaint();
-		 * 
-		 * }
-		 */
 	}
 
 	@Override
@@ -139,6 +120,7 @@ public class ColumnSelectPnl extends JPanel {
 	private void addColumnPanel(Column column) {
 		List<Task> taskList = getTasksForColumn(column);
 		ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column, taskList);
+		columnPnls.add(columnPnl); // add the new panel to the list
 		add(columnPnl);
 		setBoundsForPanel(columnPnl);
 		revalidate();
