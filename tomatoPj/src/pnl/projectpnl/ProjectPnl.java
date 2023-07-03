@@ -78,7 +78,6 @@ public class ProjectPnl extends JPanel {
         btnNewButton.setHorizontalTextPosition(JButton.CENTER);
         btnNewButton.setFont(fontData.nanumFont(27));
         btnNewButton.addActionListener(new ActionListener() {
-		
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {

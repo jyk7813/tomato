@@ -227,7 +227,10 @@ public class MemberRepository {
 		List<Project> list = new ArrayList<>();
 		try {
 			conn = DBUtil.getConnection();
-			String query = "SELECT * FROM `project` WHERE member_no = ?";
+			String query = "SELECT * FROM `project` AS a\r\n"
+					+ "JOIN (\r\n"
+					+ "SELECT * FROM member_tag WHERE member_no = ? ) AS b\r\n"
+					+ "ON a.project_no = b.project_no";
 			stmt = conn.prepareStatement(query);
 			stmt.setInt(1, member_no);
 			rs = stmt.executeQuery();
