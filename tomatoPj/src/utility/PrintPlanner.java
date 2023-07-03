@@ -19,8 +19,6 @@ public class PrintPlanner implements Comparable<PrintPlanner>{
       this.update = update;
       this.deadLine = deadLine;
    }
-   
-   
 
    public PrintPlanner(int pk, String selPjName, String select, String title, String update, String deadLine) {
       super();

@@ -11,6 +11,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.List;
 
 //import javax.rmi.CORBA.Util;
 import javax.swing.JButton;
@@ -24,6 +25,7 @@ import tomatoPj.MemberRepository;
 import utility.CalendarData;
 import utility.FontData;
 import utility.IconData;
+import utility.PrintPlanner;
 import utility.PrintPlannerList;
 import utility.Utility;
 
@@ -60,9 +62,12 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
    int year;
    int month;
 
-   private PrintPlannerList ppl = new PrintPlannerList();
-   private MemberRepository mr = new MemberRepository();
-   private Member loginMember;
+   PrintPlannerList ppl = new PrintPlannerList();
+   MemberRepository mr = new MemberRepository();
+   Member loginMember;
+   int loginMemberNo = 0;
+   boolean flag = false;
+   boolean toggleSwitch = true;
 
    public CalendarSwing() {
       super();
@@ -139,11 +144,14 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
       setVisible(true);
    }
 
-public CalendarSwing(int loginMemberNo) {
+public CalendarSwing(int loginMemberNo, Boolean toggleSwitch) {
    super();
    try {
       loginMember = mr.searchByMemberNo(loginMemberNo);
-      System.out.println("달력창 확인: " + loginMember.getName());
+      this.loginMemberNo = loginMemberNo;
+      this.toggleSwitch = toggleSwitch;
+      System.out.println("달력창 확인: " + loginMember.getName() + "토글상태: " + toggleSwitch);
+      flag = true;
    } catch (SQLException e) {
       System.out.println("달력창 실패1");
       e.printStackTrace();
@@ -191,7 +199,7 @@ public CalendarSwing(int loginMemberNo) {
    // 현재 년, 월 세팅
    setYear();
    setMonth();
-   setDay();
+   setDay(loginMemberNo, toggleSwitch);
    barPane.setBounds(0, 0, 790, 750);
    barPane.setOpaque(false);
    centerPane.add(barPane);
@@ -222,7 +230,7 @@ public CalendarSwing(int loginMemberNo) {
 
    // 날짜셋팅
    public void setDay() {
-      // 요일
+	  // 요일
       date.set(year, month - 1, 1); // date를 세팅하는데, 일(day)을 1로 세팅
       int week = date.get(Calendar.DAY_OF_WEEK); // 일월화수목금토
       // 마지막날
@@ -268,6 +276,56 @@ public CalendarSwing(int loginMemberNo) {
          dayPane.add(box);
       }
    }
+   
+   public void setDay(int no, boolean toggleSwitch) {
+	   	  List<PrintPlanner> ppList = ppl.setView(no, toggleSwitch);
+		  // 요일
+	      date.set(year, month - 1, 1); // date를 세팅하는데, 일(day)을 1로 세팅
+	      int week = date.get(Calendar.DAY_OF_WEEK); // 일월화수목금토
+	      // 마지막날
+	      int lastDay = date.getActualMaximum(Calendar.DATE); // getActualMaximum = 날짜가 셋팅된 Calender가 가질수 있는 값
+	      // getMaximum = Calender 자체가 최대로 가질수 있는 값
+	      // 공백처리
+	      for (int s = 1; s < week; s++) {
+	         JPanel box = new JPanel();
+	         JLabel lbl = new JLabel(" ", JLabel.CENTER);
+	         lbl.setBounds(0, 0, 112, 30);
+	         lbl.setLayout(null);
+	         box.setOpaque(false);
+	         box.add(lbl);
+	         box.setBounds(0, 0, 112, 116);
+	         dayPane.add(box);
+
+	      }
+	      
+	      JPanel[] barBox = new JPanel[32];
+	      // 날짜출력
+	      for (int day = 1; day <= lastDay; day++) {
+	         JPanel box = new JPanel();
+	         barBox[day] = new JPanel();
+	         barBox[day].setBounds(0, 30, 112, 116);
+	         barBox[day].setLayout(null);
+	         barBox[day].setOpaque(true);
+	         JLabel lbl = new JLabel(String.valueOf(day), JLabel.CENTER);
+	         lbl.setFont(fnt2);
+	         // 출력하는 날짜에 대한 요일
+	         date.set(Calendar.DATE, day);
+	         int w = date.get(Calendar.DAY_OF_WEEK); // 요일
+	         if (w == 1)
+	            lbl.setForeground(Color.red); // 1 = 일요일
+	         if (w == 7)
+	            lbl.setForeground(Color.blue); // 7 = 토요일
+	         lbl.setBounds(0, 0, 112, 30);
+	         lbl.setOpaque(true);
+	         box.add(lbl);
+	         box.add(barBox[day]);
+	         box.setBounds(0, 0, 112, 116);
+	         box.setLayout(null);
+	         box.setOpaque(false);
+
+	         dayPane.add(box);
+	      }
+	   }
 
    public JPanel drawBar(int i, String str) {
       JPanel pnl = new JPanel() {
@@ -294,7 +352,7 @@ public CalendarSwing(int loginMemberNo) {
 
    // 월세팅
    public void setMonth() {
-      for (int i = 1; i <= 12; i++) {
+	   for (int i = 1; i <= 12; i++) {
          monthCombo.addItem(i);
       }
       monthCombo.setSelectedItem(month);
@@ -308,7 +366,11 @@ public CalendarSwing(int loginMemberNo) {
       // 달력 출력 패널을 닫고 지웠다가 날짜 변경 메소드 호출 후 변경된 날짜값이 적용된 패널 보여줌
       dayPane.setVisible(false);
       dayPane.removeAll();
-      setDay();
+      if(flag) {
+    	  setDay(loginMemberNo, toggleSwitch);
+      } else { 
+    	  setDay();
+      }
       dayPane.setVisible(true);
    }
 
@@ -336,7 +398,11 @@ public CalendarSwing(int loginMemberNo) {
 
       dayPane.setVisible(false);
       dayPane.removeAll();
-      setDay();
+      if(flag) {
+    	  setDay(loginMemberNo, toggleSwitch);
+      } else { 
+    	  setDay();
+      }
       dayPane.setVisible(true);
       // 다시 이벤트 등록
       yearCombo.addItemListener(this);
@@ -361,38 +427,8 @@ public CalendarSwing(int loginMemberNo) {
          month++;
       }
    }
-
-//   public JPanel printBar() {
-//      JPanel barPnl = new JPanel();
-//      JPanel barBox = new JPanel();
-//      barPnl.setBounds(200, 135, 768, 730);
-//      barPnl.setLayout(null);
-//      barPnl.setOpaque(false);
-//      barBox.setBounds(0, 0, 90, 110);
-//      barBox.setLayout(null);
-//      barBox.setOpaque(false);
-//      String barName = "";
-//      String barColor = "";
-//      ImageIcon barDraw;
-//      barPnl.add(barBox);
-//      
-//      if(toggleSwitch) {
-//         for(PrintPlanner p : ppList) {
-//            System.out.println("전체 프로젝트 : ");
-//            System.out.println(p);
-//            System.out.println("----------------------");
-//         }
-//      } else {
-//         for(PrintPlanner p : ppList) {
-//            System.out.println("프로젝트 별 : " + p.getTitle());
-//            System.out.println(p);
-//            System.out.println("----------------------");
-//         }
-//      }
-//      setBounds(0, 0, 768, 730);
-//      setLayout(null);
-//      setOpaque(false);
-//      
-//      return printBar;
-//   }
+   
+   public int getLoginMemberNo(int no) {
+	   return no;
+   }
 }

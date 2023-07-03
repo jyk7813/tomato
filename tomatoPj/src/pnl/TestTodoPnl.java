@@ -52,7 +52,9 @@ public class TestTodoPnl extends JPanel {
    private Image image;
    private PrintPlanner pp;
    private Project selectPj;
-   private static boolean toggleSwitch = true;
+   private boolean toggleSwitch = true;
+   
+   CalendarSwing printCal;
 
 //   private TaskRepository tr = new TaskRepository();
 //   private ProjectRepository pr = new ProjectRepository();
@@ -122,13 +124,13 @@ public class TestTodoPnl extends JPanel {
       // 달력 출력 패널 --------------------------------------
       loginMemberNo = mainFrame.loginMember.getMember_no();
       if(loginMemberNo != 0) {
-         CalendarSwing printCal = new CalendarSwing(loginMemberNo);
+         printCal = new CalendarSwing(loginMemberNo, toggleSwitch);
          printCal.setBounds(200, 135, 1718, 870);
          printCal.setLayout(null);
          printCal.setOpaque(false);
          add(printCal); // 달력 패널
       } else {
-         CalendarSwing printCal = new CalendarSwing();
+         printCal = new CalendarSwing();
          printCal.setBounds(200, 135, 1718, 870);
          printCal.setLayout(null);
          printCal.setOpaque(false);
@@ -154,13 +156,15 @@ public class TestTodoPnl extends JPanel {
             if (toggleSwitch) {
                toggleBtn.setIcon(IC.getImageIcon("prijectEach_toggle"));
                toggleSwitch = false;
-               ppList = ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch);
-               ppr.testPrint(ppList);
+               printCal = new CalendarSwing(loginMemberNo, toggleSwitch);
+//               ppList = ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch);
+//               ppr.testPrint(ppList);
             } else {
                toggleBtn.setIcon(IC.getImageIcon("prijectAll_toggle"));
                toggleSwitch = true;
-               ppList = ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch);
-               ppr.testPrint(ppList);
+               printCal = new CalendarSwing(loginMemberNo, toggleSwitch);
+//               ppList = ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch);
+//               ppr.testPrint(ppList);
             }
          }
       };
