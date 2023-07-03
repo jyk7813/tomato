@@ -2,31 +2,23 @@ package pnl;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -40,9 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.text.html.StyleSheet.ListPainter;
 
-import button.AddMemberBtn;
 import frame.MainFrame;
 import tomatoPj.Column;
 import tomatoPj.Feedback;
@@ -117,7 +107,8 @@ public class Taskrefrom extends JPanel {
 	Feedback TakeFeedBack;
 	// 멤버목록 테스크 목록
 	MainFrame MF;
-
+	// 돌려주는 펑션태그 목록
+	List<Function_Tag> return_Function_Tag_List;
 	TaskRepository taskRepo;
 	List<Member> memberList;
 	List<Function_Tag> Function_Tag_List;
@@ -138,7 +129,8 @@ public class Taskrefrom extends JPanel {
 	JTextField calomnTitle;
 	
 	Taskrefrom ts;
-	
+	TagAddButton TAB;
+	JLabel plusTag;
 
 
 	public Taskrefrom(MainFrame mainFrame) {
@@ -201,8 +193,9 @@ public class Taskrefrom extends JPanel {
 					else {
 						returnFeedBack = new Feedback(returnFeedBack_PK, returnFeedBack_Task_no, 3, feedBackText.getText());
 					}
-			
-
+					System.out.println("나갈때 확인");
+					System.out.println(return_Function_Tag_List.size());
+					add(newBtn());
 					st.reset();
 
 					
@@ -341,13 +334,22 @@ public class Taskrefrom extends JPanel {
 			// 멤버 세팅
 			st.setMemberlist();
 			// 태그 세팅
-			st.setTaglist() ;
+			st.setTaglist();
+
+			st.TagAddButton(Function_Tag_List);
 	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
+	// 새로운 버튼
+	public JButton newBtn() {
+		JButton btn = new JButton("태경이 형 하시면 됩니다");
+		btn.setSize(100,100);
+		btn.setLocation(500,400);
+		return btn;
+	}
 	public void TaskMainLbl() {
 		TaskPnlMainLbl = new JLabel(IC.getImageIcon("contentPanel"));
 		TaskPnlMainLbl.setSize(631, 725);
@@ -768,9 +770,9 @@ public class Taskrefrom extends JPanel {
 
 	public void TagPnl() {
 		tagPnl = new JPanel();
-		tagPnl.setSize(631, 70);
-		tagPnl.setLocation(0, 355);
-		tagPnl.setLayout(null);
+		tagPnl.setSize(500, 56);
+		tagPnl.setLocation(60, 355);
+		tagPnl.setLayout(new BoxLayout(tagPnl,BoxLayout.X_AXIS));
 		tagPnl.setOpaque(false);
 
 		TaskUnderPanel.add(tagPnl);
@@ -779,16 +781,19 @@ public class Taskrefrom extends JPanel {
 	public void TagSet() {
 	    
 
-//	    
-	    JLabel plusTag = new JLabel(IC.getImageIcon("addMember_btn"));
+		plusTag = new JLabel(IC.getImageIcon("addMember_btn"));
 	    plusTag.setSize(30, 30);
-	    plusTag.setLocation(87, 10);
+	    plusTag.setLocation(0, 10);
 	    tagPnl.add(plusTag);
 	    plusTag.addMouseListener(new MouseAdapter() {
-	        public void mousePressed(MouseEvent e) {
-	        	JDialog TagAdd = new TagAddButton(MF,plusTag,tagPnl,ts);
+
+			public void mousePressed(MouseEvent e) {
+	        	TAB = new TagAddButton(MF,plusTag,tagPnl,ts,TakeTask);
+	        	JDialog TagAdd = TAB;
+	        	System.out.println(TakeTask);
 	        	TagAdd.setLocation(plusTag.getX()+650,plus.getY()+820);
-//	        	TaskUnderPanel.add(TagAdd);
+	        	tagPnl.revalidate();
+	        	tagPnl.repaint();
 	        }
 	    });
 	}
