@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.text.html.StyleSheet.ListPainter;
 
 import frame.MainFrame;
 import tomatoPj.Column;
@@ -197,7 +198,7 @@ public class Taskrefrom extends JPanel {
 
 					st.reset();
 
-				
+					
 					mainFrame.showCard("columnSelect");
 
 					
@@ -329,7 +330,10 @@ public class Taskrefrom extends JPanel {
 			st.setContent();
 			// 피드백 세팅
 			st.setFeedback();
-
+			// 멤버 세팅
+			st.setMemberlist();
+			// 태그 세팅
+			st.setTaglist() ;
 	
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -770,22 +774,21 @@ public class Taskrefrom extends JPanel {
 		plusTag.setLocation(87, 10);
 		plusTag.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				List<Function_Tag> list =Function_Tag_List();
 				JDialog dialog = new JDialog();
-					dialog.setSize(100,50*list.size());
+					dialog.setSize(100,50);
 					dialog.setModal(false);
 					dialog.setUndecorated(true);
 					dialog.setLayout(null);
 					dialog.setVisible(true);
 					dialog.isAlwaysOnTop();
 				JLabel tagbackGround = new JLabel(IC.getImageIcon("calendarRight"));
-					tagbackGround.setSize(100,50*list.size());
+					tagbackGround.setSize(100,50*Function_Tag_List.size());
 					dialog.add(tagbackGround);
 					dialog.setLocationRelativeTo(TaskUnderPanel);
 					
 						
-				for(int i =0 ;i<list.size();i++) {
-					Function_Tag tag2 = list.get(i);
+				for(int i =0 ;i<Function_Tag_List.size();i++) {
+					Function_Tag tag2 = Function_Tag_List.get(i);
 					JLabel tagIcon = new JLabel(IC.getImageIcon("tag"));
 					JLabel tagText = new JLabel(tag2.getText());
 					tagText.setSize(70, 30);
@@ -803,7 +806,7 @@ public class Taskrefrom extends JPanel {
 				        	        tagPnl.remove(tagIcon); // tagIcon 제거
 				        	        tagPnl.revalidate();
 				        	        tagPnl.repaint();
-				        	        CountTag--;
+				        	        CountTag-=90;
 
 				        	        // 아이콘들 왼쪽 정렬
 				        	        Component[] components = tagPnl.getComponents();
@@ -817,14 +820,29 @@ public class Taskrefrom extends JPanel {
 				        	        }
 
 				        	        plusTag.setVisible(true);
-				        	        plusTag.setLocation(87 + (CountTag * 100), 10);
-				        	    }
+				        	        plusTag.setLocation(87 + CountTag, 10);
+				        		}
 				        	});
 				        	tagPnl.add(tagIcon);
-				        	CountTag = 0;
+				        	Component[] components2 = tagIcon.getComponents();
+				        	for (int i = 0; i < components2.length; i++) {
+				        		if (components2[i] instanceof JLabel) {
+				        			JLabel icon = (JLabel) components2[i];
+				        			for(int j = 0;j<Function_Tag_List.size();j++) {
+				        				if(icon.getText().equals(Function_Tag_List.get(j).getText())){
+				        					System.out.println("list 에서 확인합니다");
+					        				System.out.println(Function_Tag_List.get(j));
+					        				Function_Tag_List.remove(j);
+					        				System.out.println(Function_Tag_List.size());
+					        				dialog.remove(icon);
+				        				}				        								        						        		
+				        			}			
+				        		}
+				        	}
+				      
 				        	tagIcon.setSize(80,30);
-				        	tagIcon.setLocation(64+((CountTag*1)*90),10);
-				            plusTag.setLocation(87+((CountTag+1*1)*100),10);
+				        	tagIcon.setLocation(64+CountTag,10);
+				            plusTag.setLocation(150+CountTag,10);
 				            
 				            // 아이콘들 간의 간격을 위한 빈 공간 컴포넌트 추가
 				            
@@ -832,10 +850,7 @@ public class Taskrefrom extends JPanel {
 				            tagPnl.repaint();
 				            CountTag += 90;
 				            
-				            if(CountTag >=5) {
-				            	plusTag.setVisible(false);
-				            }else {
-				            }
+				        
 				        }
 					});
 					tagIcon.add(tagText);
@@ -850,16 +865,6 @@ public class Taskrefrom extends JPanel {
 
 		tagPnl.add(plusTag);
 
-	}
-	public List<Function_Tag> Function_Tag_List(){
-		List<Function_Tag> list = new ArrayList<>();
-		Function_Tag FT = new Function_Tag(1,22,"red","db파트");
-		Function_Tag FT2 = new Function_Tag(2,22,"bule","로직파트");
-		Function_Tag FT3 = new Function_Tag(3,22,"yello","gui파트");
-		list.add(FT);
-		list.add(FT2);
-		list.add(FT3);
-		return list;
 	}
 
 

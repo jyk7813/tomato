@@ -4,6 +4,7 @@ import java.security.Timestamp;
 
 public class PrintPlanner implements Comparable<PrintPlanner>{
 	private int pk; // 프로젝트 no / 멤버 no
+	private String selPjName; // 선택한 프로젝트 이름
 	private String select; // 프로젝트 이름 / 멤버 이름
 	private String title; // 프로젝트의 태스크명 / 멤버의 태스크명
 	private String update; // 태스크 시작일자
@@ -17,6 +18,26 @@ public class PrintPlanner implements Comparable<PrintPlanner>{
 		this.title = title;
 		this.update = update;
 		this.deadLine = deadLine;
+	}
+	
+	
+
+	public PrintPlanner(int pk, String selPjName, String select, String title, String update, String deadLine) {
+		super();
+		this.pk = pk;
+		this.selPjName = selPjName;
+		this.select = select;
+		this.title = title;
+		this.update = update;
+		this.deadLine = deadLine;
+	}
+	
+	public String getSelPjName() {
+		return selPjName;
+	}
+
+	public void setSelPjName(String selPjName) {
+		this.selPjName = selPjName;
 	}
 
 	public int getPk() {
@@ -98,8 +119,13 @@ public class PrintPlanner implements Comparable<PrintPlanner>{
 	
 	@Override
 	public String toString() {
-		return "PrintPlanner [pk=" + pk + ", select=" + select + ", title=" + title + ", update=" + update
-				+ ", deadLine=" + deadLine + "]";
+		if(selPjName == null) {
+			return "전체 프로젝트: " + select + "프로젝트 pk: " + pk + ", 태스크명: " + title + ", 시작일자: " + update
+					+ ", 마감일자: " + deadLine + "]";
+		} else {
+			return "프로젝트 별: " + selPjName + "멤버 pk: " + pk +"멤버이름: " + select + ", 태스크명: " + title + ", 시작일자: " + update
+					+ ", 마감일자: " + deadLine + "]";
+		}
 	}
 	
 	@Override

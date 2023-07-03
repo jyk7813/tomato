@@ -69,9 +69,8 @@ public class TaskPnl extends JPanel {
 				Feedback feedback = new Feedback(6, 27, 1, "대본수정");
 				
 				if(task !=null) {
-					System.out.println("주는 칼럼 제목1");
-					System.out.println("생존신고?"+task.getList()); 
-					System.out.println(column.getTitle());
+				System.out.println("주는 칼럼 제목1");
+				System.out.println(column.getTitle());
 				mainFrame.setTask(task, column, feedback);
 				mainFrame.showCard("task");
 				}
@@ -86,7 +85,6 @@ public class TaskPnl extends JPanel {
 				repaint();
 			}
 		});
-
 	}
 	@Override
 	protected void paintComponent(Graphics g) {

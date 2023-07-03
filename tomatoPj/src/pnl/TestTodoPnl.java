@@ -51,13 +51,13 @@ public class TestTodoPnl extends JPanel {
 	private Image image;
 	private PrintPlanner pp;
 	private Project selectPj;
-	private boolean toggleSwitch = true;
+	private static boolean toggleSwitch = true;
 	
 	private TaskRepository tr = new TaskRepository();
 	private ProjectRepository pr = new ProjectRepository();
 	private MemberRepository mr = new MemberRepository();
-	List<PrintPlanner> ppList = new ArrayList<>();
-	List<Project> pjOfUser;
+	static List<PrintPlanner> ppList = new ArrayList<>();
+	static List<Project> pjOfUser;
 	
 	public TestTodoPnl() {
 		
@@ -223,7 +223,7 @@ public class TestTodoPnl extends JPanel {
 		}
 	}
 	
-	public void testPrint() {
+	public static void testPrint() {
 		if(toggleSwitch) {
 			System.out.println("전체 프로젝트");
 			for(PrintPlanner pp : ppList) {
