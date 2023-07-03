@@ -104,7 +104,6 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
       setLayout(null);
                                     
       // 현재 년, 월 세팅
-//      List<PrintPlanner> currentPpList = new ArrayList<>();
       setYear();
       setMonth();
       setDay();
