@@ -72,10 +72,7 @@ public class TestTodoPnl extends JPanel {
       addComponentListener(new ComponentListener() {
          @Override
          public void componentShown(ComponentEvent e) {
-            System.out.println("투두창확인");
             ppList = ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch);
-//            loginMemberNo = mainFrame.loginMember.getMember_no();
-            ppr.testPrint(ppList);
          }
 
          @Override
@@ -157,14 +154,10 @@ public class TestTodoPnl extends JPanel {
                toggleBtn.setIcon(IC.getImageIcon("prijectEach_toggle"));
                toggleSwitch = false;
                printCal = new CalendarSwing(loginMemberNo, toggleSwitch);
-//               ppList = ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch);
-//               ppr.testPrint(ppList);
             } else {
                toggleBtn.setIcon(IC.getImageIcon("prijectAll_toggle"));
                toggleSwitch = true;
                printCal = new CalendarSwing(loginMemberNo, toggleSwitch);
-//               ppList = ppr.setView(mainFrame.loginMember.getMember_no(),toggleSwitch);
-//               ppr.testPrint(ppList);
             }
          }
       };

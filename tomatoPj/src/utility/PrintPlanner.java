@@ -1,15 +1,27 @@
 package utility;
 
 import java.security.Timestamp;
+import java.time.LocalDate;
+import java.util.List;
 
 public class PrintPlanner implements Comparable<PrintPlanner>{
    private int pk; // 프로젝트 no / 멤버 no
-   private String selPjName; // 선택한 프로젝트 이름
+   private String selPjName; // 선택한 프로젝트 이름(프로젝트별)
    private String select; // 프로젝트 이름 / 멤버 이름
    private String title; // 프로젝트의 태스크명 / 멤버의 태스크명
    private String update; // 태스크 시작일자
    private String deadLine; // 태스크 종료일자
+   private int colorPk;
+   private LocalDate up;
+   private LocalDate dead;
+   private CalendarData cd = new CalendarData();
+   private List<PrintPlanner> printList;
    
+   public PrintPlanner(int colorPk, List<PrintPlanner> list) {
+	      super();
+	      this.colorPk = colorPk;
+	      this.printList = list;
+	   }
    
    public PrintPlanner(int pk, String select, String title, String update, String deadLine) {
       super();
@@ -117,14 +129,16 @@ public class PrintPlanner implements Comparable<PrintPlanner>{
    
    @Override
    public String toString() {
-      if(selPjName == null) {
-         return "전체 프로젝트: " + select + ", 프로젝트 pk: " + pk + ", 태스크명: " + title + ", 시작일자: " + update
-               + ", 마감일자: " + deadLine + "]";
-      } else {
-         return "프로젝트 별: " + selPjName + ", 멤버 pk: " + pk +"멤버이름: " + select + ", 태스크명: " + title + ", 시작일자: " + update
-               + ", 마감일자: " + deadLine + "]";
+    	  if(selPjName == null) {
+    		  return "전체 프로젝트: " + select + ", 컬러 pk: " + colorPk + ", 프로젝트 pk: " + pk + ", 태스크명: " + title + ", 시작일자: " + update
+    				  + ", 마감일자: " + deadLine + "]";
+    	  } else {
+    		  return "프로젝트 별: " + selPjName + ", 컬러 pk: " + colorPk + ", 멤버 pk: " + pk +"멤버이름: " + select + ", 태스크명: " + title + ", 시작일자: " + update
+    				  + ", 마감일자: " + deadLine + "]";
+    	  }
       }
-   }
+   
+   
    
    @Override
    public int compareTo(PrintPlanner p) {
@@ -134,4 +148,12 @@ public class PrintPlanner implements Comparable<PrintPlanner>{
          return -1;
       } return 0;
    }
+   
+   public int compareToColorPk(PrintPlanner p) {
+	      if(p.colorPk < colorPk) {
+	         return 1;
+	      } else if (p.colorPk > colorPk) {
+	         return -1;
+	      } return 0;
+	   }
 }

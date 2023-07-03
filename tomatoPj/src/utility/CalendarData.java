@@ -3,10 +3,12 @@ package utility;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CalendarData {
 	private LocalDate currentDate;
-	
+	private LocalDate toLocaldate;
 	
 	/**
 	 * 해당 년도의 월의 달력 출력 메소드
@@ -39,9 +41,6 @@ public class CalendarData {
 		}
 	}
 	
-	
-	
-	
 	/**
 	 * 현재 날짜 구해서 포맷 적용된 String타입으로 결과 반환 (2023년 06월 28일 수요일)
 	 * 
@@ -62,7 +61,7 @@ public class CalendarData {
 
 		return formatedNow;
 	}
-
+	
 	/**
 	 * 현재 날짜를 기준으로 년, 월(문자열, 숫자), 일, 요일, 일(Year 기준) 추출
 	 * 
@@ -123,5 +122,24 @@ public class CalendarData {
 		} else {
 			return String.valueOf(dayOfWeekValue);
 		}
+	}
+	
+	// 문자열을 전달받아 DATE객체로 반환
+	public LocalDate getLocalDate(String str) {
+		LocalDate toLocalDate;
+		String currentStr = "^\\d{0,4}년\\s\\d{0,2}월\\s\\d{0,2}일\\s[가-힣]*요일";
+		Pattern pattern = Pattern.compile(currentStr);
+		if(pattern.matcher(str).matches()) {
+			String year = str.substring(0,4);
+			String month = str.substring(6, 8);
+			String day = str.substring(10, 12);
+			String dateStr = year + "-" + month + "-" + day;
+			toLocalDate = LocalDate.parse(dateStr);
+		} else {
+			String dateStr = str.substring(0, 9);
+			toLocalDate = LocalDate.parse(dateStr);
+			
+		}
+		return toLocalDate;
 	}
 }
