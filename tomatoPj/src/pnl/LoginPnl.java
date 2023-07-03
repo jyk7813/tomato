@@ -110,7 +110,7 @@ public class LoginPnl extends JPanel {
 		
 		
 		
-		
+		System.out.println("왜안돼");
 		
 
 
