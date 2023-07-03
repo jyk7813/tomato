@@ -29,6 +29,10 @@ public class Member {
 //		this.project = new ArrayList<>();
 //		this.feedback = new ArrayList<>();
 //	}
+	public Member() {
+		
+	}
+	
 	public Member(int member_no, String id, String pwd, String e_mail, String name, String mbti, int active, byte[] image) {
 		super();
 		this.member_no = member_no;
