@@ -41,7 +41,6 @@ public class MemberListPnl extends JPanel {
 	private int count;
 	private List<MemberPnl> memberPnls = new ArrayList<>();
 	private List<Member> members = new ArrayList<>();
-	private MemberPnl memberPnl;
 	private MainFrame mainFrame;
 	private MemberRepository memberRepository;
 	private MemberAddPopup memberAddPopup;
@@ -198,18 +197,4 @@ public class MemberListPnl extends JPanel {
 		memberAddPnl.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); // Use FlowLayout
 		add(memberAddPnl);
 	}
-	private void removeMember() {
-		for (MemberPnl memberPnl : memberPnls) {
-			memberPnl.addMouseListener(new MouseAdapter() {
-
-				@Override
-				public void mousePressed(MouseEvent e) {
-					System.out.println("반응하니?");
-					
-				}
-				
-			});
-		}
-	}
-	
 }
