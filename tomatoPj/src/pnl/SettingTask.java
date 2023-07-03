@@ -1,17 +1,23 @@
 package pnl;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import dbutil.DBUtil;
 import frame.MainFrame;
 import tomatoPj.Column;
 import tomatoPj.Feedback;
-import tomatoPj.MemberRepository;
+import tomatoPj.Function_Tag;
 import tomatoPj.Task;
 import tomatoPj.TaskRepository;
 import utility.IconData;
@@ -25,6 +31,7 @@ public class SettingTask {
 	Column Takecolumn;
 	MainFrame MF;
 	TaskRepository TR;
+	TagAddButton TAB;
 	public SettingTask(Taskrefrom ts,Task task,Column column,Feedback feedback) {
 		dbutil = new DBUtil();
 		IC = new IconData();
@@ -34,6 +41,7 @@ public class SettingTask {
 		this.feedback = feedback;
 		this.Takecolumn = column;
 		TR = new TaskRepository();
+
 	}
 	
 	public void reset() {
@@ -67,8 +75,13 @@ public class SettingTask {
 		ts.feedBackText.setText("피드백을 입력해주세요");
 		ts.memberList = new ArrayList<>();
 		ts.Function_Tag_List = new ArrayList<>();
+		ts.tagPnl.removeAll();
+		ts.TagSet();
+		ts.tagPnl.add(ts.plusTag);
 		
 	}
+	
+
 	public void setMemberlist() {
 		if(task != null) {
 		try {
@@ -104,10 +117,61 @@ public class SettingTask {
 		if(task != null) {
 		ts.task_Pk = task.getTask_no();
 		ts.Active = task.getActive();
-		}
-	
-		
+		}		
 	}
+	public void TagAddButton(List<Function_Tag>list) {
+		
+		IconData IC =new IconData();
+		
+		
+		ts.return_Function_Tag_List = list;
+
+		
+		for(int i = 0; i<list.size();i++) {
+			JLabel tag = new JLabel(IC.getImageIcon("tag"));
+			JLabel tagText = new JLabel();		
+			tag.setLayout(null);
+			tagText.setForeground(Color.BLACK);
+			
+			tagText.setSize(80,30);
+			tagText.setLocation(20,0);
+			System.out.println(list.get(i).getText());
+		    ts.tagTexts.add(list.get(i).getText());
+		    tagText.setText(list.get(i).getText());
+		    tag.add(tagText);
+		    tagText.setVisible(true);
+		    ts.CountTag ++;
+		    tag.addMouseListener(new MouseAdapter() {
+				public void mousePressed(MouseEvent e) {
+						ts.CountTag--;
+						ts.tagPnl.remove(tag);
+	        	        // 아이콘들 왼쪽 정렬
+	        	        for(int i = 0;i< ts.tagTexts.size();i++) {
+	        	        	if(ts.tagTexts.get(i).equals(tagText.getText()))
+	        	        	ts.tagTexts.remove(i);
+	        	        	
+	        	        }
+	        	       for(int i = 0; i<list.size(); i++) {
+	        	    	   if(list.get(i).getText().equals(tagText.getText())) {
+	        	    		   list.remove(i);
+	        	    	   }
+	        	       }
+	        	        ts.plusTag.setVisible(true);
+	        	        ts.tagPnl.revalidate();
+	        	        ts.tagPnl.repaint();
+					}
+				
+			    });		
+		    ts.tagPnl.add(tag);
+		    ts.tagPnl.revalidate();
+		    ts.tagPnl.repaint();
+
+		}	
+
+		if(ts.CountTag>4) {
+			ts.plusTag.setVisible(false);
+		}
+	}	
 	
 	public String setUpdataDate() {
 		String updateDate = "";
