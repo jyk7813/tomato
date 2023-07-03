@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,6 +26,7 @@ import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -39,6 +42,7 @@ import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.text.html.StyleSheet.ListPainter;
 
+import button.AddMemberBtn;
 import frame.MainFrame;
 import tomatoPj.Column;
 import tomatoPj.Feedback;
@@ -117,7 +121,7 @@ public class Taskrefrom extends JPanel {
 	TaskRepository taskRepo;
 	List<Member> memberList;
 	List<Function_Tag> Function_Tag_List;
-
+	List<String> tagTexts;
 	Column column;
 	CardLayout cardLayout;
 	
@@ -130,13 +134,16 @@ public class Taskrefrom extends JPanel {
 	Taskrefrom tr;
 	
 	private JLabel content;
-	private JPanel taglist;
+
 	JTextField calomnTitle;
+	
+	Taskrefrom ts;
 	
 
 
 	public Taskrefrom(MainFrame mainFrame) {
-
+		tagTexts = new ArrayList<>();
+		ts = this;
 //		 태그 받아오는 db 함수 필요함s
 // 		 피드백 도 받아 와야함.
 		add(pnl());
@@ -232,6 +239,7 @@ public class Taskrefrom extends JPanel {
 
 			}
 		});
+		
 
 		setSize(1920, 1080);
 		setLocation(0, 0);
@@ -769,105 +777,21 @@ public class Taskrefrom extends JPanel {
 	}
 
 	public void TagSet() {
-		JLabel plusTag = new JLabel(IC.getImageIcon("addMember_btn"));
-		plusTag.setSize(30, 30);
-		plusTag.setLocation(87, 10);
-		plusTag.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				JDialog dialog = new JDialog();
-					dialog.setSize(100,50);
-					dialog.setModal(false);
-					dialog.setUndecorated(true);
-					dialog.setLayout(null);
-					dialog.setVisible(true);
-					dialog.isAlwaysOnTop();
-				JLabel tagbackGround = new JLabel(IC.getImageIcon("calendarRight"));
-					tagbackGround.setSize(100,50*Function_Tag_List.size());
-					dialog.add(tagbackGround);
-					dialog.setLocationRelativeTo(TaskUnderPanel);
-					
-						
-				for(int i =0 ;i<Function_Tag_List.size();i++) {
-					Function_Tag tag2 = Function_Tag_List.get(i);
-					JLabel tagIcon = new JLabel(IC.getImageIcon("tag"));
-					JLabel tagText = new JLabel(tag2.getText());
-					tagText.setSize(70, 30);
-					tagText.setLocation(0,0);
-					
-					tagIcon.addMouseListener(new MouseAdapter() {
-						public void mousePressed(MouseEvent e) {
-				        	JLabel tagIcon = new JLabel(IC.getImageIcon("tag"));
-				        	JLabel tagText = new JLabel(tag2.getText());
-				        	tagText.setSize(70,20);
-				        	tagText.setLocation(20,5);
-				        	tagIcon.add(tagText);		           		            
-				        	tagIcon.addMouseListener(new MouseAdapter() {
-				        		public void mousePressed(MouseEvent e) {
-				        	        tagPnl.remove(tagIcon); // tagIcon 제거
-				        	        tagPnl.revalidate();
-				        	        tagPnl.repaint();
-				        	        CountTag-=90;
+	    
 
-				        	        // 아이콘들 왼쪽 정렬
-				        	        Component[] components = tagPnl.getComponents();
-				        	        int x = 0;
-				        	        for (int i = 0; i < components.length; i++) {
-				        	            if (components[i] instanceof JLabel) {
-				        	                JLabel icon = (JLabel) components[i];
-				        	                icon.setLocation(x, 10);
-				        	                x += 90;
-				        	            }
-				        	        }
-
-				        	        plusTag.setVisible(true);
-				        	        plusTag.setLocation(87 + CountTag, 10);
-				        		}
-				        	});
-				        	tagPnl.add(tagIcon);
-				        	Component[] components2 = tagIcon.getComponents();
-				        	for (int i = 0; i < components2.length; i++) {
-				        		if (components2[i] instanceof JLabel) {
-				        			JLabel icon = (JLabel) components2[i];
-				        			for(int j = 0;j<Function_Tag_List.size();j++) {
-				        				if(icon.getText().equals(Function_Tag_List.get(j).getText())){
-				        					System.out.println("list 에서 확인합니다");
-					        				System.out.println(Function_Tag_List.get(j));
-					        				Function_Tag_List.remove(j);
-					        				System.out.println(Function_Tag_List.size());
-					        				dialog.remove(icon);
-				        				}				        								        						        		
-				        			}			
-				        		}
-				        	}
-				      
-				        	tagIcon.setSize(80,30);
-				        	tagIcon.setLocation(64+CountTag,10);
-				            plusTag.setLocation(150+CountTag,10);
-				            
-				            // 아이콘들 간의 간격을 위한 빈 공간 컴포넌트 추가
-				            
-				            tagPnl.revalidate();
-				            tagPnl.repaint();
-				            CountTag += 90;
-				            
-				        
-				        }
-					});
-					tagIcon.add(tagText);
-					
-					
-					tagIcon.setSize(new Dimension(80, 30));
-					tagIcon.setLocation(10,10+(i*50));
-					tagbackGround.add(tagIcon);
-				}
-			}
-		});
-
-		tagPnl.add(plusTag);
-
+//	    
+	    JLabel plusTag = new JLabel(IC.getImageIcon("addMember_btn"));
+	    plusTag.setSize(30, 30);
+	    plusTag.setLocation(87, 10);
+	    tagPnl.add(plusTag);
+	    plusTag.addMouseListener(new MouseAdapter() {
+	        public void mousePressed(MouseEvent e) {
+	        	JDialog TagAdd = new TagAddButton(MF,plusTag,tagPnl,ts);
+	        	TagAdd.setLocation(plusTag.getX()+650,plus.getY()+820);
+//	        	TaskUnderPanel.add(TagAdd);
+	        }
+	    });
 	}
-
-
 	public void feedBack() {
 		feedBack = new JPanel();
 		feedBack.setSize(629, 172);
