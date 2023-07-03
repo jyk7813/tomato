@@ -10,22 +10,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
 
-import javax.swing.ImageIcon;
 //import javax.rmi.CORBA.Util;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import frame.MainFrame;
+import tomatoPj.Member;
 import utility.CalendarData;
 import utility.FontData;
 import utility.IconData;
-import utility.PrintPlanner;
+import utility.PrintPlannerList;
 import utility.Utility;
 
 public class CalendarSwing extends JPanel implements ItemListener, ActionListener {
@@ -60,12 +58,19 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
    Calendar date;
    int year;
    int month;
-
-   public CalendarSwing() {
-      super(); 
-      date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아옴
+   
+   public Member loginMember;
+   PrintPlannerList ppl = new PrintPlannerList();
+   
+   public CalendarSwing(MainFrame mainFrame) {
+	  super();
+	  System.out.println("달력창 출력");
+	  date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아옴
       year = date.get(Calendar.YEAR); 
       month = date.get(Calendar.MONTH) + 1; 
+      TestTodoPnl ttp = new TestTodoPnl();
+      System.out.println("달력창 로그인멤버 확인: " + mainFrame.loginMember.getMember().getName());
+      System.out.println("달력창 토글 확인: " + ttp.getToggle());
       
       // 상단 패널 ---------------------------------------
       yearCombo.setBounds(50, 10, 80, 34);
@@ -136,7 +141,82 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
       setVisible(true);
    }
 
-   // 날짜셋팅
+   public CalendarSwing() {
+	   System.out.println("달력창 출력2");
+		  date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아옴
+	      year = date.get(Calendar.YEAR); 
+	      month = date.get(Calendar.MONTH) + 1; 
+	      
+	      // 상단 패널 ---------------------------------------
+	      yearCombo.setBounds(50, 10, 80, 34);
+	      yearLBl.setBounds(140, 10, 50, 34);
+	      monthCombo.setBounds(170, 10, 50, 34);
+	      monthLBl.setBounds(230, 10, 50, 34);
+	      selectPane.add(prevBtn);
+	      selectPane.add(yearCombo);
+	      yearCombo.setFont(fnt);
+	      selectPane.add(yearLBl);
+	      yearLBl.setFont(fnt);
+	      selectPane.add(monthCombo);
+	      monthCombo.setFont(fnt);
+	      selectPane.add(monthLBl);
+	      monthLBl.setFont(fnt);
+	      selectPane.add(nextBtn);
+	      selectPane.setBounds(0, 30, 300, 300);
+	      selectPane.setLayout(null);
+	      selectPane.setOpaque(false);
+
+	      // 투두리스트 패널 -----------------------------------
+	      // 오늘 날짜 출력 라벨
+	      todoDate = calManager.getCurrentDate();
+	      currentDate.setText(todoDate);
+	      currentDate.setFont(fnt);
+	      currentDate.setLayout(null);
+	      currentDate.setBounds(0, 50, 240, 50);
+	      
+	      todoListPnl.add(currentDate);
+	      todoListPnl.setBounds(920, 100, 760, 700);
+	      todoListPnl.setLayout(null);
+	      todoListPnl.setOpaque(false);
+	      
+	      // 달력 출력 패널 ------------------------------------
+	      add(selectPane);
+	      setLayout(null);
+	                                    
+	      // 현재 년, 월 세팅
+	      setYear();
+	      setMonth();
+	      setDay();
+	      barPane.setBounds(0, 0, 790, 750);
+	      barPane.setOpaque(false);
+	      centerPane.add(barPane); 
+	      dayPane.setBounds(0, 0, 790, 750);
+	      dayPane.setOpaque(false);
+	      centerPane.add(dayPane); 
+	      centerPane.setBounds(0, 130, 790, 750);
+	      centerPane.setLayout(null);
+	      centerPane.setOpaque(false);
+	      
+	      
+	      // 패널 붙이기 --------------------------------------
+	      add(selectPane);
+	      add(todoListPnl);
+	      add(centerPane);
+
+	      // 기능이벤트를 추가 ----------------------------------
+	      prevBtn.addActionListener(this);
+	      nextBtn.addActionListener(this);
+	      // 년월 이벤트 다시등록 --------------------------------
+	      yearCombo.addItemListener(this);
+	      monthCombo.addItemListener(this);
+	      
+	      // ---------------------------------------------
+	      setBounds(0, 0, 1718, 870);
+	      setOpaque(false);
+	      setVisible(true);
+}
+
+// 날짜셋팅
    public void setDay() {
       // 요일
       date.set(year, month - 1, 1); // date를 세팅하는데, 일(day)을 1로 세팅
@@ -156,7 +236,6 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
          dayPane.add(box);
          
       }
-      
       JPanel[] barBox = new JPanel[32];
       // 날짜출력
       for (int day = 1; day <= lastDay; day++) {
@@ -184,29 +263,6 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
          
          dayPane.add(box);
       }
-      
-//      Collections.sort(ppList);
-//      JLabel barText = new JLabel();
-//      JPanel barDraw;
-//      JPanel bar = new JPanel();
-//      for(int i = 0; i < ppList.size(); i ++) {
-//         int upDateYear;
-//         int upDateMonth;
-//         int upDateday;
-//         String deadDateYear;
-//         String deadDateMonth;
-//         String deadDateday;
-//         for(PrintPlanner pp : ppList) {
-//            upDateYear  = Integer.parseInt(pp.getUpdate().substring(0,4));
-//            upDateMonth = Integer.parseInt(pp.getUpdate().substring(5,2));
-//            upDateday = Integer.parseInt(pp.getUpdate().substring(8,2));
-//            if(year == upDateYear) {
-//               if(month == upDateMonth) {
-//               }
-//            }
-//         
-//         }
-//      }
    }
    
    public JPanel drawBar(int i, String str) {

@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -29,6 +30,8 @@ import pnl.Taskrefrom;
 import pnl.TestTodoPnl;
 import tomatoPj.Column;
 import tomatoPj.Feedback;
+import tomatoPj.Member;
+import tomatoPj.MemberRepository;
 import tomatoPj.Task;
 import utility.IconData;
 
@@ -47,6 +50,8 @@ public class MainFrame extends JFrame {
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	public String selectedProjectTitle;
 	public ProjectSelectPnl projectPnl;
+	
+	public MemberRepository mr = new MemberRepository();
 
 	/**
 	 * Launch the application.
@@ -164,5 +169,4 @@ public class MainFrame extends JFrame {
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		pcs.removePropertyChangeListener(listener);
 	}
-
 }

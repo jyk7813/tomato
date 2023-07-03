@@ -120,10 +120,10 @@ public class PrintPlanner implements Comparable<PrintPlanner>{
 	@Override
 	public String toString() {
 		if(selPjName == null) {
-			return "전체 프로젝트: " + select + "프로젝트 pk: " + pk + ", 태스크명: " + title + ", 시작일자: " + update
+			return "전체 프로젝트: " + select + ", 프로젝트 pk: " + pk + ", 태스크명: " + title + ", 시작일자: " + update
 					+ ", 마감일자: " + deadLine + "]";
 		} else {
-			return "프로젝트 별: " + selPjName + "멤버 pk: " + pk +"멤버이름: " + select + ", 태스크명: " + title + ", 시작일자: " + update
+			return "프로젝트 별: " + selPjName + ", 멤버 pk: " + pk +"멤버이름: " + select + ", 태스크명: " + title + ", 시작일자: " + update
 					+ ", 마감일자: " + deadLine + "]";
 		}
 	}
