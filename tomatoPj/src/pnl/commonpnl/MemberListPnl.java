@@ -204,7 +204,8 @@ public class MemberListPnl extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					memberPnls.remove(memberPnl);
+					System.out.println("반응하니?");
+					
 				}
 				
 			});
