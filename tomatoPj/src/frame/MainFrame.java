@@ -167,9 +167,4 @@ public class MainFrame extends JFrame {
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		pcs.removePropertyChangeListener(listener);
 	}
-	
-	public LoginMember getLoginMem() {
-		return loginMember;
-	}
-
 }

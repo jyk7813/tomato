@@ -57,17 +57,20 @@ public class TestTodoPnl extends JPanel {
 	private MemberRepository mr = new MemberRepository();
 	public LoginMember loginMember;
 	public List<PrintPlanner> ppList;
-
+	public int loginMemberNo;
+	private CalendarSwing printCal = new CalendarSwing();
+//	private CalendarSwing currentPrintCal;
 	public TestTodoPnl() {
-		
 	}
 
 	public TestTodoPnl(MainFrame mainFrame) {
 		addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent e) {
+				printCal = new CalendarSwing(mainFrame);
+				loginMember = mainFrame.loginMember;
+				loginMemberNo = loginMember.getMember_no();
 				System.out.println("투두창확인");
-				loginMember = mainFrame.getLoginMem();
 				System.out.println("로그인 멤버: " + loginMember.getMember().getName());
 				ppList = ppl.getPrintPlannerList(loginMember, toggleSwitch);
 //				ppl.testPrint(ppl.setView(loginMember, toggleSwitch));
@@ -117,10 +120,14 @@ public class TestTodoPnl extends JPanel {
 		calPnl.setOpaque(false);
 
 		// 달력 출력 패널 --------------------------------------
-		CalendarSwing printCal = new CalendarSwing();
+//		printCal = new CalendarSwing(mainFrame);
 		printCal.setBounds(200, 135, 1718, 870);
 		printCal.setLayout(null);
 		printCal.setOpaque(false);
+//		currentPrintCal.setBounds(200, 135, 1718, 870);
+//		currentPrintCal.setLayout(null);
+//		currentPrintCal.setOpaque(false);
+		
 
 		// 막대바 출력 패널 -------------------------------------
 
@@ -177,8 +184,12 @@ public class TestTodoPnl extends JPanel {
 		add(bgPnl);
 		setVisible(true);
 	}
-
+	
 	public Boolean getToggle() {
 		return toggleSwitch;
+	}
+	
+	public int getLoginNo() {
+		return loginMemberNo;
 	}
 }
