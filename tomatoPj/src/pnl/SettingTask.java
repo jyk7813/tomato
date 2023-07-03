@@ -1,7 +1,9 @@
 package pnl;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 
@@ -9,7 +11,9 @@ import dbutil.DBUtil;
 import frame.MainFrame;
 import tomatoPj.Column;
 import tomatoPj.Feedback;
+import tomatoPj.MemberRepository;
 import tomatoPj.Task;
+import tomatoPj.TaskRepository;
 import utility.IconData;
 
 public class SettingTask {
@@ -20,6 +24,7 @@ public class SettingTask {
 	Feedback feedback;
 	Column Takecolumn;
 	MainFrame MF;
+	TaskRepository TR;
 	public SettingTask(Taskrefrom ts,Task task,Column column,Feedback feedback) {
 		dbutil = new DBUtil();
 		IC = new IconData();
@@ -28,7 +33,7 @@ public class SettingTask {
 		this.ts = ts;
 		this.feedback = feedback;
 		this.Takecolumn = column;
-
+		TR = new TaskRepository();
 	}
 	
 	public void reset() {
@@ -60,8 +65,36 @@ public class SettingTask {
 		ts.taskTitle.setText("제목을 입력해주세요");
 		ts.contentText.setText("내용을 입력해주세요");
 		ts.feedBackText.setText("피드백을 입력해주세요");
+		ts.memberList = new ArrayList<>();
+		ts.Function_Tag_List = new ArrayList<>();
 		
-		
+	}
+	public void setMemberlist() {
+		if(task != null) {
+		try {
+			ts.memberList = TR.searchMemberByTask_no(task.getTask_no());
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}else {
+			ts.memberList = new ArrayList<>();
+		}
+	}
+	
+	public void setTaglist() {
+		if(task != null) {
+			try {
+				System.out.println(TR.searchFunction_tagByTask_no(task.getTask_no()));
+				ts.Function_Tag_List=TR.searchFunction_tagByTask_no(task.getTask_no());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			ts.Function_Tag_List = new ArrayList<>();
+		}
 	}
 	public void setUsingMemberNum() {
 
@@ -107,6 +140,7 @@ public class SettingTask {
 		}
 		return updateDate;
 	}
+	
 	public void SetStar() {
 		if(task != null) {
 		for(int i = 0; i<task.getImportance(); i++) {
@@ -124,7 +158,7 @@ public class SettingTask {
 		}
 	}
 	public String setContent() {
-		System.out.println("소코마데다");
+
 		String content = "내용을 입력해주세요!";
 		if(task != null) {
 		content = task.getContent();
