@@ -117,7 +117,12 @@ public class ProjectSelectPnl extends JPanel {
 		addProjectBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//pjRepo.generateProject(TOOL_TIP_TEXT_KEY, ABORT)
+				try {
+					pjRepo.generateProject("신규프로젝트", mainFrame.loginMember.getMember_no());
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+					System.out.println("제대로안만들어짐");
+				}
 				mainFrame.showCard("columnSelect");
 				
 			}
