@@ -34,28 +34,36 @@ public class ImageInput {
 	    FileNameExtensionFilter filter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());
 	    fileChooser.setFileFilter(filter);
 	    int returnValue = fileChooser.showOpenDialog(null);
-
 	    if (returnValue == JFileChooser.APPROVE_OPTION) {
 	        File selectedFile = fileChooser.getSelectedFile();
 
 	        try {
-	            BufferedImage originalImage = rotateImageIfRequired(selectedFile);
+	            BufferedImage originalImage = ImageIO.read(selectedFile);
+
+	            // First, we scale down the image.
+	            originalImage = resizeImageToTenPercent(originalImage);
+
+	            // Then, we rotate the image if needed.
+	            originalImage = rotateImageIfRequired(selectedFile, originalImage);
+
 	            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	            ImageIO.write(originalImage, "png", baos); 
+	            ImageIO.write(originalImage, "png", baos);
 	            imageBytes = baos.toByteArray();
+	            imageBytes = resizeImage(imageBytes);
+	            imageBytes = cropImageToSquare(imageBytes, 60);
+	            imageBytes = cropImageToCircle(imageBytes);
 	        } catch (IOException | ImageProcessingException e) {
 	            e.printStackTrace();
 	        } catch (MetadataException e) {
-				e.printStackTrace();
-			}
+	            e.printStackTrace();
+	        }
 	    }
 
 	    return imageBytes;
 	}
 
-	private static BufferedImage rotateImageIfRequired(File imgFile) throws IOException, ImageProcessingException, MetadataException {
-	    BufferedImage originalImage = ImageIO.read(imgFile);
-	    int orientation = getOrientation(imgFile);
+	private BufferedImage rotateImageIfRequired(File selectedFile, BufferedImage originalImage) throws IOException, ImageProcessingException, MetadataException {
+	    int orientation = getOrientation(selectedFile);
 
 	    switch (orientation) {
 	        case 1:
@@ -69,6 +77,27 @@ public class ImageInput {
 	        default:
 	            return originalImage;
 	    }
+	}
+
+
+	public BufferedImage resizeImageToTenPercent(BufferedImage originalImage) {
+	    // Calculate the new size
+	    int scaledWidth = originalImage.getWidth() / 10;
+	    int scaledHeight = originalImage.getHeight() / 10;
+
+	    // Create new size image
+	    Image scaledImage = originalImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+	    BufferedImage bufferedScaledImage = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);
+
+	    // Create a graphics object from the image
+	    Graphics2D g = bufferedScaledImage.createGraphics();
+
+	    // Draw the image
+	    g.drawImage(scaledImage, 0, 0, null);
+
+	    g.dispose();
+
+	    return bufferedScaledImage;
 	}
 
 	private static int getOrientation(File imgFile) throws IOException, ImageProcessingException, MetadataException {
@@ -118,8 +147,8 @@ public class ImageInput {
 	        g.dispose();
 
 	        // Resize the image to 60x60 while maintaining the aspect ratio
-	        Image scaledImage = squareImage.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-	        BufferedImage bufferedScaledImage = new BufferedImage(60, 60, BufferedImage.TYPE_INT_ARGB);
+	        Image scaledImage = squareImage.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+	        BufferedImage bufferedScaledImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
 	        bufferedScaledImage.getGraphics().drawImage(scaledImage, 0, 0, null);
 
 	        // Convert BufferedImage back to byte array
@@ -133,21 +162,75 @@ public class ImageInput {
 	    return resizedImageBytes;
 	}
 
+	public byte[] cropImageToSquare(byte[] originalImageBytes, int size) {
+	    byte[] croppedImageBytes = null;
 
-
-
-	public void convertImageToPNG(File imageFile) {
 	    try {
-	        BufferedImage image = ImageIO.read(imageFile);
+	        // Convert byte array to BufferedImage
+	        ByteArrayInputStream bais = new ByteArrayInputStream(originalImageBytes);
+	        BufferedImage originalImage = ImageIO.read(bais);
 
-	        // Create new file with the same path but with ".png" extension
-	        File pngFile = new File(imageFile.getAbsolutePath().replaceAll("\\.[^.]*$", "") + ".png");
+	        // Calculate the position of the square to crop
+	        int x = (originalImage.getWidth() - size) / 2;
+	        int y = (originalImage.getHeight() - size) / 2;
 
-	        // Write the image to the new file as PNG
-	        ImageIO.write(image, "png", pngFile);
+	        // Crop the image
+	        BufferedImage croppedImage = originalImage.getSubimage(x, y, size, size);
+
+	        // Convert BufferedImage back to byte array
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        ImageIO.write(croppedImage, "png", baos);
+	        croppedImageBytes = baos.toByteArray();
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
+
+	    return croppedImageBytes;
 	}
+	public byte[] cropImageToCircle(byte[] originalImageBytes) {
+	    byte[] circleImageBytes = null;
+
+	    try {
+	        // Convert byte array to BufferedImage
+	        ByteArrayInputStream bais = new ByteArrayInputStream(originalImageBytes);
+	        BufferedImage originalImage = ImageIO.read(bais);
+
+	        // Create a square canvas larger than the original image
+	        int maxDimension = Math.max(originalImage.getWidth(), originalImage.getHeight());
+	        BufferedImage squareImage = new BufferedImage(maxDimension, maxDimension, BufferedImage.TYPE_INT_ARGB);
+
+	        // Calculate the position of the original image on the canvas (to center it)
+	        int x = (maxDimension - originalImage.getWidth()) / 2;
+	        int y = (maxDimension - originalImage.getHeight()) / 2;
+
+	        // Draw the original image onto the canvas
+	        Graphics2D g = squareImage.createGraphics();
+	        g.drawImage(originalImage, x, y, null);
+
+	        // Create a circular clip
+	        g.setClip(new Ellipse2D.Float(x, y, originalImage.getWidth(), originalImage.getHeight()));
+
+	        // Create a new image to fit the circular clip
+	        BufferedImage circleImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	        Graphics2D g2 = circleImage.createGraphics();
+
+	        // Apply the clip
+	        g2.setClip(new Ellipse2D.Float(0, 0, originalImage.getWidth(), originalImage.getHeight()));
+	        g2.drawImage(squareImage, 0, 0, originalImage.getWidth(), originalImage.getHeight(), x, y, x + originalImage.getWidth(), y + originalImage.getHeight(), null);
+	        g2.dispose();
+
+	        // Convert BufferedImage back to byte array
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        ImageIO.write(circleImage, "png", baos);
+	        circleImageBytes = baos.toByteArray();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return circleImageBytes;
+	}
+
+
+
 
 }
