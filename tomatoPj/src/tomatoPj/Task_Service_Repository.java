@@ -16,10 +16,9 @@ public class Task_Service_Repository {
 	 * -> 위의 주의사항을 따랐다면 태스크 바깥쪽에 업데이트되는 부분에서 이함수를 사용하면된다.
 	 * --> Feedback, Function_Tag, Member_task객체에 pk는 새로만들었으면 반드시 0으로 세팅해줘야한다.
 	 * --> 위의 모든 객체는 테이블과같은 생성자를 사용하여야한다.
-	 * --> 멤버, 기능 태그는 반드시 List의 형태로 넘겨주어야하며
-	 * ---> 작성한 태그가없을때 List에 null을 넣어서 보내면 안된다.
-	 * ---> 작성할 태그가없을때는 List<Generic> list = new ArrayList<>(); 로 보낼것.
-	 * 
+	 * --> 멤버, 기능, 피드백은 작성한게없어도 돌아감
+	 * --> 작성한게없다면 null값을 보내거나 
+	 * --> 아무것도 들어있지않은  List<Generic> list = new ArrayList<>(); list를 파라미터에 보내주면된다.
 	 * @param Task
 	 * @param Feedback
 	 * @param List<Function_Tag>
@@ -29,23 +28,48 @@ public class Task_Service_Repository {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			conn = DBUtil.getConnection();
-			stmt = conn.prepareStatement(
-					"UPDATE task\n" + "SET title = ?, content = ?, importance = ?, updateDate = ?, deadLine = ?\n"
-							+ "WHERE task_no = ?;");
-			stmt.setString(1, task.getTitle());
-			stmt.setString(2, task.getContent());
-			stmt.setInt(3, task.getImportance());
-			stmt.setTimestamp(4, task.getUpdateDate());
-			stmt.setTimestamp(5, task.getDeadLine());
-			stmt.setInt(6, task.getTask_no());
-			stmt.executeUpdate();
+			if(task != null) {
+				conn = DBUtil.getConnection();
+				if(task.getTask_no()==0) {
+					String sql = "INSERT INTO tomato_copy.task (title, content, importance, updateDate, deadLine)"
+							+ " VALUES (?,?,?,?,?)";
+					stmt = conn.prepareStatement(sql);
+					stmt.setString(1, task.getTitle());
+					stmt.setString(2, task.getContent());
+					stmt.setInt(3, task.getImportance());
+					stmt.setTimestamp(4, task.getUpdateDate());
+					stmt.setTimestamp(5, task.getDeadLine());
+					//stmt.setInt(6, task.getTask_no());
+					stmt.executeUpdate();
+					
+					FeedbackFunction(conn, feedback);
+					Function_TagFunction(conn, function_tagList);
+					Member_taskFunction(conn, member_taskList);
+					return "태스크새로만듬";
+				} else if(task.getTask_no()!=0) {
+
+					stmt = conn.prepareStatement(
+							"UPDATE task\n" + "SET title = ?, content = ?, importance = ?, updateDate = ?, deadLine = ?\n"
+									+ "WHERE task_no = ?;");
+					stmt.setString(1, task.getTitle());
+					stmt.setString(2, task.getContent());
+					stmt.setInt(3, task.getImportance());
+					stmt.setTimestamp(4, task.getUpdateDate());
+					stmt.setTimestamp(5, task.getDeadLine());
+					stmt.setInt(6, task.getTask_no());
+					stmt.executeUpdate();
+					
+					FeedbackFunction(conn, feedback);
+					Function_TagFunction(conn, function_tagList);
+					Member_taskFunction(conn, member_taskList);
+					
+					return "태스크업데이트";
+				}
+				
+				
+				
+			}
 			
-			FeedbackFunction(conn, feedback);
-			Function_TagFunction(conn, function_tagList);
-			Member_taskFunction(conn, member_taskList);
-			
-			return "태스크 잘들어감";
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -60,35 +84,36 @@ public class Task_Service_Repository {
 	public void FeedbackFunction(Connection conn, Feedback feedback) {
 		PreparedStatement stmt = null;
 		try {
-			if (feedback.getFeedback_no() == 0) {
-				stmt = conn.prepareStatement("INSERT INTO `feedback` (task_no, member_no, `comment`) VALUES(?,?,?)");
-				stmt.setInt(1, feedback.getTask_no());
-				stmt.setInt(2, feedback.getMember_no());
-				stmt.setString(3, feedback.getComment());
-				stmt.executeUpdate();
-			} else if (feedback.getFeedback_no() != 0) {
-				stmt = conn.prepareStatement(
-						"UPDATE `feedback` SET feedback_no = ?, task_no = ?, member_no = ?, `comment` = ?\r\n"
-								+ "WHERE task_no = ?");
-				stmt.setInt(1, feedback.getFeedback_no());
-				stmt.setInt(2, feedback.getTask_no());
-				stmt.setInt(3, feedback.getMember_no());
-				stmt.setString(4, feedback.getComment());
-				stmt.executeUpdate();
+			if(feedback != null) {
+				if (feedback.getFeedback_no() == 0) {
+					stmt = conn
+							.prepareStatement("INSERT INTO `feedback` (task_no, member_no, `comment`) VALUES(?,?,?)");
+					stmt.setInt(1, feedback.getTask_no());
+					stmt.setInt(2, feedback.getMember_no());
+					stmt.setString(3, feedback.getComment());
+					stmt.executeUpdate();
+				} else if (feedback.getFeedback_no() != 0) {
+					stmt = conn.prepareStatement(
+							"UPDATE `feedback` SET feedback_no = ?, task_no = ?, member_no = ?, `comment` = ?\r\n"
+									+ "WHERE task_no = ?");
+					stmt.setInt(1, feedback.getFeedback_no());
+					stmt.setInt(2, feedback.getTask_no());
+					stmt.setInt(3, feedback.getMember_no());
+					stmt.setString(4, feedback.getComment());
+					stmt.executeUpdate();
+				}
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBUtil.close(stmt);
 		}
 	}
-
 	// 기능 태그가없어도 돌아감
 	public void Function_TagFunction(Connection conn, List<Function_Tag> function_tagList) {
 		PreparedStatement stmt = null;
 		try {
-			if (function_tagList.size() == 0) {
+			if (function_tagList.size() == 0 || function_tagList == null) {
 				// 태그가없으면 굳이안만듬
 			} else if (function_tagList.size() != 0) {
 				for (Function_Tag function_tag : function_tagList) {
@@ -109,19 +134,17 @@ public class Task_Service_Repository {
 					}
 				}
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBUtil.close(stmt);
 		}
 	}
-
 	// 멤버태그가 없어도 돌아감
 	public void Member_taskFunction(Connection conn, List<Member_task> member_taskList) {
 		PreparedStatement stmt = null;
 		try {
-			if (member_taskList.size() == 0) {
+			if (member_taskList.size() == 0 || member_taskList == null) {
 				// 태그가없으면 굳이안만듬
 			} else if (member_taskList.size() != 0) {
 				for (Member_task member_task : member_taskList) {

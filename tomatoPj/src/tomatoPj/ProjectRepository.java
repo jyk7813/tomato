@@ -16,22 +16,53 @@ public class ProjectRepository {
 		colRepo = new ColumnRepository();
 	}
 
-	// 프로젝트생성
-	public int generateProject(String title, int member_no) throws SQLException {
+	// 프로젝트생성(수정본)
+	public Project generateProject(String title, int member_no) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		PreparedStatement stmt2 = null;
+		PreparedStatement stmt3 = null;
+		PreparedStatement stmt4 = null;
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+		Project project = null;
 		try {
 			conn = DBUtil.getConnection();
 			String query = "INSERT INTO tomato_copy.project (title, member_no)\r\n" + "VALUES (?,?)";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, title);
 			stmt.setInt(2, member_no);
-			return stmt.executeUpdate();
-
+			stmt.executeUpdate();
+			
+			stmt2 = conn.prepareStatement("SELECT `project_no` FROM `project` ORDER BY `project_no` DESC");
+			rs = stmt2.executeQuery();
+			rs.next();
+			int project_no = rs.getInt("project_no");
+			
+			stmt3 = conn.prepareStatement("INSERT INTO `member_task` (`project_no`, `member_no`)"
+					+ " VALUES (?,?)");
+			stmt3.setInt(1, project_no);
+			stmt3.setInt(2, member_no);
+			stmt3.executeUpdate();
+			
+			stmt4 = conn.prepareStatement("SELECT * FROM `project` WHERE `project_no` = ?");
+			stmt4.setInt(1, project_no);
+			rs2 = stmt4.executeQuery();
+			rs2.next();
+			String pjtitle = rs2.getString("title");
+			int active = rs2.getInt("active");
+			project = new Project(project_no, pjtitle, member_no, active);
+			
 		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(rs2);
 			DBUtil.close(stmt);
+			DBUtil.close(stmt2);
+			DBUtil.close(stmt3);
+			DBUtil.close(stmt4);
 			DBUtil.close(conn);
 		}
+		return project;
 	}
 
 	// 프로젝트제거
