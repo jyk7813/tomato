@@ -57,7 +57,6 @@ public class LoginPnl extends JPanel {
 	private ImageIcon signUpDarkIcon;
 	private ImageIcon loginErrorIcon;
 	private JLabel loginErrorLbl;
-	//private MyTextField mytextfield;
 	
 	private void setLoginMember(MainFrame mainFrame, Member member) {
 		LocalDateTime now = LocalDateTime.now();
@@ -101,12 +100,13 @@ public class LoginPnl extends JPanel {
 		
 		
 		Image loginErrorImg = iconData.getImageIcon("loginError").getImage();
-		
+		loginButton = new JButton(loginIcon);
 		idField = new MyTextField("로그인", loginButton);
 		//passwordField = new JPasswordField();
 		passwordField = new MyPwdField("패스워드", loginButton);
 		///////////
-		
+		idField.addKeyListener(enterKey());
+		passwordField.addKeyListener(enterKey());
 		//idField.setText("아이디를 입력해주세요");
 		//idField.setForeground(Color.gray);
 		
@@ -124,7 +124,7 @@ public class LoginPnl extends JPanel {
 
 		loginErrorIcon = new ImageIcon(loginErrorImg);
 		
-		loginButton = new JButton(loginIcon);
+		
 		signUpBtn = new JButton(signUpIcon);
 		loginErrorLbl = new JLabel(loginErrorIcon);
 		
@@ -245,11 +245,12 @@ public class LoginPnl extends JPanel {
 							System.out.println(p);
 						}
 						mainFrame.showCard("projectSelect");
+						mainFrame.loginMember.setPjListSize(mainFrame.loginMember.getPjList().size());
 					} else {
 						System.out.println("로그인실패");
 						loginErrorLbl.setBounds(831, 724, 258, 50);
 					}
-					mainFrame.loginMember.setPjListSize(mainFrame.loginMember.getPjList().size());
+					
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 

@@ -57,6 +57,8 @@ public class MemberRepository {
 				String query = "DELETE FROM `member_tag`\r\n"
 						+ "WHERE project_no = ? AND member_no = ?";
 				stmt = conn.prepareStatement(query);
+				stmt.setInt(1, project_no);
+				stmt.setInt(2, member_no);
 				return stmt.executeUpdate();
 
 			} finally {

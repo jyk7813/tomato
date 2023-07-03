@@ -33,9 +33,7 @@ public class ColumnTitlePnl extends JPanel {
 		titleLbl = new JLabel(colTitle, SwingConstants.CENTER);
 		titleLbl.setBounds(0, 0, 350, 60);
 		add(titleLbl);
-//		deletecolBtn = new deleteColBtn(mainFrame);
-//		titleLbl.add(deletecolBtn);
-//		deletecolBtn.setBounds(50, 50, 100, 100);
+
 		
 	}
 
