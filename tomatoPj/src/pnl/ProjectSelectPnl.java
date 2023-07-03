@@ -52,7 +52,7 @@ public class ProjectSelectPnl extends JPanel {
 	private Utility utility;
 	private JLayeredPane centerPnl;
 	private JButton addProjectBtn;
-	private JScrollPane scrollPane;
+	public JScrollPane scrollPane;
 	private MemberRepository memberRepo;
 	private HashSet<Member> memberList;
 	private Member_Tag_Package_Repository mtPackageRepo;
@@ -62,6 +62,7 @@ public class ProjectSelectPnl extends JPanel {
 	private TaskRepository taskRepo;
 	private LogoutBtn logoutBtn;
 	public ProjectSelectWestPnl westPnl;
+	public ProjectPnl projectPnl;
 	
 	
 	
@@ -303,7 +304,7 @@ public class ProjectSelectPnl extends JPanel {
 
 	private void addPanel(int project_no, String title) {
 		
-		ProjectPnl projectPnl = new ProjectPnl(mainFrame, project_no, title);
+		projectPnl = new ProjectPnl(mainFrame, project_no, title);
 		projectPnl.setBounds(0, addProjectBtn.getY(), 900, 216); // Set the position to current jButton position
 		centerPnl.add(projectPnl, new Integer(2)); // Add projectPnl to a lower layer
 		addProjectBtn.setLocation(addProjectBtn.getX(), addProjectBtn.getY() + projectPnl.getHeight() + 10); // Move jButton down

@@ -8,8 +8,11 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +42,7 @@ public class MemberListPnl extends JPanel {
 	private MemberPnl memberPnl;
 	private MainFrame mainFrame;
 	private MemberRepository memberRepository;
+	private MemberAddPopup memberAddPopup;
 
 	/**
 	 * Create the panel.
@@ -47,6 +51,7 @@ public class MemberListPnl extends JPanel {
 		memberRepository = new MemberRepository();
 		iconData = new IconData();
 		fontData = new FontData();
+
 		this.mainFrame = mainFrame;
 		this.image = iconData.getImageIcon("long_bar").getImage();
 		setOpaque(false);
@@ -60,13 +65,54 @@ public class MemberListPnl extends JPanel {
 		memberAddPnl.add(plusBtn);
 
 		plusBtn.addActionListener(new ActionListener() {
-			private MemberAddPopup memberAddPopup;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (count < MAX_MEMBER_SIZE) {
 					count++;
 					memberAddPopup = new MemberAddPopup();
+					memberAddPopup.addWindowListener(new WindowAdapter() {
+
+						@Override
+						public void windowClosed(WindowEvent e) {
+							System.out.println("창닫힘");
+							System.out.println("되긴 하니?");
+							mainFrame.tempInfo = mainFrame.pjInfo;
+							System.out.println(mainFrame.tempInfo);
+							mainFrame.projectPnl.projectPnl.insertPjInfo(mainFrame, mainFrame.tempInfo.getProject_no(), mainFrame.tempInfo.getTitle());
+							
+							addPnl();
+							members = mainFrame.pjInfo.getMemberList();
+							System.out.println(members);
+							// Clear the memberPnls list
+							memberPnls.clear();
+							
+							if (members != null) {
+								for (Member member : members) {
+									if (MemberListPnl.this.mainFrame.loginMember.getMember().equals(member)) {
+										continue;
+									}
+									MemberPnl memberPnl = new MemberPnl(member, mainFrame);
+									memberPnls.add(memberPnl);
+								}
+								for (MemberPnl memberPnl : memberPnls) {
+									memberPnl.setPreferredSize(new Dimension(90, 90));
+									memberAddPnl.add(memberPnl);
+								}
+								memberAddPnl.remove(plusBtn);
+								
+								// Make the plusBtn visible if member count is less than MAX_MEMBER_SIZE
+								plusBtn.setVisible(members.size() <= MAX_MEMBER_SIZE);
+								
+								memberAddPnl.revalidate();
+								memberAddPnl.repaint();
+								memberAddPnl.add(plusBtn);
+								count = memberPnls.size();
+								
+							}
+						}
+
+					});
 					memberAddPopup.setAlwaysOnTop(true);
 					memberAddPopup.setVisible(true);
 					memberAddPopup.setLocation(plusBtn.getX() + 100, plusBtn.getY() + 500);
@@ -79,43 +125,13 @@ public class MemberListPnl extends JPanel {
 							memberAddPopup.dispose();
 						}
 					});
-					
+
 //					memberAddPopup.dispose();
 				} else {
 					plusBtn.setVisible(false);
 				}
-				System.out.println("되긴 하니?");
-				mainFrame.tempInfo = mainFrame.pjInfo;
-				mainFrame.pjInfo = new SelectProjectInfo();
-				mainFrame.pjInfo = mainFrame.tempInfo; 
-				mainFrame.tempInfo = null;
-				addPnl();
-				members = mainFrame.pjInfo.getMemberList();
-				System.out.println(members);
-				// Clear the memberPnls list
-				memberPnls.clear();
+				
 
-				for (Member member : members) {
-					if (MemberListPnl.this.mainFrame.loginMember.getMember().equals(member)) {
-						continue;
-					}
-					MemberPnl memberPnl = new MemberPnl(member, mainFrame);
-					memberPnls.add(memberPnl);
-				}
-				for (MemberPnl memberPnl : memberPnls) {
-					memberPnl.setPreferredSize(new Dimension(90, 90));
-					memberAddPnl.add(memberPnl);
-				}
-				memberAddPnl.remove(plusBtn);
-
-				// Make the plusBtn visible if member count is less than MAX_MEMBER_SIZE
-				plusBtn.setVisible(members.size() <= MAX_MEMBER_SIZE);
-
-				memberAddPnl.revalidate();
-				memberAddPnl.repaint();
-				memberAddPnl.add(plusBtn);
-				count = memberPnls.size();
-			
 			}
 		});
 
@@ -140,10 +156,10 @@ public class MemberListPnl extends JPanel {
 						memberAddPnl.add(memberPnl);
 					}
 					memberAddPnl.remove(plusBtn);
-					
+
 					// Make the plusBtn visible if member count is less than MAX_MEMBER_SIZE
 					plusBtn.setVisible(members.size() <= MAX_MEMBER_SIZE);
-					
+
 					memberAddPnl.revalidate();
 					memberAddPnl.repaint();
 					memberAddPnl.add(plusBtn);
@@ -196,5 +212,11 @@ public class MemberListPnl extends JPanel {
 		memberAddPnl.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); // Use FlowLayout
 		add(memberAddPnl);
 	}
-
+	 public void insertPjInfo(MainFrame mainFrame, int project_no, String title) {
+	    	mainFrame.pjInfo = new SelectProjectInfo(project_no, title, null, null);
+	    	mainFrame.showCard("columSelect");
+			mainFrame.pjInfo.setProject_no(project_no);
+			mainFrame.pjInfo.setTitle(title);
+			
+	    }
 }
