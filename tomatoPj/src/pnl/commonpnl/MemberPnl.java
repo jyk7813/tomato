@@ -2,6 +2,9 @@ package pnl.commonpnl;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -11,6 +14,7 @@ import javax.swing.JPanel;
 
 import frame.MainFrame;
 import tomatoPj.Member;
+import tomatoPj.MemberRepository;
 import utility.IconData;
 
 public class MemberPnl extends JPanel {
@@ -20,6 +24,7 @@ public class MemberPnl extends JPanel {
 	private byte[] imageBytes;
 	private Member member;
 	private JButton jButton;
+	private MemberRepository memberRepository;
 	
 	
 	/**
@@ -37,10 +42,24 @@ public class MemberPnl extends JPanel {
 		this.mainFrame = mainFrame;
 		iconData = new IconData();
 		System.out.println(member);
+		memberRepository = new MemberRepository();
 		settingMyInfopnl();
 		
+		jButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					memberRepository.deletePjMember(mainFrame.pjInfo.getProject_no(), member.getMember_no());
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} finally {
+					mainFrame.projectPnl.westPnl.projectMemberPnl.memberPnl.updateMember();
+				}
+			}
+		});
 		add(jButton);
-//		setOpaque(false);
+		setOpaque(false);
 	}
 	@Override
     protected void paintComponent(Graphics g) {

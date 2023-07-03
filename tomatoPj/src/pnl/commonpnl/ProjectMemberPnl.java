@@ -15,7 +15,7 @@ public class ProjectMemberPnl extends JPanel {
 	private IconData iconData;
 	private ProjectTitlePnl projectTitlePnl;
 	public MyInfoPnl myInfoPnl;
-	private MemberListPnl memberPnl;
+	public MemberListPnl memberPnl;
 	/**
 	 * Create the panel.
 	 */
