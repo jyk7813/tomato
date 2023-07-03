@@ -40,6 +40,7 @@ import tomatoPj.Member;
 import tomatoPj.MemberRepository;
 import tomatoPj.Member_Tag_Package_Repository;
 import tomatoPj.Project;
+import tomatoPj.ProjectRepository;
 import tomatoPj.Task;
 import tomatoPj.TaskRepository;
 import utility.IconData;
@@ -63,9 +64,11 @@ public class ProjectSelectPnl extends JPanel {
 	private LogoutBtn logoutBtn;
 	public ProjectSelectWestPnl westPnl;
 	public ProjectPnl projectPnl;
+	private ProjectRepository pjRepo;
 	
 	public ProjectSelectPnl(Image image, MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
+		pjRepo = new ProjectRepository();
 		taskRepo = new TaskRepository();
 		memberRepo = new MemberRepository();
 		mtPackageRepo = new Member_Tag_Package_Repository();
@@ -114,6 +117,7 @@ public class ProjectSelectPnl extends JPanel {
 		addProjectBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				//pjRepo.generateProject(TOOL_TIP_TEXT_KEY, ABORT)
 				mainFrame.showCard("columnSelect");
 				
 			}

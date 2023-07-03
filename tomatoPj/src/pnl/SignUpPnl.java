@@ -91,16 +91,13 @@ public class SignUpPnl extends JPanel {
 
 		possible = iconData.getImageIcon("project_check");
 		impossible = iconData.getImageIcon("delete_btn");
-		
+		btn = new JButton();
 		idField = new MyTextField("아이디", btn);
 		passwordField = new MyPwdField("비밀번호", btn);
 		checkPasswordField = new MyPwdField("비밀번호확인", btn);
 		nameField = new MyTextField("이름", btn);
 		emailField = new MyTextField("이메일", btn);
 		
-		
-		
-		btn = new JButton();
 		btn.setBackground(Color.BLACK);
 		backBtn = new JButton(iconData.getImageIcon("login_logo"));
 		addPictureBtn = new AddPictureBtn(this);
@@ -125,8 +122,6 @@ public class SignUpPnl extends JPanel {
 		utility.setButtonProperties(nameField);
 		utility.setButtonProperties(emailField);
 		utility.setButtonProperties(backBtn);
-
-		
 		
 		btn.addMouseListener (new MouseAdapter() {
 
@@ -195,11 +190,7 @@ public class SignUpPnl extends JPanel {
 			@Override
 			public void componentShown(ComponentEvent e) {
 				idField.requestFocusInWindow();
-//				idcheckLbl.setIcon(possible);
-//				pwdcheckLbl.setIcon(possible);
-//				pwd2checkLbl.setIcon(possible);
-//				emailcheckLbl.setIcon(possible);
-//				namecheckLbl.setIcon(possible);
+
 			}
 
 		});
