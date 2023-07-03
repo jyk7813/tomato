@@ -134,6 +134,8 @@ public class MainFrame extends JFrame {
 		Taskrefrom myUpPnl = TBP.taskrefrom;
 		System.out.println("메인에서 확인한다 대답.");
 		System.out.println(column.getTitle());
+		System.out.println(task.getList());
+		System.out.println(task);
 		TBP.taskrefrom.settingTask(myUpPnl, task, column, feedback);
 	}
 

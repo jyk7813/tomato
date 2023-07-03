@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 
 import button.PlusBtn;
 import frame.MainFrame;
+import popup.MemberAddPopup;
 import tomatoPj.Member;
 import utility.FontData;
 import utility.IconData;
@@ -61,6 +62,10 @@ public class MemberListPnl extends JPanel {
 	        public void actionPerformed(ActionEvent e) {
 	            if (count < MAX_MEMBER_SIZE) {
 	            	count++;
+	            	MemberAddPopup memberAddPopup = new MemberAddPopup();
+	            	memberAddPopup.setVisible(true);
+	            	memberAddPopup.setLocation(plusBtn.getX() + 100, plusBtn.getY()+500);
+	            	memberAddPopup.setAlwaysOnTop(true);
 	                addPanel();
 	            } else {
 	                plusBtn.setVisible(false);

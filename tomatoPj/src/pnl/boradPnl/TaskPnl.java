@@ -70,6 +70,7 @@ public class TaskPnl extends JPanel {
 				
 				if(task !=null) {
 					System.out.println("주는 칼럼 제목1");
+					System.out.println("생존신고?"+task.getList()); 
 					System.out.println(column.getTitle());
 				mainFrame.setTask(task, column, feedback);
 				mainFrame.showCard("task");
