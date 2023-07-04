@@ -25,7 +25,6 @@ import utility.IconData;
 import utility.Utility;
 
 public class ColumnSelectPnl extends JPanel {
-	private int columnCount = 0;
 	private IconData iconData;
 	private Utility utility;
 	public JButton addBtn;
@@ -36,6 +35,7 @@ public class ColumnSelectPnl extends JPanel {
 	private MainFrame mainFrame;
 	public List<ColumnPnl> columnPnls;
 	private AddColumnPnl addColumnPnl;
+	private JPanel columnTopPanel;
 
 	/**
 	 * Create the panel.
@@ -49,37 +49,47 @@ public class ColumnSelectPnl extends JPanel {
 		utility = new Utility();
 		columnPnls = new ArrayList<>();
 		setLayout(null);
-		JPanel columnTopPanel = new JPanel();
+		setOpaque(false);
+		
+		addPnl();
+
+	}
+
+	public void addPnl() {
+		removeAll();
+		columnTopPanel = new JPanel();
 		columnTopPanel.setLayout(null);
 		columnTopPanel.setBounds(31, 0, 350, 101);
 		columnTopPanel.setOpaque(false);
-
-		setOpaque(false);
 
 		addColumnPnl = new AddColumnPnl();
 		addColumnPnl.setBounds(0, 41, 350, 60);
 		addColumnPnl.setOpaque(false); // for testing
 		columnTopPanel.add(addColumnPnl);
 		add(columnTopPanel);
-
+		
 		addBtn = new JButton();
 		addBtn.setBounds(0, 0, 350, 60);
 		addColumnPnl.add(addBtn);
 		utility.setButtonProperties(addBtn);
-
+		
+		
+		
 		// 칼럼추가버튼 액션리스너
 		addBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				columnSetting();
 			}
-		});
 
+		});
+		
+		
 	}
 
 	@Override
 	public Dimension getPreferredSize() {
-		int width = (350 + 20) * columnCount + 350; // 각 컬럼의 너비 (350) + 간격 (20) + 최초의 350
+		int width = (350 + 20) * columnPnls.size() + 350; // 각 컬럼의 너비 (350) + 간격 (20) + 최초의 350
 		return new Dimension(width, 945);
 	}
 
@@ -131,18 +141,20 @@ public class ColumnSelectPnl extends JPanel {
 	    setBoundsForPanel(columnPnl);
 	    revalidate();
 	    repaint();
-	    columnCount++;
 
 	    // Mouse listener added to the ColumnPnl instance
 	    columnPnl.addMouseListener(new MouseAdapter() {
 	        @Override
-	        public void mouseClicked(MouseEvent e) {
+	        public void mousePressed(MouseEvent e) {
 	            // This code will be executed when the ColumnPnl instance is clicked
 	            for (ColumnPnl pnl : columnPnls) { // Iterate over all panels
 	                if (pnl == columnPnl) { // If this is the clicked panel
 	                    pnl.setEnabled(true); // Activate it
 	                    pnl.columnTitlePnl.setEnabled(true);
 	                    pnl.setimage();
+	                    if (e.getButton()== MouseEvent.BUTTON3) {
+							pnl.columnTitlePnl.deletecolBtn.setVisible(true);
+						}
 	                    for (TaskPnl taskPnl : pnl.taskPnls) {
 							taskPnl.setEnabled(true);
 							taskPnl.setimage();
@@ -155,6 +167,7 @@ public class ColumnSelectPnl extends JPanel {
 	                    pnl.setEnabled(false); // Deactivate it
 	                    pnl.columnTitlePnl.setEnabled(false);
 	                    pnl.setimage();
+	                    pnl.columnTitlePnl.deletecolBtn.setVisible(false);
 	                    for (TaskPnl taskPnl : pnl.taskPnls) {
 							taskPnl.setEnabled(false);
 							taskPnl.setimage();
@@ -181,6 +194,14 @@ public class ColumnSelectPnl extends JPanel {
 		columnPnl.setBounds(addColumnPnl.getX(), 0, 350, 940);
 		addColumnPnl.setBounds(addColumnPnl.getX() + columnPnl.getWidth() + 20, addColumnPnl.getY(), 350, 60);
 		add(addColumnPnl);
+	}
+	public void updatePnl() {
+		mainFrame.tempInfo = mainFrame.pjInfo;
+		System.out.println(mainFrame.tempInfo);
+		mainFrame.projectPnl.projectPnl.insertPjInfo(mainFrame, mainFrame.tempInfo.getProject_no(), mainFrame.tempInfo.getTitle());
+		
+		addPnl();
+		columnSetting();
 	}
 
 }
