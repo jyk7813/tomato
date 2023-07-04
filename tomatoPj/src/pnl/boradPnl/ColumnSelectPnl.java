@@ -91,6 +91,8 @@ public class ColumnSelectPnl extends JPanel {
 		return new Dimension(width, 945);
 	}
 
+	
+	
 	public void columnSetting() {
 		System.out.println("추가버튼 진입");
 		List<Column> columns = mainFrame.pjInfo.getCol();
@@ -101,14 +103,17 @@ public class ColumnSelectPnl extends JPanel {
 		if (shouldAddExistingColumns(columns)) {
 			addExistingColumns(columns);
 			mainFrame.columnActive = false;
+			System.out.println("위쪽");
 		} else {
 			addNewColumn(columns);
+			System.out.println("아래쪽");
 		}
 		revalidate();
 		repaint();
 	}
 
 	private boolean shouldAddExistingColumns(List<Column> columns) {
+		System.out.println("컬럼액티브 상태 :" + mainFrame.columnActive);
 		return !columns.isEmpty() && mainFrame.columnActive;
 	}
 
