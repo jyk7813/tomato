@@ -30,6 +30,7 @@ public class ColumnPnl extends JPanel {
 	public Task task;
 	private TaskRepository taskRepo;
 	List<Task> taskList;
+	private Column column;
 	public TaskPnl taskPnl;
 	public List<TaskPnl> taskPnls = new ArrayList<>();
 
@@ -37,7 +38,7 @@ public class ColumnPnl extends JPanel {
 	 * Create the panel.
 	 */
 	public ColumnPnl(MainFrame mainFrame, String colTitle, Column column, List<Task> taskList, ColumnSelectPnl columnSelectPnl) {
-
+		this.column = column;
 		try {
 			if (column != null) {
 				this.taskList = taskList;
@@ -136,6 +137,12 @@ public class ColumnPnl extends JPanel {
 			}
 		}
 		
+	}
+	public Column getColumn() {
+		return column;
+	}
+	public void setColumn(Column column) {
+		this.column = column;
 	}
 	private void setEnabledRecursive(Component component, boolean isEnabled) {
         component.setEnabled(isEnabled);

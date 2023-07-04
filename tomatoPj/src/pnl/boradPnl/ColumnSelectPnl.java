@@ -156,7 +156,9 @@ public class ColumnSelectPnl extends JPanel {
 								pnl.columnTitlePnl.deletecolBtn.setVisible(false);
 								pnl.columnTitlePnl.updateTitleField.setVisible(false);
 								pnl.columnTitlePnl.titleLbl.setVisible(true);
-								
+								pnl.columnTitlePnl.titleLbl.setText(pnl.columnTitlePnl.updateTitleField.getText());
+								colRepo.editTitleColumn(pnl.getColumn().getColumn_no(),
+										pnl.columnTitlePnl.updateTitleField.getText());
 							} else {
 								pnl.columnTitlePnl.deletecolBtn.setVisible(true);
 								pnl.columnTitlePnl.updateTitleField.setVisible(true);
@@ -164,6 +166,7 @@ public class ColumnSelectPnl extends JPanel {
 							}
 						}
 						for (TaskPnl taskPnl : pnl.taskPnls) {
+
 							taskPnl.setEnabled(true);
 							taskPnl.setimage();
 							revalidate();
@@ -204,6 +207,7 @@ public class ColumnSelectPnl extends JPanel {
 	}
 
 	public void updatePnl() {
+		System.out.println("새로고침 실행");
 		mainFrame.tempInfo = mainFrame.pjInfo;
 		System.out.println(mainFrame.tempInfo);
 		mainFrame.projectPnl.projectPnl.insertPjInfo(mainFrame, mainFrame.tempInfo.getProject_no(),
