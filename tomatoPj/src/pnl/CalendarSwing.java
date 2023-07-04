@@ -507,6 +507,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			JButton button = (JButton) e.getSource();
 			String str = button.getIcon().toString();
 			str = str.substring(45);
+			str = str.substring(0, str.length()-4);
 			System.out.println(str +"번 리스트가 선택되었습니다");
 		}
 	}
