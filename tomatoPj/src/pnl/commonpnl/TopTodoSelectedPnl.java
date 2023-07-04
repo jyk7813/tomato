@@ -40,7 +40,6 @@ public class TopTodoSelectedPnl extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Draw the background image
         g.drawImage(backgroundImage, 0, 0, this);
     }
 }

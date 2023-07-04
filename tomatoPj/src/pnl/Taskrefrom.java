@@ -36,6 +36,7 @@ import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import frame.MainFrame;
+import pnl.commonpnl.MyInfoPnl;
 import tomatoPj.Column;
 import tomatoPj.Feedback;
 import tomatoPj.FeedbackRepository;
@@ -222,10 +223,8 @@ public class Taskrefrom extends JPanel {
 					System.out.println(returnTask);
 					System.out.println(returnFeedBack);
 					System.out.println(return_Function_Tag_List);
-//					System.out.println(member_taskList);
-					
-					
-//					TSR.updateTask(returnTask, returnFeedBack, return_Function_Tag_List, member_taskList);
+
+	 		        mainFrame.boradPnl.projectMemberPnl.myInfoPnl.removeAll();
 					mainFrame.showCard("columnSelect");
 
 					

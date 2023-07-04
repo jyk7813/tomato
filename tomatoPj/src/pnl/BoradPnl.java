@@ -20,7 +20,7 @@ public class BoradPnl extends JPanel{
 	public BoardselectPnl panel_2;
 	private String title;
 	private MainFrame mainFrame;
-	private ProjectMemberPnl projectMemberPnl;
+	public ProjectMemberPnl projectMemberPnl;
 	
 	public BoradPnl(Image image, MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
