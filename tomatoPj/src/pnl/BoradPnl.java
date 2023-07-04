@@ -45,9 +45,12 @@ public class BoradPnl extends JPanel{
 					size=0;
 				}
 				if(size>0 && mainFrame.pjInfo.getColumnCnt() != mainFrame.pjInfo.getCol().size()) {
-					System.out.println("여기야야" + mainFrame.pjInfo.getCol().size() + "?");
+					
+					System.out.println("컬럼 카운트 : " + mainFrame.pjInfo.getColumnCnt());
+					System.out.println("컬럼 사이즈 : " + mainFrame.pjInfo.getCol().size());
 					panel_2.columnSelectPnl.columnSetting();
-				} 
+				}
+				mainFrame.pjInfo.setColumnCnt(0);
 			}
 		});
 		
