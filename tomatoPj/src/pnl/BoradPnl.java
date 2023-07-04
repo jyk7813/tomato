@@ -17,36 +17,26 @@ import tomatoPj.Column;
 
 public class BoradPnl extends JPanel{
 	private Image image;
-	private BoardselectPnl panel_2;
+	public BoardselectPnl panel_2;
 	private String title;
 	private MainFrame mainFrame;
+	public ProjectMemberPnl projectMemberPnl;
 	
 	public BoradPnl(Image image, MainFrame mainFrame) {
-		
 		this.mainFrame = mainFrame;
 		this.image = image;
-		setLayout(new BorderLayout(0, 0));
-		
-		TopMainPnl topPnl = new TopMainPnl(mainFrame);
-		add(topPnl, BorderLayout.NORTH);
-		
-		ProjectMemberPnl projectMemberPnl = new ProjectMemberPnl(mainFrame);
-		
-		add(projectMemberPnl, BorderLayout.WEST);
-		projectMemberPnl.setOpaque(false);
-		//////////
-		
+		projectMemberPnl = new ProjectMemberPnl(mainFrame);
 		panel_2 = new BoardselectPnl(mainFrame);
-		panel_2.setOpaque(false);
-		add(panel_2, BorderLayout.CENTER);
-		title = "title";
+		setLayout(new BorderLayout(0, 0));
+		addPnl();
 	
+		
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-
+				System.out.println("여기야" + mainFrame.pjInfo.getCol().size());
+				
 				projectMemberPnl.myInfoPnl.settingMyInfopnl();
-				System.out.println(mainFrame.pjInfo);
 				int size=0;
 				try {
 					size = mainFrame.pjInfo.getCol().size();
@@ -54,9 +44,13 @@ public class BoradPnl extends JPanel{
 				} catch (NullPointerException e1) {
 					size=0;
 				}
-				if(size>0) {
+				if(size>0 && mainFrame.pjInfo.getColumnCnt() != mainFrame.pjInfo.getCol().size()) {
+					
+					System.out.println("컬럼 카운트 : " + mainFrame.pjInfo.getColumnCnt());
+					System.out.println("컬럼 사이즈 : " + mainFrame.pjInfo.getCol().size());
 					panel_2.columnSelectPnl.columnSetting();
-				} 
+				}
+				mainFrame.pjInfo.setColumnCnt(0);
 			}
 		});
 		
@@ -68,6 +62,38 @@ public class BoradPnl extends JPanel{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, this);
+	}
+	
+//	public void restart() {
+//		panel_2.columnSelectPnl.removeAll();
+//		addPnl();
+//		projectMemberPnl.myInfoPnl.settingMyInfopnl();
+//		
+//		System.out.println(mainFrame.pjInfo);
+//		int size=0;
+//		try {
+//			size = mainFrame.pjInfo.getCol().size();
+//			
+//		} catch (NullPointerException e1) {
+//			size=0;
+//		}
+//		if(size>0) {
+//			panel_2.columnSelectPnl.columnSetting();
+//		} 
+//
+//	}
+	
+	public void addPnl() {
+		TopMainPnl topPnl = new TopMainPnl(mainFrame);
+		add(topPnl, BorderLayout.NORTH);
+		
+		
+		add(projectMemberPnl, BorderLayout.WEST);
+		projectMemberPnl.setOpaque(false);
+		//////////
+		
+		panel_2.setOpaque(false);
+		add(panel_2, BorderLayout.CENTER);
 	}
 	
 }

@@ -10,6 +10,8 @@ import utility.IconData;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 public class ProjectMemberPnl extends JPanel {
 	private IconData iconData;
@@ -48,6 +50,8 @@ public class ProjectMemberPnl extends JPanel {
 		memberPnl.setBounds(0, 360, 130, 553);
 		panel.add(memberPnl);
 		panel.setBackground(new Color(0,0,0,0));
+		
+		
 	}
 	@Override
 	public Dimension getPreferredSize() {

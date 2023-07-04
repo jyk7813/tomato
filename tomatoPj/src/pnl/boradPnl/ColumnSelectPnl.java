@@ -3,8 +3,6 @@ package pnl.boradPnl;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -25,7 +23,6 @@ import utility.IconData;
 import utility.Utility;
 
 public class ColumnSelectPnl extends JPanel {
-	private int columnCount = 0;
 	private IconData iconData;
 	private Utility utility;
 	public JButton addBtn;
@@ -36,6 +33,7 @@ public class ColumnSelectPnl extends JPanel {
 	private MainFrame mainFrame;
 	public List<ColumnPnl> columnPnls;
 	private AddColumnPnl addColumnPnl;
+	private JPanel columnTopPanel;
 
 	/**
 	 * Create the panel.
@@ -49,40 +47,52 @@ public class ColumnSelectPnl extends JPanel {
 		utility = new Utility();
 		columnPnls = new ArrayList<>();
 		setLayout(null);
-		JPanel columnTopPanel = new JPanel();
+		setOpaque(false);
+		
+		addPnl();
+
+	}
+
+	public void addPnl() {
+		removeAll();
+		columnTopPanel = new JPanel();
 		columnTopPanel.setLayout(null);
 		columnTopPanel.setBounds(31, 0, 350, 101);
 		columnTopPanel.setOpaque(false);
-
-		setOpaque(false);
 
 		addColumnPnl = new AddColumnPnl();
 		addColumnPnl.setBounds(0, 41, 350, 60);
 		addColumnPnl.setOpaque(false); // for testing
 		columnTopPanel.add(addColumnPnl);
 		add(columnTopPanel);
-
+		
 		addBtn = new JButton();
 		addBtn.setBounds(0, 0, 350, 60);
 		addColumnPnl.add(addBtn);
 		utility.setButtonProperties(addBtn);
-
+		
+		
+		
 		// 칼럼추가버튼 액션리스너
 		addBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				columnSetting();
 			}
-		});
 
+		});
+		
+		
 	}
 
 	@Override
 	public Dimension getPreferredSize() {
-		int width = (350 + 20) * columnCount + 350; // 각 컬럼의 너비 (350) + 간격 (20) + 최초의 350
+		int width = (350 + 20) * columnPnls.size() + 350; // 각 컬럼의 너비 (350) + 간격 (20) + 최초의 350
 		return new Dimension(width, 945);
 	}
 
+	
+	
 	public void columnSetting() {
 		System.out.println("추가버튼 진입");
 		List<Column> columns = mainFrame.pjInfo.getCol();
@@ -93,20 +103,25 @@ public class ColumnSelectPnl extends JPanel {
 		if (shouldAddExistingColumns(columns)) {
 			addExistingColumns(columns);
 			mainFrame.columnActive = false;
+			System.out.println("위쪽");
 		} else {
 			addNewColumn(columns);
+			System.out.println("아래쪽");
 		}
 		revalidate();
 		repaint();
 	}
 
 	private boolean shouldAddExistingColumns(List<Column> columns) {
+		System.out.println("컬럼액티브 상태 :" + mainFrame.columnActive);
 		return !columns.isEmpty() && mainFrame.columnActive;
 	}
 
 	private void addExistingColumns(List<Column> columns) {
 		for (Column column : columns) {
+			mainFrame.pjInfo.addColumnCnt();
 			addColumnPanel(column);
+			
 		}
 	}
 
@@ -129,7 +144,6 @@ public class ColumnSelectPnl extends JPanel {
 	    setBoundsForPanel(columnPnl);
 	    revalidate();
 	    repaint();
-	    columnCount++;
 
 	    // Mouse listener added to the ColumnPnl instance
 	    columnPnl.addMouseListener(new MouseAdapter() {
@@ -183,6 +197,14 @@ public class ColumnSelectPnl extends JPanel {
 		columnPnl.setBounds(addColumnPnl.getX(), 0, 350, 940);
 		addColumnPnl.setBounds(addColumnPnl.getX() + columnPnl.getWidth() + 20, addColumnPnl.getY(), 350, 60);
 		add(addColumnPnl);
+	}
+	public void updatePnl() {
+		mainFrame.tempInfo = mainFrame.pjInfo;
+		System.out.println(mainFrame.tempInfo);
+		mainFrame.projectPnl.projectPnl.insertPjInfo(mainFrame, mainFrame.tempInfo.getProject_no(), mainFrame.tempInfo.getTitle());
+		
+		addPnl();
+		columnSetting();
 	}
 
 }

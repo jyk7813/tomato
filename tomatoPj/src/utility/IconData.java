@@ -34,6 +34,9 @@ public class IconData {
 	public ImageIcon getImageIcon(String iconName) {
 		return new ImageIcon(getClass().getClassLoader().getResource(iconName + ".png"));
 	}
+	public ImageIcon getImageIconGif(String iconName) {
+		return new ImageIcon(getClass().getClassLoader().getResource(iconName + ".gif"));
+	}
 
 	public ImageIcon getRollImageIcon(String iconName) {
 		return new ImageIcon(getClass().getClassLoader().getResource(iconName + "_c.png"));

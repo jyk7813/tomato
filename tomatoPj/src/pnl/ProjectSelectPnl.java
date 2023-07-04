@@ -59,12 +59,12 @@ public class ProjectSelectPnl extends JPanel {
 	private Member_Tag_Package_Repository mtPackageRepo;
 	private MainFrame mainFrame;
 	private ColumnRepository colRepo;
-	private SelectProjectInfo pjInfo;
 	private TaskRepository taskRepo;
 	private LogoutBtn logoutBtn;
 	public ProjectSelectWestPnl westPnl;
 	public ProjectPnl projectPnl;
 	private ProjectRepository pjRepo;
+	public List<ProjectPnl> projectPnls= new ArrayList<>();
 	
 	public ProjectSelectPnl(Image image, MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
@@ -77,7 +77,6 @@ public class ProjectSelectPnl extends JPanel {
 		this.image = image;
 		iconData = new IconData();
 		utility = new Utility();
-		pjInfo = new SelectProjectInfo();
 		setLayout(new BorderLayout(0, 0));
 		logoutBtn = new LogoutBtn(mainFrame);
 
@@ -118,7 +117,8 @@ public class ProjectSelectPnl extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					pjRepo.generateProject("신규프로젝트", mainFrame.loginMember.getMember_no());
+					mainFrame.setSelectedProjectTitle("신규프로젝트");
+					projectPnl.insertPjInfo(mainFrame, pjRepo.generateProject("신규프로젝트", mainFrame.loginMember.getMember_no()).getProject_no(), "신규프로젝트");
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 					System.out.println("제대로안만들어짐");
@@ -175,9 +175,6 @@ public class ProjectSelectPnl extends JPanel {
 		});
 	}
 
-	private void selectProjectInfoSetting() {
-		
-	}
 	
 	// 프로젝트 선택화면에 띄우기 위함
 	private void loginMemberSetting() {
@@ -311,6 +308,7 @@ public class ProjectSelectPnl extends JPanel {
 	private void addPanel(int project_no, String title) {
 		
 		projectPnl = new ProjectPnl(mainFrame, project_no, title);
+		projectPnls.add(projectPnl);
 		projectPnl.setBounds(0, addProjectBtn.getY(), 900, 216); // Set the position to current jButton position
 		centerPnl.add(projectPnl, new Integer(2)); // Add projectPnl to a lower layer
 		addProjectBtn.setLocation(addProjectBtn.getX(), addProjectBtn.getY() + projectPnl.getHeight() + 10); // Move jButton down

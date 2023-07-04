@@ -20,7 +20,7 @@ public class TopTodoSelectedPnl extends JPanel {
         setLayout(null);
         
 		HomeBtn homeBtn = new HomeBtn(mainFrame);
-		homeBtn.setBounds(300, 0, 150, 150);
+		homeBtn.setBounds(100, 45, 201, 45);
 		add(homeBtn);
         
         CanBanBtn canBanBtn = new CanBanBtn(mainFrame, topMainPnl);
@@ -40,7 +40,6 @@ public class TopTodoSelectedPnl extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Draw the background image
         g.drawImage(backgroundImage, 0, 0, this);
     }
 }

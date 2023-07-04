@@ -10,31 +10,30 @@ import dbutil.DBUtil;
 
 public class Task_Service_Repository {
 
-	
 	/**
-	 * @explain db에 선택한태스크가 있다는걸 기준으로 돌아감
-	 * -> 새로운 태스크판넬을 만들었을때는 taskRepository안에있는 insertTask함수를사용해 db에 태스크데이터를 올리고 이기능을 사용할것
-	 * -> 위의 주의사항을 따랐다면 태스크 바깥쪽에 업데이트되는 부분에서 이함수를 사용하면된다.
-	 * --> Feedback, Function_Tag, Member_task객체에 pk는 새로만들었으면 반드시 0으로 세팅해줘야한다.
-	 * --> 위의 모든 객체는 테이블과같은 생성자를 사용하여야한다.
-	 * --> 멤버, 기능, 피드백은 작성한게없어도 돌아감
-	 * --> 작성한게없다면 null값을 보내거나 
-	 * --> 아무것도 들어있지않은  List<Generic> list = new ArrayList<>(); list를 파라미터에 보내주면된다.
+	 * @explain db에 선택한태스크가 있다는걸 기준으로 돌아감 -> 새로운 태스크판넬을 만들었을때는 taskRepository안에있는
+	 *          insertTask함수를사용해 db에 태스크데이터를 올리고 이기능을 사용할것 -> 위의 주의사항을 따랐다면 태스크 바깥쪽에
+	 *          업데이트되는 부분에서 이함수를 사용하면된다. --> Feedback, Function_Tag, Member_task객체에
+	 *          pk는 새로만들었으면 반드시 0으로 세팅해줘야한다. --> 위의 모든 객체는 테이블과같은 생성자를 사용하여야한다. -->
+	 *          멤버, 기능, 피드백은 작성한게없어도 돌아감 --> 작성한게없다면 null값을 보내거나 --> 아무것도 들어있지않은
+	 *          List<Generic> list = new ArrayList<>(); list를 파라미터에 보내주면된다.
 	 * @param Task
 	 * @param Feedback
 	 * @param List<Function_Tag>
 	 * @param List<Member_task>
 	 */
-	public String updateTask(Task task, Feedback feedback, List<Function_Tag> function_tagList, List<Member_task> member_taskList) {
+	public String updateTask(Task task, Feedback feedback, List<Function_Tag> function_tagList,
+			List<Member_task> member_taskList, int column_no) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
+		PreparedStatement stmt3 = null;
 		ResultSet rs = null;
-	
+
 		try {
-			if(task != null) {
+			if (task != null) {
 				conn = DBUtil.getConnection();
-				if(task.getTask_no()==0) {
+				if (task.getTask_no() == 0) {
 					String sql = "INSERT INTO tomato_copy.task (title, content, importance, updateDate, deadLine)"
 							+ " VALUES (?,?,?,?,?)";
 					stmt = conn.prepareStatement(sql);
@@ -44,22 +43,25 @@ public class Task_Service_Repository {
 					stmt.setTimestamp(4, task.getUpdateDate());
 					stmt.setTimestamp(5, task.getDeadLine());
 					stmt.executeUpdate();
-					
+
 					stmt2 = conn.prepareStatement("SELECT `task_no` FROM `task` ORDER BY `task_no` DESC");
 					rs = stmt2.executeQuery();
 					rs.next();
 					int task_no = rs.getInt("task_no");
-					
-					
+
+					stmt3 = conn.prepareStatement("INSERT INTO `column_task` (`column_no`, `task_no`) VALUES (?,?)");
+					stmt3.setInt(task_no, column_no);
+					stmt3.executeUpdate();
+
 					FeedbackFunction(conn, feedback, task_no);
 					Function_TagFunction(conn, function_tagList, task_no);
 					Member_taskFunction(conn, member_taskList, task_no);
 					return "태스크새로만듬";
-				} else if(task.getTask_no()!=0) {
+				} else if (task.getTask_no() != 0) {
 
-					stmt = conn.prepareStatement(
-							"UPDATE task\n" + "SET title = ?, content = ?, importance = ?, updateDate = ?, deadLine = ?\n"
-									+ "WHERE task_no = ?;");
+					stmt = conn.prepareStatement("UPDATE task\n"
+							+ "SET title = ?, content = ?, importance = ?, updateDate = ?, deadLine = ?\n"
+							+ "WHERE task_no = ?;");
 					stmt.setString(1, task.getTitle());
 					stmt.setString(2, task.getContent());
 					stmt.setInt(3, task.getImportance());
@@ -67,18 +69,15 @@ public class Task_Service_Repository {
 					stmt.setTimestamp(5, task.getDeadLine());
 					stmt.setInt(6, task.getTask_no());
 					stmt.executeUpdate();
-					
+
 					FeedbackFunction(conn, feedback, task.getTask_no());
 					Function_TagFunction(conn, function_tagList, task.getTask_no());
 					Member_taskFunction(conn, member_taskList, task.getTask_no());
-					
+
 					return "태스크업데이트";
 				}
-				
-				
-				
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -95,7 +94,7 @@ public class Task_Service_Repository {
 	public void FeedbackFunction(Connection conn, Feedback feedback, int task_no) {
 		PreparedStatement stmt = null;
 		try {
-			if(feedback != null) {
+			if (feedback != null) {
 				if (feedback.getFeedback_no() == 0) {
 					stmt = conn
 							.prepareStatement("INSERT INTO `feedback` (task_no, member_no, `comment`) VALUES(?,?,?)");
@@ -120,68 +119,51 @@ public class Task_Service_Repository {
 			DBUtil.close(stmt);
 		}
 	}
+
 	// 기능 태그가없어도 돌아감
 	public void Function_TagFunction(Connection conn, List<Function_Tag> function_tagList, int task_no) {
 		PreparedStatement stmt = null;
+		PreparedStatement stmt2 = null;
 		try {
-			if (function_tagList.size() == 0 || function_tagList == null) {
-				// 태그가없으면 굳이안만듬
-			} else if (function_tagList.size() != 0) {
-				for (Function_Tag function_tag : function_tagList) {
-					if (function_tag.getNo() == 0) {
-						stmt = conn
-								.prepareStatement("INSERT INTO `function_tag` (task_no, color, `text`) VALUES(?,?,?)");
-						stmt.setInt(1, function_tag.getTask_no());
-						stmt.setString(1, function_tag.getColor());
-						stmt.setString(2, function_tag.getText());
-						stmt.executeUpdate();
-					} else if (function_tag.getNo() != 0) {
-						stmt = conn.prepareStatement(
-								"UPDATE `function_tag` SET color = ?, `comment` = ?\r\n" + "WHERE task_no = ?");
-						stmt.setString(1, function_tag.getColor());
-						stmt.setString(2, function_tag.getText());
-						stmt.setInt(3, function_tag.getTask_no());
-						stmt.executeUpdate();
-					}
-				}
+			stmt = conn.prepareStatement("DELETE FROM `function_tag` WHERE `task_no` = ?");
+			stmt.setInt(1, task_no);
+			stmt.executeUpdate();
+			for (Function_Tag function_tag : function_tagList) {
+				stmt2 = conn.prepareStatement("INSERT INTO `function_tag` (task_no, color, `text`) VALUES(?,?,?)");
+				stmt2.setInt(1, function_tag.getTask_no());
+				stmt2.setString(1, function_tag.getColor());
+				stmt2.setString(2, function_tag.getText());
+				stmt2.executeUpdate();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBUtil.close(stmt);
+			DBUtil.close(stmt2);
 		}
 	}
+
 	// 멤버태그가 없어도 돌아감
 	public void Member_taskFunction(Connection conn, List<Member_task> member_taskList, int task_no) {
 		PreparedStatement stmt = null;
+		PreparedStatement stmt2 = null;
 		try {
-			if (member_taskList.size() == 0 || member_taskList == null) {
-				// 태그가없으면 굳이안만듬
-			} else if (member_taskList.size() != 0) {
-				for (Member_task member_task : member_taskList) {
-					if (member_task.getPackage_no() == 0) {
-						stmt = conn
-								.prepareStatement("INSERT INTO `member_task` (`member_no`, `task_no`, `color`) "
-										+ "VALUES(?,?,?)");
-						stmt.setInt(1, member_task.getMember_no());
-						stmt.setInt(2, member_task.getTask_no());
-						stmt.setString(3, member_task.getColor());					
-						stmt.executeUpdate();
-					} else if (member_task.getPackage_no() != 0) {
-						stmt = conn.prepareStatement(
-								"UPDATE `member_task` SET `member_no` = ?, `color` = ?\r\n" + "WHERE `task_no` = ?");
-						stmt.setInt(1, member_task.getMember_no());
-						stmt.setString(2, member_task.getColor());	
-						stmt.setInt(3, member_task.getTask_no());
-						stmt.executeUpdate();
-					}
-				}
+			stmt = conn.prepareStatement("DELETE FROM `member_task` WHERE `task_no` = ?");
+			stmt.setInt(1, task_no);
+			stmt.executeUpdate();
+			for (Member_task member_task : member_taskList) {
+				stmt2 = conn.prepareStatement(
+						"INSERT INTO `member_task` (`member_no`, `task_no`, `color`) " + "VALUES(?,?,?)");
+				stmt2.setInt(1, member_task.getMember_no());
+				stmt2.setInt(2, member_task.getTask_no());
+				stmt2.setString(3, member_task.getColor());
+				stmt2.executeUpdate();
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBUtil.close(stmt);
+			DBUtil.close(stmt2);
 		}
 	}
 }

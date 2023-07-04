@@ -16,18 +16,18 @@ import frame.MainFrame;
 import utility.IconData;
 import utility.Utility;
 
-public class HomeBtn extends JButton{
+public class HomeBtn extends JButton {
 	private IconData iconData;
 	private Utility utility;
 	private ImageIcon enterIcon;
 	private ImageIcon exitIcon;
-	
+
 	public HomeBtn(MainFrame mainFrame) {
 		iconData = new IconData();
         utility = new Utility();
         
-        enterIcon = iconData.getImageIcon("user3");
-        exitIcon = iconData.getImageIcon("user4");
+        enterIcon = iconData.getImageIconGif("tomatoLogo");
+        exitIcon = iconData.getImageIcon("tomatoLogoStop");
         utility.setButtonProperties(this);
         addMouseListener(new MouseAdapter() {
         	 @Override
@@ -48,7 +48,7 @@ public class HomeBtn extends JButton{
  				
  			}
 		});
-        this.setIcon(exitIcon);
+		this.setIcon(exitIcon);
 	}
-	
+
 }

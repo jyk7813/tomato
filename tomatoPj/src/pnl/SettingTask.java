@@ -50,7 +50,6 @@ public class SettingTask {
 
 		TR = new TaskRepository();
 	}
-	
 	public void reset() {
 		task =null;
 		ts.TakeTask = null;

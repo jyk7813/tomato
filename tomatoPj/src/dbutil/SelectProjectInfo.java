@@ -15,8 +15,22 @@ public class SelectProjectInfo {
 	private List<Column> col;
 	private List<Task> task;
 	private List<Member> memberList;
+	private int ColumnCnt;
 	
+	public void addColumnCnt() {
+		ColumnCnt++;
+	}
+	
+	public int getColumnCnt() {
+		return ColumnCnt;
+	}
+
+	public void setColumnCnt(int columnCnt) {
+		ColumnCnt = columnCnt;
+	}
+
 	public SelectProjectInfo() {
+		this.ColumnCnt=0;
 		this.project_no = 0;
 		this.title = null;
 		this.col = null;

@@ -37,15 +37,32 @@ public class CanBanBtn extends JButton {
 
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				//mainFrame.getContentPane().removeAll();
-				//mainFrame.addPnl();
-				//topMainPnl.addPnl(mainFrame);
-				//topMainPnl.showCard("SelectedCanban");
+				
+				mainFrame.pjInfo=mainFrame.tempInfo;
+				
+
+				mainFrame.getContentPane().removeAll();
+				mainFrame.addPnl();
+				//mainFrame.showCard("projectSelect");
 				mainFrame.showCard("columnSelect");
-				revalidate();
-				repaint();
+				System.out.println("야!!!!!!!!!!!!!!!!!!!!!!!!" + mainFrame.pjInfo.getCol().size());
+				System.out.println("addcolumnCnt : " + mainFrame.pjInfo.getColumnCnt());
+				mainFrame.columnActive = true;
+				mainFrame.boradPnl.panel_2.columnSelectPnl.columnSetting();
+				// mainFrame.refreshColumnSelect();
+
+//				mainFrame.pjInfo = mainFrame.tempInfo;
+//				mainFrame.columnActive = true;
+
+//				
+//				
+//				
+//				mainFrame.showCard("columnSelect");
+//				mainFrame.revalidate();
+//				mainFrame.repaint();
+				// revalidate();
+				// repaint();
 			}
-			
 
 		});
 

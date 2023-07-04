@@ -20,7 +20,7 @@ public class TopCanbanSelectedPnl extends JPanel {
 		setLayout(null);
 
 		HomeBtn homeBtn = new HomeBtn(mainFrame);
-		homeBtn.setBounds(300, 0, 150, 150);
+		homeBtn.setBounds(100, 45, 201, 45);
 		add(homeBtn);
 		
 		
