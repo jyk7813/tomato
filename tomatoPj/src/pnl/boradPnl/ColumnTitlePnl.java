@@ -2,6 +2,8 @@ package pnl.boradPnl;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -18,7 +20,7 @@ public class ColumnTitlePnl extends JPanel {
 	private Image image;
 	public JLabel titleLbl;
 	public String colTitle;
-	private deleteColBtn deletecolBtn;
+	public deleteColBtn deletecolBtn;
 	/**
 	 * Create the panel.
 	 */
@@ -33,12 +35,17 @@ public class ColumnTitlePnl extends JPanel {
 		titleLbl = new JLabel(colTitle, SwingConstants.CENTER);
 		titleLbl.setBounds(0, 0, 350, 60);
 		add(titleLbl);
-
+		deletecolBtn = new deleteColBtn(mainFrame,column_no);
+		deletecolBtn.setBounds(30, 30, 30, 30);
+		add(deletecolBtn);
+		deletecolBtn.setVisible(false);
 		
 	}
+	
 	public void setimage() {
 		if (!isEnabled()) {
 			this.image = iconData.getImageIcon("boardtoptranslucent").getImage();
+			deletecolBtn.setVisible(false);
 		} else {
 			this.image = iconData.getImageIcon("boardtop_opaque").getImage();
 			

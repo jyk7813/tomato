@@ -134,13 +134,16 @@ public class ColumnSelectPnl extends JPanel {
 	    // Mouse listener added to the ColumnPnl instance
 	    columnPnl.addMouseListener(new MouseAdapter() {
 	        @Override
-	        public void mouseClicked(MouseEvent e) {
+	        public void mousePressed(MouseEvent e) {
 	            // This code will be executed when the ColumnPnl instance is clicked
 	            for (ColumnPnl pnl : columnPnls) { // Iterate over all panels
 	                if (pnl == columnPnl) { // If this is the clicked panel
 	                    pnl.setEnabled(true); // Activate it
 	                    pnl.columnTitlePnl.setEnabled(true);
 	                    pnl.setimage();
+	                    if (e.getButton()== MouseEvent.BUTTON3) {
+							pnl.columnTitlePnl.deletecolBtn.setVisible(true);
+						}
 	                    for (TaskPnl taskPnl : pnl.taskPnls) {
 							taskPnl.setEnabled(true);
 							taskPnl.setimage();
@@ -153,6 +156,7 @@ public class ColumnSelectPnl extends JPanel {
 	                    pnl.setEnabled(false); // Deactivate it
 	                    pnl.columnTitlePnl.setEnabled(false);
 	                    pnl.setimage();
+	                    pnl.columnTitlePnl.deletecolBtn.setVisible(false);
 	                    for (TaskPnl taskPnl : pnl.taskPnls) {
 							taskPnl.setEnabled(false);
 							taskPnl.setimage();

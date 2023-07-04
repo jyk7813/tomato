@@ -67,7 +67,6 @@ public class ColumnPnl extends JPanel {
 		columnTitlePnl.setBounds(0, 41, 350, 80);
 		columnTop.add(columnTitlePnl);
 
-		JButton deleteBtn = new JButton();
 
 		addcardBtn = new JButton(iconData.getImageIcon("addtasktranslucent"));
 		addcardBtn.setBounds(0, 0, 350, 79);

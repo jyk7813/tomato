@@ -15,7 +15,7 @@ public class deleteColBtn extends JButton{
 	private Utility utility;
 	private ImageIcon deleteIcon;
 	
-	public deleteColBtn(MainFrame mainFrame) {
+	public deleteColBtn(MainFrame mainFrame, int column_no) {
 		iconData = new IconData();
 		utility = new Utility();
 		deleteIcon = iconData.getImageIcon("delete_btn");
