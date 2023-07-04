@@ -137,10 +137,24 @@ public class CalendarData {
 			String dateStr = year + "-" + month + "-" + day;
 			toLocalDate = LocalDate.parse(dateStr);
 		} else {
-			String dateStr = str.substring(0, 9);
+			String dateStr = str.substring(0, 10);
 			toLocalDate = LocalDate.parse(dateStr);
-			
 		}
 		return toLocalDate;
+	}
+	
+	public String localToString(LocalDate date) {
+		int year = date.getYear();
+		String month = date.getMonth().toString();
+		int monthValue = date.getMonthValue();
+		int dayOfMonth = date.getDayOfMonth();
+		int dayOfYear = date.getDayOfYear();
+		String dayOfWeek = date.getDayOfWeek().toString();
+		int dayOfWeekValue = date.getDayOfWeek().getValue();
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일").withLocale(Locale.forLanguageTag("ko"));
+		String formatedNow = date.format(formatter);
+
+		return formatedNow;
 	}
 }
