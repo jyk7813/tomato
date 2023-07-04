@@ -31,6 +31,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 
 import button.AddPictureBtn;
+import button.ExitBtn;
 import dbutil.DBUtil;
 import frame.MainFrame;
 import tomatoPj.MemberRepository;
@@ -71,14 +72,18 @@ public class SignUpPnl extends JPanel {
 	private boolean emailRegex=false;
 	private boolean nameRegex=false;
 	
+	private ExitBtn exitBtn;
 	
 	public SignUpPnl(Image image, MainFrame mainFrame) {
+		exitBtn = new ExitBtn(mainFrame);
 		
 		idcheckLbl = new JLabel();
 		pwdcheckLbl = new JLabel();
 		pwd2checkLbl = new JLabel();
 		emailcheckLbl = new JLabel();
 		namecheckLbl = new JLabel();
+		
+		exitBtn.setBounds(1649, 33, 150, 70);
 		
 		regex = new Regex();
 		mr = new MemberRepository();
@@ -106,11 +111,11 @@ public class SignUpPnl extends JPanel {
 		for (int i = 0; i < checkLbl.length; i++) {
 			checkLbl[i] = new JLabel();
 		} 
-		addPictureBtn.setBounds(30, 30, 30, 30);
+		addPictureBtn.setBounds(937, 773, 199, 41);
 		
 		
 		testLbl = new JLabel();
-		testLbl.setBounds(960, 600, 60, 60);
+		testLbl.setBounds(860, 763, 60, 60);
 		add(testLbl);
 		
 		signUpActionListener(mainFrame);
@@ -179,7 +184,7 @@ public class SignUpPnl extends JPanel {
 		add(btn);
 		add(backBtn);
 		add(addPictureBtn);
-
+		add(exitBtn);
 		add(idcheckLbl);
 		add(pwdcheckLbl);
 		add(pwd2checkLbl);
