@@ -89,7 +89,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 	int year;
 	int month;
 	int day;
-	
+	MainFrame mainFrame;
 
 	public CalendarSwing() {
 		super();
@@ -169,8 +169,9 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		setVisible(true);
 	}
 
-	public CalendarSwing(int loginMemberNo, Boolean toggleSwitch) {
+	public CalendarSwing(int loginMemberNo, Boolean toggleSwitch, MainFrame mainFrame) {
 		super();
+		this.mainFrame = mainFrame;
 		try {
 			this.loginMemberNo = loginMemberNo;
 			this.settingView = toggleSwitch;
@@ -524,7 +525,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 				color.setBounds(0, 5, 20, 20);
 				color.setLayout(null);
 				color.setOpaque(false);
-				todoTaskBtn clickBox = new todoTaskBtn(p.getTaskPk());
+				todoTaskBtn clickBox = new todoTaskBtn(p.getTaskPk(), mainFrame);
 				clickBox.setName(String.valueOf(count + 1));
 				getTodoBtn(clickBox);
 				JLabel title = new JLabel();

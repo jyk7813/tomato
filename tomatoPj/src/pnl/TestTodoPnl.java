@@ -121,7 +121,7 @@ public class TestTodoPnl extends JPanel {
       // 달력 출력 패널 --------------------------------------
       loginMemberNo = mainFrame.loginMember.getMember_no();
       if(loginMemberNo != 0) {
-         printCal = new CalendarSwing(loginMemberNo, toggleSwitch);
+         printCal = new CalendarSwing(loginMemberNo, toggleSwitch, mainFrame);
          printCal.setBounds(200, 135, 1718, 870);
          printCal.setLayout(null);
          printCal.setOpaque(false);
@@ -153,11 +153,11 @@ public class TestTodoPnl extends JPanel {
             if (toggleSwitch) {
                toggleBtn.setIcon(IC.getImageIcon("prijectEach_toggle"));
                toggleSwitch = false;
-               printCal = new CalendarSwing(loginMemberNo, toggleSwitch);
+               printCal = new CalendarSwing(loginMemberNo, toggleSwitch, mainFrame);
             } else {
                toggleBtn.setIcon(IC.getImageIcon("prijectAll_toggle"));
                toggleSwitch = true;
-               printCal = new CalendarSwing(loginMemberNo, toggleSwitch);
+               printCal = new CalendarSwing(loginMemberNo, toggleSwitch, mainFrame);
             }
          }
       };
