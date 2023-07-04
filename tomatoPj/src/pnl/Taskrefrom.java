@@ -259,9 +259,9 @@ public class Taskrefrom extends JPanel {
 					} else if (mainFrame.todoBtnActive == true) {
 						mainFrame.showCard("todo");
 					}
-
 					mainFrame.columnActive = true;
-					mainFrame.boradPnl.panel_2.columnSelectPnl.columnSetting();
+					mainFrame.boradPnl.panel_2.columnSelectPnl.updatePnl(mainFrame.pjInfo.getProject_no());
+
 
 				}
 

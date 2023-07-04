@@ -26,7 +26,7 @@ public class ColumnTitlePnl extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ColumnTitlePnl(MainFrame mainFrame, String colTitle, int column_no, ColumnSelectPnl columnSelectPnl) {
+	public ColumnTitlePnl(MainFrame mainFrame, String colTitle, int column_no, ColumnSelectPnl columnSelectPnl,Column column) {
 		this.colTitle = colTitle;
 		iconData = new IconData();
 
@@ -37,7 +37,7 @@ public class ColumnTitlePnl extends JPanel {
 		titleLbl = new JLabel(colTitle, SwingConstants.CENTER);
 		titleLbl.setBounds(0, 0, 350, 60);
 		add(titleLbl);
-		deletecolBtn = new DeleteColBtn(mainFrame,column_no);
+		deletecolBtn = new DeleteColBtn(mainFrame,column_no,column);
 		deletecolBtn.setBounds(320, 0, 30, 30);
 		add(deletecolBtn);
 		deletecolBtn.setVisible(false);

@@ -15,9 +15,11 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import dbutil.SelectProjectInfo;
 import frame.MainFrame;
 import tomatoPj.Column;
 import tomatoPj.ColumnRepository;
+import tomatoPj.ProjectRepository;
 import tomatoPj.Task;
 import tomatoPj.TaskRepository;
 import utility.IconData;
@@ -77,6 +79,7 @@ public class ColumnSelectPnl extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				columnSetting();
+				updatePnl(mainFrame.pjInfo.getProject_no());
 			}
 
 		});
@@ -154,6 +157,8 @@ public class ColumnSelectPnl extends JPanel {
 								pnl.columnTitlePnl.titleLbl.setText(pnl.columnTitlePnl.updateTitleField.getText());
 								colRepo.editTitleColumn(pnl.getColumn().getColumn_no(),
 										pnl.columnTitlePnl.updateTitleField.getText());
+								updatePnl(mainFrame.pjInfo.getProject_no());
+
 							} else {
 								pnl.columnTitlePnl.deletecolBtn.setVisible(true);
 								pnl.columnTitlePnl.updateTitleField.setVisible(true);
@@ -199,15 +204,36 @@ public class ColumnSelectPnl extends JPanel {
 		add(addColumnPnl);
 	}
 
-	public void updatePnl() {
-		System.out.println("새로고침 실행");
-		mainFrame.tempInfo = mainFrame.pjInfo;
-		System.out.println(mainFrame.tempInfo);
-		mainFrame.projectPnl.projectPnl.insertPjInfo(mainFrame, mainFrame.tempInfo.getProject_no(),
-				mainFrame.tempInfo.getTitle());
-
-		addPnl();
-		columnSetting();
+	public void updatePnl(int project_no) {
+	    // First we clear the panel
+	    this.removeAll();
+	    columnPnls.clear();
+	    addPnl();
+	    // Then we fetch the data from the database
+	    List<Column> columns = new ArrayList<>();
+		try {
+			columns = colRepo.selectByColNo(project_no);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    // And we add each column to the panel
+	    for (Column column : columns) {
+	        addColumnPanel(column);
+	    }
+	    // Finally we call revalidate() and repaint() to refresh the UI
+	    revalidate();
+	    repaint();
 	}
+	
+	public void deleteColumn(Column column, int project_no) {
+	    // Here you'd delete the column from the database
+	    colRepo.deleteColumn(column.getColumn_no());
+	    // Remove the column from the UI
+	    columnPnls.remove(column);
+	    // Now we need to fetch the updated data from the database and update the UI
+	    updatePnl(project_no);
+	}
+
 
 }
