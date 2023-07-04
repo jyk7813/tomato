@@ -2,15 +2,12 @@ package pnl.commonpnl;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.WindowStateListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import dbutil.LoginMember;
 import frame.MainFrame;
 import utility.IconData;
 
@@ -19,7 +16,9 @@ public class MyInfoPnl extends JPanel {
 	private Image image;
 	private byte[] imageBytes;
 	private MainFrame mainFrame;
+	private JLayeredPane layeredPane;
 	public JLabel myInfoLbl;
+	public JLabel anotherLabel;
 	/**
 	 * Create the panel.
 	 */
@@ -27,8 +26,9 @@ public class MyInfoPnl extends JPanel {
 		this.mainFrame = mainFrame;
 		iconData = new IconData();
 		this.image = iconData.getImageIcon("mini_bar").getImage();
-		
+		layeredPane = new JLayeredPane();
 		setOpaque(false);
+		add(layeredPane);
 		
 	}
 	@Override
@@ -41,18 +41,24 @@ public class MyInfoPnl extends JPanel {
 		imageBytes = mainFrame.loginMember.getMember().getImage();
 		if (imageBytes == null) { // 기본이미지
 			myInfoLbl = new JLabel(iconData.getImageIcon("user1"));
-			myInfoLbl.setBounds(25, 30, 60, 60);
-			add(myInfoLbl);
+			myInfoLbl.setBounds(35, 40, 60, 60);
+			layeredPane.add(myInfoLbl, new Integer(2));
 			revalidate();
 			repaint();
 		}
 		if (imageBytes != null) { // 넣어둔이미지
 			ImageIcon imageIcon = new ImageIcon(imageBytes);
 			JLabel myInfoLbl = new JLabel(imageIcon);
-			myInfoLbl.setBounds(25, 30, 60, 60);
-			add(myInfoLbl);
+			myInfoLbl.setBounds(35, 40, 60, 60);
+			layeredPane.add(myInfoLbl, new Integer(2));
 			revalidate();
 			repaint();
 		}
+		 anotherLabel = new JLabel(iconData.getImageIcon("myinfo2"));
+	        anotherLabel.setBounds(0, 0, 130, 140); // Set bounds so it overlaps myInfoLbl
+	        layeredPane.add(anotherLabel,new Integer(3));
+
+	        revalidate();
+	        repaint();
 	}
 }
