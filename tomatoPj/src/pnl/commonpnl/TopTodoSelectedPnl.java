@@ -32,7 +32,7 @@ public class TopTodoSelectedPnl extends JPanel {
         add(logoutBtn);
         
         // Load the image (this assumes you have a "image.jpg" file in the same directory)
-        backgroundImage = iconData.getImageIcon("todoselectedre").getImage();
+        backgroundImage = iconData.getImageIcon("selectedtodo").getImage();
         setOpaque(false);
     }
 
