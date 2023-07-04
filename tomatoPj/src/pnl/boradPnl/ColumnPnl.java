@@ -1,19 +1,17 @@
 package pnl.boradPnl;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.TransferHandler;
 
 import frame.MainFrame;
 import tomatoPj.Column;
@@ -31,11 +29,12 @@ public class ColumnPnl extends JPanel {
 	public Task task;
 	private TaskRepository taskRepo;
 	List<Task> taskList;
+	public TaskPnl taskPnl;
 
 	/**
 	 * Create the panel.
 	 */
-	public ColumnPnl(MainFrame mainFrame, String colTitle, Column column, List<Task> taskList) {
+	public ColumnPnl(MainFrame mainFrame, String colTitle, Column column, List<Task> taskList, ColumnSelectPnl columnSelectPnl) {
 
 		try {
 			if (column != null) {
@@ -48,7 +47,7 @@ public class ColumnPnl extends JPanel {
 		utility = new Utility();
 
 		setLayout(new BorderLayout(0, 0));
-
+		 setEnabledRecursive(this, false);
 		JPanel columnTop = new JPanel();
 		add(columnTop, BorderLayout.NORTH);
 		columnTop.setLayout(null);
@@ -62,13 +61,13 @@ public class ColumnPnl extends JPanel {
 			columntitle = colTitle;
 		}
 
-		columnTitlePnl = new ColumnTitlePnl(mainFrame, columntitle, column.getColumn_no());
+		columnTitlePnl = new ColumnTitlePnl(mainFrame, columntitle, column.getColumn_no(),columnSelectPnl);
 		columnTitlePnl.setBounds(0, 41, 350, 80);
 		columnTop.add(columnTitlePnl);
 
 		JButton deleteBtn = new JButton();
 
-		addcardBtn = new JButton(iconData.getImageIcon("addcardicon"));
+		addcardBtn = new JButton(iconData.getImageIcon("addtasktranslucent"));
 		addcardBtn.setBounds(0, 0, 350, 79);
 		utility.setButtonProperties(addcardBtn);
 
@@ -98,6 +97,9 @@ public class ColumnPnl extends JPanel {
 		addcardBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (!isEnabled()) {
+		            return; // Skip the action if the button is not enabled
+		        }
 				taskCount++;
 				TaskPnl taskPnl = new TaskPnl(mainFrame, column, task);
 				taskPnl.setBounds(0, 80 * (taskCount - 1), 350, 80);
@@ -114,7 +116,7 @@ public class ColumnPnl extends JPanel {
 			for (Task task : taskList) {
 				// addcardBtn.doClick();
 				taskCount++;
-				TaskPnl taskPnl = new TaskPnl(mainFrame, column, task);
+				taskPnl = new TaskPnl(mainFrame, column, task);
 				taskPnl.setBounds(0, 80 * (taskCount - 1), 350, 80);
 				panel.add(taskPnl);
 
@@ -125,6 +127,17 @@ public class ColumnPnl extends JPanel {
 				panel.repaint();
 			}
 		}
+		if (isEnabled()) {
+			System.out.println(colTitle + "isLive");
+		}
 		
 	}
+	private void setEnabledRecursive(Component component, boolean isEnabled) {
+        component.setEnabled(isEnabled);
+        if (component instanceof Container) {
+            for (Component child : ((Container) component).getComponents()) {
+                setEnabledRecursive(child, isEnabled);
+            }
+        }
+    }
 }

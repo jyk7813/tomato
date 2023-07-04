@@ -44,7 +44,7 @@ public class TaskPnl extends JPanel {
 		
 		
 		// 넌이제부터 태스크야 알았어?
-		this.image = iconData.getImageIcon("boardMiddle_opaque").getImage();
+		this.image = iconData.getImageIcon("boardMiddletranslucent").getImage();
 		setLayout(null);
 		setOpaque(false);
 		String tasktitle;

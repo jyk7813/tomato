@@ -22,11 +22,11 @@ public class ColumnTitlePnl extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ColumnTitlePnl(MainFrame mainFrame, String colTitle, int column_no) {
-		
+	public ColumnTitlePnl(MainFrame mainFrame, String colTitle, int column_no, ColumnSelectPnl columnSelectPnl) {
+		this.colTitle = colTitle;
 		iconData = new IconData();
 
-		this.image = iconData.getImageIcon("boardTop_opaque").getImage();
+		this.image = iconData.getImageIcon("boardtoptranslucent").getImage();
 		setLayout(null);
 		setOpaque(false);
 		

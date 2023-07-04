@@ -3,6 +3,8 @@ package pnl.boradPnl;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,15 +120,35 @@ public class ColumnSelectPnl extends JPanel {
 	}
 
 	private void addColumnPanel(Column column) {
-		List<Task> taskList = getTasksForColumn(column);
-		ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column, taskList);
-		columnPnls.add(columnPnl); // add the new panel to the list
-		add(columnPnl);
-		setBoundsForPanel(columnPnl);
-		revalidate();
-		repaint();
-		columnCount++;
+	    List<Task> taskList = getTasksForColumn(column);
+	    final ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column, taskList, this);
+	    columnPnls.add(columnPnl); // add the new panel to the list
+	    add(columnPnl);
+	    setBoundsForPanel(columnPnl);
+	    revalidate();
+	    repaint();
+	    columnCount++;
+
+	    // Mouse listener added to the ColumnPnl instance
+	    columnPnl.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseClicked(MouseEvent e) {
+	            // This code will be executed when the ColumnPnl instance is clicked
+	            for (ColumnPnl pnl : columnPnls) { // Iterate over all panels
+	                if (pnl == columnPnl) { // If this is the clicked panel
+	                    pnl.setEnabled(true); // Activate it
+	                    pnl.columnTitlePnl.setEnabled(true);
+	                    
+	                   System.out.println(columnPnl.columnTitlePnl.colTitle);
+	                } else { // If this is not the clicked panel
+	                    pnl.setEnabled(false); // Deactivate it
+	                    pnl.columnTitlePnl.setEnabled(false);
+	                }
+	            }
+	        }
+	    });
 	}
+	
 
 	private List<Task> getTasksForColumn(Column column) {
 		try {
