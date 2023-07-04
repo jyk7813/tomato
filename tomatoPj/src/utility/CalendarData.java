@@ -64,6 +64,22 @@ public class CalendarData {
 	}
 	
 	/**
+	 * 전달받은 날짜가 특정 기간 안에 속하는 지 확인
+	 * 
+	 * @param LocalDate (체크하려는 날짜, 특정 기간의 시작일자, 특정 기간의 종료일자)
+	 * @return boolean
+	 */
+	public boolean checkLocalDateRange(LocalDate date, LocalDate startDate, LocalDate endDate) {
+		LocalDate localdate = date;
+		LocalDate startLocalDate = startDate;
+		LocalDate endLocalDate = endDate;
+		
+		endLocalDate = endLocalDate.plusDays(1); // endDate는 포함하지 않으므로 +1일을 해줘야함.
+		
+		return (!localdate.isBefore(startLocalDate)) && (localdate.isBefore(endLocalDate));
+	}
+	
+	/**
 	 * 현재 날짜를 기준으로 년, 월(문자열, 숫자), 일, 요일, 일(Year 기준) 추출
 	 * 
 	 * @param String 원하는날짜값 (메소드 내 변수명 참고)
