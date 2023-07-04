@@ -48,7 +48,6 @@ import utility.IconData;
 import utility.Utility;
 
 public class ProjectSelectPnl extends JPanel {
-
 	private Image image;
 	private IconData iconData;
 	private Utility utility;
@@ -182,7 +181,6 @@ public class ProjectSelectPnl extends JPanel {
 		add(westPnl, BorderLayout.WEST);
 		add(eastPnl, BorderLayout.EAST);
 		northPanel.add(logoutBtn);
-
 	}
 
 	// 프로젝트 선택화면에 띄우기 위함
