@@ -159,6 +159,21 @@ public class CalendarData {
 		return toLocalDate;
 	}
 	
+	public LocalDate getDate(String str, String str2) {
+		String currentStr = "^\\d{0,4}-\\d{0,2}-\\d{0,2}\\s~\\s\\d{0,4}-\\d{0,2}-\\d{0,2}";
+		Pattern pattern = Pattern.compile(currentStr);
+		if(str2.equals("up")) {
+			String up = str.substring(0, 10);
+			System.out.println("*캘린더 시작: " + up);
+			return LocalDate.parse(up);
+		} else if(str2.equals("dead")){
+			String dead = str.substring(13);
+			System.out.println("*캘린더 시작2: " + dead);
+			return LocalDate.parse(dead);
+		}
+		return null;
+	}
+	
 	public String localToString(LocalDate date) {
 		int year = date.getYear();
 		String month = date.getMonth().toString();
