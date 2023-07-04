@@ -138,11 +138,25 @@ public class ColumnSelectPnl extends JPanel {
 	                if (pnl == columnPnl) { // If this is the clicked panel
 	                    pnl.setEnabled(true); // Activate it
 	                    pnl.columnTitlePnl.setEnabled(true);
+	                    pnl.setimage();
+	                    for (TaskPnl taskPnl : pnl.taskPnls) {
+							taskPnl.setEnabled(true);
+							taskPnl.setimage();
+							revalidate();
+							repaint();
+						}
 	                    
 	                   System.out.println(columnPnl.columnTitlePnl.colTitle);
 	                } else { // If this is not the clicked panel
 	                    pnl.setEnabled(false); // Deactivate it
 	                    pnl.columnTitlePnl.setEnabled(false);
+	                    pnl.setimage();
+	                    for (TaskPnl taskPnl : pnl.taskPnls) {
+							taskPnl.setEnabled(false);
+							taskPnl.setimage();
+							revalidate();
+							repaint();
+						}
 	                }
 	            }
 	        }

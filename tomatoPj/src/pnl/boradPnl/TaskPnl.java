@@ -66,6 +66,9 @@ public class TaskPnl extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (!isEnabled()) {
+					return;
+				}
 				Feedback feedback = new Feedback(6, 27, 1, "대본수정");
 				
 				if(task !=null) {
@@ -90,6 +93,17 @@ public class TaskPnl extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, null);
+	}
+	public void setimage() {
+		if (!isEnabled()) {
+			this.image = iconData.getImageIcon("boardMiddletranslucent").getImage();
+			revalidate();
+			repaint();
+		} else {
+			this.image = iconData.getImageIcon("boardMiddle_opaque").getImage();
+			revalidate();
+			repaint();
+		}
 	}
 
 }
