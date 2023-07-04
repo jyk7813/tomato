@@ -88,12 +88,14 @@ public class PrintPlannerList {
 		if (toggleSwitch) {
 			List<PrintPlanner> ppList = new ArrayList<>();
 			for (PrintPlanner p : list) {
+				System.out.println("프린트리스트테스트1: " + p);
 				pkNum = p.getPk();
 				if (pkNum == p.getPk()) {
 					ppList.add(p);
+					System.out.println("프린트리스트테스트2: " + p);
 				}
 				PrintPlanner pp = new PrintPlanner(i, ppList);
-				System.out.println("getPrintList 테스트 [전체]: " + pp);
+				System.out.println("테스트 [전체]: " + pp.getColorPk() + pp.getSelect() + pp.getTitle() + pp.getSelPjName());
 				getList.add(pp);
 				i++;
 			}
@@ -106,7 +108,7 @@ public class PrintPlannerList {
 					ppList.add(p);
 				}
 				PrintPlanner pp = new PrintPlanner(i, ppList);
-				System.out.println("getPrintList 테스트 [프로젝트별]: " + pp);
+				System.out.println("테스트 [프로젝트별]: " + pp.getColorPk() + pp.getSelect() + pp.getTitle() + pp.getSelPjName());
 				getList.add(pp);
 				i++;
 			}

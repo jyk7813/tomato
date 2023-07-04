@@ -42,7 +42,48 @@ public class PrintPlanner implements Comparable<PrintPlanner>{
       this.deadLine = deadLine;
    }
    
-   public String getSelPjName() {
+   
+   public int getColorPk() {
+	return colorPk;
+}
+
+public void setColorPk(int colorPk) {
+	this.colorPk = colorPk;
+}
+
+public LocalDate getUp() {
+	return up;
+}
+
+public void setUp(LocalDate up) {
+	this.up = up;
+}
+
+public LocalDate getDead() {
+	return dead;
+}
+
+public void setDead(LocalDate dead) {
+	this.dead = dead;
+}
+
+public CalendarData getCd() {
+	return cd;
+}
+
+public void setCd(CalendarData cd) {
+	this.cd = cd;
+}
+
+public List<PrintPlanner> getPrintList() {
+	return printList;
+}
+
+public void setPrintList(List<PrintPlanner> printList) {
+	this.printList = printList;
+}
+
+public String getSelPjName() {
       return selPjName;
    }
 

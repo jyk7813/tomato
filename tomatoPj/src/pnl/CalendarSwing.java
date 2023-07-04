@@ -110,7 +110,6 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		todoDate = calManager.getCurrentDate();
 		
 		selDate = cd.getLocalDate(todoDate);
-		System.out.println(selDate);
 		currentDate.setText(todoDate);
 		currentDate.setFont(fnt);
 		currentDate.setLayout(null);
@@ -300,7 +299,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 	}
 
 	public void setDay(int no, boolean toggleSwitch) {
-		List<PrintPlanner> ppList = ppl.setView(no, toggleSwitch);
+//		List<PrintPlanner> ppList = ppl.setView(no, toggleSwitch);
 		// 요일
 		date.set(year, month - 1, 1); // date를 세팅하는데, 일(day)을 1로 세팅
 		int week = date.get(Calendar.DAY_OF_WEEK); // 일월화수목금토

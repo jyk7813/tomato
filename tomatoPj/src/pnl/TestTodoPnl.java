@@ -125,13 +125,13 @@ public class TestTodoPnl extends JPanel {
          printCal.setBounds(200, 135, 1718, 870);
          printCal.setLayout(null);
          printCal.setOpaque(false);
-         add(printCal); // 달력 패널
+         add(printCal); // 사용자값 받아 달력 출력 패널
       } else {
          printCal = new CalendarSwing();
          printCal.setBounds(200, 135, 1718, 870);
          printCal.setLayout(null);
          printCal.setOpaque(false);
-         add(printCal); // 달력 패널
+         add(printCal); // 달력 기본 생성자
       }
 
       // 막대바 출력 패널 -------------------------------------
