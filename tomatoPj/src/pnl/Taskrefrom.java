@@ -237,7 +237,11 @@ public class Taskrefrom extends JPanel {
 					add(newBtn());
 					st.reset();
 					CountTag = 0;
+					mainFrame.getContentPane().removeAll();
+					mainFrame.addPnl();
 					mainFrame.showCard("columnSelect");
+					mainFrame.columnActive = true;
+					mainFrame.boradPnl.panel_2.columnSelectPnl.columnSetting();
 
 					
 				}
