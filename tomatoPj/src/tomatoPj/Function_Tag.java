@@ -55,27 +55,11 @@ public class Function_Tag {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Function_Tag other = (Function_Tag) obj;
-		if (color == null) {
-			if (other.color != null)
-				return false;
-		} else if (!color.equals(other.color))
-			return false;
-		if (no != other.no)
-			return false;
-		if (task_no != other.task_no)
-			return false;
-		if (text == null) {
-			if (other.text != null)
-				return false;
-		} else if (!text.equals(other.text))
-			return false;
-		return true;
+	        return true;
+	    if (obj == null || getClass() != obj.getClass())
+	        return false;
+	    Function_Tag other = (Function_Tag) obj;
+	    return text.equals(other.text);
 	}
 	@Override
 	public String toString() {

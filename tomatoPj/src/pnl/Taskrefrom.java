@@ -215,15 +215,6 @@ public class Taskrefrom extends JPanel {
 
 					returnFeedBack = TakeFeedBack;
 
-//					if (TakeTask == null) {
-//						member_task_List.remove(0);
-//						member_task_List.add(new Member_task(0, useingMemberNum, 0, "테스트용"));
-//					}
-
-					System.out.println("돌려줘야할 정보 전체 확인");
-
-					System.out.println(member_task_List);
-
 					Task_Service_Repository TSR = new Task_Service_Repository();
 					
 					

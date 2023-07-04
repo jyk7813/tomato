@@ -92,6 +92,7 @@ public class TaskMemberAdd extends JDialog {
                   
                 }
                 if (ids.contains(input)) {
+                	
                     notFound.setVisible(false);  // 입력된 아이디가 존재하면 notFound 라벨을 숨깁니다.
 
                     for (int i = 0; i < ids.size(); i++) {
@@ -126,9 +127,22 @@ public class TaskMemberAdd extends JDialog {
                         }
                     });
                     int memberNum = Integer.valueOf(hidenText.getText());
-                    tr.member_task_List.add(new Member_task(0,memberNum,tr.TakeTask.getTask_no(),""));
+                    Member_task comp =  new Member_task(0,memberNum,0,"");
                     memberIcon.setSize(new Dimension(60,60));
-                    tr.MemberPnl.add(memberIcon);
+    
+                   if(tr.member_task_List.contains(comp)) {
+                	   
+                	   notFound.setText("이미 추가되있는 유저입니다");
+                	   notFound.setVisible(true);
+                   }else {
+                	   tr.MemberPnl.add(memberIcon);
+                	   tr.member_task_List.add(new Member_task(0,memberNum,tr.TakeTask.getTask_no(),""));
+                	   
+                   }
+                    		
+             
+                    	
+            
                     
 
                     // 아이콘들 간의 간격을 위한 빈 공간 컴포넌트 추가
@@ -137,6 +151,7 @@ public class TaskMemberAdd extends JDialog {
                     tr.MemberPnl.repaint();
                     tr.Count++;
                 } else {
+                	notFound.setText("해당 아이디는 존재하지 않습니다");
                     notFound.setVisible(true);  // 입력된 아이디가 존재하지 않으면 notFound 라벨을 보여줍니다.
                 }
 
