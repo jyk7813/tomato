@@ -15,7 +15,7 @@ import java.awt.event.ComponentListener;
 
 public class ProjectMemberPnl extends JPanel {
 	private IconData iconData;
-	private ProjectTitlePnl projectTitlePnl;
+	public ProjectTitlePnl projectTitlePnl;
 	public MyInfoPnl myInfoPnl;
 	public MemberListPnl memberPnl;
 	/**

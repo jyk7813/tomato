@@ -76,7 +76,7 @@ public class MemberListPnl extends JPanel {
 
 						@Override
 						public void windowClosed(WindowEvent e) {
-							updateMember();
+							updateMember(mainFrame);
 
 						}
 
@@ -91,6 +91,7 @@ public class MemberListPnl extends JPanel {
 							memberRepository.addProjectMember(mainFrame.pjInfo.getProject_no(),
 									memberAddPopup.idInsertTextField.getText());
 							memberAddPopup.dispose();
+							updateMember(mainFrame);
 						}
 					});
 
@@ -164,16 +165,14 @@ public class MemberListPnl extends JPanel {
 		add(memberAddPnl);
 	}
 
-	public void updateMember() {
-		mainFrame.tempInfo = mainFrame.pjInfo;
-		System.out.println(mainFrame.tempInfo);
-		mainFrame.projectPnl.projectPnl.insertPjInfo(mainFrame, mainFrame.tempInfo.getProject_no(),
-				mainFrame.tempInfo.getTitle());
+	public void updateMember(MainFrame mainFrame) {
+		
 
-		addPnl();
 		members = mainFrame.pjInfo.getMemberList();
+		System.out.println("선택한 프로젝트"+mainFrame.pjInfo);
 		System.out.println(members);
 		// Clear the memberPnls list
+		addPnl();
 		memberPnls.clear();
 
 		if (members != null) {
@@ -197,6 +196,8 @@ public class MemberListPnl extends JPanel {
 			memberAddPnl.repaint();
 			memberAddPnl.add(plusBtn);
 			count = memberPnls.size();
+			revalidate();
+			repaint();
 
 		}
 	}

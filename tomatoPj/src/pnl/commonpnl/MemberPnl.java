@@ -54,7 +54,7 @@ public class MemberPnl extends JPanel {
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				} finally {
-					mainFrame.projectPnl.westPnl.projectMemberPnl.memberPnl.updateMember();
+					mainFrame.projectPnl.westPnl.projectMemberPnl.memberPnl.updateMember(mainFrame);
 				}
 			}
 		});

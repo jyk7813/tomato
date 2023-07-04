@@ -53,6 +53,7 @@ public class MainFrame extends JFrame {
 	public TaskBackgroundPnl TBP;
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	public String selectedProjectTitle;
+	public String tempSelectedProjectTitle;
 	public ProjectSelectPnl projectPnl;
 	public boolean todoBtnActive = false;
 	public MemberRepository mr = new MemberRepository();
