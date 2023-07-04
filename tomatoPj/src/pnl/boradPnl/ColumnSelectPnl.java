@@ -116,7 +116,9 @@ public class ColumnSelectPnl extends JPanel {
 
 	private void addExistingColumns(List<Column> columns) {
 		for (Column column : columns) {
+			mainFrame.pjInfo.addColumnCnt();
 			addColumnPanel(column);
+			
 		}
 	}
 

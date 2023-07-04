@@ -23,21 +23,20 @@ public class BoradPnl extends JPanel{
 	private ProjectMemberPnl projectMemberPnl;
 	
 	public BoradPnl(Image image, MainFrame mainFrame) {
-		
 		this.mainFrame = mainFrame;
 		this.image = image;
 		projectMemberPnl = new ProjectMemberPnl(mainFrame);
 		panel_2 = new BoardselectPnl(mainFrame);
 		setLayout(new BorderLayout(0, 0));
-		
 		addPnl();
 	
+		
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-
+				System.out.println("여기야" + mainFrame.pjInfo.getCol().size());
+				
 				projectMemberPnl.myInfoPnl.settingMyInfopnl();
-				System.out.println(mainFrame.pjInfo);
 				int size=0;
 				try {
 					size = mainFrame.pjInfo.getCol().size();
@@ -45,7 +44,8 @@ public class BoradPnl extends JPanel{
 				} catch (NullPointerException e1) {
 					size=0;
 				}
-				if(size>0) {
+				if(size>0 && mainFrame.pjInfo.getColumnCnt() != mainFrame.pjInfo.getCol().size()) {
+					System.out.println("여기야야" + mainFrame.pjInfo.getCol().size() + "?");
 					panel_2.columnSelectPnl.columnSetting();
 				} 
 			}
