@@ -38,10 +38,13 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import frame.MainFrame;
 import tomatoPj.Column;
 import tomatoPj.Feedback;
+import tomatoPj.FeedbackRepository;
 import tomatoPj.Function_Tag;
 import tomatoPj.Member;
+import tomatoPj.Member_task;
 import tomatoPj.Task;
 import tomatoPj.TaskRepository;
+import tomatoPj.Task_Service_Repository;
 import utility.FontData;
 import utility.IconData;
 import utility.Utility;
@@ -115,6 +118,7 @@ public class Taskrefrom extends JPanel {
 	List<Member> memberList;
 	List<Function_Tag> Function_Tag_List;
 	List<String> tagTexts;
+	List<Member_task> member_taskList;
 	Column column;
 	CardLayout cardLayout;
 	
@@ -122,7 +126,6 @@ public class Taskrefrom extends JPanel {
 	int returnFeedBack_Task_no;
 	int useingMemberNum;
 	Feedback returnFeedBack;
-
 	
 	Taskrefrom tr;
 	
@@ -136,6 +139,7 @@ public class Taskrefrom extends JPanel {
 
 
 	public Taskrefrom(MainFrame mainFrame) {
+		Task_Service_Repository TSR = new Task_Service_Repository();
 		tagTexts = new ArrayList<>();
 		ts = this;
 //		 태그 받아오는 db 함수 필요함s
@@ -210,10 +214,18 @@ public class Taskrefrom extends JPanel {
 					System.out.println(OldList);
 						
 					}
+					
 					add(newBtn());
 					st.reset();
 					CountTag = 0;
+					System.out.println("돌려줄꺼 최종 확인");
+					System.out.println(returnTask);
+					System.out.println(returnFeedBack);
+					System.out.println(return_Function_Tag_List);
+//					System.out.println(member_taskList);
 					
+					
+//					TSR.updateTask(returnTask, returnFeedBack, return_Function_Tag_List, member_taskList);
 					mainFrame.showCard("columnSelect");
 
 					
@@ -265,7 +277,7 @@ public class Taskrefrom extends JPanel {
 		// 팝업창에 아이디 입력으로 추가.
 		// 멤버 추가 로직고민
 
-		st = new SettingTask(this, TakeTask, column, TakeFeedBack);
+		st = new SettingTask(this, TakeTask, column,TakeFeedBack);
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
@@ -325,10 +337,13 @@ public class Taskrefrom extends JPanel {
 		return pnl;
 	}
 
-	public void settingTask(Taskrefrom myUpPnl, Task task, Column column, Feedback feedback) {
+	public void settingTask(Taskrefrom myUpPnl, Task task, Column column) {
 		try {
-
-			st = new SettingTask(myUpPnl, task, column, feedback);
+			FeedbackRepository FDR = new FeedbackRepository();
+			System.out.println("세팅에서 확인");
+			TakeFeedBack = FDR.searchFeedbackBytask_no(task.getTask_no());
+			
+			st = new SettingTask(myUpPnl, task, column,TakeFeedBack);
 			
 			st.settingPKAndAc();
 
@@ -352,6 +367,8 @@ public class Taskrefrom extends JPanel {
 			st.setTaglist();
 
 			st.TagAddButton(Function_Tag_List);
+			
+			st.settingMember_TaskList();
 	
 		} catch (Exception e) {
 			e.printStackTrace();
