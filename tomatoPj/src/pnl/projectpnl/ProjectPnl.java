@@ -51,6 +51,7 @@ public class ProjectPnl extends JPanel {
     	mainFrame.showCard("columSelect");
 		mainFrame.pjInfo.setProject_no(project_no);
 		mainFrame.pjInfo.setTitle(title);
+		
 		try {
 			for (Member mem : mtPackageRepo.returnMemberByPj_no(project_no)) {
 				mainFrame.pjInfo.getMemberList().add(mem);
@@ -68,7 +69,6 @@ public class ProjectPnl extends JPanel {
     	mainFrame.pjInfo = new SelectProjectInfo(project_no, title, null, null);
     	return mainFrame.pjInfo.getTitle();
 	}
-    public ProjectPnl() {}
     
     public ProjectPnl(MainFrame mainFrame, int project_no, String title) {
     	this.project_no = project_no;

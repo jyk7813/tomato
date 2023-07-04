@@ -80,7 +80,6 @@ public class ProjectSelectPnl extends JPanel {
 		utility = new Utility();
 		setLayout(new BorderLayout(0, 0));
 		logoutBtn = new LogoutBtn(mainFrame);
-		projectPnl = new ProjectPnl();
 		
 		addPnl();
 
@@ -148,7 +147,9 @@ public class ProjectSelectPnl extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					mainFrame.setSelectedProjectTitle("신규프로젝트");
-					projectPnl.insertPjInfo(mainFrame, pjRepo.generateProject("신규프로젝트", mainFrame.loginMember.getMember_no()).getProject_no(), "신규프로젝트");
+					projectPnl = new ProjectPnl(mainFrame, pjRepo.generateProject("신규 프로젝트",  mainFrame.loginMember.getMember_no()).getProject_no(), "신규프로젝트");
+					projectPnl.insertPjInfo(mainFrame, projectPnl.project_no,"신규 프로젝트");
+					projectPnls.add(projectPnl);
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 					System.out.println("제대로안만들어짐");
@@ -188,7 +189,7 @@ public class ProjectSelectPnl extends JPanel {
 
 
 	// 프로젝트 선택화면에 띄우기 위함
-	private void loginMemberSetting() {
+	public void loginMemberSetting() {
 		mainFrame.loginMember.getPjList().clear();
 		
 		List<Task> list = new ArrayList<>();
@@ -257,7 +258,7 @@ public class ProjectSelectPnl extends JPanel {
 		centerPnl.repaint();
 	}
 	
-	private void removeAllProjectPanels() {
+	public void removeAllProjectPanels() {
 	    for (Component comp : centerPnl.getComponents()) {
 	        if (comp instanceof ProjectPnl) {
 	            centerPnl.remove(comp);
