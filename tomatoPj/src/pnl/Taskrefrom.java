@@ -234,7 +234,7 @@ public class Taskrefrom extends JPanel {
 					System.out.println(member_task_List);
 					System.out.println(column.getColumn_no());
 					Task_Service_Repository TSR = new Task_Service_Repository();
-					TSR.updateTask(returnTask,returnFeedBack,Function_Tag_List, member_task_List,column.getColumn_no());
+					//TSR.updateTask(returnTask,returnFeedBack,Function_Tag_List, member_task_List,column.getColumn_no());
 					
 					
 					

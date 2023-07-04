@@ -22,8 +22,8 @@ public class Task_Service_Repository {
 	 * @param List<Function_Tag>
 	 * @param List<Member_task>
 	 */
-	public String updateTask(Task task, Feedback feedback, List<Function_Tag> function_tagList,
-			List<Member_task> member_taskList, int column_no) {
+	public String updateTask(Task task, /*Feedback feedback, List<Function_Tag> function_tagList,
+			List<Member_task> member_taskList, */int column_no) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
@@ -54,9 +54,9 @@ public class Task_Service_Repository {
 					stmt3.setInt(2, task_no);
 					stmt3.executeUpdate();
 
-					FeedbackFunction(conn, feedback, task_no);
-					Function_TagFunction(conn, function_tagList, task_no);
-					Member_taskFunction(conn, member_taskList, task_no);
+//					FeedbackFunction(conn, feedback, task_no);
+//					Function_TagFunction(conn, function_tagList, task_no);
+//					Member_taskFunction(conn, member_taskList, task_no);
 					return "태스크새로만듬";
 				} else if (task.getTask_no() != 0) {
 
@@ -71,9 +71,9 @@ public class Task_Service_Repository {
 					stmt.setInt(6, task.getTask_no());
 					stmt.executeUpdate();
 
-					FeedbackFunction(conn, feedback, task.getTask_no());
-					Function_TagFunction(conn, function_tagList, task.getTask_no());
-					Member_taskFunction(conn, member_taskList, task.getTask_no());
+//					FeedbackFunction(conn, feedback, task.getTask_no());
+//					Function_TagFunction(conn, function_tagList, task.getTask_no());
+//					Member_taskFunction(conn, member_taskList, task.getTask_no());
 
 					return "태스크업데이트";
 				}
