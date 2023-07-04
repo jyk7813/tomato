@@ -170,14 +170,24 @@ public String getSelPjName() {
    
    @Override
    public String toString() {
-    	  if(selPjName == null) {
-    		  return "전체 프로젝트: " + select + ", 컬러 pk: " + colorPk + ", 프로젝트 pk: " + pk + ", 태스크명: " + title + ", 시작일자: " + update
-    				  + ", 마감일자: " + deadLine + "]";
-    	  } else {
-    		  return "프로젝트 별: " + selPjName + ", 컬러 pk: " + colorPk + ", 멤버 pk: " + pk +"멤버이름: " + select + ", 태스크명: " + title + ", 시작일자: " + update
-    				  + ", 마감일자: " + deadLine + "]";
-    	  }
+      if (colorPk == 0) {
+         if (selPjName == null) {
+            return "전체 프로젝트: " + select + ", 컬러 pk: " + colorPk + ", 프로젝트 pk: " + pk + ", 태스크명: " + title
+                  + ", 시작일자: " + update + ", 마감일자: " + deadLine + "]";
+         } else {
+            return "프로젝트 별: " + selPjName + ", 컬러 pk: " + colorPk + ", 멤버 pk: " + pk + "멤버이름: " + select
+                  + ", 태스크명: " + title + ", 시작일자: " + update + ", 마감일자: " + deadLine + "]";
+         }
+      } else {
+         if (selPjName == null) {
+            return "전체 프로젝트: " + select + ", 컬러 pk: " + colorPk + ", 프로젝트 pk: " + pk + ", 태스크명: " + title
+                  + ", 시작일자: " + update + ", 마감일자: " + deadLine + "]";
+         } else {
+            return "프로젝트 별: " + selPjName + ", 컬러 pk: " + colorPk + ", 멤버 pk: " + pk + "멤버이름: " + select
+                  + ", 태스크명: " + title + ", 시작일자: " + update + ", 마감일자: " + deadLine + "]";
+         }
       }
+   }
    
    
    

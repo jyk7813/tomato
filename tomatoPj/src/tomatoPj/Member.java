@@ -46,6 +46,16 @@ public class Member {
 		this.feedback = new ArrayList<>();
 		this.image = image;
 	}
+	public Member(int member_no, String id, String pwd, String e_mail, String name, String mbti, int active) {
+		super();
+		this.member_no = member_no;
+		this.id = id;
+		this.pwd = pwd;
+		this.e_mail = e_mail;
+		this.name = name;
+		this.mbti = mbti;
+		this.active = active;
+	}
 	public byte[] getImage() {
 		return image;
 	}
