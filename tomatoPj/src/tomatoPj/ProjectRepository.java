@@ -16,6 +16,26 @@ public class ProjectRepository {
 		colRepo = new ColumnRepository();
 	}
 
+	public int editTitleProject(int project_no, String title) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DBUtil.getConnection();
+			String query = "UPDATE `project` SET `title` = ? WHERE `project_no` = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, title);
+			stmt.setInt(2, project_no);
+			return stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+		return 0;
+	}
+	
 	// 프로젝트생성(수정본)
 	public Project generateProject(String title, int member_no) throws SQLException {
 		Connection conn = null;

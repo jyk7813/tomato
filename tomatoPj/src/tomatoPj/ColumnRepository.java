@@ -11,6 +11,26 @@ import dbutil.DBUtil;
 
 public class ColumnRepository {
 	
+	public int editTitleColumn(int column_no, String title) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DBUtil.getConnection();
+			String query = "UPDATE `column` SET `title` = ? WHERE column_no = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, title);
+			stmt.setInt(2, column_no);
+			return stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+		return 0;
+	}
+	
 	public Column selectByColNo(Connection conn, int column_no) throws SQLException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
