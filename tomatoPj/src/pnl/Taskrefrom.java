@@ -45,6 +45,7 @@ import tomatoPj.Function_Tag;
 import tomatoPj.Member;
 import tomatoPj.Member_task;
 import tomatoPj.Task;
+import tomatoPj.TaskPnl_Repository;
 import tomatoPj.TaskRepository;
 import tomatoPj.Task_Service_Repository;
 import utility.FontData;
@@ -132,11 +133,11 @@ public class Taskrefrom extends JPanel {
 	Feedback returnFeedBack;
 
 	
-	Taskrefrom tr;
+	
 	
 	private JLabel content;
 
-	JTextField calomnTitle;
+	JLabel calomnTitle;
 	
 	Taskrefrom ts;
 	TagAddButton TAB;
@@ -144,6 +145,7 @@ public class Taskrefrom extends JPanel {
 
 
 	public Taskrefrom(MainFrame mainFrame) {
+		 
 		MF = mainFrame;
 		tagTexts = new ArrayList<>();
 		ts = this;
@@ -234,6 +236,8 @@ public class Taskrefrom extends JPanel {
 					Task_Service_Repository TSR = new Task_Service_Repository();
 					TSR.updateTask(returnTask,returnFeedBack,Function_Tag_List, member_task_List,column.getColumn_no());
 					
+					
+					
 					add(newBtn());
 					st.reset();
 					CountTag = 0;
@@ -247,7 +251,7 @@ public class Taskrefrom extends JPanel {
 				}
 			}
 		};
-
+		
 		// 프레임에 패널 외부 클릭 리스너 추가
 		addMouseListener(outsideClickListener);
 
@@ -402,6 +406,14 @@ public class Taskrefrom extends JPanel {
 		
 	}
 	
+	public void input(int TaskNum,Taskrefrom Taskrefrom) {
+		
+		MF.Library.put(TaskNum, Taskrefrom);
+		
+	}
+	public Taskrefrom TaskPnlshow(int TaskNum) {
+		return MF.Library.get(TaskNum);
+	}
 	// 새로운 버튼
 	public JButton newBtn() {
 		JButton btn = new JButton("태경이 형 하시면 됩니다");
@@ -603,7 +615,7 @@ public class Taskrefrom extends JPanel {
 
 	public void CalomnTitle() {
 		JLabel CalomnTitleLbl = new JLabel(IC.getImageIcon("columnTitle"));
-		calomnTitle = new JTextField("칼럼 제목 들어가야함");
+		calomnTitle = new JLabel("칼럼 제목 들어가야함");
 
 		calomnTitle.setBorder(null);
 		calomnTitle.setFont(FD.nanumFontBold(18));

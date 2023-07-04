@@ -50,7 +50,8 @@ public class Task_Service_Repository {
 					int task_no = rs.getInt("task_no");
 
 					stmt3 = conn.prepareStatement("INSERT INTO `column_task` (`column_no`, `task_no`) VALUES (?,?)");
-					stmt3.setInt(task_no, column_no);
+					stmt3.setInt(1, column_no);
+					stmt3.setInt(2, task_no);
 					stmt3.executeUpdate();
 
 					FeedbackFunction(conn, feedback, task_no);
