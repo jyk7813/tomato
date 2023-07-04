@@ -16,12 +16,12 @@ import frame.MainFrame;
 import utility.IconData;
 import utility.Utility;
 
-public class HomeBtn extends JButton{
+public class HomeBtn extends JButton {
 	private IconData iconData;
 	private Utility utility;
 	private ImageIcon enterIcon;
 	private ImageIcon exitIcon;
-	
+
 	public HomeBtn(MainFrame mainFrame) {
 		iconData = new IconData();
         utility = new Utility();
@@ -48,7 +48,7 @@ public class HomeBtn extends JButton{
  				
  			}
 		});
-        this.setIcon(exitIcon);
+		this.setIcon(exitIcon);
 	}
-	
+
 }

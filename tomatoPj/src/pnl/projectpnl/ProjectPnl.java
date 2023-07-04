@@ -67,17 +67,16 @@ public class ProjectPnl extends JPanel {
     	colRepo = new ColumnRepository();
     	taskRepo = new TaskRepository();
     	
-//        this.image = iconData.getImageIcon("projectIcon").getImage(); // Set imagePath to your image path
         setOpaque(false);
         setLayout(new BorderLayout(0, 0));
         
-        JButton btnNewButton = new JButton(title);
+        JButton projectButton = new JButton(title);
       
-        btnNewButton.setIcon(pjBack);
-        btnNewButton.setText(title);
-        btnNewButton.setHorizontalTextPosition(JButton.CENTER);
-        btnNewButton.setFont(fontData.nanumFont(27));
-        btnNewButton.addActionListener(new ActionListener() {
+        projectButton.setIcon(pjBack);
+        projectButton.setText(title);
+        projectButton.setHorizontalTextPosition(JButton.CENTER);
+        projectButton.setFont(fontData.nanumFont(27));
+        projectButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {
@@ -90,8 +89,8 @@ public class ProjectPnl extends JPanel {
 				}
 			}
 		});
-        add(btnNewButton, BorderLayout.CENTER);
-        util.setButtonProperties(btnNewButton);
+        add(projectButton, BorderLayout.CENTER);
+        util.setButtonProperties(projectButton);
     }
 
     @Override

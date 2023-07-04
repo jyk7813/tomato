@@ -10,6 +10,7 @@ import frame.MainFrame;
 public class ProjectSelectBtn extends JButton {
 	
 	public ProjectSelectBtn(MainFrame mainFrame, int project_no, String title) {
+		
 		addActionListener(new ActionListener() {
 			
 			@Override
