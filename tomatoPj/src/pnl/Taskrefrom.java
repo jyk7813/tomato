@@ -200,7 +200,7 @@ public class Taskrefrom extends JPanel {
 
 					
 					
-					if(TakeFeedBack != null) {
+				if(TakeFeedBack != null) {
 					if(TakeFeedBack.getMember_no() == 0) {
 						TakeFeedBack.setMember_no(useingMemberNum);
 					}
@@ -210,16 +210,15 @@ public class Taskrefrom extends JPanel {
 						}else {
 							TakeFeedBack.setTask_no(0);
 						}
-					}
-					if(TakeFeedBack.getComment().equals("")) {
-//						TakeFeedBack.setComment(text);
-						System.out.println(text);
-					}
+					}					
+						TakeFeedBack.setComment(text);
+					}else if(TakeFeedBack == null){
+						
 					}
 					
-					returnFeedBack = TakeFeedBack;
-	
-					if(TakeTask ==null) {
+				returnFeedBack = TakeFeedBack;						
+					
+				if(TakeTask ==null) {
 						member_task_List.remove(0);
 						member_task_List.add(new Member_task(0,useingMemberNum,0,"테스트용"));
 					}
@@ -235,12 +234,28 @@ public class Taskrefrom extends JPanel {
 					Task_Service_Repository TSR = new Task_Service_Repository();
 					
 					
-//					int newTask_num = TSR.updateTask(returnTask,column.getColumn_no());
+					int newTask_num = TSR.updateTask(returnTask,column.getColumn_no());
 					
-//					TSR.FeedbackFunction(TakeFeedBack, newTask_num);
-//					TSR.FeedbackFunction(TakeFeedBack, newTask_num);
-//					TSR.Member_taskFunction(Connection conn, List<Member_task> member_taskList, int task_no)
+					if(TakeFeedBack !=null && TakeFeedBack.getTask_no() ==0) {
+						if(TakeTask ==null) {
+						TSR.FeedbackFunction(TakeFeedBack, newTask_num);
+						}else if(TakeTask !=null) {
+							TSR.FeedbackFunction(TakeFeedBack, returnTask.getTask_no());
+						}
+					}
 					
+					if(returnTask.getTask_no()==0 && Function_Tag_List!= null) {
+						TSR.Function_TagFunction(Function_Tag_List,newTask_num);						
+					}else if(returnTask.getTask_no()!=0 && Function_Tag_List!= null){
+						TSR.Function_TagFunction(Function_Tag_List,returnTask.getTask_no());
+					}
+					
+					
+					if(returnTask.getTask_no()==0 && member_task_List!= null) {
+						TSR.Member_taskFunction(member_task_List,newTask_num);
+					}else if(returnTask.getTask_no()!=0 && member_task_List!= null) {
+						TSR.Member_taskFunction(member_task_List,returnTask.getTask_no());						
+					}
 					st.reset();
 					CountTag = 0;
 					mainFrame.getContentPane().removeAll();
