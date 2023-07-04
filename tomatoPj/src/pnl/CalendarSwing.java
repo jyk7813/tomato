@@ -35,10 +35,15 @@ import utility.PrintPlannerList;
 import utility.Utility;
 
 public class CalendarSwing extends JPanel implements ItemListener, ActionListener {
+	PrintPlannerList ppl = new PrintPlannerList();
+	TaskRepository tr = new TaskRepository();
+	MemberRepository mr = new MemberRepository();
+	CalendarData cd = new CalendarData();
 	FontData fontManager = new FontData();
 	IconData iconManager = new IconData();
 	Utility utilManager = new Utility();
 	CalendarData calManager = new CalendarData();
+	
 	Font fnt = fontManager.nanumFontBold(18);
 	Font fnt2 = fontManager.nanumFontBold(15);
 
@@ -50,38 +55,41 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 	JComboBox<Integer> monthCombo = new JComboBox<Integer>();
 	JLabel yearLBl = new JLabel("년");
 	JLabel monthLBl = new JLabel("월");
-
+	
+	// 뷰 설정 관련 패널 -----------------------------------
+	List<PrintPlanner> printCurrentList;
+	List<PrintPlanner> selectPrintList;
+	List<JButton> dateBtnList;
+	List<Integer> pkNums;
+	
+	Member loginMember;
+	int loginMemberNo = 0;
+	boolean flag = false;
+	boolean settingView;
+	boolean canSelectDate = true;
+	
+	JPanel selectPnl = new JPanel();
+	int selectPnlHeight; // 선택창 패널 그리드 세로 길이
+	
+	
 	// 투두 리스트 패널 ------------------------------------
-	JPanel todoListPnl = new JPanel();
-	JLabel currentDate = new JLabel();
+	JPanel todoListPnl = new JPanel(); 
+	JLabel currentDate = new JLabel(); // 현재 날짜
 	String printDate; // 투두 표시 날짜
-	JPanel listPnl = new JPanel();
+	int listPnlHeight; // 투두 리스트 패널 그리드 세로 길이
+	JPanel listPnl = new JPanel(); // 투두 리스트출력 패널
 
 	// 달력 출력 패널 ------------------------------------
 	JPanel centerPane = new JPanel();
 	JPanel dayPane = new JPanel(new GridLayout(0, 7, 0, 0));
 	JPanel barPane = new JPanel();
-
 	String[] title = { "일", "월", "화", "수", "목", "금", "토" };
-
 	Calendar date;
 	LocalDate selDate;
 	int year;
 	int month;
 	int day;
-	PrintPlannerList ppl = new PrintPlannerList();
-	TaskRepository tr = new TaskRepository();
-	MemberRepository mr = new MemberRepository();
-	CalendarData cd = new CalendarData();
-	Utility util = new Utility();
-	Member loginMember;
-	List<PrintPlanner> printCurrentList;
-	int loginMemberNo = 0;
-	boolean flag = false;
-	boolean toggleSwitch = true;
-	List<JButton> dateBtnList;
-	boolean canSelectDate = true;
-	int printCount;
+	
 
 	public CalendarSwing() {
 		super();
@@ -92,19 +100,20 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		selDate = LocalDate.now();
 
 		// 상단 패널 ---------------------------------------
+		yearCombo.setFont(fnt);
 		yearCombo.setBounds(50, 10, 80, 34);
+		yearLBl.setFont(fnt);
 		yearLBl.setBounds(140, 10, 50, 34);
 		monthCombo.setBounds(170, 10, 50, 34);
-		monthLBl.setBounds(230, 10, 50, 34);
-		selectPane.add(prevBtn);
-		selectPane.add(yearCombo);
-		yearCombo.setFont(fnt);
-		selectPane.add(yearLBl);
-		yearLBl.setFont(fnt);
-		selectPane.add(monthCombo);
 		monthCombo.setFont(fnt);
-		selectPane.add(monthLBl);
 		monthLBl.setFont(fnt);
+		monthLBl.setBounds(230, 10, 50, 34);
+		
+		selectPane.add(monthLBl);
+		selectPane.add(yearLBl);
+		selectPane.add(yearCombo);
+		selectPane.add(monthCombo);
+		selectPane.add(prevBtn);
 		selectPane.add(nextBtn);
 		selectPane.setBounds(0, 30, 300, 300);
 		selectPane.setLayout(null);
@@ -164,13 +173,15 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		super();
 		try {
 			this.loginMemberNo = loginMemberNo;
-			this.toggleSwitch = toggleSwitch;
+			this.settingView = toggleSwitch;
 			loginMember = mr.searchByMemberNo(loginMemberNo);
 			printCurrentList = ppl.getAllPrintPlannerList(loginMemberNo);
 			System.out.println("달력창 확인: " + loginMember.getName() + "토글상태: " + toggleSwitch);
 			flag = true;
 			selDate = LocalDate.now();
-			printCount = getTodoPnlCount(printCurrentList, selDate);
+			pkNums = getAllPks(printCurrentList, settingView);
+			selectPnlHeight = pkNums.size();
+			listPnlHeight = getTodoPnlCount(printCurrentList, selDate);
 		} catch (SQLException e) {
 			System.out.println("달력창 실패1");
 			e.printStackTrace();
@@ -198,6 +209,13 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		selectPane.setBounds(0, 30, 300, 300);
 		selectPane.setLayout(null);
 		selectPane.setOpaque(false);
+		
+		// 프로젝트 or 멤버 선택창 패널 -------------------------
+		selectPnl.setLayout(new GridLayout(selectPnlHeight, 1, 0, 0));
+		selectPnl.setBounds(35, 90, 700, listPnlHeight * 80);
+		selectPnl.setOpaque(false);
+		
+		
 
 		// 투두리스트 패널 -----------------------------------
 		// 오늘 날짜 출력 라벨
@@ -208,8 +226,8 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		currentDate.setBounds(35, 20, 700, 50);
 		// 리스트 출력
 		getTodoList(printCurrentList);
-		listPnl.setLayout(new GridLayout(printCount, 1, 0, 0));
-		listPnl.setBounds(35, 90, 700, printCount * 80);
+		listPnl.setLayout(new GridLayout(listPnlHeight, 1, 0, 0));
+		listPnl.setBounds(35, 90, 700, listPnlHeight * 80);
 		listPnl.setOpaque(false);
 
 		todoListPnl.add(listPnl);
@@ -253,10 +271,80 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		setOpaque(false);
 		setVisible(true);
 	}
-
+	
+	// 투두 리스트 날짜 출력 메소드
 	public void setPrintDayOfWeek(LocalDate selDate) {
 		printDate = cd.localToString(selDate);
 		currentDate.setText(printDate);
+	}
+	
+	// 리스트 전달받아 전체 pk 리스트 반환 메소드
+	public List<Integer> getAllPks(List<PrintPlanner> list, boolean view) {
+		List<Integer> thisPks = new ArrayList<>();
+		// 전체 프로젝트 뷰 (프로젝트 pk 반환)
+		if(view) {
+			for(PrintPlanner p : list) {
+				thisPks.add(p.getPjPk());
+			}
+			return thisPks;
+		// 프로젝트 별 (멤버 pk 반환)
+		} else {
+			for(PrintPlanner p : list) {
+				thisPks.add(p.getMemPk());
+			}
+			return thisPks;
+		}
+	}
+	
+	// pk리스트 전달받아 해당 pk를 가진 리스트들만 반환 메소드
+	public List<PrintPlanner> selList(List<Integer> pkList, List<PrintPlanner> list, boolean view){
+		List<Integer> selPk = new ArrayList<>();
+		List<PrintPlanner> thisList = new ArrayList<>();
+		// 전체 프로젝트 확인
+		if(view) {
+			for(int i : pkList) {
+				for(PrintPlanner p : list) {
+					if(i == p.getPjPk()) {
+						thisList.add(p);
+					}
+				}
+			}
+			return thisList;
+		} else {
+			for(int i : pkList) {
+				for(PrintPlanner p : list) {
+					if(i == p.getMemPk()) {
+						thisList.add(p);
+					}
+				}
+			}
+			return thisList;
+		}
+	}
+	
+	// 뷰설정에 따른 리스트 반환 메소드
+	public List<PrintPlanner> viewSetList(int[] noPk, boolean view){
+		List<PrintPlanner> thisList = new ArrayList<>();
+		// 참 = 전체 프로젝트 확인
+		if(view) {
+			for(int i = 0; i < noPk.length; i++) {
+				for(PrintPlanner p : printCurrentList) {
+					if(p.getPjPk() == noPk[i]) {
+						thisList.add(p);
+					}
+				}
+			}
+			return thisList;
+		} else {
+			for(int i = 0; i < noPk.length; i++) {
+				for(PrintPlanner p : printCurrentList) {
+					if(p.getMemPk() == noPk[i]) {
+						thisList.add(p);
+					}
+				}
+			}
+			return thisList;
+		}
 	}
 
 	// 날짜셋팅
@@ -459,7 +547,8 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			}
 		}
 	}
-
+	
+	// 투두버튼 이미지 + 투명하게 설정 메소드
 	public JButton getTodoBtn(JButton btn) {
 		btn.setIcon(iconManager.getImageIcon("t_null"));
 		btn.setRolloverIcon(iconManager.getImageIcon("t_c"));
@@ -502,7 +591,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		dayPane.setVisible(false);
 		dayPane.removeAll();
 		if (flag) {
-			setDay(loginMemberNo, toggleSwitch);
+			setDay(loginMemberNo, settingView);
 		} else {
 			setDay();
 		}
@@ -566,7 +655,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		dayPane.setVisible(false);
 		dayPane.removeAll();
 		if (flag) {
-			setDay(loginMemberNo, toggleSwitch);
+			setDay(loginMemberNo, settingView);
 		} else {
 			setDay();
 		}
