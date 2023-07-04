@@ -154,6 +154,16 @@ public class ColumnSelectPnl extends JPanel {
 								pnl.columnTitlePnl.titleLbl.setText(pnl.columnTitlePnl.updateTitleField.getText());
 								colRepo.editTitleColumn(pnl.getColumn().getColumn_no(),
 										pnl.columnTitlePnl.updateTitleField.getText());
+								mainFrame.pjInfo=mainFrame.tempInfo;
+								
+
+								mainFrame.getContentPane().removeAll();
+								mainFrame.addPnl();
+								//mainFrame.showCard("projectSelect");
+								mainFrame.showCard("columnSelect");
+								mainFrame.columnActive = true;
+								mainFrame.boradPnl.panel_2.columnSelectPnl.columnSetting();
+
 							} else {
 								pnl.columnTitlePnl.deletecolBtn.setVisible(true);
 								pnl.columnTitlePnl.updateTitleField.setVisible(true);
