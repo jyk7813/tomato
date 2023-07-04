@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -40,6 +42,8 @@ public class ProjectPnl extends JPanel {
     private MainFrame mainFrame;
     private String title;
     public DeletePjBtn deletePjBtn;
+    private MouseAdapter mouseAdapter;
+
     
 //	private JButton projectButton;
     
@@ -51,6 +55,7 @@ public class ProjectPnl extends JPanel {
     	mainFrame.showCard("columSelect");
 		mainFrame.pjInfo.setProject_no(project_no);
 		mainFrame.pjInfo.setTitle(title);
+		
 		try {
 			for (Member mem : mtPackageRepo.returnMemberByPj_no(project_no)) {
 				mainFrame.pjInfo.getMemberList().add(mem);
@@ -68,7 +73,6 @@ public class ProjectPnl extends JPanel {
     	mainFrame.pjInfo = new SelectProjectInfo(project_no, title, null, null);
     	return mainFrame.pjInfo.getTitle();
 	}
-    public ProjectPnl() {}
     
     public ProjectPnl(MainFrame mainFrame, int project_no, String title) {
     	this.project_no = project_no;
@@ -93,25 +97,25 @@ public class ProjectPnl extends JPanel {
 		add(deletePjBtn);
 		deletePjBtn.setVisible(false);
         
-        JButton projectButton = new JButton(title);
-      
-        projectButton.setIcon(pjBack);
-        projectButton.setText(title);
-        projectButton.setBounds(30, 30, 90, 90);
-        projectButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {
-					insertPjInfo(mainFrame, project_no, title);
-					mainFrame.setSelectedProjectTitle(title);
-					System.out.println(mainFrame.getSelectedProjectTitle());
-				} else {
-					insertPjInfo(mainFrame, project_no, title);
-					mainFrame.showCard("columnSelect");
-				}
-			}
-		});
-        add(projectButton);
+//        JButton projectButton = new JButton(title);
+//      
+//        projectButton.setIcon(pjBack);
+//        projectButton.setText(title);
+//        projectButton.setBounds(30, 30, 90, 90);
+//        projectButton.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {
+//					insertPjInfo(mainFrame, project_no, title);
+//					mainFrame.setSelectedProjectTitle(title);
+//					System.out.println(mainFrame.getSelectedProjectTitle());
+//				} else {
+//					insertPjInfo(mainFrame, project_no, title);
+//					mainFrame.showCard("columnSelect");
+//				}
+//			}
+//		});
+//        add(projectButton);
 //        util.setButtonProperties(projectButton);
         this.image = iconData.getImageIcon("project").getImage();
     }
@@ -128,9 +132,33 @@ public class ProjectPnl extends JPanel {
 		} else {
 			this.image = iconData.getImageIcon("projectselect").getImage();
 			
+			
 		}
 		revalidate();
 		repaint();
 	}
+    public void mouseListen() {
+        mouseAdapter = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {
+                    insertPjInfo(mainFrame, project_no, title);
+                    mainFrame.setSelectedProjectTitle(title);
+                    System.out.println(mainFrame.getSelectedProjectTitle());
+                } else {
+                    insertPjInfo(mainFrame, project_no, title);
+                    mainFrame.showCard("columnSelect");
+                }
+            }
+        };
+        addMouseListener(mouseAdapter);
+    }
+
+    public void removeMouseListener() {
+        if (mouseAdapter != null) {
+            removeMouseListener(mouseAdapter);
+        }
+    }
+    
 
 }

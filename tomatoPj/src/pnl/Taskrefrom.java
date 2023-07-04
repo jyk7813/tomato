@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -232,17 +233,21 @@ public class Taskrefrom extends JPanel {
 					System.out.println(member_task_List);
 					System.out.println(column.getColumn_no());
 					Task_Service_Repository TSR = new Task_Service_Repository();
-					//TSR.updateTask(returnTask,returnFeedBack,Function_Tag_List, member_task_List,column.getColumn_no());
 					
-					add(newBtn());
+					
+//					int newTask_num = TSR.updateTask(returnTask,column.getColumn_no());
+					
+//					TSR.FeedbackFunction(TakeFeedBack, newTask_num);
+//					TSR.FeedbackFunction(TakeFeedBack, newTask_num);
+//					TSR.Member_taskFunction(Connection conn, List<Member_task> member_taskList, int task_no)
+					
 					st.reset();
 					CountTag = 0;
 					mainFrame.getContentPane().removeAll();
-					mainFrame.addPnl();
-					mainFrame.showCard("columnSelect");
-					mainFrame.columnActive = true;
-					mainFrame.boradPnl.panel_2.columnSelectPnl.columnSetting();
-
+                    mainFrame.addPnl();
+                    mainFrame.showCard("columnSelect");
+                    mainFrame.columnActive = true;
+                    mainFrame.boradPnl.panel_2.columnSelectPnl.columnSetting();
 					
 				}
 			}
