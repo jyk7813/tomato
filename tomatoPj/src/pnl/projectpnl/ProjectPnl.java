@@ -1,15 +1,11 @@
 package pnl.projectpnl;
-import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -18,7 +14,6 @@ import javax.swing.SwingConstants;
 import button.DeletePjBtn;
 import dbutil.SelectProjectInfo;
 import frame.MainFrame;
-import pnl.commonpnl.ProjectTitlePnl;
 import tomatoPj.ColumnRepository;
 import tomatoPj.Member;
 import tomatoPj.Member_Tag_Package_Repository;
@@ -30,7 +25,6 @@ import utility.Utility;
 public class ProjectPnl extends JPanel {
     private IconData iconData = new IconData();
     private Image image;
-    private JTextField textField;
     private Member_Tag_Package_Repository mtPackageRepo;
     private ColumnRepository colRepo;
     private TaskRepository taskRepo;
@@ -38,11 +32,12 @@ public class ProjectPnl extends JPanel {
     private Utility util;
     private FontData fontData;
     public int project_no;
-    private JLabel titleLbl;
+    public JLabel titleLbl;
     private MainFrame mainFrame;
     private String title;
     public DeletePjBtn deletePjBtn;
     private MouseAdapter mouseAdapter;
+    public JTextField updateField;
 
     
 //	private JButton projectButton;
@@ -96,6 +91,14 @@ public class ProjectPnl extends JPanel {
 		deletePjBtn.setBounds(30, 30, 30, 30);
 		add(deletePjBtn);
 		deletePjBtn.setVisible(false);
+		
+		updateField = new JTextField(titleLbl.getText());
+		updateField.setBounds(275, 40, 350, 60);
+		updateField.setFont(fontData.nanumFontBold(27));
+		add(updateField);
+		updateField.setVisible(false);
+		util.setButtonProperties(updateField);
+		
         
 //        JButton projectButton = new JButton(title);
 //      

@@ -241,8 +241,14 @@ public class ProjectSelectPnl extends JPanel {
 						if (e.getButton() == MouseEvent.BUTTON3) {
 							if (projectPnl.deletePjBtn.isVisible()) {
 								projectPnl.deletePjBtn.setVisible(false);
+								projectPnl.updateField.setVisible(false);
+								pjRepo.editTitleProject(pnl.project_no, projectPnl.updateField.getText());
+								projectPnl.titleLbl.setText(projectPnl.updateField.getText());
+								projectPnl.titleLbl.setVisible(true);
 							} else {
 								projectPnl.deletePjBtn.setVisible(true);
+								projectPnl.updateField.setVisible(true);
+								projectPnl.titleLbl.setVisible(false);
 							}
 						}
 					} else {
