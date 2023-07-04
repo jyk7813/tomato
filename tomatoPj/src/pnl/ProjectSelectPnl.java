@@ -151,9 +151,7 @@ public class ProjectSelectPnl extends JPanel {
 					projectPnl.insertPjInfo(mainFrame, pjRepo.generateProject("신규프로젝트", mainFrame.loginMember.getMember_no()).getProject_no(), "신규프로젝트");
 				} catch (SQLException e1) {
 					e1.printStackTrace();
-					System.out.println("제대로안만들어짐");
 				} 
-				System.out.println("컬럼셀렉트로 안넘어가나?");
 				mainFrame.showCard("columnSelect");
 				
 			}
@@ -214,12 +212,9 @@ public class ProjectSelectPnl extends JPanel {
 			}
 		}
 		mainFrame.loginMember.setTakeTaskList(list);
-		System.out.println("제대로된 멤버? " + memberList);
-		//////////// 가지고있는 프로젝트 리스트 패널 생성  ///////////
 		for (Project project : mainFrame.loginMember.getPjList()) {
 			addProject(project.getProject_no(), project.getTitle());
 		}
-		System.out.println("참여한모든프로젝트 태스크리스트사이즈" + mainFrame.loginMember.getTakeTaskList().size());
 	}
 	
 

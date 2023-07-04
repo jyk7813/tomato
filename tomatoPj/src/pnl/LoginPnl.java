@@ -57,16 +57,17 @@ public class LoginPnl extends JPanel {
 	private ImageIcon signUpDarkIcon;
 	private ImageIcon loginErrorIcon;
 	private JLabel loginErrorLbl;
-	
+
 	private void setLoginMember(MainFrame mainFrame, Member member) {
 		LocalDateTime now = LocalDateTime.now();
 		try {
-			mainFrame.loginMember = new LoginMember(member, member.getMember_no(), mr.returnMemberPj(member.getMember_no()), now);
+			mainFrame.loginMember = new LoginMember(member, member.getMember_no(),
+					mr.returnMemberPj(member.getMember_no()), now);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public KeyListener enterKey() {
 		return new KeyAdapter() {
 			@Override
@@ -88,33 +89,26 @@ public class LoginPnl extends JPanel {
 		this.image = image;
 		fontData = new FontData();
 		setLayout(null);
-		
+
 		utility = new Utility();
 		iconData = new IconData();
 		Image loginImg = iconData.getImageIcon("login_btn").getImage(); // 로그인 버튼 이미지 경로
 		Image loginDarkImg = iconData.getImageIcon("login_btn(clicked)2").getImage(); // 어두운 버전의 로그인 버튼 이미지 경로
 		Image loginBrightImg = iconData.getImageIcon("login_btn(enter)").getImage(); // 어두운 버전의 로그인 버튼 이미지 경로
-		
+
 		Image signUpImg = iconData.getImageIcon("signUp_btn").getImage();
 		Image signUpDarkImg = iconData.getImageIcon("signUp_btn3").getImage();
-		
-		
+
 		Image loginErrorImg = iconData.getImageIcon("loginError").getImage();
 		loginButton = new JButton(loginIcon);
 		idField = new MyTextField("로그인", loginButton);
-		//passwordField = new JPasswordField();
+		// passwordField = new JPasswordField();
 		passwordField = new MyPwdField("패스워드", loginButton);
 		///////////
 		idField.addKeyListener(enterKey());
 		passwordField.addKeyListener(enterKey());
-		//idField.setText("아이디를 입력해주세요");
-		//idField.setForeground(Color.gray);
-		
-		
-		System.out.println("왜안돼");
-		
-
-
+		// idField.setText("아이디를 입력해주세요");
+		// idField.setForeground(Color.gray);
 
 		loginIcon = new ImageIcon(loginImg);
 		loginDarkIcon = new ImageIcon(loginDarkImg);
@@ -123,11 +117,9 @@ public class LoginPnl extends JPanel {
 		signUpDarkIcon = new ImageIcon(signUpDarkImg);
 
 		loginErrorIcon = new ImageIcon(loginErrorImg);
-		
-		
+
 		signUpBtn = new JButton(signUpIcon);
 		loginErrorLbl = new JLabel(loginErrorIcon);
-		
 
 		idField.addKeyListener(enterKey());
 		passwordField.addKeyListener(enterKey());
@@ -145,18 +137,17 @@ public class LoginPnl extends JPanel {
 
 		signUpActionListener(mainFrame);
 		loginActionListener(mainFrame);
-		
+
 		utility.setButtonProperties(idField);
 		utility.setButtonProperties(passwordField);
-		
+
 		add(loginButton);
 		add(signUpBtn);
 		add(idField);
 		add(passwordField);
-		
-		
+
 		add(loginErrorLbl);
-		
+
 		addComponentListener(new ComponentListener() {
 
 			@Override
@@ -177,37 +168,39 @@ public class LoginPnl extends JPanel {
 			public void componentHidden(ComponentEvent e) {
 			}
 		});
-		
+
 		loginButton.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				loginButton.setIcon(loginDarkIcon);
 				loginButton.repaint();
 			}
+
 			public void mouseEntered(MouseEvent me) {
-				System.out.println("마우스 들어감");
 				loginButton.setIcon(loginbrightIcon);
 				loginButton.repaint();
 			}
+
 			public void mouseExited(MouseEvent me) {
 				loginButton.setIcon(loginIcon);
 				loginButton.repaint();
 			}
 		});
-		
+
 		signUpBtn.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				signUpBtn.setIcon(signUpDarkIcon);
 				signUpBtn.repaint();
 			}
+
 			public void mouseEntered(MouseEvent me) {
-				System.out.println("마우스 들어감");
 				signUpBtn.setIcon(signUpDarkIcon);
 				signUpBtn.repaint();
 			}
+
 			public void mouseExited(MouseEvent me) {
 				signUpBtn.setIcon(signUpIcon);
 				signUpBtn.repaint();
@@ -216,7 +209,6 @@ public class LoginPnl extends JPanel {
 
 	}
 
-	
 	private void signUpActionListener(MainFrame mainFrame) {
 		signUpBtn.addActionListener(new ActionListener() {
 
@@ -237,20 +229,17 @@ public class LoginPnl extends JPanel {
 					conn = DBUtil.getConnection();
 					member = mr.logIn(conn, idField.getText(), passwordField.getText());
 					if (member != null) {
-						System.out.println("로그인성공");
 						setLoginMember(mainFrame, member);
 
-						System.out.println("로그인한계정 가지고있는 프로젝트 목록");
-						for(Project p : mainFrame.loginMember.getPjList()) {
+						for (Project p : mainFrame.loginMember.getPjList()) {
 							System.out.println(p);
 						}
 						mainFrame.showCard("projectSelect");
 						mainFrame.loginMember.setPjListSize(mainFrame.loginMember.getPjList().size());
 					} else {
-						System.out.println("로그인실패");
 						loginErrorLbl.setBounds(831, 724, 258, 50);
 					}
-					
+
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 

@@ -94,26 +94,21 @@ public class ColumnSelectPnl extends JPanel {
 	
 	
 	public void columnSetting() {
-		System.out.println("추가버튼 진입");
 		List<Column> columns = mainFrame.pjInfo.getCol();
-		System.out.println(columns);
 
 		Collections.sort(columns, Comparator.comparingInt(Column::getColumn_index));
 
 		if (shouldAddExistingColumns(columns)) {
 			addExistingColumns(columns);
 			mainFrame.columnActive = false;
-			System.out.println("위쪽");
 		} else {
 			addNewColumn(columns);
-			System.out.println("아래쪽");
 		}
 		revalidate();
 		repaint();
 	}
 
 	private boolean shouldAddExistingColumns(List<Column> columns) {
-		System.out.println("컬럼액티브 상태 :" + mainFrame.columnActive);
 		return !columns.isEmpty() && mainFrame.columnActive;
 	}
 
@@ -165,7 +160,6 @@ public class ColumnSelectPnl extends JPanel {
 							repaint();
 						}
 	                    
-	                   System.out.println(columnPnl.columnTitlePnl.colTitle);
 	                } else { // If this is not the clicked panel
 	                    pnl.setEnabled(false); // Deactivate it
 	                    pnl.columnTitlePnl.setEnabled(false);

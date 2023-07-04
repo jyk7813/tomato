@@ -26,7 +26,6 @@ public class BoardselectPnl extends JPanel {
         setLayout(new BorderLayout());
         setOpaque(false);
         
-        
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -37,44 +36,7 @@ public class BoardselectPnl extends JPanel {
         
         columnSelectPnl = new ColumnSelectPnl(mainFrame);
 
-//        add(columnSelectPnl);
         scrollPane.setViewportView(columnSelectPnl);
-        
-//        addComponentListener(new ComponentAdapter() {
-//			@Override
-//			public void componentShown(ComponentEvent e) {
-//				removeAllProjectPanels();
-//			}
-//		});
-        
-        
-        
-        
-//    	JButton btnNewButton = new JButton("New button");
-//		add(btnNewButton);
-//		
-//		btnNewButton.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				mainFrame.showCard("task");
-//			}
-//		});
-//        
-//        ColumnPnl panel_1 = new ColumnPnl(mainFrame);
-//        scrollPane.setViewportView(panel_1);
-//        panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
-//        
-        
+   
     }
-//    private void removeAllProjectPanels() {
-//		for (Component comp : columnSelectPnl.getComponents()) {
-//			columnSelectPnl.remove(comp);
-//		}
-//		columnSelectPnl.revalidate();
-//		columnSelectPnl.repaint();
-//	}
-    
-
-    
 }
