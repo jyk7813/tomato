@@ -245,7 +245,6 @@ public class ProjectSelectPnl extends JPanel {
 								projectPnl.deletePjBtn.setVisible(true);
 							}
 						}
-						pnl.removeMouseListener();
 					} else {
 						pnl.setEnabled(false);
 						pnl.setimage();
