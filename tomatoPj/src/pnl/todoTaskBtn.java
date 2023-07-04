@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import frame.MainFrame;
+import tomatoPj.Task;
+
 
 public class todoTaskBtn extends JButton {
 	private int task_no;
@@ -16,7 +18,8 @@ public class todoTaskBtn extends JButton {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("눌러진다");
+				
+				mainFrame.setTask(null, null);
 				mainFrame.showCard("task");
 			}
 		});

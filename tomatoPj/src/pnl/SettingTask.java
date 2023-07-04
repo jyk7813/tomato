@@ -207,7 +207,7 @@ public class SettingTask {
 		Timestamp tt = new Timestamp(System.currentTimeMillis());
 		
 		updateDate = dateFormat.format(tt);
-		
+		ts.StartDate.setText(updateDate);
 		if(task != null) {
 		
 		updateDate = dateFormat.format(task.getUpdateDate());
@@ -223,7 +223,7 @@ public class SettingTask {
 		Timestamp tt = new Timestamp(System.currentTimeMillis());
 		
 		updateDate = dateFormat.format(tt);
-		
+		ts.deadLineDate.setText(updateDate);
 		if(task != null) {
 		
 		updateDate = dateFormat.format(task.getDeadLine());

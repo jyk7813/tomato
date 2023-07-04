@@ -263,4 +263,8 @@ public class TaskRepository {
 		}
 		return 0;
 	}
+	public int searchTask(int task_no) {
+		
+		return 0;
+	}
 }
