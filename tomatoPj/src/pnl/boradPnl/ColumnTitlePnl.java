@@ -36,6 +36,14 @@ public class ColumnTitlePnl extends JPanel {
 
 		
 	}
+	public void setimage() {
+		if (!isEnabled()) {
+			this.image = iconData.getImageIcon("boardtoptranslucent").getImage();
+		} else {
+			this.image = iconData.getImageIcon("boardtop_opaque").getImage();
+			
+		}
+	}
 
 
 	@Override

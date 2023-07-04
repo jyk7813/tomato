@@ -66,6 +66,9 @@ public class TaskPnl extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (!isEnabled()) {
+					return;
+				}
 				
 				if(task !=null) {
 				System.out.println("주는 칼럼 제목1");
@@ -89,6 +92,17 @@ public class TaskPnl extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, null);
+	}
+	public void setimage() {
+		if (!isEnabled()) {
+			this.image = iconData.getImageIcon("boardMiddletranslucent").getImage();
+			revalidate();
+			repaint();
+		} else {
+			this.image = iconData.getImageIcon("boardMiddle_opaque").getImage();
+			revalidate();
+			repaint();
+		}
 	}
 
 }

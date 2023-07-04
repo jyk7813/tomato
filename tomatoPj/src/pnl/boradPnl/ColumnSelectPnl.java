@@ -3,6 +3,8 @@ package pnl.boradPnl;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -67,12 +69,12 @@ public class ColumnSelectPnl extends JPanel {
 
 		// 칼럼추가버튼 액션리스너
 		addBtn.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				columnSetting();
 			}
 		});
+
 	}
 
 	@Override
@@ -138,11 +140,25 @@ public class ColumnSelectPnl extends JPanel {
 	                if (pnl == columnPnl) { // If this is the clicked panel
 	                    pnl.setEnabled(true); // Activate it
 	                    pnl.columnTitlePnl.setEnabled(true);
+	                    pnl.setimage();
+	                    for (TaskPnl taskPnl : pnl.taskPnls) {
+							taskPnl.setEnabled(true);
+							taskPnl.setimage();
+							revalidate();
+							repaint();
+						}
 	                    
 	                   System.out.println(columnPnl.columnTitlePnl.colTitle);
 	                } else { // If this is not the clicked panel
 	                    pnl.setEnabled(false); // Deactivate it
 	                    pnl.columnTitlePnl.setEnabled(false);
+	                    pnl.setimage();
+	                    for (TaskPnl taskPnl : pnl.taskPnls) {
+							taskPnl.setEnabled(false);
+							taskPnl.setimage();
+							revalidate();
+							repaint();
+						}
 	                }
 	            }
 	        }

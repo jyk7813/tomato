@@ -67,7 +67,7 @@ public class ProjectPnl extends JPanel {
     	colRepo = new ColumnRepository();
     	taskRepo = new TaskRepository();
     	
-        this.image = iconData.getImageIcon("projectIcon").getImage(); // Set imagePath to your image path
+//        this.image = iconData.getImageIcon("projectIcon").getImage(); // Set imagePath to your image path
         setOpaque(false);
         setLayout(new BorderLayout(0, 0));
         
