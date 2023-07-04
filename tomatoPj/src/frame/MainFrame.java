@@ -138,7 +138,6 @@ public class MainFrame extends JFrame {
 
 	public void setTask(Task task, Column column) {
 		Taskrefrom myUpPnl = TBP.taskrefrom;
-		System.out.println("메인에서 확인한다 대답.");
 		TBP.taskrefrom.settingTask(myUpPnl, task, column);
 	}
 

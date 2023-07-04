@@ -52,6 +52,38 @@ public class Feedback {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((comment == null) ? 0 : comment.hashCode());
+		result = prime * result + feedback_no;
+		result = prime * result + member_no;
+		result = prime * result + task_no;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Feedback))
+			return false;
+		Feedback other = (Feedback) obj;
+		if (comment == null) {
+			if (other.comment != null)
+				return false;
+		} else if (!comment.equals(other.comment))
+			return false;
+		if (feedback_no != other.feedback_no)
+			return false;
+		if (member_no != other.member_no)
+			return false;
+		if (task_no != other.task_no)
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "Feedback [feedback_no=" + feedback_no + ", task_no=" + task_no + ", member_no=" + member_no
 				+ ", comment=" + comment + "]";

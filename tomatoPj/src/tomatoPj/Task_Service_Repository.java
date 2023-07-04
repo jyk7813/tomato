@@ -131,8 +131,8 @@ public class Task_Service_Repository {
 			for (Function_Tag function_tag : function_tagList) {
 				stmt2 = conn.prepareStatement("INSERT INTO `function_tag` (task_no, color, `text`) VALUES(?,?,?)");
 				stmt2.setInt(1, function_tag.getTask_no());
-				stmt2.setString(1, function_tag.getColor());
-				stmt2.setString(2, function_tag.getText());
+				stmt2.setString(2, function_tag.getColor());
+				stmt2.setString(3, function_tag.getText());
 				stmt2.executeUpdate();
 			}
 		} catch (SQLException e) {

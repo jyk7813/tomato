@@ -71,13 +71,12 @@ public class TaskPnl extends JPanel {
 				}
 				
 				if(task !=null) {
-				System.out.println("주는 칼럼 제목1");
+					
 				System.out.println(column.getTitle());
 				mainFrame.setTask(task, column);
 				mainFrame.showCard("task");
 				}
 				if (task == null){
-					System.out.println("주는 칼럼 제목2");
 					System.out.println(column.getTitle());
 					mainFrame.setTask(task, column);
 					mainFrame.showCard("task");
