@@ -13,21 +13,21 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
@@ -134,12 +134,13 @@ public class Taskrefrom extends JPanel {
 
 	private JLabel content;
 
-	JTextField calomnTitle;
+	JLabel calomnTitle;
 
 	Taskrefrom ts;
 	TagAddButton TAB;
 	JLabel plusTag;
-
+	List<Member> ProjectMember;
+	
 	public Taskrefrom(MainFrame mainFrame) {
 		MF = mainFrame;
 		tagTexts = new ArrayList<>();
@@ -208,7 +209,7 @@ public class Taskrefrom extends JPanel {
 						}
 						if (TakeFeedBack.getComment().equals("")) {
 //						TakeFeedBack.setComment(text);
-							System.out.println(text);
+
 						}
 					}
 
@@ -220,11 +221,9 @@ public class Taskrefrom extends JPanel {
 					}
 
 					System.out.println("돌려줘야할 정보 전체 확인");
-					System.out.println(returnTask);
-					System.out.println(returnFeedBack);
-					System.out.println(Function_Tag_List);
+
 					System.out.println(member_task_List);
-					System.out.println(column.getColumn_no());
+
 					Task_Service_Repository TSR = new Task_Service_Repository();
 					
 					
@@ -386,10 +385,12 @@ public class Taskrefrom extends JPanel {
 			feedback = null;
 		}
 
-		System.out.println("여기야");
+
 
 		st = new SettingTask(MF, myUpPnl, task, column, feedback);
 
+		st.setPJ_Mem();
+		
 		st.settingPKAndAc();
 
 		st.setUsingMemberNum();
@@ -408,23 +409,18 @@ public class Taskrefrom extends JPanel {
 		st.setContent();
 		// 피드백 세팅
 		st.setFeedback();
+		
 		// 멤버 세팅
 		st.setMemberlist();
+		st.setMember_Task();
+		// 멤버 아이콘 세ㅐ팅
+		st.settingMemberIcon();
 		// 태그 세팅
 		st.setTaglist();
 
 		st.TagAddButton(Function_Tag_List);
 
-		st.setMember_Task();
 
-	}
-
-	// 새로운 버튼
-	public JButton newBtn() {
-		JButton btn = new JButton("태경이 형 하시면 됩니다");
-		btn.setSize(100, 100);
-		btn.setLocation(500, 400);
-		return btn;
 	}
 
 	public void TaskMainLbl() {
@@ -621,7 +617,7 @@ public class Taskrefrom extends JPanel {
 
 	public void CalomnTitle() {
 		JLabel CalomnTitleLbl = new JLabel(IC.getImageIcon("columnTitle"));
-		calomnTitle = new JTextField("칼럼 제목 들어가야함");
+		calomnTitle = new JLabel("칼럼 제목 들어가야함");
 
 		calomnTitle.setBorder(null);
 		calomnTitle.setFont(FD.nanumFontBold(18));
@@ -640,7 +636,7 @@ public class Taskrefrom extends JPanel {
 	public void MemberPnl() {
 		MemberPnl = new JPanel();
 		MemberPnl.setOpaque(false);
-		MemberPnl.setLayout(null);
+		MemberPnl.setLayout(new BoxLayout(MemberPnl, BoxLayout.X_AXIS));
 		MemberPnl.setSize(499, 94);
 		MemberPnl.setLocation(60, 50);
 		proTitleAndMember.add(MemberPnl);
@@ -655,34 +651,50 @@ public class Taskrefrom extends JPanel {
 
 		plus.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				JLabel memberIcon = new JLabel(IC.getImageIcon("user1"));
-
-				memberIcon.addMouseListener(new MouseAdapter() {
-					public void mousePressed(MouseEvent e) {
-						MemberPnl.remove(memberIcon);
-						MemberPnl.revalidate();
-						MemberPnl.repaint();
-						Count--;
-						plus.setVisible(true);
-
-						plus.setLocation(0 + ((Count * 1) * 100), 15);
-					}
-				});
-				MemberPnl.add(memberIcon);
-				memberIcon.setSize(60, 60);
-				memberIcon.setLocation(0 + ((Count * 1) * 100), 20);
-				plus.setLocation(0 + ((Count + 1 * 1) * 100), 15);
-
-				// 아이콘들 간의 간격을 위한 빈 공간 컴포넌트 추가
-
-				MemberPnl.revalidate();
-				MemberPnl.repaint();
-				Count++;
-
-				if (Count >= 4) {
-					plus.setVisible(false);
-				} else {
-				}
+				JDialog  memAdd =  new TaskMemberAdd(MF);
+				memAdd.setLocation(700,550);
+//				ImageIcon back = IC.getImageIcon("addmember(BG)");
+//				String input = (String) JOptionPane.showInputDialog(null, "Enter something", "Input Dialog", JOptionPane.PLAIN_MESSAGE, back, null, null);
+//				JLabel memberIcon = new JLabel();
+//				for(int i = 0; i<memberList.size();i++) {
+//				if(input.equals(memberList.get(i).getId())) {
+//					if(memberList.get(i).getImage()!=null) {
+//					ImageIcon icon = new ImageIcon(memberList.get(i).getImage());
+//					memberIcon.setIcon(icon);
+//					}else {
+//					memberIcon.setIcon(IC.getImageIcon("user1"));
+//					}
+//					
+//					memberIcon.addMouseListener(new MouseAdapter() {
+//						public void mousePressed(MouseEvent e) {
+//							
+//							// showInputDialog 메서드를 사용하여 입력 다이얼로그를 표시하고 이미지 아이콘을 설정합니다.
+//							MemberPnl.remove(memberIcon);
+//							MemberPnl.revalidate();
+//							MemberPnl.repaint();
+//							Count--;
+//							plus.setVisible(true);
+//							
+//							plus.setLocation(0 + ((Count * 1) * 100), 15);
+//						}
+//					});
+//					MemberPnl.add(memberIcon);
+//					memberIcon.setSize(60, 60);
+//					memberIcon.setLocation(0 + ((Count * 1) * 100), 20);
+//					plus.setLocation(0 + ((Count + 1 * 1) * 100), 15);
+//					
+//					// 아이콘들 간의 간격을 위한 빈 공간 컴포넌트 추가
+//					
+//					MemberPnl.revalidate();
+//					MemberPnl.repaint();
+//					Count++;
+//				}
+//				}
+//
+//				if (Count >= 4) {
+//					plus.setVisible(false);
+//				} else {
+//				}
 			}
 		});
 	}
@@ -937,8 +949,7 @@ public class Taskrefrom extends JPanel {
 					text = feedBackText.getText();
 					TakeFeedBack.setComment(text);
 				} else if (TakeTask != null && TakeFeedBack == null) {
-					System.out.println("테이크 테스크는 널이야?");
-					System.out.println(TakeTask);
+				
 					TakeFeedBack = new Feedback(TakeTask.getTask_no(), useingMemberNum, text);
 				}
 				if (TakeTask == null && TakeFeedBack == null) {

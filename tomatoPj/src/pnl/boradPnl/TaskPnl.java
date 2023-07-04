@@ -1,7 +1,6 @@
 package pnl.boradPnl;
 
 import java.awt.Graphics;
-
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,8 +11,6 @@ import javax.swing.JPanel;
 import dbutil.SelectProjectInfo;
 import frame.MainFrame;
 import tomatoPj.Column;
-import tomatoPj.Feedback;
-import pnl.Taskrefrom;
 import tomatoPj.Task;
 import utility.IconData;
 import utility.Utility;
@@ -68,14 +65,11 @@ public class TaskPnl extends JPanel {
 					return;
 				}
 
-				if (task != null) {
-
-					System.out.println(column.getTitle());
+				if (task != null) {					
 					mainFrame.setTask(task, column);
 					mainFrame.showCard("task");
 				}
 				if (task == null) {
-					System.out.println(column.getTitle());
 					mainFrame.setTask(task, column);
 					mainFrame.showCard("task");
 				}
