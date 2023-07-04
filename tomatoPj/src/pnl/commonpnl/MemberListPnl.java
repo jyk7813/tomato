@@ -76,13 +76,9 @@ public class MemberListPnl extends JPanel {
 
 						@Override
 						public void windowClosed(WindowEvent e) {
-							System.out.println("창닫힘");
-							System.out.println("되긴 하니?");
 							updateMember();
-							
-						}
 
-						
+						}
 
 					});
 					memberAddPopup.setAlwaysOnTop(true);
@@ -102,7 +98,6 @@ public class MemberListPnl extends JPanel {
 				} else {
 					plusBtn.setVisible(false);
 				}
-				
 
 			}
 		});
@@ -168,17 +163,19 @@ public class MemberListPnl extends JPanel {
 		memberAddPnl.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); // Use FlowLayout
 		add(memberAddPnl);
 	}
+
 	public void updateMember() {
 		mainFrame.tempInfo = mainFrame.pjInfo;
 		System.out.println(mainFrame.tempInfo);
-		mainFrame.projectPnl.projectPnl.insertPjInfo(mainFrame, mainFrame.tempInfo.getProject_no(), mainFrame.tempInfo.getTitle());
-		
+		mainFrame.projectPnl.projectPnl.insertPjInfo(mainFrame, mainFrame.tempInfo.getProject_no(),
+				mainFrame.tempInfo.getTitle());
+
 		addPnl();
 		members = mainFrame.pjInfo.getMemberList();
 		System.out.println(members);
 		// Clear the memberPnls list
 		memberPnls.clear();
-		
+
 		if (members != null) {
 			for (Member member : members) {
 				if (MemberListPnl.this.mainFrame.loginMember.getMember().equals(member)) {
@@ -192,15 +189,15 @@ public class MemberListPnl extends JPanel {
 				memberAddPnl.add(memberPnl);
 			}
 			memberAddPnl.remove(plusBtn);
-			
+
 			// Make the plusBtn visible if member count is less than MAX_MEMBER_SIZE
 			plusBtn.setVisible(members.size() < MAX_MEMBER_SIZE);
-			
+
 			memberAddPnl.revalidate();
 			memberAddPnl.repaint();
 			memberAddPnl.add(plusBtn);
 			count = memberPnls.size();
-			
-		}		
+
+		}
 	}
 }

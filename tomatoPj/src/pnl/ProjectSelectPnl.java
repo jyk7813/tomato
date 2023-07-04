@@ -48,7 +48,6 @@ import utility.IconData;
 import utility.Utility;
 
 public class ProjectSelectPnl extends JPanel {
-
 	private Image image;
 	private IconData iconData;
 	private Utility utility;
@@ -150,9 +149,7 @@ public class ProjectSelectPnl extends JPanel {
 					projectPnls.add(projectPnl);
 				} catch (SQLException e1) {
 					e1.printStackTrace();
-					System.out.println("제대로안만들어짐");
-				}
-				System.out.println("컬럼셀렉트로 안넘어가나?");
+				} 
 				mainFrame.showCard("columnSelect");
 
 			}
@@ -182,7 +179,6 @@ public class ProjectSelectPnl extends JPanel {
 		add(westPnl, BorderLayout.WEST);
 		add(eastPnl, BorderLayout.EAST);
 		northPanel.add(logoutBtn);
-
 	}
 
 	// 프로젝트 선택화면에 띄우기 위함
@@ -212,12 +208,9 @@ public class ProjectSelectPnl extends JPanel {
 			}
 		}
 		mainFrame.loginMember.setTakeTaskList(list);
-		System.out.println("제대로된 멤버? " + memberList);
-		//////////// 가지고있는 프로젝트 리스트 패널 생성 ///////////
 		for (Project project : mainFrame.loginMember.getPjList()) {
 			addProject(project.getProject_no(), project.getTitle());
 		}
-		System.out.println("참여한모든프로젝트 태스크리스트사이즈" + mainFrame.loginMember.getTakeTaskList().size());
 	}
 
 	private void addProject(int project_no, String title) {

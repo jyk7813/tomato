@@ -26,7 +26,6 @@ class MyTextField extends JTextField implements FocusListener {
 	         @Override
 	         public void keyPressed(KeyEvent e) {
 	            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-	            	System.out.println("엔터왜안먹음?");
 	               btn.doClick();
 	            }
 	         }

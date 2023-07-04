@@ -445,7 +445,6 @@ public class SignUpPnl extends JPanel {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					System.out.println("발동");
 					btn.doClick();
 				}
 			}

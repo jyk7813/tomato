@@ -21,7 +21,7 @@ public class AddPictureBtn extends JButton {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			byte[] image = imageInput.chooseImageAndConvertToByteArray();
-			System.out.println(image);
+			//System.out.println(image);
 			ImageIcon imageIcon = new ImageIcon(image);
 			signUpPnl.testLbl.setIcon(imageIcon);
 			}

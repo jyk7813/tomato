@@ -38,6 +38,7 @@ public class TodoBtn extends JButton {
 
 			@Override
 			public void mousePressed(MouseEvent arg0) {
+				mainFrame.todoBtnActive = true;
 				mainFrame.tempInfo = mainFrame.pjInfo;
 				
 				mainFrame.columnActive = true;
