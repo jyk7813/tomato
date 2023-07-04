@@ -225,7 +225,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		currentDate.setBounds(35, 20, 700, 50);
 		// 리스트 출력
 		listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
-		listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
+		listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 90);
 		listPnl.setOpaque(false);
 		getTodoList(printCurrentList);
 
@@ -487,7 +487,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		int count = 0;
 		if (thisList.size() == 0) {
 			JPanel pnl = new JPanel();
-			pnl.setBounds(0, 0, 700, 80);
+			pnl.setBounds(0, 0, 700, 90);
 			pnl.setLayout(null);
 			pnl.setOpaque(false);
 			JLabel color = new JLabel(iconManager.getImageIcon("calendarDot_9"));
@@ -495,7 +495,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			color.setLayout(null);
 			color.setOpaque(false);
 			JButton clickBox = new JButton(iconManager.getImageIcon("t_null"));
-			clickBox.setBounds(0, 0, 700, 80);
+			clickBox.setBounds(0, 0, 700, 90);
 			clickBox.setLayout(null);
 			clickBox.setOpaque(false);
 			clickBox.setBorderPainted(false);
@@ -514,7 +514,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		} else {
 			for (PrintPlanner p : thisList) {
 				JPanel pnl = new JPanel();
-				pnl.setBounds(0, 0, 700, 80);
+				pnl.setBounds(0, 0, 700, 90);
 				pnl.setLayout(null);
 				pnl.setOpaque(false);
 				String imgsrc = "calendarDot_" + count;
@@ -524,6 +524,12 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 				color.setOpaque(false);
 				todoTaskBtn clickBox = new todoTaskBtn(p.getTaskPk(), mainFrame);
 				clickBox.setName(String.valueOf(count + 1));
+				clickBox.setBounds(0, 0, 700, 90);
+				clickBox.setLayout(null);
+				clickBox.setOpaque(false);
+				clickBox.setBorderPainted(false);
+				clickBox.setContentAreaFilled(false);
+				clickBox.setFocusPainted(false);
 				getTodoBtn(clickBox);
 				JLabel title = new JLabel();
 				title.setText(p.getTaskName());
@@ -533,7 +539,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 				JLabel dateText = new JLabel();
 				dateText.setText(p.getUp().toString() + " ~ " + p.getDead().toString());
 				dateText.setFont(fontManager.nanumFontBold(18));
-				dateText.setBounds(60, 40, 417, 30);
+				dateText.setBounds(60, 35, 417, 30);
 				dateText.setOpaque(false);
 
 				pnl.add(clickBox);
@@ -550,7 +556,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 	public JButton getTodoBtn(JButton btn) {
 		btn.setIcon(iconManager.getImageIcon("t_null"));
 		btn.setRolloverIcon(iconManager.getImageIcon("t_c"));
-		btn.setBounds(0, 0, 700, 70);
+		btn.setBounds(0, 0, 700, 90);
 		btn.setLayout(null);
 		btn.setOpaque(false);
 		btn.setBorderPainted(false);
@@ -641,7 +647,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			setPrintDayOfWeek(selDate);
 			getTodoList(printCurrentList);
 			listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
-			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
+			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 90);
 			listPnl.setVisible(true);
 			}
 		}
@@ -679,7 +685,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			setPrintDayOfWeek(selDate);
 			getTodoList(printCurrentList);
 			listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
-			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
+			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 90);
 			listPnl.setVisible(true);
 		} else {
 			listPnl.setVisible(false);
@@ -689,7 +695,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			setPrintDayOfWeek(selDate);
 			getTodoList(printCurrentList);
 			listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
-			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
+			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 90);
 			listPnl.setVisible(true);
 		}
 	}
@@ -704,7 +710,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			setPrintDayOfWeek(selDate);
 			getTodoList(printCurrentList);
 			listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
-			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
+			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 90);
 			listPnl.setVisible(true);
 		} else {
 			listPnl.setVisible(false);
@@ -714,7 +720,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			setPrintDayOfWeek(selDate);
 			getTodoList(printCurrentList);
 			listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
-			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
+			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 90);
 			listPnl.setVisible(true);
 		}
 	}
