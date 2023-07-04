@@ -72,7 +72,7 @@ public class TestTodoPnl extends JPanel {
       addComponentListener(new ComponentListener() {
          @Override
          public void componentShown(ComponentEvent e) {
-            ppList = ppr.setView(toggleSwitch, mainFrame.loginMember.getMember_no());
+            ppList = ppr.getPrintPlannerList(mainFrame.loginMember.getMember_no());
          }
 
          @Override
