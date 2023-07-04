@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,7 +46,6 @@ import tomatoPj.Function_Tag;
 import tomatoPj.Member;
 import tomatoPj.Member_task;
 import tomatoPj.Task;
-import tomatoPj.TaskPnl_Repository;
 import tomatoPj.TaskRepository;
 import tomatoPj.Task_Service_Repository;
 import utility.FontData;
@@ -133,11 +133,11 @@ public class Taskrefrom extends JPanel {
 	Feedback returnFeedBack;
 
 	
-	
+	Taskrefrom tr;
 	
 	private JLabel content;
 
-	JLabel calomnTitle;
+	JTextField calomnTitle;
 	
 	Taskrefrom ts;
 	TagAddButton TAB;
@@ -145,7 +145,6 @@ public class Taskrefrom extends JPanel {
 
 
 	public Taskrefrom(MainFrame mainFrame) {
-		 
 		MF = mainFrame;
 		tagTexts = new ArrayList<>();
 		ts = this;
@@ -234,24 +233,26 @@ public class Taskrefrom extends JPanel {
 					System.out.println(member_task_List);
 					System.out.println(column.getColumn_no());
 					Task_Service_Repository TSR = new Task_Service_Repository();
-					//TSR.updateTask(returnTask,returnFeedBack,Function_Tag_List, member_task_List,column.getColumn_no());
 					
 					
+//					int newTask_num = TSR.updateTask(returnTask,column.getColumn_no());
 					
-					add(newBtn());
+//					TSR.FeedbackFunction(TakeFeedBack, newTask_num);
+//					TSR.FeedbackFunction(TakeFeedBack, newTask_num);
+//					TSR.Member_taskFunction(Connection conn, List<Member_task> member_taskList, int task_no)
+					
 					st.reset();
 					CountTag = 0;
 					mainFrame.getContentPane().removeAll();
-					mainFrame.addPnl();
-					mainFrame.showCard("columnSelect");
-					mainFrame.columnActive = true;
-					mainFrame.boradPnl.panel_2.columnSelectPnl.columnSetting();
-
+                    mainFrame.addPnl();
+                    mainFrame.showCard("columnSelect");
+                    mainFrame.columnActive = true;
+                    mainFrame.boradPnl.panel_2.columnSelectPnl.columnSetting();
 					
 				}
 			}
 		};
-		
+
 		// 프레임에 패널 외부 클릭 리스너 추가
 		addMouseListener(outsideClickListener);
 
@@ -406,14 +407,6 @@ public class Taskrefrom extends JPanel {
 		
 	}
 	
-	public void input(int TaskNum,Taskrefrom Taskrefrom) {
-		
-		MF.Library.put(TaskNum, Taskrefrom);
-		
-	}
-	public Taskrefrom TaskPnlshow(int TaskNum) {
-		return MF.Library.get(TaskNum);
-	}
 	// 새로운 버튼
 	public JButton newBtn() {
 		JButton btn = new JButton("태경이 형 하시면 됩니다");
@@ -615,7 +608,7 @@ public class Taskrefrom extends JPanel {
 
 	public void CalomnTitle() {
 		JLabel CalomnTitleLbl = new JLabel(IC.getImageIcon("columnTitle"));
-		calomnTitle = new JLabel("칼럼 제목 들어가야함");
+		calomnTitle = new JTextField("칼럼 제목 들어가야함");
 
 		calomnTitle.setBorder(null);
 		calomnTitle.setFont(FD.nanumFontBold(18));

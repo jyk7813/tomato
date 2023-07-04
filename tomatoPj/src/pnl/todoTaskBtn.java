@@ -18,7 +18,8 @@ public class todoTaskBtn extends JButton {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("눌러진다");
+				
+				mainFrame.setTask(null, null);
 				mainFrame.showCard("task");
 			}
 		});
