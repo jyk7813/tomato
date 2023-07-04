@@ -66,18 +66,17 @@ public class TaskPnl extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Feedback feedback = new Feedback(6, 27, 1, "대본수정");
 				
 				if(task !=null) {
 				System.out.println("주는 칼럼 제목1");
 				System.out.println(column.getTitle());
-				mainFrame.setTask(task, column, feedback);
+				mainFrame.setTask(task, column);
 				mainFrame.showCard("task");
 				}
 				if (task == null){
 					System.out.println("주는 칼럼 제목2");
 					System.out.println(column.getTitle());
-					mainFrame.setTask(task, column, feedback);
+					mainFrame.setTask(task, column);
 					mainFrame.showCard("task");
 				}
 			
