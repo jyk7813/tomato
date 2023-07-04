@@ -6,17 +6,30 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import frame.MainFrame;
+import tomatoPj.Column;
+import tomatoPj.ColumnRepository;
+import tomatoPj.Task;
+import tomatoPj.TaskRepository;
 
 public class todoTaskBtn extends JButton {
 	private int task_no;
-	
+	private ColumnRepository colRepo;
+	private TaskRepository taskRepo;
+	private Task task;
+	private Column column;
 	public todoTaskBtn(int task_no, MainFrame mainFrame) {
+		colRepo = new ColumnRepository();
+		taskRepo = new TaskRepository();
 		this.task_no = task_no;
+		task = taskRepo.searchTaskBy_no(task_no);
+		column = colRepo.searchCol_task_no(task_no);
+		
 		addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("눌러진다");
+				//System.out.println("눌러진다");
+				mainFrame.setTask(task, column);
 				mainFrame.showCard("task");
 			}
 		});
