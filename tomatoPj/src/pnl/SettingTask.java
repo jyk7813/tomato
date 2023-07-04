@@ -18,6 +18,7 @@ import frame.MainFrame;
 import tomatoPj.Column;
 import tomatoPj.Feedback;
 import tomatoPj.Function_Tag;
+import tomatoPj.Member_task;
 import tomatoPj.Task;
 import tomatoPj.TaskRepository;
 import utility.IconData;
@@ -43,7 +44,6 @@ public class SettingTask {
 		TR = new TaskRepository();
 
 	}
-	
 	public void reset() {
 		task =null;
 		ts.TakeTask = null;
@@ -81,6 +81,12 @@ public class SettingTask {
 		
 	}
 	
+	public void settingMember_TaskList(){
+		ts.member_taskList = new ArrayList<>();
+		if(task != null) {
+		
+		}
+		}
 
 	public void setMemberlist() {
 		if(task != null) {
