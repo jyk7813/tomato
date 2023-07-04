@@ -22,15 +22,16 @@ public class Task_Service_Repository {
 	 * @param List<Function_Tag>
 	 * @param List<Member_task>
 	 */
-	public String updateTask(Task task, Feedback feedback, List<Function_Tag> function_tagList,
-			List<Member_task> member_taskList, int column_no) {
+	public int updateTask(Task task, /*Feedback feedback, List<Function_Tag> function_tagList,
+			List<Member_task> member_taskList, */int column_no) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
 		PreparedStatement stmt3 = null;
 		ResultSet rs = null;
-
+		int task_no = 0;
 		try {
+			
 			if (task != null) {
 				conn = DBUtil.getConnection();
 				if (task.getTask_no() == 0) {
@@ -47,16 +48,17 @@ public class Task_Service_Repository {
 					stmt2 = conn.prepareStatement("SELECT `task_no` FROM `task` ORDER BY `task_no` DESC");
 					rs = stmt2.executeQuery();
 					rs.next();
-					int task_no = rs.getInt("task_no");
+					task_no = rs.getInt("task_no");
 
 					stmt3 = conn.prepareStatement("INSERT INTO `column_task` (`column_no`, `task_no`) VALUES (?,?)");
-					stmt3.setInt(task_no, column_no);
+					stmt3.setInt(1, column_no);
+					stmt3.setInt(2, task_no);
 					stmt3.executeUpdate();
 
-					FeedbackFunction(conn, feedback, task_no);
-					Function_TagFunction(conn, function_tagList, task_no);
-					Member_taskFunction(conn, member_taskList, task_no);
-					return "태스크새로만듬";
+//					FeedbackFunction(conn, feedback, task_no);
+//					Function_TagFunction(conn, function_tagList, task_no);
+//					Member_taskFunction(conn, member_taskList, task_no);
+					return task_no;
 				} else if (task.getTask_no() != 0) {
 
 					stmt = conn.prepareStatement("UPDATE task\n"
@@ -70,11 +72,11 @@ public class Task_Service_Repository {
 					stmt.setInt(6, task.getTask_no());
 					stmt.executeUpdate();
 
-					FeedbackFunction(conn, feedback, task.getTask_no());
-					Function_TagFunction(conn, function_tagList, task.getTask_no());
-					Member_taskFunction(conn, member_taskList, task.getTask_no());
-
-					return "태스크업데이트";
+//					FeedbackFunction(conn, feedback, task.getTask_no());
+//					Function_TagFunction(conn, function_tagList, task.getTask_no());
+//					Member_taskFunction(conn, member_taskList, task.getTask_no());
+				
+					return task_no;
 				}
 			}
 
@@ -87,13 +89,15 @@ public class Task_Service_Repository {
 			DBUtil.close(conn);
 
 		}
-		return "끝까지돌아가긴했음";
+		return task_no;
 	}
 
 	// 피드백이 없어도 돌아가게 만들었음
-	public void FeedbackFunction(Connection conn, Feedback feedback, int task_no) {
+	public void FeedbackFunction(Feedback feedback, int task_no) {
 		PreparedStatement stmt = null;
+		Connection conn = null;
 		try {
+			conn = DBUtil.getConnection();
 			if (feedback != null) {
 				if (feedback.getFeedback_no() == 0) {
 					stmt = conn
@@ -117,14 +121,17 @@ public class Task_Service_Repository {
 			e.printStackTrace();
 		} finally {
 			DBUtil.close(stmt);
+			DBUtil.close(conn);
 		}
 	}
 
 	// 기능 태그가없어도 돌아감
-	public void Function_TagFunction(Connection conn, List<Function_Tag> function_tagList, int task_no) {
+	public void Function_TagFunction(List<Function_Tag> function_tagList, int task_no) {
+		Connection conn = null;
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
 		try {
+			conn = DBUtil.getConnection();
 			stmt = conn.prepareStatement("DELETE FROM `function_tag` WHERE `task_no` = ?");
 			stmt.setInt(1, task_no);
 			stmt.executeUpdate();
@@ -140,6 +147,7 @@ public class Task_Service_Repository {
 		} finally {
 			DBUtil.close(stmt);
 			DBUtil.close(stmt2);
+			DBUtil.close(conn);
 		}
 	}
 
