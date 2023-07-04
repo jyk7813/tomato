@@ -29,7 +29,6 @@ public class DeleteTaskBtn extends JButton {
 				taskRepository.deleteTask(task_no);
 				
 				
-				mainFrame.boradPnl.panel_2.columnSelectPnl.updatePnl();
 				
 			}
 

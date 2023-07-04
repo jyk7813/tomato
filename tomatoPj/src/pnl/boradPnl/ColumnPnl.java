@@ -64,7 +64,7 @@ public class ColumnPnl extends JPanel {
 			columntitle = colTitle;
 		}
 
-		columnTitlePnl = new ColumnTitlePnl(mainFrame, columntitle, column.getColumn_no(),columnSelectPnl);
+		columnTitlePnl = new ColumnTitlePnl(mainFrame, columntitle, column.getColumn_no(),columnSelectPnl,column);
 		columnTitlePnl.setBounds(0, 41, 350, 80);
 		columnTop.add(columnTitlePnl);
 
