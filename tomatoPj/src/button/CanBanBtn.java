@@ -37,7 +37,7 @@ public class CanBanBtn extends JButton {
 
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				
+				mainFrame.todoBtnActive = false;
 				mainFrame.pjInfo=mainFrame.tempInfo;
 				
 
@@ -45,23 +45,9 @@ public class CanBanBtn extends JButton {
 				mainFrame.addPnl();
 				//mainFrame.showCard("projectSelect");
 				mainFrame.showCard("columnSelect");
-				System.out.println("야!!!!!!!!!!!!!!!!!!!!!!!!" + mainFrame.pjInfo.getCol().size());
-				System.out.println("addcolumnCnt : " + mainFrame.pjInfo.getColumnCnt());
 				mainFrame.columnActive = true;
 				mainFrame.boradPnl.panel_2.columnSelectPnl.columnSetting();
-				// mainFrame.refreshColumnSelect();
 
-//				mainFrame.pjInfo = mainFrame.tempInfo;
-//				mainFrame.columnActive = true;
-
-//				
-//				
-//				
-//				mainFrame.showCard("columnSelect");
-//				mainFrame.revalidate();
-//				mainFrame.repaint();
-				// revalidate();
-				// repaint();
 			}
 
 		});
