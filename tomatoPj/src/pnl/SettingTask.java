@@ -44,7 +44,8 @@ public class SettingTask {
 		this.task = task;
 		ts.TakeTask = task;
 		this.ts = ts;
-		this.Takecolumn = column;
+		Takecolumn = column;
+		ts.column = column;
 		this.feedback = feedback;
 		ts.TakeFeedBack = feedback;
 

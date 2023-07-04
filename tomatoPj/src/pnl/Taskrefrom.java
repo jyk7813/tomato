@@ -38,7 +38,6 @@ import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import frame.MainFrame;
-import pnl.commonpnl.MyInfoPnl;
 import tomatoPj.Column;
 import tomatoPj.Feedback;
 import tomatoPj.FeedbackRepository;
@@ -122,17 +121,16 @@ public class Taskrefrom extends JPanel {
 	List<Function_Tag> return_Function_Tag_List;
 	TaskRepository taskRepo;
 	List<Member> memberList;
+	List<Member_task> member_task_List;
 	
 	
-	List<Function_Tag> Function_Tag_List;
-	List<String> tagTexts;
-	List<Member_task> member_taskList;
 	Column column;
 	CardLayout cardLayout;
 	
 
 	int useingMemberNum;
 	Feedback returnFeedBack;
+
 	
 	Taskrefrom tr;
 	
@@ -147,7 +145,6 @@ public class Taskrefrom extends JPanel {
 
 	public Taskrefrom(MainFrame mainFrame) {
 		MF = mainFrame;
-		Task_Service_Repository TSR = new Task_Service_Repository();
 		tagTexts = new ArrayList<>();
 		ts = this;
 //		 태그 받아오는 db 함수 필요함s
@@ -233,19 +230,13 @@ public class Taskrefrom extends JPanel {
 					System.out.println(returnFeedBack);
 					System.out.println(Function_Tag_List);
 					System.out.println(member_task_List);
+					System.out.println(column.getColumn_no());
 					Task_Service_Repository TSR = new Task_Service_Repository();
-					
-//					TSR.updateTask(returnTask, Feedback feedback, List<Function_Tag> function_tagList, List<Member_task> member_taskList)
+					TSR.updateTask(returnTask,returnFeedBack,Function_Tag_List, member_task_List,column.getColumn_no());
 					
 					add(newBtn());
 					st.reset();
 					CountTag = 0;
-					System.out.println("돌려줄꺼 최종 확인");
-					System.out.println(returnTask);
-					System.out.println(returnFeedBack);
-					System.out.println(return_Function_Tag_List);
-
-	 		        mainFrame.boradPnl.projectMemberPnl.myInfoPnl.removeAll();
 					mainFrame.showCard("columnSelect");
 
 					
@@ -298,7 +289,6 @@ public class Taskrefrom extends JPanel {
 		// 멤버 추가 로직고민
 
 		
-		st = new SettingTask(this, TakeTask, column,TakeFeedBack);
 		IC = new IconData();
 		FD = new FontData();
 		util = new Utility();
@@ -403,8 +393,6 @@ public class Taskrefrom extends JPanel {
 
 			
 			st.TagAddButton(Function_Tag_List);
-			
-			st.settingMember_TaskList();
 	
 			st.setMember_Task();
 		
