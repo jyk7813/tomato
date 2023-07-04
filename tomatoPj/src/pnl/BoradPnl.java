@@ -36,17 +36,18 @@ public class BoradPnl extends JPanel{
 			public void componentShown(ComponentEvent e) {
 				
 				projectMemberPnl.myInfoPnl.settingMyInfopnl();
-				int size=0;
-				try {
-					size = mainFrame.pjInfo.getCol().size();
-					
-				} catch (NullPointerException e1) {
-					size=0;
-				}
-				if(size>0 && mainFrame.pjInfo.getColumnCnt() != mainFrame.pjInfo.getCol().size()) {
-					panel_2.columnSelectPnl.columnSetting();
-				}
-				mainFrame.pjInfo.setColumnCnt(0);
+				panel_2.columnSelectPnl.updatePnl(mainFrame.pjInfo.getProject_no());
+//				int size=0;
+//				try {
+//					size = mainFrame.pjInfo.getCol().size();
+//					
+//				} catch (NullPointerException e1) {
+//					size=0;
+//				}
+//				if(size>0 && mainFrame.pjInfo.getColumnCnt() != mainFrame.pjInfo.getCol().size()) {
+//					panel_2.columnSelectPnl.columnSetting();
+//				}
+//				mainFrame.pjInfo.setColumnCnt(0);
 			}
 		});
 		

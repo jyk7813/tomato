@@ -79,6 +79,7 @@ public class ColumnSelectPnl extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				columnSetting();
+				updatePnl(mainFrame.pjInfo.getProject_no());
 			}
 
 		});
@@ -156,15 +157,7 @@ public class ColumnSelectPnl extends JPanel {
 								pnl.columnTitlePnl.titleLbl.setText(pnl.columnTitlePnl.updateTitleField.getText());
 								colRepo.editTitleColumn(pnl.getColumn().getColumn_no(),
 										pnl.columnTitlePnl.updateTitleField.getText());
-								mainFrame.pjInfo=mainFrame.tempInfo;
-								
-
-								mainFrame.getContentPane().removeAll();
-								mainFrame.addPnl();
-								//mainFrame.showCard("projectSelect");
-								mainFrame.showCard("columnSelect");
-								mainFrame.columnActive = true;
-								mainFrame.boradPnl.panel_2.columnSelectPnl.columnSetting();
+								updatePnl(mainFrame.pjInfo.getProject_no());
 
 							} else {
 								pnl.columnTitlePnl.deletecolBtn.setVisible(true);
@@ -213,7 +206,7 @@ public class ColumnSelectPnl extends JPanel {
 
 	public void updatePnl(int project_no) {
 	    // First we clear the panel
-	    removeAll();
+	    this.removeAll();
 	    columnPnls.clear();
 	    addPnl();
 	    // Then we fetch the data from the database
