@@ -9,7 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -30,405 +33,540 @@ import utility.PrintPlannerList;
 import utility.Utility;
 
 public class CalendarSwing extends JPanel implements ItemListener, ActionListener {
-   FontData fontManager = new FontData();
-   IconData iconManager = new IconData();
-   Utility utilManager = new Utility();
-   CalendarData calManager = new CalendarData();
-   Font fnt = fontManager.nanumFontBold(18);
-   Font fnt2 = fontManager.nanumFontBold(15);
+	FontData fontManager = new FontData();
+	IconData iconManager = new IconData();
+	Utility utilManager = new Utility();
+	CalendarData calManager = new CalendarData();
+	Font fnt = fontManager.nanumFontBold(18);
+	Font fnt2 = fontManager.nanumFontBold(15);
 
-   // 상단 패널 ---------------------------------------
-   JPanel selectPane = new JPanel();
-   JButton prevBtn = utilManager.getBtn(0, 10, "before_btn");
-   JButton nextBtn = utilManager.getBtn(250, 10, "next_btn");
-   JComboBox<Integer> yearCombo = new JComboBox<Integer>();
-   JComboBox<Integer> monthCombo = new JComboBox<Integer>();
-   JLabel yearLBl = new JLabel("년");
-   JLabel monthLBl = new JLabel("월");
+	// 상단 패널 ---------------------------------------
+	JPanel selectPane = new JPanel();
+	JButton prevBtn = utilManager.getBtn(0, 10, "before_btn");
+	JButton nextBtn = utilManager.getBtn(250, 10, "next_btn");
+	JComboBox<Integer> yearCombo = new JComboBox<Integer>();
+	JComboBox<Integer> monthCombo = new JComboBox<Integer>();
+	JLabel yearLBl = new JLabel("년");
+	JLabel monthLBl = new JLabel("월");
 
-   // 투두 리스트 패널 ------------------------------------
-   JPanel todoListPnl = new JPanel();
-   JLabel currentDate = new JLabel();
-   String todoDate; // 투두 표시 날짜
+	// 투두 리스트 패널 ------------------------------------
+	JPanel todoListPnl = new JPanel();
+	JLabel currentDate = new JLabel();
+	String todoDate; // 투두 표시 날짜
+	JPanel listPnl;
 
-   // 달력 출력 패널 ------------------------------------
-   JPanel centerPane = new JPanel();
-   JPanel dayPane = new JPanel(new GridLayout(0, 7, 0, 0));
-   JPanel barPane = new JPanel();
+	// 달력 출력 패널 ------------------------------------
+	JPanel centerPane = new JPanel();
+	JPanel dayPane = new JPanel(new GridLayout(0, 7, 0, 0));
+	JPanel barPane = new JPanel();
 
-   String[] title = { "일", "월", "화", "수", "목", "금", "토" };
+	String[] title = { "일", "월", "화", "수", "목", "금", "토" };
 
-   Calendar date;
-   int year;
-   int month;
+	Calendar date;
+	LocalDate selDate;
+	int year;
+	int month;
+	int day;
+	PrintPlannerList ppl = new PrintPlannerList();
+	MemberRepository mr = new MemberRepository();
+	CalendarData cd = new CalendarData();
+	Utility util = new Utility();
+	Member loginMember;
+	List<PrintPlanner> ppList;
+	int loginMemberNo = 0;
+	boolean flag = false;
+	boolean toggleSwitch = true;
+	List<JButton> dateBtnList;
+	boolean isSelectDate = true;
 
-   PrintPlannerList ppl = new PrintPlannerList();
-   MemberRepository mr = new MemberRepository();
-   Member loginMember;
-   int loginMemberNo = 0;
-   boolean flag = false;
-   boolean toggleSwitch = true;
+	public CalendarSwing() {
+		super();
+		System.out.println("달력창 기본 생성자");
+		date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아옴
+		year = date.get(Calendar.YEAR);
+		month = date.get(Calendar.MONTH) + 1;
 
-   public CalendarSwing() {
-      super();
-      System.out.println("달력창 기본 생성자");
-      date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아옴
-      year = date.get(Calendar.YEAR);
-      month = date.get(Calendar.MONTH) + 1;
+		// 상단 패널 ---------------------------------------
+		yearCombo.setBounds(50, 10, 80, 34);
+		yearLBl.setBounds(140, 10, 50, 34);
+		monthCombo.setBounds(170, 10, 50, 34);
+		monthLBl.setBounds(230, 10, 50, 34);
+		selectPane.add(prevBtn);
+		selectPane.add(yearCombo);
+		yearCombo.setFont(fnt);
+		selectPane.add(yearLBl);
+		yearLBl.setFont(fnt);
+		selectPane.add(monthCombo);
+		monthCombo.setFont(fnt);
+		selectPane.add(monthLBl);
+		monthLBl.setFont(fnt);
+		selectPane.add(nextBtn);
+		selectPane.setBounds(0, 30, 300, 300);
+		selectPane.setLayout(null);
+		selectPane.setOpaque(false);
 
-      // 상단 패널 ---------------------------------------
-      yearCombo.setBounds(50, 10, 80, 34);
-      yearLBl.setBounds(140, 10, 50, 34);
-      monthCombo.setBounds(170, 10, 50, 34);
-      monthLBl.setBounds(230, 10, 50, 34);
-      selectPane.add(prevBtn);
-      selectPane.add(yearCombo);
-      yearCombo.setFont(fnt);
-      selectPane.add(yearLBl);
-      yearLBl.setFont(fnt);
-      selectPane.add(monthCombo);
-      monthCombo.setFont(fnt);
-      selectPane.add(monthLBl);
-      monthLBl.setFont(fnt);
-      selectPane.add(nextBtn);
-      selectPane.setBounds(0, 30, 300, 300);
-      selectPane.setLayout(null);
-      selectPane.setOpaque(false);
+		// 투두리스트 패널 -----------------------------------
+		// 오늘 날짜 출력 라벨
+		todoDate = calManager.getCurrentDate();
+		selDate = cd.getLocalDate(todoDate);
+		System.out.println(selDate);
+		currentDate.setText(todoDate);
+		currentDate.setFont(fnt);
+		currentDate.setLayout(null);
+		currentDate.setBounds(0, 50, 240, 50);
 
-      // 투두리스트 패널 -----------------------------------
-      // 오늘 날짜 출력 라벨
-      todoDate = calManager.getCurrentDate();
-      currentDate.setText(todoDate);
-      currentDate.setFont(fnt);
-      currentDate.setLayout(null);
-      currentDate.setBounds(0, 50, 240, 50);
+		todoListPnl.add(currentDate);
+		todoListPnl.setBounds(920, 100, 760, 700);
+		todoListPnl.setLayout(null);
+		todoListPnl.setOpaque(false);
 
-      todoListPnl.add(currentDate);
-      todoListPnl.setBounds(920, 100, 760, 700);
-      todoListPnl.setLayout(null);
-      todoListPnl.setOpaque(false);
+		// 달력 출력 패널 ------------------------------------
+		add(selectPane);
+		setLayout(null);
 
-      // 달력 출력 패널 ------------------------------------
-      add(selectPane);
-      setLayout(null);
+		// 현재 년, 월 세팅
+		setYear();
+		setMonth();
+		setDay();
+		barPane.setBounds(0, 0, 790, 740);
+		barPane.setOpaque(false);
+		centerPane.add(barPane);
+		dayPane.setBounds(0, 0, 790, 740);
+		dayPane.setOpaque(false);
+		centerPane.add(dayPane);
+		centerPane.setBounds(0, 130, 790, 740);
+		centerPane.setLayout(null);
+		centerPane.setOpaque(false);
 
-      // 현재 년, 월 세팅
-      setYear();
-      setMonth();
-      setDay();
-      barPane.setBounds(0, 0, 790, 750);
-      barPane.setOpaque(false);
-      centerPane.add(barPane);
-      dayPane.setBounds(0, 0, 790, 750);
-      dayPane.setOpaque(false);
-      centerPane.add(dayPane);
-      centerPane.setBounds(0, 130, 790, 750);
-      centerPane.setLayout(null);
-      centerPane.setOpaque(false);
+		// 패널 붙이기 --------------------------------------
+		add(selectPane);
+		add(todoListPnl);
+		add(centerPane);
 
-      // 패널 붙이기 --------------------------------------
-      add(selectPane);
-      add(todoListPnl);
-      add(centerPane);
+		// 기능이벤트를 추가 ----------------------------------
+		prevBtn.addActionListener(this);
+		nextBtn.addActionListener(this);
+		// 년월 이벤트 다시등록 --------------------------------
+		yearCombo.addItemListener(this);
+		monthCombo.addItemListener(this);
 
-      // 기능이벤트를 추가 ----------------------------------
-      prevBtn.addActionListener(this);
-      nextBtn.addActionListener(this);
-      // 년월 이벤트 다시등록 --------------------------------
-      yearCombo.addItemListener(this);
-      monthCombo.addItemListener(this);
+		// ---------------------------------------------
+		setBounds(0, 0, 1718, 870);
+		setOpaque(false);
+		setVisible(true);
+	}
 
-      // ---------------------------------------------
-      setBounds(0, 0, 1718, 870);
-      setOpaque(false);
-      setVisible(true);
-   }
+	public CalendarSwing(int loginMemberNo, Boolean toggleSwitch) {
+		super();
+		try {
+			loginMember = mr.searchByMemberNo(loginMemberNo);
+			this.loginMemberNo = loginMemberNo;
+			this.toggleSwitch = toggleSwitch;
+			ppList = ppl.setView(loginMemberNo, toggleSwitch);
+			System.out.println("달력창 확인: " + loginMember.getName() + "토글상태: " + toggleSwitch);
+			flag = true;
+		} catch (SQLException e) {
+			System.out.println("달력창 실패1");
+			e.printStackTrace();
+		}
+		date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아옴
+		year = date.get(Calendar.YEAR);
+		month = date.get(Calendar.MONTH) + 1;
+		day = date.get(Calendar.DATE);
 
-public CalendarSwing(int loginMemberNo, Boolean toggleSwitch) {
-   super();
-   try {
-      loginMember = mr.searchByMemberNo(loginMemberNo);
-      this.loginMemberNo = loginMemberNo;
-      this.toggleSwitch = toggleSwitch;
-      System.out.println("달력창 확인: " + loginMember.getName() + "토글상태: " + toggleSwitch);
-      flag = true;
-   } catch (SQLException e) {
-      System.out.println("달력창 실패1");
-      e.printStackTrace();
-   }
-   date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아옴
-   year = date.get(Calendar.YEAR);
-   month = date.get(Calendar.MONTH) + 1;
+		// 상단 패널 ---------------------------------------
+		yearCombo.setBounds(50, 10, 80, 34);
+		yearLBl.setBounds(140, 10, 50, 34);
+		monthCombo.setBounds(170, 10, 50, 34);
+		monthLBl.setBounds(230, 10, 50, 34);
+		selectPane.add(prevBtn);
+		selectPane.add(yearCombo);
+		yearCombo.setFont(fnt);
+		selectPane.add(yearLBl);
+		yearLBl.setFont(fnt);
+		selectPane.add(monthCombo);
+		monthCombo.setFont(fnt);
+		selectPane.add(monthLBl);
+		monthLBl.setFont(fnt);
+		selectPane.add(nextBtn);
+		selectPane.setBounds(0, 30, 300, 300);
+		selectPane.setLayout(null);
+		selectPane.setOpaque(false);
 
-   // 상단 패널 ---------------------------------------
-   yearCombo.setBounds(50, 10, 80, 34);
-   yearLBl.setBounds(140, 10, 50, 34);
-   monthCombo.setBounds(170, 10, 50, 34);
-   monthLBl.setBounds(230, 10, 50, 34);
-   selectPane.add(prevBtn);
-   selectPane.add(yearCombo);
-   yearCombo.setFont(fnt);
-   selectPane.add(yearLBl);
-   yearLBl.setFont(fnt);
-   selectPane.add(monthCombo);
-   monthCombo.setFont(fnt);
-   selectPane.add(monthLBl);
-   monthLBl.setFont(fnt);
-   selectPane.add(nextBtn);
-   selectPane.setBounds(0, 30, 300, 300);
-   selectPane.setLayout(null);
-   selectPane.setOpaque(false);
+		// 투두리스트 패널 -----------------------------------
+		// 오늘 날짜 출력 라벨
+		todoDate = calManager.getCurrentDate();
+		currentDate.setText(todoDate);
+		currentDate.setFont(fnt);
+		currentDate.setLayout(null);
+		currentDate.setBounds(35, 20, 240, 50);
+		// 리스트 출력
+		listPnl = new JPanel(new GridLayout(ppList.size(), 0, 0, 20));
+		listPnl.setBounds(35, 90, 700, 610);
+		listPnl.setOpaque(false);
+		ppl.getPrintList(ppList, toggleSwitch);
+//		getTodoList(ppList);
 
-   // 투두리스트 패널 -----------------------------------
-   // 오늘 날짜 출력 라벨
-   todoDate = calManager.getCurrentDate();
-   currentDate.setText(todoDate);
-   currentDate.setFont(fnt);
-   currentDate.setLayout(null);
-   currentDate.setBounds(0, 50, 240, 50);
+		todoListPnl.add(listPnl);
+		todoListPnl.add(currentDate);
+		todoListPnl.setBounds(880, 135, 770, 733);
+		todoListPnl.setLayout(null);
+		todoListPnl.setOpaque(false);
 
-   todoListPnl.add(currentDate);
-   todoListPnl.setBounds(920, 100, 760, 700);
-   todoListPnl.setLayout(null);
-   todoListPnl.setOpaque(false);
+		// 달력 출력 패널 ------------------------------------
+		add(selectPane);
+		setLayout(null);
 
-   // 달력 출력 패널 ------------------------------------
-   add(selectPane);
-   setLayout(null);
+		// 현재 년, 월 세팅
+		setYear();
+		setMonth();
+		setDay(loginMemberNo, toggleSwitch);
+		barPane.setBounds(0, 0, 790, 735);
+		barPane.setOpaque(false);
+		centerPane.add(barPane);
+		dayPane.setBounds(0, 0, 790, 735);
+		dayPane.setOpaque(false);
+		centerPane.add(dayPane);
+		centerPane.setBounds(0, 130, 790, 735);
+		centerPane.setLayout(null);
+		centerPane.setOpaque(false);
 
-   // 현재 년, 월 세팅
-   setYear();
-   setMonth();
-   setDay(loginMemberNo, toggleSwitch);
-   barPane.setBounds(0, 0, 790, 750);
-   barPane.setOpaque(false);
-   centerPane.add(barPane);
-   dayPane.setBounds(0, 0, 790, 750);
-   dayPane.setOpaque(false);
-   centerPane.add(dayPane);
-   centerPane.setBounds(0, 130, 790, 750);
-   centerPane.setLayout(null);
-   centerPane.setOpaque(false);
+		// 패널 붙이기 --------------------------------------
+		add(selectPane);
+		add(todoListPnl);
+		add(centerPane);
 
-   // 패널 붙이기 --------------------------------------
-   add(selectPane);
-   add(todoListPnl);
-   add(centerPane);
+		// 기능이벤트를 추가 ----------------------------------
+		prevBtn.addActionListener(this);
+		nextBtn.addActionListener(this);
+		// 년월 이벤트 다시등록 --------------------------------
+		yearCombo.addItemListener(this);
+		monthCombo.addItemListener(this);
 
-   // 기능이벤트를 추가 ----------------------------------
-   prevBtn.addActionListener(this);
-   nextBtn.addActionListener(this);
-   // 년월 이벤트 다시등록 --------------------------------
-   yearCombo.addItemListener(this);
-   monthCombo.addItemListener(this);
+		// ---------------------------------------------
+		setBounds(0, 0, 1718, 870);
+		setOpaque(false);
+		setVisible(true);
+	}
 
-   // ---------------------------------------------
-   setBounds(0, 0, 1718, 870);
-   setOpaque(false);
-   setVisible(true);
-   }
+	// 날짜셋팅
+	public void setDay() {
+		// 요일
+		date.set(year, month - 1, 1); // date를 세팅하는데, 일(day)을 1로 세팅
+		int week = date.get(Calendar.DAY_OF_WEEK); // 일월화수목금토
+		// 마지막날
+		int lastDay = date.getActualMaximum(Calendar.DATE); // getActualMaximum = 날짜가 셋팅된 Calender가 가질수 있는 값
+		// getMaximum = Calender 자체가 최대로 가질수 있는 값
+		// 공백처리
+		for (int s = 1; s < week; s++) {
+			JPanel box = new JPanel();
+			JLabel lbl = new JLabel(" ", JLabel.CENTER);
+			lbl.setBounds(0, 0, 112, 30);
+			lbl.setLayout(null);
+			box.setOpaque(false);
+			box.add(lbl);
+			box.setBounds(0, 0, 112, 116);
+			dayPane.add(box);
 
-   // 날짜셋팅
-   public void setDay() {
-	  // 요일
-      date.set(year, month - 1, 1); // date를 세팅하는데, 일(day)을 1로 세팅
-      int week = date.get(Calendar.DAY_OF_WEEK); // 일월화수목금토
-      // 마지막날
-      int lastDay = date.getActualMaximum(Calendar.DATE); // getActualMaximum = 날짜가 셋팅된 Calender가 가질수 있는 값
-      // getMaximum = Calender 자체가 최대로 가질수 있는 값
-      // 공백처리
-      for (int s = 1; s < week; s++) {
-         JPanel box = new JPanel();
-         JLabel lbl = new JLabel(" ", JLabel.CENTER);
-         lbl.setBounds(0, 0, 112, 30);
-         lbl.setLayout(null);
-         box.setOpaque(false);
-         box.add(lbl);
-         box.setBounds(0, 0, 112, 116);
-         dayPane.add(box);
+		}
+		JPanel[] barBox = new JPanel[32];
+		// 날짜출력
+		for (int day = 1; day <= lastDay; day++) {
+			JPanel box = new JPanel();
+			barBox[day] = new JPanel();
+			barBox[day].setBounds(0, 30, 112, 116);
+			barBox[day].setLayout(null);
+			barBox[day].setOpaque(false);
+			JLabel lbl = new JLabel(String.valueOf(day), JLabel.CENTER);
+			lbl.setFont(fnt2);
+			// 출력하는 날짜에 대한 요일
+			date.set(Calendar.DATE, day);
+			int w = date.get(Calendar.DAY_OF_WEEK); // 요일
+			if (w == 1)
+				lbl.setForeground(Color.red); // 1 = 일요일
+			if (w == 7)
+				lbl.setForeground(Color.blue); // 7 = 토요일
+			lbl.setBounds(0, 0, 112, 30);
+			lbl.setOpaque(false);
+			box.add(lbl);
+			box.add(barBox[day]);
+			box.setBounds(0, 0, 112, 116);
+			box.setLayout(null);
+			box.setOpaque(false);
 
-      }
-      JPanel[] barBox = new JPanel[32];
-      // 날짜출력
-      for (int day = 1; day <= lastDay; day++) {
-         JPanel box = new JPanel();
-         barBox[day] = new JPanel();
-         barBox[day].setBounds(0, 30, 112, 116);
-         barBox[day].setLayout(null);
-         barBox[day].setOpaque(true);
-         JLabel lbl = new JLabel(String.valueOf(day), JLabel.CENTER);
-         lbl.setFont(fnt2);
-         // 출력하는 날짜에 대한 요일
-         date.set(Calendar.DATE, day);
-         int w = date.get(Calendar.DAY_OF_WEEK); // 요일
-         if (w == 1)
-            lbl.setForeground(Color.red); // 1 = 일요일
-         if (w == 7)
-            lbl.setForeground(Color.blue); // 7 = 토요일
-         lbl.setBounds(0, 0, 112, 30);
-         lbl.setOpaque(true);
-         box.add(lbl);
-         box.add(barBox[day]);
-         box.setBounds(0, 0, 112, 116);
-         box.setLayout(null);
-         box.setOpaque(false);
+			dayPane.add(box);
+		}
+	}
 
-         dayPane.add(box);
-      }
-   }
-   
-   public void setDay(int no, boolean toggleSwitch) {
-	   	  List<PrintPlanner> ppList = ppl.setView(no, toggleSwitch);
-		  // 요일
-	      date.set(year, month - 1, 1); // date를 세팅하는데, 일(day)을 1로 세팅
-	      int week = date.get(Calendar.DAY_OF_WEEK); // 일월화수목금토
-	      // 마지막날
-	      int lastDay = date.getActualMaximum(Calendar.DATE); // getActualMaximum = 날짜가 셋팅된 Calender가 가질수 있는 값
-	      // getMaximum = Calender 자체가 최대로 가질수 있는 값
-	      // 공백처리
-	      for (int s = 1; s < week; s++) {
-	         JPanel box = new JPanel();
-	         JLabel lbl = new JLabel(" ", JLabel.CENTER);
-	         lbl.setBounds(0, 0, 112, 30);
-	         lbl.setLayout(null);
-	         box.setOpaque(false);
-	         box.add(lbl);
-	         box.setBounds(0, 0, 112, 116);
-	         dayPane.add(box);
+	public void setDay(int no, boolean toggleSwitch) {
+		List<PrintPlanner> ppList = ppl.setView(no, toggleSwitch);
+		// 요일
+		date.set(year, month - 1, 1); // date를 세팅하는데, 일(day)을 1로 세팅
+		int week = date.get(Calendar.DAY_OF_WEEK); // 일월화수목금토
+		// 마지막날
+		int lastDay = date.getActualMaximum(Calendar.DATE); // getActualMaximum = 날짜가 셋팅된 Calender가 가질수 있는 값
+		// 공백처리
+		for (int s = 1; s < week; s++) {
+			JPanel box = new JPanel();
+			JLabel lbl = new JLabel(" ", JLabel.CENTER);
+			lbl.setBounds(0, 0, 112, 30);
+			lbl.setLayout(null);
+			box.setOpaque(false);
+			box.add(lbl);
+			box.setBounds(0, 0, 112, 116);
+			dayPane.add(box);
 
-	      }
-	      
-	      JPanel[] barBox = new JPanel[32];
-	      // 날짜출력
-	      for (int day = 1; day <= lastDay; day++) {
-	         JPanel box = new JPanel();
-	         barBox[day] = new JPanel();
-	         barBox[day].setBounds(0, 30, 112, 116);
-	         barBox[day].setLayout(null);
-	         barBox[day].setOpaque(true);
-	         JLabel lbl = new JLabel(String.valueOf(day), JLabel.CENTER);
-	         lbl.setFont(fnt2);
-	         // 출력하는 날짜에 대한 요일
-	         date.set(Calendar.DATE, day);
-	         int w = date.get(Calendar.DAY_OF_WEEK); // 요일
-	         if (w == 1)
-	            lbl.setForeground(Color.red); // 1 = 일요일
-	         if (w == 7)
-	            lbl.setForeground(Color.blue); // 7 = 토요일
-	         lbl.setBounds(0, 0, 112, 30);
-	         lbl.setOpaque(true);
-	         box.add(lbl);
-	         box.add(barBox[day]);
-	         box.setBounds(0, 0, 112, 116);
-	         box.setLayout(null);
-	         box.setOpaque(false);
+		}
 
-	         dayPane.add(box);
-	      }
-	   }
+		JPanel[] barBox = new JPanel[32];
+		dateBtnList = new ArrayList<>();
+		// 날짜출력
+		for (int day = 1; day <= lastDay; day++) {
+			JPanel box = new JPanel();
+			JButton dateBtn = new JButton(iconManager.getImageIcon(String.valueOf(day)));
+			dateBtn.setRolloverIcon(iconManager.getImageIcon("_c"));
+			dateBtn.setBounds(0, 30, 112, 116);
+			dateBtn.setLayout(null);
+			dateBtn.setOpaque(false);
+			dateBtn.setBorderPainted(false); // 외곽선 삭제
+			dateBtn.setContentAreaFilled(false); // 내용 영역 채우기 안함
+			dateBtn.setFocusPainted(false);
+			dateBtnList.add(dateBtn);
+			dateBtn.addActionListener(new MyLt());
+			barBox[day] = new JPanel();
+			barBox[day].setBounds(0, 30, 112, 116);
+			barBox[day].setLayout(null);
+			barBox[day].setOpaque(false);
+			JLabel lbl = new JLabel(String.valueOf(day), JLabel.CENTER);
+			lbl.setFont(fnt2);
+			// 출력하는 날짜에 대한 요일
+			date.set(Calendar.DATE, day);
+			int w = date.get(Calendar.DAY_OF_WEEK); // 요일
+			if (w == 1)
+				lbl.setForeground(Color.red); // 1 = 일요일
+			if (w == 7)
+				lbl.setForeground(Color.blue); // 7 = 토요일
+			lbl.setBounds(0, 0, 112, 30);
+			lbl.setOpaque(false);
+			box.add(lbl);
+			box.add(barBox[day]);
+			box.add(dateBtn);
+			box.setBounds(0, 0, 112, 116);
+			box.setLayout(null);
+			box.setOpaque(false);
 
-   public JPanel drawBar(int i, String str) {
-      JPanel pnl = new JPanel() {
-         String imgSrc = "calendarBar_" + str + i;
-         Image barColor = iconManager.getImageIcon(imgSrc).getImage();
+			dayPane.add(box);
+		}
+	}
 
-         public void paintComonent(Graphics g) {
-            g.drawImage(barColor, 0, 0, null);
-         }
-      };
-      pnl.setBounds(0, 0, 110, 116);
-      pnl.setLayout(null);
-      pnl.setOpaque(false);
-      return pnl;
-   }
+//   public JPanel drawBar(List<PrintPlanner> list) {
+//	   for(PrintPlanner p : list) {
+//		   
+//	   }
+//	   JPanel pnl = new JPanel() {
+//         String imgSrc = "calendarBar_" + str + i;
+//         Image barColor = iconManager.getImageIcon(imgSrc).getImage();
+//
+//         public void paintComonent(Graphics g) {
+//            g.drawImage(barColor, 0, 0, null);
+//         }
+//      };
+//      pnl.setBounds(0, 0, 110, 116);
+//      pnl.setLayout(null);
+//      pnl.setOpaque(false);
+//      return pnl;
+//   }
+//	public List<PrintPlanner> getPrintList(List<PrintPlanner> list) {
+//		List<PrintPlanner> printlist;
+//		
+//		int i = 1;
+//		if(flag) {
+//			for(PrintPlanner p : list) {
+//				PrintPlanner pp = new PrintPlanner(i, p.getPk(), p.getTitle(), p.get, String update, String deadLine);
+//				i++;
+//			}
+//		}
+//		
+//		return printlist;
+//	}
 
-   // 년도세팅
-   public void setYear() {
-      for (int i = year - 50; i < year + 20; i++) {
-         yearCombo.addItem(i);
-      }
-      yearCombo.setSelectedItem(year); // 콤보박스 이벤트와 연동
-   }
+	// 투두리스트 출력 메소드
+	public void getTodoList(List<PrintPlanner> list, LocalDate selDate) {
+		if (toggleSwitch) {
+			int i = 0;
+			int select = 0;
+			LocalDate update;
+			LocalDate deadLine;
+			for (PrintPlanner p : list) {
+				select = p.getPk();
+				update = cd.getLocalDate(p.getUpdate());
+				deadLine = cd.getLocalDate(p.getDeadLine());
+				if (selDate == update) {
+					if (select == p.getPk()) {
+						System.out.println(p);
+						JPanel pnl = new JPanel();
+						pnl.setBounds(0, 0, 700, 70);
+						pnl.setLayout(null);
+						pnl.setOpaque(false);
+						String imgsrc = "calendarDot_" + i;
+						JLabel color = new JLabel(iconManager.getImageIcon(imgsrc));
+						color.setBounds(0, 0, 20, 20);
+						color.setLayout(null);
+						JLabel title = new JLabel();
+						title.setText(p.getTitle());
+						title.setBounds(60, 0, 417, 30);
+						JLabel date = new JLabel();
+						date.setText(p.getUpdate() + p.getDeadLine());
+						date.setBounds(60, 40, 417, 30);
 
-   // 월세팅
-   public void setMonth() {
-	   for (int i = 1; i <= 12; i++) {
-         monthCombo.addItem(i);
-      }
-      monthCombo.setSelectedItem(month);
-   }
+						i++;
+						listPnl.add(pnl);
+					}
+				}
 
-   // 콤보박스클릭이벤트 (콤보박스를 통해 날짜를 변경하였을 때 선택되는 이벤트)
-   public void itemStateChanged(ItemEvent e) {
-      year = (int) yearCombo.getSelectedItem();
-      month = (int) monthCombo.getSelectedItem();
+			}
+		} else {
 
-      // 달력 출력 패널을 닫고 지웠다가 날짜 변경 메소드 호출 후 변경된 날짜값이 적용된 패널 보여줌
-      dayPane.setVisible(false);
-      dayPane.removeAll();
-      if(flag) {
-    	  setDay(loginMemberNo, toggleSwitch);
-      } else { 
-    	  setDay();
-      }
-      dayPane.setVisible(true);
-   }
+		}
+	}
 
-   // 버튼이벤트
-   public void actionPerformed(ActionEvent ae) {
-      Object obj = ae.getSource(); // Obejct에 액션이벤트의 소스를 가져온다.
-      if (obj == prevBtn) {// 이전버튼을 눌렀을때
-         // 이전월을 눌렀을때
-         prevMonth(); // 이전버튼메소드호출
-         setDayReset(); // Day를 Reset해주는 메소드 호출
-      } else if (obj == nextBtn) {
-         // 다음월을 눌렀을떄
-         nextMonth();
-         setDayReset();
-      }
-   }
+	// 년도세팅
+	public void setYear() {
+		for (int i = year - 50; i < year + 20; i++) {
+			yearCombo.addItem(i);
+		}
+		yearCombo.setSelectedItem(year); // 콤보박스 이벤트와 연동
+	}
 
-   private void setDayReset() {
-      // 년월 이벤트 등록해제
-      yearCombo.removeItemListener(this);
-      monthCombo.removeItemListener(this);
+	// 월세팅
+	public void setMonth() {
+		for (int i = 1; i <= 12; i++) {
+			monthCombo.addItem(i);
+		}
+		monthCombo.setSelectedItem(month);
+	}
 
-      yearCombo.setSelectedItem(year);
-      monthCombo.setSelectedItem(month);
+	// 콤보박스클릭이벤트 (콤보박스를 통해 날짜를 변경하였을 때 선택되는 이벤트)
+	public void itemStateChanged(ItemEvent e) {
+		year = (int) yearCombo.getSelectedItem();
+		month = (int) monthCombo.getSelectedItem();
+		selDate = LocalDate.of(year, month, 1);
+		listPnl.setVisible(false);
+		listPnl.removeAll();
+		// 달력 출력 패널을 닫고 지웠다가 날짜 변경 메소드 호출 후 변경된 날짜값이 적용된 패널 보여줌
+		dayPane.setVisible(false);
+		dayPane.removeAll();
+		if (flag) {
+			setDay(loginMemberNo, toggleSwitch);
+		} else {
+			setDay();
+		}
+		dayPane.setVisible(true);
+		listPnl.setVisible(true);
+	}
 
-      dayPane.setVisible(false);
-      dayPane.removeAll();
-      if(flag) {
-    	  setDay(loginMemberNo, toggleSwitch);
-      } else { 
-    	  setDay();
-      }
-      dayPane.setVisible(true);
-      // 다시 이벤트 등록
-      yearCombo.addItemListener(this);
-      monthCombo.addItemListener(this);
+	// 버튼이벤트
+	public void actionPerformed(ActionEvent ae) {
+		Object obj = ae.getSource(); // Obejct에 액션이벤트의 소스를 가져온다.
+		if (obj == prevBtn) {// 이전버튼을 눌렀을때
+			// 이전월을 눌렀을때
+			prevMonth(); // 이전버튼메소드호출
+			setDayReset(); // Day를 Reset해주는 메소드 호출
+		} else if (obj == nextBtn) {
+			// 다음월을 눌렀을떄
+			nextMonth();
+			setDayReset();
+		}
+	}
 
-   }
+	private class MyLt implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JButton button = (JButton) e.getSource();
+			String str = button.getIcon().toString();
+			str = str.substring(45);
+			if(isSelectDate) {
+					str = str.substring(0, str.length()-4);
+					System.out.println("확인: " + str);
+					day = Integer.parseInt(str);
+					selDate = LocalDate.of(year, month, day);
+					System.out.println("클릭날짜변경확인: "+ selDate);
+					System.out.println(str + "_c");
+					button.setIcon(iconManager.getImageIcon(str + "_c"));
+					isSelectDate = false;
+			} else {
+				for (JButton btn : dateBtnList) {
+					String str2 = btn.getIcon().toString();
+					str2 = str2.substring(45);
+					if(str2.length() >= 7) {
+						str2 = str2.substring(0, str2.length()-6);
+						btn.setIcon(iconManager.getImageIcon(str2));
+					}
+					isSelectDate = true;
+				}
+				if(str.length() >= 7) {
+					System.out.println("***str2: " + str);
+					str = str.substring(0, str.length()-6);
+					System.out.println("***str3: " + str);
+					button.setIcon(iconManager.getImageIcon(str + "_c"));
+					day = Integer.parseInt(str);
+					selDate = LocalDate.of(year, month, day);
+					button.setIcon(iconManager.getImageIcon(str + "_c"));
+					isSelectDate = false;
+				} else {
+					str = str.substring(0, str.length()-4);
+					System.out.println("확인: " + str);
+					day = Integer.parseInt(str);
+					selDate = LocalDate.of(year, month, day);
+					System.out.println("클릭날짜변경확인: "+ selDate);
+					button.setIcon(iconManager.getImageIcon(str + "_c"));
+					isSelectDate = false;
+				}
+			}
+		}
+	}
 
-   public void prevMonth() {
-      if (month == 1) {
-         year--;
-         month = 12;
-      } else {
-         month--;
-      }
-   }
+	private void setDayReset() {
+		// 년월 이벤트 등록해제
+		yearCombo.removeItemListener(this);
+		monthCombo.removeItemListener(this);
 
-   public void nextMonth() {
-      if (month == 12) {
-         year++;
-         month = 1;
-      } else {
-         month++;
-      }
-   }
-   
-   public int getLoginMemberNo(int no) {
-	   return no;
-   }
+		yearCombo.setSelectedItem(year);
+		monthCombo.setSelectedItem(month);
+
+		dayPane.setVisible(false);
+		dayPane.removeAll();
+		if (flag) {
+			setDay(loginMemberNo, toggleSwitch);
+		} else {
+			setDay();
+		}
+		dayPane.setVisible(true);
+		// 다시 이벤트 등록
+		yearCombo.addItemListener(this);
+		monthCombo.addItemListener(this);
+
+	}
+
+	public void prevMonth() {
+		if (month == 1) {
+			year--;
+			month = 12;
+		} else {
+			month--;
+		}
+	}
+
+	public void nextMonth() {
+		if (month == 12) {
+			year++;
+			month = 1;
+		} else {
+			month++;
+		}
+	}
+
+	public int getLoginMemberNo(int no) {
+		return no;
+	}
 }

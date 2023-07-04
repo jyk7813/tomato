@@ -38,8 +38,8 @@ public class ProjectRepository {
 			rs = stmt2.executeQuery();
 			rs.next();
 			int project_no = rs.getInt("project_no");
-			
-			stmt3 = conn.prepareStatement("INSERT INTO `member_task` (`project_no`, `member_no`)"
+			System.out.println("신규프로젝트 pj_no" + project_no);
+			stmt3 = conn.prepareStatement("INSERT INTO `member_tag` (`project_no`, `member_no`)"
 					+ " VALUES (?,?)");
 			stmt3.setInt(1, project_no);
 			stmt3.setInt(2, member_no);
