@@ -80,7 +80,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 	boolean flag = false;
 	boolean toggleSwitch = true;
 	List<JButton> dateBtnList;
-	boolean isSelectDate = true;
+	boolean canSelectDate = true;
 	int printCount;
 
 	public CalendarSwing() {
@@ -207,9 +207,9 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		currentDate.setLayout(null);
 		currentDate.setBounds(35, 20, 700, 50);
 		// 리스트 출력
-		getTodoList(printCurrentList, selDate);
+		getTodoList(printCurrentList);
 		listPnl.setLayout(new GridLayout(printCount, 1, 0, 0));
-		listPnl.setBounds(35, 90, 700, printCount*70);
+		listPnl.setBounds(35, 90, 700, printCount * 80);
 		listPnl.setOpaque(false);
 
 		todoListPnl.add(listPnl);
@@ -333,7 +333,9 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		// 날짜출력
 		for (int day = 1; day <= lastDay; day++) {
 			JPanel box = new JPanel();
-			JButton dateBtn = new JButton(iconManager.getImageIcon(String.valueOf(day)));
+			JButton dateBtn = new JButton();
+			dateBtn.setName(String.valueOf(day));
+			dateBtn.setIcon(iconManager.getImageIcon("calBtn_null"));
 			dateBtn.setRolloverIcon(iconManager.getImageIcon("_c"));
 			dateBtn.setBounds(0, 30, 112, 116);
 			dateBtn.setLayout(null);
@@ -369,92 +371,74 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		}
 	}
 
-//   public JPanel drawBar(List<PrintPlanner> list) {
-//	   for(PrintPlanner p : list) {
-//		   
-//	   }
-//	   JPanel pnl = new JPanel() {
-//         String imgSrc = "calendarBar_" + str + i;
-//         Image barColor = iconManager.getImageIcon(imgSrc).getImage();
-//
-//         public void paintComonent(Graphics g) {
-//            g.drawImage(barColor, 0, 0, null);
-//         }
-//      };
-//      pnl.setBounds(0, 0, 110, 116);
-//      pnl.setLayout(null);
-//      pnl.setOpaque(false);
-//      return pnl;
-//   }
-//	public List<PrintPlanner> getPrintList(List<PrintPlanner> list) {
-//		List<PrintPlanner> printlist;
-//		
-//		int i = 1;
-//		if(flag) {
-//			for(PrintPlanner p : list) {
-//				PrintPlanner pp = new PrintPlanner(i, p.getPk(), p.getTitle(), p.get, String update, String deadLine);
-//				i++;
-//			}
-//		}
-//		
-//		return printlist;
-//	}
-	
-	// 투두리스트 출력 패널 개수 구하기
+	// 투두리스트 출력 패널 개수 구하기 (출력 패널 세로 사이즈 정하는 데 사용)
 	public int getTodoPnlCount(List<PrintPlanner> list, LocalDate date) {
 		int height = 0;
-		for(PrintPlanner p : list) {
-			if(cd.checkLocalDateRange(date, p.getUp(), p.getDead()) || p.getUp().equals(date)) {
+		for (PrintPlanner p : list) {
+			if (cd.checkLocalDateRange(date, p.getUp(), p.getDead()) || p.getUp().equals(date)) {
 				height++;
 			}
 		}
 		return height;
 	}
-	
+
 	// 출력할 리스트만 반환받기
-//	public List<PrintPlanner> getPrintTodo(List<PrintPlanner> list, LocalDate date) {
-//		List<>
-//		int height = 0;
-//		for(PrintPlanner p : printCurrentList) {
-//			if(cd.checkLocalDateRange(date, p.getUp(), p.getDead()) || p.getUp().equals(date)) {
-//				height++;
-//			}
-//		}
-//		return height;
-//	}
+	public List<PrintPlanner> getPrintTodoList(List<PrintPlanner> list, LocalDate date) {
+		List<PrintPlanner> thisList = new ArrayList<>();
+		for (PrintPlanner p : printCurrentList) {
+			if (cd.checkLocalDateRange(date, p.getUp(), p.getDead())) {
+				thisList.add(p);
+			}
+		}
+		return thisList;
+	}
 
 	// 투두리스트 출력 메소드
-	public void getTodoList(List<PrintPlanner> list, LocalDate date) {
-		int colorNo = 1;
+	public void getTodoList(List<PrintPlanner> list) {
+		List<PrintPlanner> thisList = getPrintTodoList(list, selDate);
 		int count = 0;
-		System.out.println("현재 날짜: " + date);
-		for (PrintPlanner p : list) {
-			System.out.println("날짜범위체크: " + cd.checkLocalDateRange(date, p.getUp(), p.getDead()));
-			System.out.println("출력여부: " + (cd.checkLocalDateRange(date, p.getUp(), p.getDead()) || p.getUp().equals(date)));
-			if (cd.checkLocalDateRange(date, p.getUp(), p.getDead()) || p.getUp().equals(date)) {
-				System.out.println("*******날짜동일*" + p);
+		System.out.println("현재 날짜: " + selDate);
+		if (thisList.size() == 0) {
+			JPanel pnl = new JPanel();
+			pnl.setBounds(0, 0, 700, 80);
+			pnl.setLayout(null);
+			pnl.setOpaque(false);
+			JLabel color = new JLabel(iconManager.getImageIcon("calendarDot_9"));
+			color.setBounds(0, 5, 20, 20);
+			color.setLayout(null);
+			color.setOpaque(false);
+			JButton clickBox = new JButton(iconManager.getImageIcon("t_null"));
+			clickBox.setBounds(0, 0, 700, 80);
+			clickBox.setLayout(null);
+			clickBox.setOpaque(false);
+			clickBox.setBorderPainted(false);
+			clickBox.setContentAreaFilled(false);
+			clickBox.setFocusPainted(false);
+			JLabel title = new JLabel();
+			title.setText("일정이 없습니다");
+			title.setFont(fontManager.nanumFontBold(23));
+			title.setBounds(60, 0, 417, 30);
+			title.setOpaque(false);
+
+			pnl.add(clickBox);
+			pnl.add(color);
+			pnl.add(title);
+			listPnl.add(pnl);
+		} else {
+			for (PrintPlanner p : thisList) {
 				JPanel pnl = new JPanel();
-				pnl.setBounds(0, 0, 700, 70);
+				pnl.setBounds(0, 0, 700, 80);
 				pnl.setLayout(null);
 				pnl.setOpaque(false);
-				String imgsrc = "calendarDot_" + colorNo;
+				String imgsrc = "calendarDot_" + count;
 				System.out.println(imgsrc);
 				JLabel color = new JLabel(iconManager.getImageIcon(imgsrc));
-				color.setBounds(0, 10, 20, 20);
+				color.setBounds(0, 5, 20, 20);
 				color.setLayout(null);
 				color.setOpaque(false);
-//				JButton clickBox = new JButton(iconManager.getImageIcon("t_null"));
 				todoTaskBtn clickBox = new todoTaskBtn(p.getTaskPk());
-				clickBox.setIcon(iconManager.getImageIcon("t_null"));
-				clickBox.setRolloverIcon(iconManager.getImageIcon("t_c"));
-				clickBox.setName(String.valueOf(count+1));
-				clickBox.setBounds(0, 0, 700, 70);
-				clickBox.setLayout(null);
-				clickBox.setOpaque(false);
-				clickBox.setBorderPainted(false); // 외곽선 삭제
-				clickBox.setContentAreaFilled(false); // 내용 영역 채우기 안함
-				clickBox.setFocusPainted(false);
-				clickBox.addActionListener(new TodoBtn());
+				clickBox.setName(String.valueOf(count + 1));
+				getTodoBtn(clickBox);
 				JLabel title = new JLabel();
 				title.setText(p.getTaskName());
 				title.setFont(fontManager.nanumFontBold(23));
@@ -471,38 +455,23 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 				pnl.add(title);
 				pnl.add(dateText);
 				listPnl.add(pnl);
-				colorNo++;
 				count++;
-			} 
+			}
 		}
-		if(count == 0) {
-			JPanel pnl = new JPanel();
-			pnl.setBounds(0, 0, 700, 70);
-			pnl.setLayout(null);
-			pnl.setOpaque(false);
-			JLabel color = new JLabel(iconManager.getImageIcon("calendarDot_9"));
-			color.setBounds(0, 0, 20, 20);
-			color.setLayout(null);
-			color.setOpaque(false);
-			JButton clickBox = new JButton(iconManager.getImageIcon("t_null"));
-			clickBox.setBounds(0, 0, 700, 70);
-			clickBox.setLayout(null);
-			clickBox.setOpaque(false);
-			clickBox.setBorderPainted(false); 
-			clickBox.setContentAreaFilled(false);
-			clickBox.setFocusPainted(false);
-//			clickBox.addActionListener(new TodoBtn());
-			JLabel title = new JLabel();
-			title.setText("일정이 없습니다");
-			title.setFont(fnt);
-			title.setBounds(60, 0, 417, 30);
-			title.setOpaque(false);
-			
-			pnl.add(clickBox);
-			pnl.add(color);
-			pnl.add(title);
-			listPnl.add(pnl);
-		}
+	}
+
+	public JButton getTodoBtn(JButton btn) {
+		btn.setIcon(iconManager.getImageIcon("t_null"));
+		btn.setRolloverIcon(iconManager.getImageIcon("t_c"));
+		btn.setBounds(0, 0, 700, 70);
+		btn.setLayout(null);
+		btn.setOpaque(false);
+		btn.setBorderPainted(false);
+		btn.setContentAreaFilled(false);
+		btn.setFocusPainted(false);
+		btn.addActionListener(new TodoBtn());
+
+		return btn;
 	}
 
 	// 년도세팅
@@ -526,11 +495,10 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		year = (int) yearCombo.getSelectedItem();
 		month = (int) monthCombo.getSelectedItem();
 		selDate = LocalDate.of(year, month, 1);
-		System.out.println("콤보박스클릭: " + selDate);
 		setPrintDayOfWeek(selDate);
 		listPnl.setVisible(false);
 		listPnl.removeAll();
-		// 달력 출력 패널을 닫고 지웠다가 날짜 변경 메소드 호출 후 변경된 날짜값이 적용된 패널 보여줌
+		getTodoList(printCurrentList);
 		dayPane.setVisible(false);
 		dayPane.removeAll();
 		if (flag) {
@@ -569,54 +537,23 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JButton button = (JButton) e.getSource();
-			String str = button.getIcon().toString();
-			str = str.substring(43);
-			if (isSelectDate) {
-//				System.out.println("**확인: " + str);
-				str = str.substring(0, str.length() - 4);
-//					System.out.println("확인: " + str);
-				day = Integer.parseInt(str);
-				selDate = LocalDate.of(year, month, day);
-				setPrintDayOfWeek(selDate);
-//					printDate = selDate.toString();
-//					System.out.println("**달력패널클릭: "+ selDate);
-//					System.out.println("**달력패널클릭2: : "+ todoDate);
-//				System.out.println(str + "_c");
-				button.setIcon(iconManager.getImageIcon(str + "_c"));
-				isSelectDate = false;
-			} else {
-				for (JButton btn : dateBtnList) {
-					String str2 = btn.getIcon().toString();
-					str2 = str2.substring(43);
-					if (str2.length() >= 7) {
-						str2 = str2.substring(0, str2.length() - 6);
-						btn.setIcon(iconManager.getImageIcon(str2));
-					}
-					isSelectDate = true;
-				}
-				if (str.length() >= 7) {
-					str = str.substring(0, str.length() - 6);
-					button.setIcon(iconManager.getImageIcon(str + "_c"));
-					day = Integer.parseInt(str);
-					selDate = LocalDate.of(year, month, day);
-					setPrintDayOfWeek(selDate);
-					button.setIcon(iconManager.getImageIcon(str + "_c"));
-					isSelectDate = false;
-				} else {
-					str = str.substring(0, str.length() - 4);
-//					System.out.println("확인: " + str);
-					day = Integer.parseInt(str);
-					selDate = LocalDate.of(year, month, day);
-					setPrintDayOfWeek(selDate);
-//					printDate = selDate.toString();
-//					System.out.println("달력패널클릭: "+ selDate);
-//					System.out.println("달력패널클릭2: : "+ todoDate);
-					button.setIcon(iconManager.getImageIcon(str + "_c"));
-					isSelectDate = false;
+			String str = button.getName();
+			button.setIcon(iconManager.getImageIcon("_c"));
+			for (JButton btn : dateBtnList) {
+				if(!(button.getName().equals(btn.getName()))) {
+					btn.setIcon(iconManager.getImageIcon("calBtn_null"));
+					canSelectDate = true;
 				}
 			}
+			day = Integer.parseInt(str);
+			listPnl.setVisible(false);
+			listPnl.removeAll();
+			selDate = LocalDate.of(year, month, day);
+			setPrintDayOfWeek(selDate);
+			getTodoList(printCurrentList);
+			listPnl.setVisible(true);
+			}
 		}
-	}
 
 	private void setDayReset() {
 		// 년월 이벤트 등록해제
@@ -625,7 +562,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 
 		yearCombo.setSelectedItem(year);
 		monthCombo.setSelectedItem(month);
-
+		
 		dayPane.setVisible(false);
 		dayPane.removeAll();
 		if (flag) {
@@ -633,6 +570,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		} else {
 			setDay();
 		}
+		
 		dayPane.setVisible(true);
 		// 다시 이벤트 등록
 		yearCombo.addItemListener(this);
@@ -642,19 +580,44 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 
 	public void prevMonth() {
 		if (month == 1) {
+			listPnl.setVisible(false);
+			listPnl.removeAll();
 			year--;
 			month = 12;
+			selDate = LocalDate.of(year, month, 1);
+			setPrintDayOfWeek(selDate);
+			getTodoList(printCurrentList);
+			listPnl.setVisible(true);
 		} else {
+			listPnl.setVisible(false);
+			listPnl.removeAll();
 			month--;
+			selDate = LocalDate.of(year, month, 1);
+			setPrintDayOfWeek(selDate);
+			getTodoList(printCurrentList);
+			listPnl.setVisible(true);
+			
 		}
 	}
 
 	public void nextMonth() {
 		if (month == 12) {
+			listPnl.setVisible(false);
+			listPnl.removeAll();
 			year++;
 			month = 1;
+			selDate = LocalDate.of(year, month, 1);
+			setPrintDayOfWeek(selDate);
+			getTodoList(printCurrentList);
+			listPnl.setVisible(true);
 		} else {
+			listPnl.setVisible(false);
+			listPnl.removeAll();
 			month++;
+			selDate = LocalDate.of(year, month, 1);
+			setPrintDayOfWeek(selDate);
+			getTodoList(printCurrentList);
+			listPnl.setVisible(true);
 		}
 	}
 }
