@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import button.DeleteColBtn;
@@ -21,6 +22,7 @@ public class ColumnTitlePnl extends JPanel {
 	public JLabel titleLbl;
 	public String colTitle;
 	public DeleteColBtn deletecolBtn;
+	public JTextField updateTitleField;
 	/**
 	 * Create the panel.
 	 */
@@ -36,9 +38,13 @@ public class ColumnTitlePnl extends JPanel {
 		titleLbl.setBounds(0, 0, 350, 60);
 		add(titleLbl);
 		deletecolBtn = new DeleteColBtn(mainFrame,column_no);
-		deletecolBtn.setBounds(30, 30, 30, 30);
+		deletecolBtn.setBounds(320, 0, 30, 30);
 		add(deletecolBtn);
 		deletecolBtn.setVisible(false);
+		updateTitleField = new JTextField(colTitle);
+		updateTitleField.setBounds(25, 10, 300, 40);
+		add(updateTitleField);
+		updateTitleField.setVisible(false);
 		
 	}
 	

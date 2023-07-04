@@ -133,7 +133,6 @@ public class SettingTask {
 		}
 	}
 	public void setUsingMemberNum() {
-		System.out.println("여기까진 오니?");
 		ts.useingMemberNum = MF.loginMember.getMember().getMember_no();
 		System.out.println(ts.useingMemberNum);
 	}

@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import frame.MainFrame;
 import tomatoPj.Member;
@@ -73,6 +74,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 	
 	
 	// 투두 리스트 패널 ------------------------------------
+	private JScrollPane scrollPane;
 	JPanel todoListPnl = new JPanel(); 
 	JLabel currentDate = new JLabel(); // 현재 날짜
 	String printDate; // 투두 표시 날짜
@@ -180,9 +182,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			System.out.println("달력창 확인: " + loginMember.getName() + "토글상태: " + toggleSwitch);
 			flag = true;
 			selDate = LocalDate.now();
-			pkNums = getAllPks(printCurrentList, settingView);
-			selectPnlHeight = pkNums.size();
-			listPnlHeight = getTodoPnlCount(printCurrentList, selDate);
+			
 		} catch (SQLException e) {
 			System.out.println("달력창 실패1");
 			e.printStackTrace();
@@ -212,12 +212,10 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		selectPane.setOpaque(false);
 		
 		// 프로젝트 or 멤버 선택창 패널 -------------------------
-		selectPnl.setLayout(new GridLayout(selectPnlHeight, 1, 0, 0));
-		selectPnl.setBounds(35, 90, 700, listPnlHeight * 80);
-		selectPnl.setOpaque(false);
+//		selectPnl.setLayout(new GridLayout(selectPnlHeight, 1, 0, 0));
+//		selectPnl.setBounds(35, 90, 700, selectPnlHeight * 80);
+//		selectPnl.setOpaque(false);
 		
-		
-
 		// 투두리스트 패널 -----------------------------------
 		// 오늘 날짜 출력 라벨
 		printDate = calManager.getCurrentDate();
@@ -226,16 +224,18 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		currentDate.setLayout(null);
 		currentDate.setBounds(35, 20, 700, 50);
 		// 리스트 출력
-		getTodoList(printCurrentList);
-		listPnl.setLayout(new GridLayout(listPnlHeight, 1, 0, 0));
-		listPnl.setBounds(35, 90, 700, listPnlHeight * 80);
+		listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
+		listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
 		listPnl.setOpaque(false);
+		getTodoList(printCurrentList);
 
 		todoListPnl.add(listPnl);
 		todoListPnl.add(currentDate);
 		todoListPnl.setBounds(880, 135, 770, 733);
 		todoListPnl.setLayout(null);
 		todoListPnl.setOpaque(false);
+		
+		scrollPane = new JScrollPane(todoListPnl, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		// 달력 출력 패널 ------------------------------------
 		add(selectPane);
@@ -398,7 +398,6 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 	}
 
 	public void setDay(int no, boolean toggleSwitch) {
-//		List<PrintPlanner> ppList = ppl.setView(no, toggleSwitch);
 		// 요일
 		date.set(year, month - 1, 1); // date를 세팅하는데, 일(day)을 1로 세팅
 		int week = date.get(Calendar.DAY_OF_WEEK); // 일월화수목금토
@@ -429,8 +428,8 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			dateBtn.setBounds(0, 30, 112, 116);
 			dateBtn.setLayout(null);
 			dateBtn.setOpaque(false);
-			dateBtn.setBorderPainted(false); // 외곽선 삭제
-			dateBtn.setContentAreaFilled(false); // 내용 영역 채우기 안함
+			dateBtn.setBorderPainted(false); 
+			dateBtn.setContentAreaFilled(false); 
 			dateBtn.setFocusPainted(false);
 			dateBtnList.add(dateBtn);
 			dateBtn.addActionListener(new CalBtn());
@@ -486,7 +485,6 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 	public void getTodoList(List<PrintPlanner> list) {
 		List<PrintPlanner> thisList = getPrintTodoList(list, selDate);
 		int count = 0;
-		System.out.println("현재 날짜: " + selDate);
 		if (thisList.size() == 0) {
 			JPanel pnl = new JPanel();
 			pnl.setBounds(0, 0, 700, 80);
@@ -520,7 +518,6 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 				pnl.setLayout(null);
 				pnl.setOpaque(false);
 				String imgsrc = "calendarDot_" + count;
-				System.out.println(imgsrc);
 				JLabel color = new JLabel(iconManager.getImageIcon(imgsrc));
 				color.setBounds(0, 5, 20, 20);
 				color.setLayout(null);
@@ -588,6 +585,8 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		setPrintDayOfWeek(selDate);
 		listPnl.setVisible(false);
 		listPnl.removeAll();
+		listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
+		listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
 		getTodoList(printCurrentList);
 		dayPane.setVisible(false);
 		dayPane.removeAll();
@@ -641,6 +640,8 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			selDate = LocalDate.of(year, month, day);
 			setPrintDayOfWeek(selDate);
 			getTodoList(printCurrentList);
+			listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
+			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
 			listPnl.setVisible(true);
 			}
 		}
@@ -677,6 +678,8 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			selDate = LocalDate.of(year, month, 1);
 			setPrintDayOfWeek(selDate);
 			getTodoList(printCurrentList);
+			listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
+			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
 			listPnl.setVisible(true);
 		} else {
 			listPnl.setVisible(false);
@@ -685,8 +688,9 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			selDate = LocalDate.of(year, month, 1);
 			setPrintDayOfWeek(selDate);
 			getTodoList(printCurrentList);
+			listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
+			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
 			listPnl.setVisible(true);
-			
 		}
 	}
 
@@ -699,6 +703,8 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			selDate = LocalDate.of(year, month, 1);
 			setPrintDayOfWeek(selDate);
 			getTodoList(printCurrentList);
+			listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
+			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
 			listPnl.setVisible(true);
 		} else {
 			listPnl.setVisible(false);
@@ -707,6 +713,8 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			selDate = LocalDate.of(year, month, 1);
 			setPrintDayOfWeek(selDate);
 			getTodoList(printCurrentList);
+			listPnl.setLayout(new GridLayout(getTodoPnlCount(printCurrentList, selDate), 1, 0, 0));
+			listPnl.setBounds(35, 90, 700, getTodoPnlCount(printCurrentList, selDate) * 80);
 			listPnl.setVisible(true);
 		}
 	}

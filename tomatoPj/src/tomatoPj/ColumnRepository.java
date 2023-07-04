@@ -11,6 +11,26 @@ import dbutil.DBUtil;
 
 public class ColumnRepository {
 	
+	public int editTitleColumn(int column_no, String title) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DBUtil.getConnection();
+			String query = "UPDATE `column` SET `title` = ? WHERE column_no = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, title);
+			stmt.setInt(2, column_no);
+			return stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+		return 0;
+	}
+	
 	public Column selectByColNo(Connection conn, int column_no) throws SQLException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -127,9 +147,6 @@ public class ColumnRepository {
 				int active = rs2.getInt("active");
 				return new Column(column_no, title, column_indexParse, active);
 			}
-			
-			
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -139,6 +156,38 @@ public class ColumnRepository {
 			DBUtil.close(stmt2);
 			DBUtil.close(stmt3);
 			DBUtil.close(stmt4);
+			DBUtil.close(conn);
+		}
+		return column;
+	}
+	public Column searchCol_task_no(int task_no) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Column column = null;
+		try {
+			conn = DBUtil.getConnection();
+			String query = "SELECT * FROM `column` AS a\r\n"
+					+ "JOIN (\r\n"
+					+ "SELECT * FROM `column_task` WHERE `task_no` = ? ) AS b\r\n"
+					+ "ON a.column_no = b.column_no";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, task_no);
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				int column_noParse = rs.getInt("column_no");
+				String title = rs.getString("title");
+				int column_index = rs.getInt("column_Index");
+				int active = rs.getInt("active");
+				
+				column = new Column(column_noParse, title, column_index, active);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(stmt);
 			DBUtil.close(conn);
 		}
 		return column;

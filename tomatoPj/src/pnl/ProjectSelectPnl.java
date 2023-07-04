@@ -48,7 +48,6 @@ import utility.IconData;
 import utility.Utility;
 
 public class ProjectSelectPnl extends JPanel {
-
 	private Image image;
 	private IconData iconData;
 	private Utility utility;
@@ -65,8 +64,8 @@ public class ProjectSelectPnl extends JPanel {
 	public ProjectSelectWestPnl westPnl;
 	public ProjectPnl projectPnl;
 	private ProjectRepository pjRepo;
-	public List<ProjectPnl> projectPnls= new ArrayList<>();
-	
+	public List<ProjectPnl> projectPnls = new ArrayList<>();
+
 	public ProjectSelectPnl(Image image, MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		pjRepo = new ProjectRepository();
@@ -80,12 +79,9 @@ public class ProjectSelectPnl extends JPanel {
 		utility = new Utility();
 		setLayout(new BorderLayout(0, 0));
 		logoutBtn = new LogoutBtn(mainFrame);
-		projectPnl = new ProjectPnl();
-		
+
 		addPnl();
 
-		
-		
 		addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent e) {
@@ -108,13 +104,11 @@ public class ProjectSelectPnl extends JPanel {
 		});
 	}
 
-	
 	private void addPnl() {
 		centerPnl = new JLayeredPane();
 		centerPnl.setOpaque(false);
 		centerPnl.setLayout(null);
-		
-		
+
 		westPnl = new ProjectSelectWestPnl(mainFrame) {
 			@Override
 			public Dimension getPreferredSize() {
@@ -139,7 +133,7 @@ public class ProjectSelectPnl extends JPanel {
 				return new Dimension(1920, 135);
 			}
 		};
-		
+
 		addProjectBtn = new JButton(iconData.getImageIcon("blankAdd"));
 		addProjectBtn.setBounds(0, 55, 900, 216);
 
@@ -148,18 +142,20 @@ public class ProjectSelectPnl extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					mainFrame.setSelectedProjectTitle("신규프로젝트");
-					projectPnl.insertPjInfo(mainFrame, pjRepo.generateProject("신규프로젝트", mainFrame.loginMember.getMember_no()).getProject_no(), "신규프로젝트");
+					projectPnl = new ProjectPnl(mainFrame,
+							pjRepo.generateProject("신규 프로젝트", mainFrame.loginMember.getMember_no()).getProject_no(),
+							"신규프로젝트");
+					projectPnl.insertPjInfo(mainFrame, projectPnl.project_no, "신규 프로젝트");
+					projectPnls.add(projectPnl);
 				} catch (SQLException e1) {
 					e1.printStackTrace();
-					System.out.println("제대로안만들어짐");
 				} 
-				System.out.println("컬럼셀렉트로 안넘어가나?");
 				mainFrame.showCard("columnSelect");
-				
+
 			}
 		});
 		northPanel.setLayout(null);
-		
+
 		centerPnl.add(addProjectBtn, new Integer(3)); // Add jButton to a higher layer
 		utility.setButtonProperties(addProjectBtn);
 
@@ -176,21 +172,19 @@ public class ProjectSelectPnl extends JPanel {
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false); // Add this line
 		scrollPane.setBorder(null);
-		logoutBtn.setBounds(1649,33,150,70);
-		
+		logoutBtn.setBounds(1649, 33, 150, 70);
+
 		add(scrollPane, BorderLayout.CENTER); // Add the JScrollPane to the main panel
 		add(northPanel, BorderLayout.NORTH);
 		add(westPnl, BorderLayout.WEST);
 		add(eastPnl, BorderLayout.EAST);
 		northPanel.add(logoutBtn);
-		
 	}
 
-
 	// 프로젝트 선택화면에 띄우기 위함
-	private void loginMemberSetting() {
+	public void loginMemberSetting() {
 		mainFrame.loginMember.getPjList().clear();
-		
+
 		List<Task> list = new ArrayList<>();
 		int a = mainFrame.loginMember.getMember_no();
 		try {
@@ -214,22 +208,18 @@ public class ProjectSelectPnl extends JPanel {
 			}
 		}
 		mainFrame.loginMember.setTakeTaskList(list);
-		System.out.println("제대로된 멤버? " + memberList);
-		//////////// 가지고있는 프로젝트 리스트 패널 생성  ///////////
 		for (Project project : mainFrame.loginMember.getPjList()) {
 			addProject(project.getProject_no(), project.getTitle());
 		}
-		System.out.println("참여한모든프로젝트 태스크리스트사이즈" + mainFrame.loginMember.getTakeTaskList().size());
 	}
-	
 
 	private void addProject(int project_no, String title) {
 		ProjectPnl projectPnl = new ProjectPnl(mainFrame, project_no, title);
 		projectPnls.add(projectPnl);
 		centerPnl.add(projectPnl, new Integer(2)); // Add projectPnl to a lower layer
-		
+
 		projectPnl.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				for (ProjectPnl pnl : projectPnls) {
@@ -238,76 +228,87 @@ public class ProjectSelectPnl extends JPanel {
 						pnl.setimage();
 						projectPnl.insertPjInfo(mainFrame, project_no, title);
 						mainFrame.setSelectedProjectTitle(title);
+						if (e.getButton() == MouseEvent.BUTTON1) {
+							pnl.mouseListen();
+						}
 						if (e.getButton() == MouseEvent.BUTTON3) {
-							projectPnl.deletePjBtn.setVisible(true);
+							if (projectPnl.deletePjBtn.isVisible()) {
+								projectPnl.deletePjBtn.setVisible(false);
+							} else {
+								projectPnl.deletePjBtn.setVisible(true);
+							}
 						}
 					} else {
 						pnl.setEnabled(false);
 						pnl.setimage();
+						pnl.removeMouseListener();
 					}
 				}
 			}
 		});
 		projectPnl.setBounds(0, addProjectBtn.getY(), 900, 216); // Set the position to current jButton position
-		addProjectBtn.setLocation(addProjectBtn.getX(), addProjectBtn.getY() + projectPnl.getHeight() + 10); // Move jButton down
+		addProjectBtn.setLocation(addProjectBtn.getX(), addProjectBtn.getY() + projectPnl.getHeight() + 10); // Move
+																												// jButton
+																												// down
 
 		// Update the preferred size of the centerPnl and validate the JScrollPane
-		centerPnl.setPreferredSize(new Dimension(centerPnl.getWidth(), addProjectBtn.getY() + addProjectBtn.getHeight()));
+		centerPnl.setPreferredSize(
+				new Dimension(centerPnl.getWidth(), addProjectBtn.getY() + addProjectBtn.getHeight()));
 		scrollPane.validate();
 		centerPnl.repaint();
 	}
-	
-	private void removeAllProjectPanels() {
-	    for (Component comp : centerPnl.getComponents()) {
-	        if (comp instanceof ProjectPnl) {
-	            centerPnl.remove(comp);
-	        }
-	    }
-	    // Reset the location of the addProjectBtn
-	    addProjectBtn.setLocation(addProjectBtn.getX(), 55);
-	    centerPnl.revalidate();
-	    centerPnl.repaint();
+
+	public void removeAllProjectPanels() {
+		for (Component comp : centerPnl.getComponents()) {
+			if (comp instanceof ProjectPnl) {
+				centerPnl.remove(comp);
+			}
+		}
+		// Reset the location of the addProjectBtn
+		addProjectBtn.setLocation(addProjectBtn.getX(), 55);
+		centerPnl.revalidate();
+		centerPnl.repaint();
 	}
-	
+
 	private void scrollPaneSetLayout() {
 		scrollPane.setLayout(new ScrollPaneLayout() {
 			@Override
 			public void layoutContainer(Container parent) {
 				JScrollPane scrollPane = (JScrollPane) parent;
-				
+
 				Rectangle availR = scrollPane.getBounds();
 				availR.x = availR.y = 0;
-				
+
 				Insets insets = parent.getInsets();
 				availR.x = insets.left;
 				availR.y = insets.top;
 				availR.width -= insets.left + insets.right;
 				availR.height -= insets.top + insets.bottom;
-				
+
 				Rectangle vsbR = new Rectangle();
 				vsbR.width = 12;
 				vsbR.height = availR.height;
 				vsbR.x = availR.x + availR.width - vsbR.width;
 				vsbR.y = availR.y;
-				
+
 				if (viewport != null) {
 					viewport.setBounds(availR);
 				}
 				if (vsb != null) {
 					vsb.setVisible(true);
 					vsb.setOpaque(false);
-					
+
 					vsb.setBounds(vsbR);
 				}
 			}
 		});
-		
+
 	}
-	
+
 	private void scrollPaneSetUI() {
 		scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 			private final Dimension d = new Dimension();
-			
+
 			@Override
 			protected JButton createDecreaseButton(int orientation) {
 				return new JButton() {
@@ -317,7 +318,7 @@ public class ProjectSelectPnl extends JPanel {
 					}
 				};
 			}
-			
+
 			@Override
 			protected JButton createIncreaseButton(int orientation) {
 				return new JButton() {
@@ -327,11 +328,11 @@ public class ProjectSelectPnl extends JPanel {
 					}
 				};
 			}
-			
+
 			@Override
 			protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
 			}
-			
+
 			@Override
 			protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
 				Graphics2D g2 = (Graphics2D) g.create();
@@ -353,14 +354,14 @@ public class ProjectSelectPnl extends JPanel {
 				g2.drawRoundRect(r.x, r.y, r.width, r.height, 10, 10);
 				g2.dispose();
 			}
-			
+
 			@Override
 			protected void setThumbBounds(int x, int y, int width, int height) {
 				super.setThumbBounds(x, y, width, height);
 				scrollbar.repaint();
 			}
 		});
-		
+
 	}
 
 	@Override

@@ -53,6 +53,7 @@ public class MainFrame extends JFrame {
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	public String selectedProjectTitle;
 	public ProjectSelectPnl projectPnl;
+	public boolean todoBtnActive = false;
 	public MemberRepository mr = new MemberRepository();
 	public BoradPnl boradPnl;
 //	public Map<Integer,Taskrefrom> Library;

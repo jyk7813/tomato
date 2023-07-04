@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import frame.MainFrame;
 import tomatoPj.Column;
@@ -48,7 +49,7 @@ public class ColumnSelectPnl extends JPanel {
 		columnPnls = new ArrayList<>();
 		setLayout(null);
 		setOpaque(false);
-		
+
 		addPnl();
 
 	}
@@ -65,14 +66,12 @@ public class ColumnSelectPnl extends JPanel {
 		addColumnPnl.setOpaque(false); // for testing
 		columnTopPanel.add(addColumnPnl);
 		add(columnTopPanel);
-		
+
 		addBtn = new JButton();
 		addBtn.setBounds(0, 0, 350, 60);
 		addColumnPnl.add(addBtn);
 		utility.setButtonProperties(addBtn);
-		
-		
-		
+
 		// 칼럼추가버튼 액션리스너
 		addBtn.addActionListener(new ActionListener() {
 			@Override
@@ -81,8 +80,7 @@ public class ColumnSelectPnl extends JPanel {
 			}
 
 		});
-		
-		
+
 	}
 
 	@Override
@@ -91,29 +89,22 @@ public class ColumnSelectPnl extends JPanel {
 		return new Dimension(width, 945);
 	}
 
-	
-	
 	public void columnSetting() {
-		System.out.println("추가버튼 진입");
 		List<Column> columns = mainFrame.pjInfo.getCol();
-		System.out.println(columns);
 
 		Collections.sort(columns, Comparator.comparingInt(Column::getColumn_index));
 
 		if (shouldAddExistingColumns(columns)) {
 			addExistingColumns(columns);
 			mainFrame.columnActive = false;
-			System.out.println("위쪽");
 		} else {
 			addNewColumn(columns);
-			System.out.println("아래쪽");
 		}
 		revalidate();
 		repaint();
 	}
 
 	private boolean shouldAddExistingColumns(List<Column> columns) {
-		System.out.println("컬럼액티브 상태 :" + mainFrame.columnActive);
 		return !columns.isEmpty() && mainFrame.columnActive;
 	}
 
@@ -121,7 +112,7 @@ public class ColumnSelectPnl extends JPanel {
 		for (Column column : columns) {
 			mainFrame.pjInfo.addColumnCnt();
 			addColumnPanel(column);
-			
+
 		}
 	}
 
@@ -137,52 +128,61 @@ public class ColumnSelectPnl extends JPanel {
 	}
 
 	private void addColumnPanel(Column column) {
-	    List<Task> taskList = getTasksForColumn(column);
-	    final ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column, taskList, this);
-	    columnPnls.add(columnPnl); // add the new panel to the list
-	    add(columnPnl);
-	    setBoundsForPanel(columnPnl);
-	    revalidate();
-	    repaint();
+		List<Task> taskList = getTasksForColumn(column);
+		final ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column, taskList, this);
+		columnPnls.add(columnPnl); // add the new panel to the list
+		add(columnPnl);
+		setBoundsForPanel(columnPnl);
+		revalidate();
+		repaint();
 
-	    // Mouse listener added to the ColumnPnl instance
-	    columnPnl.addMouseListener(new MouseAdapter() {
-	        @Override
-	        public void mousePressed(MouseEvent e) {
-	            // This code will be executed when the ColumnPnl instance is clicked
-	            for (ColumnPnl pnl : columnPnls) { // Iterate over all panels
-	                if (pnl == columnPnl) { // If this is the clicked panel
-	                    pnl.setEnabled(true); // Activate it
-	                    pnl.columnTitlePnl.setEnabled(true);
-	                    pnl.setimage();
-	                    if (e.getButton()== MouseEvent.BUTTON3) {
-							pnl.columnTitlePnl.deletecolBtn.setVisible(true);
+		// Mouse listener added to the ColumnPnl instance
+		columnPnl.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// This code will be executed when the ColumnPnl instance is clicked
+				for (ColumnPnl pnl : columnPnls) { // Iterate over all panels
+					if (pnl == columnPnl) { // If this is the clicked panel
+						pnl.setEnabled(true); // Activate it
+						pnl.columnTitlePnl.setEnabled(true);
+						pnl.setimage();
+						if (e.getButton() == MouseEvent.BUTTON3) {
+							if (pnl.columnTitlePnl.deletecolBtn.isVisible()) {
+								pnl.columnTitlePnl.deletecolBtn.setVisible(false);
+								pnl.columnTitlePnl.updateTitleField.setVisible(false);
+								pnl.columnTitlePnl.titleLbl.setVisible(true);
+								pnl.columnTitlePnl.titleLbl.setText(pnl.columnTitlePnl.updateTitleField.getText());
+								colRepo.editTitleColumn(pnl.getColumn().getColumn_no(),
+										pnl.columnTitlePnl.updateTitleField.getText());
+							} else {
+								pnl.columnTitlePnl.deletecolBtn.setVisible(true);
+								pnl.columnTitlePnl.updateTitleField.setVisible(true);
+								pnl.columnTitlePnl.titleLbl.setVisible(false);
+							}
 						}
-	                    for (TaskPnl taskPnl : pnl.taskPnls) {
+						for (TaskPnl taskPnl : pnl.taskPnls) {
+
 							taskPnl.setEnabled(true);
 							taskPnl.setimage();
 							revalidate();
 							repaint();
 						}
-	                    
-	                   System.out.println(columnPnl.columnTitlePnl.colTitle);
-	                } else { // If this is not the clicked panel
-	                    pnl.setEnabled(false); // Deactivate it
-	                    pnl.columnTitlePnl.setEnabled(false);
-	                    pnl.setimage();
-	                    pnl.columnTitlePnl.deletecolBtn.setVisible(false);
-	                    for (TaskPnl taskPnl : pnl.taskPnls) {
+					} else { // If this is not the clicked panel
+						pnl.setEnabled(false); // Deactivate it
+						pnl.columnTitlePnl.setEnabled(false);
+						pnl.setimage();
+						pnl.columnTitlePnl.deletecolBtn.setVisible(false);
+						for (TaskPnl taskPnl : pnl.taskPnls) {
 							taskPnl.setEnabled(false);
 							taskPnl.setimage();
 							revalidate();
 							repaint();
 						}
-	                }
-	            }
-	        }
-	    });
+					}
+				}
+			}
+		});
 	}
-	
 
 	private List<Task> getTasksForColumn(Column column) {
 		try {
@@ -198,11 +198,14 @@ public class ColumnSelectPnl extends JPanel {
 		addColumnPnl.setBounds(addColumnPnl.getX() + columnPnl.getWidth() + 20, addColumnPnl.getY(), 350, 60);
 		add(addColumnPnl);
 	}
+
 	public void updatePnl() {
+		System.out.println("새로고침 실행");
 		mainFrame.tempInfo = mainFrame.pjInfo;
 		System.out.println(mainFrame.tempInfo);
-		mainFrame.projectPnl.projectPnl.insertPjInfo(mainFrame, mainFrame.tempInfo.getProject_no(), mainFrame.tempInfo.getTitle());
-		
+		mainFrame.projectPnl.projectPnl.insertPjInfo(mainFrame, mainFrame.tempInfo.getProject_no(),
+				mainFrame.tempInfo.getTitle());
+
 		addPnl();
 		columnSetting();
 	}

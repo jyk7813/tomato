@@ -14,6 +14,26 @@ import dbutil.DBUtil;
 
 public class TaskRepository {
 
+	public int editTitleTask(int task_no, String title) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = DBUtil.getConnection();
+			String query = "UPDATE `task` SET `title` = ? WHERE `task_no` = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, title);
+			stmt.setInt(2, task_no);
+			return stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+		return 0;
+	}
+	
 	// 선택한 멤버들의 배열과 선택한 프로젝트 넘버를 보내면 가지고있는 task리스트 리턴
 	// todo에 쓸 데이터베이스 함수구축. 완료
 	public HashSet<Task> todoSelectTaskList(int project_no, List<Integer> member_noArray) throws SQLException {
@@ -263,8 +283,32 @@ public class TaskRepository {
 		}
 		return 0;
 	}
-	public int searchTask(int task_no) {
-		
-		return 0;
+	
+	public Task searchTaskBy_no(int task_no) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Task task = null;
+		try {
+			conn = DBUtil.getConnection();
+			stmt = conn.prepareStatement("SELECT * FROM `task` WHERE `task_no` = ?");
+			stmt.setInt(1, task_no);
+			rs = stmt.executeQuery();
+			rs.next();
+			String content = rs.getString("content");
+			int importance = rs.getInt("importance");
+			Timestamp updateDate = rs.getTimestamp("updateDate");
+			Timestamp deadLine = rs.getTimestamp("deadLine");
+			int active = rs.getInt("active");
+			task = new Task(task_no, content, content, importance, updateDate, deadLine, active);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(stmt);
+			DBUtil.close(conn);
+		}
+		return task;
 	}
+	
 }
