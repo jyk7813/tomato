@@ -214,6 +214,8 @@ public class ColumnSelectPnl extends JPanel {
 	public void updatePnl(int project_no) {
 	    // First we clear the panel
 	    removeAll();
+	    columnPnls.clear();
+	    addPnl();
 	    // Then we fetch the data from the database
 	    List<Column> columns = new ArrayList<>();
 		try {

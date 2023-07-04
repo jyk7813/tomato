@@ -28,7 +28,7 @@ public class DeleteColBtn extends JButton {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				columnRepository.deleteColumn(column_no);
+//				columnRepository.deleteColumn(column_no);
 
 				mainFrame.boradPnl.panel_2.columnSelectPnl.deleteColumn(column, mainFrame.pjInfo.getProject_no());
 			}
