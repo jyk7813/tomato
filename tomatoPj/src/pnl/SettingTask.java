@@ -121,6 +121,7 @@ public class SettingTask {
 	}
 	public void TagAddButton(List<Function_Tag>list) {
 		
+		ts.tagPnl.add(ts.plusTag);
 		IconData IC =new IconData();
 		
 		
@@ -128,6 +129,9 @@ public class SettingTask {
 
 		
 		for(int i = 0; i<list.size();i++) {
+			JLabel box = new JLabel();
+//			box.setSize();
+			
 			JLabel tag = new JLabel(IC.getImageIcon("tag"));
 			JLabel tagText = new JLabel();		
 			tag.setLayout(null);
@@ -140,7 +144,7 @@ public class SettingTask {
 		    tagText.setText(list.get(i).getText());
 		    tag.add(tagText);
 		    tagText.setVisible(true);
-		    ts.CountTag ++;
+		    ts.CountTag =list.size();
 		    tag.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent e) {
 						ts.CountTag--;
@@ -165,9 +169,10 @@ public class SettingTask {
 		    ts.tagPnl.add(tag);
 		    ts.tagPnl.revalidate();
 		    ts.tagPnl.repaint();
-
+		    System.out.println("카운팅 확인");
+		    System.out.println(ts.CountTag);
+		    
 		}	
-
 		if(ts.CountTag>4) {
 			ts.plusTag.setVisible(false);
 		}
