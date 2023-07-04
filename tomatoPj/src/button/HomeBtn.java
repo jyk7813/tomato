@@ -24,29 +24,29 @@ public class HomeBtn extends JButton {
 
 	public HomeBtn(MainFrame mainFrame) {
 		iconData = new IconData();
-		utility = new Utility();
+        utility = new Utility();
+        
+        enterIcon = iconData.getImageIconGif("tomatoLogo");
+        exitIcon = iconData.getImageIcon("tomatoLogoStop");
+        utility.setButtonProperties(this);
+        addMouseListener(new MouseAdapter() {
+        	 @Override
+             public void mouseEntered(MouseEvent e) {
+        		 HomeBtn.this.setIcon(enterIcon);
+             }
 
-		enterIcon = iconData.getImageIcon("user3");
-		exitIcon = iconData.getImageIcon("user4");
-		utility.setButtonProperties(this);
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				HomeBtn.this.setIcon(enterIcon);
-			}
+             @Override
+             public void mouseExited(MouseEvent e) {
+            	 HomeBtn.this.setIcon(exitIcon);
+             }
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-				HomeBtn.this.setIcon(exitIcon);
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				mainFrame.getContentPane().removeAll();
-				mainFrame.addPnl();
-				mainFrame.showCard("projectSelect");
-
-			}
+ 			@Override
+ 			public void mousePressed(MouseEvent e) {
+ 				mainFrame.getContentPane().removeAll();
+ 		        mainFrame.addPnl();
+ 				mainFrame.showCard("projectSelect");
+ 				
+ 			}
 		});
 		this.setIcon(exitIcon);
 	}
