@@ -54,7 +54,7 @@ public class MemberListPnl extends JPanel {
 		fontData = new FontData();
 
 		this.mainFrame = mainFrame;
-		this.image = iconData.getImageIcon("long_bar").getImage();
+		this.image = iconData.getImageIcon("long_barre").getImage();
 		setOpaque(false);
 
 		setLayout(null);
@@ -76,7 +76,7 @@ public class MemberListPnl extends JPanel {
 
 						@Override
 						public void windowClosed(WindowEvent e) {
-							updateMember();
+							updateMember(mainFrame);
 
 						}
 
@@ -91,6 +91,7 @@ public class MemberListPnl extends JPanel {
 							memberRepository.addProjectMember(mainFrame.pjInfo.getProject_no(),
 									memberAddPopup.idInsertTextField.getText());
 							memberAddPopup.dispose();
+							updateMember(mainFrame);
 						}
 					});
 
@@ -164,16 +165,18 @@ public class MemberListPnl extends JPanel {
 		add(memberAddPnl);
 	}
 
-	public void updateMember() {
-		mainFrame.tempInfo = mainFrame.pjInfo;
-		System.out.println(mainFrame.tempInfo);
-		mainFrame.projectPnl.projectPnl.insertPjInfo(mainFrame, mainFrame.tempInfo.getProject_no(),
-				mainFrame.tempInfo.getTitle());
+	public void updateMember(MainFrame mainFrame) {
+		
 
-		addPnl();
-		members = mainFrame.pjInfo.getMemberList();
+		try {
+			members = memberRepository.getMemberBypj_no(mainFrame.pjInfo.getProject_no());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("선택한 프로젝트"+mainFrame.pjInfo);
 		System.out.println(members);
 		// Clear the memberPnls list
+		addPnl();
 		memberPnls.clear();
 
 		if (members != null) {
@@ -197,6 +200,8 @@ public class MemberListPnl extends JPanel {
 			memberAddPnl.repaint();
 			memberAddPnl.add(plusBtn);
 			count = memberPnls.size();
+			revalidate();
+			repaint();
 
 		}
 	}

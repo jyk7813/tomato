@@ -18,7 +18,7 @@ public class ProjectTitlePnl extends JPanel {
 	private IconData iconData;
 	private FontData fontData;
 	private Image image;
-	private JLabel projectTiltleLbl;
+	public JLabel projectTiltleLbl;
 
 	/**
 	 * Create the panel.
@@ -36,6 +36,16 @@ public class ProjectTitlePnl extends JPanel {
 		projectTiltleLbl.setFont(fontData.nanumFont(20));
 		mainFrame.setSelectedProjectTitle(projectTiltleLbl.getText());
 		add(projectTiltleLbl);
+		actionTitle(mainFrame);
+
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(image, 0, 0, null);
+	}
+	public void actionTitle(MainFrame mainFrame) {
 		mainFrame.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -44,13 +54,6 @@ public class ProjectTitlePnl extends JPanel {
 				}
 			}
 		});
-
-	}
-
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.drawImage(image, 0, 0, null);
 	}
 
 }

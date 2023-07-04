@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import dbutil.SelectProjectInfo;
 import frame.MainFrame;
 import pnl.commonpnl.TopMainPnl;
 import utility.IconData;
@@ -49,7 +50,8 @@ public class TodoBtn extends JButton {
 				mainFrame.showCard("todo");
 				revalidate();
 				repaint();
-
+				mainFrame.tempSelectedProjectTitle = mainFrame.selectedProjectTitle;
+				mainFrame.selectedProjectTitle = "project";
 			}
 
 		});

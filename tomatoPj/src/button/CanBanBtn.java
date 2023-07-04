@@ -47,7 +47,7 @@ public class CanBanBtn extends JButton {
 				mainFrame.showCard("columnSelect");
 				mainFrame.columnActive = true;
 				mainFrame.boradPnl.panel_2.columnSelectPnl.columnSetting();
-
+				mainFrame.selectedProjectTitle = mainFrame.tempSelectedProjectTitle;
 			}
 
 		});

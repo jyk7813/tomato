@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
@@ -16,11 +19,17 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.DocumentFilter.FilterBypass;
 
 import button.AddMemberBtn;
 import frame.MainFrame;
 import tomatoPj.Function_Tag;
 import tomatoPj.Task;
+import utility.FontData;
 import utility.IconData;
 import utility.Utility;
 
@@ -61,25 +70,46 @@ public class TagAddButton extends JDialog {
 		this.add(panelWithBackground);
 
 		idInsertTextField = new JTextField();
-		idInsertTextField.setBounds(34, 57, 276, 41);
+		
+		idInsertTextField.setBounds(34, 57, 276, 50);
+		idInsertTextField.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				repaint();
+			}
+		});
 		utility.setButtonProperties(idInsertTextField);
 		panelWithBackground.add(idInsertTextField);
 		addMemberBtn = new AddMemberBtn(mainFrame);
 		addMemberBtn.setBounds(110, 119, 126, 41);
+		FontData FD = new FontData();
+		idInsertTextField.setFont(FD.nanumFontBold(12));
+//		idInsertTextField.setBackground(new Color(255,0,0));
 		
-		
+		((AbstractDocument) idInsertTextField.getDocument()).setDocumentFilter(new DocumentFilter() {
+
+
+		    @Override
+		    public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+		        int currentLength = fb.getDocument().getLength();
+		        int replaceLength = text.length();
+		        int newLength = currentLength - length + replaceLength;
+		        if (newLength <= 6) {
+		            super.replace(fb, offset, length, text, attrs);
+		        }
+		    }
+		});
 		
 		
 		
 		JLabel tag = new JLabel(IC.getImageIcon("tag"));
 		JLabel tagText = new JLabel();		
-		
+		tagText.setFont(FD.nanumFont(12));
 		tag.setLayout(null);
 
-		tagText.setForeground(Color.BLACK);
+		
 	
 		tagText.setSize(80,30);
-		tagText.setLocation(20,0);
+		tagText.setLocation(10,0);
 		addMemberBtn.addActionListener(new ActionListener() {
 			
 

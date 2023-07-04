@@ -295,12 +295,14 @@ public class TaskRepository {
 			stmt.setInt(1, task_no);
 			rs = stmt.executeQuery();
 			rs.next();
+			String title = rs.getString("title");
+					
 			String content = rs.getString("content");
 			int importance = rs.getInt("importance");
 			Timestamp updateDate = rs.getTimestamp("updateDate");
 			Timestamp deadLine = rs.getTimestamp("deadLine");
 			int active = rs.getInt("active");
-			task = new Task(task_no, content, content, importance, updateDate, deadLine, active);
+			task = new Task(task_no, title, content, importance, updateDate, deadLine, active);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

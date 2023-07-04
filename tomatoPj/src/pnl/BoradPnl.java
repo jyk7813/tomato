@@ -35,8 +35,15 @@ public class BoradPnl extends JPanel{
 			@Override
 			public void componentShown(ComponentEvent e) {
 				
-				projectMemberPnl.myInfoPnl.settingMyInfopnl();
 				panel_2.columnSelectPnl.updatePnl(mainFrame.pjInfo.getProject_no());
+				
+				projectMemberPnl.projectTitlePnl.actionTitle(mainFrame);
+				System.out.println(mainFrame.selectedProjectTitle);
+				mainFrame.selectedProjectTitle = (mainFrame.pjInfo.getTitle());
+				System.out.println(mainFrame.selectedProjectTitle);
+				projectMemberPnl.myInfoPnl.settingMyInfopnl();
+				projectMemberPnl.projectTitlePnl.projectTiltleLbl.setText(mainFrame.pjInfo.getTitle());
+				projectMemberPnl.memberPnl.updateMember(mainFrame);
 //				int size=0;
 //				try {
 //					size = mainFrame.pjInfo.getCol().size();
