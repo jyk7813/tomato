@@ -56,7 +56,6 @@ public class MainFrame extends JFrame {
 	public boolean todoBtnActive = false;
 	public MemberRepository mr = new MemberRepository();
 	public BoradPnl boradPnl;
-//	public Map<Integer,Taskrefrom> Library;
 
 	/**
 	 * Launch the application.
@@ -84,7 +83,6 @@ public class MainFrame extends JFrame {
 	}
 
 	public MainFrame() {
-//		Library = new HashMap<Integer, Taskrefrom>();
 		pjInfo = new SelectProjectInfo();
 		loginMember = new LoginMember();
 		iconData = new IconData();

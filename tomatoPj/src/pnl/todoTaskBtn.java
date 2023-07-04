@@ -32,8 +32,6 @@ public class todoTaskBtn extends JButton {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				
-				//System.out.println("눌러진다");
 				mainFrame.setTask(task, column);
 				mainFrame.showCard("task");
 			}
