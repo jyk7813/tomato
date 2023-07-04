@@ -19,10 +19,12 @@ public class MyInfoPnl extends JPanel {
 	private Image image;
 	private byte[] imageBytes;
 	private MainFrame mainFrame;
+	public JLabel myInfoLbl;
 	/**
 	 * Create the panel.
 	 */
 	public MyInfoPnl(MainFrame mainFrame) {
+		System.out.println("여기가 생성되어버렸다고!!!");
 		this.mainFrame = mainFrame;
 		iconData = new IconData();
 		this.image = iconData.getImageIcon("mini_bar").getImage();
@@ -40,14 +42,14 @@ public class MyInfoPnl extends JPanel {
 		imageBytes = mainFrame.loginMember.getMember().getImage();
 		System.out.println(mainFrame.loginMember);
 		System.out.println(imageBytes);
-		if (imageBytes == null) {
-			JLabel myInfoLbl = new JLabel(iconData.getImageIcon("user1"));
+		if (imageBytes == null) { // 기본이미지
+			myInfoLbl = new JLabel(iconData.getImageIcon("user1"));
 			myInfoLbl.setBounds(25, 30, 60, 60);
 			add(myInfoLbl);
 			revalidate();
 			repaint();
 		}
-		if (imageBytes != null) {
+		if (imageBytes != null) { // 넣어둔이미지
 			ImageIcon imageIcon = new ImageIcon(imageBytes);
 			JLabel myInfoLbl = new JLabel(imageIcon);
 			myInfoLbl.setBounds(25, 30, 60, 60);
