@@ -80,6 +80,7 @@ public class ProjectSelectPnl extends JPanel {
 		utility = new Utility();
 		setLayout(new BorderLayout(0, 0));
 		logoutBtn = new LogoutBtn(mainFrame);
+		projectPnl = new ProjectPnl();
 		
 		addPnl();
 
@@ -223,7 +224,7 @@ public class ProjectSelectPnl extends JPanel {
 	
 
 	private void addProject(int project_no, String title) {
-		projectPnl = new ProjectPnl(mainFrame, project_no, title);
+		ProjectPnl projectPnl = new ProjectPnl(mainFrame, project_no, title);
 		projectPnls.add(projectPnl);
 		centerPnl.add(projectPnl, new Integer(2)); // Add projectPnl to a lower layer
 		

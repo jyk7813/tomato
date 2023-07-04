@@ -68,6 +68,7 @@ public class ProjectPnl extends JPanel {
     	mainFrame.pjInfo = new SelectProjectInfo(project_no, title, null, null);
     	return mainFrame.pjInfo.getTitle();
 	}
+    public ProjectPnl() {}
     
     public ProjectPnl(MainFrame mainFrame, int project_no, String title) {
     	this.project_no = project_no;
@@ -92,25 +93,25 @@ public class ProjectPnl extends JPanel {
 		add(deletePjBtn);
 		deletePjBtn.setVisible(false);
         
-//        projectButton = new JButton(title);
-//      
-//        projectButton.setIcon(pjBack);
-//        projectButton.setText(title);
-//        projectButton.setHorizontalTextPosition(JButton.CENTER);
-//        projectButton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {
-//					insertPjInfo(mainFrame, project_no, title);
-//					mainFrame.setSelectedProjectTitle(title);
-//					System.out.println(mainFrame.getSelectedProjectTitle());
-//				} else {
-//					insertPjInfo(mainFrame, project_no, title);
-//					mainFrame.showCard("columnSelect");
-//				}
-//			}
-//		});
-//        add(projectButton, BorderLayout.CENTER);
+        JButton projectButton = new JButton(title);
+      
+        projectButton.setIcon(pjBack);
+        projectButton.setText(title);
+        projectButton.setBounds(30, 30, 90, 90);
+        projectButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {
+					insertPjInfo(mainFrame, project_no, title);
+					mainFrame.setSelectedProjectTitle(title);
+					System.out.println(mainFrame.getSelectedProjectTitle());
+				} else {
+					insertPjInfo(mainFrame, project_no, title);
+					mainFrame.showCard("columnSelect");
+				}
+			}
+		});
+        add(projectButton);
 //        util.setButtonProperties(projectButton);
         this.image = iconData.getImageIcon("project").getImage();
     }
