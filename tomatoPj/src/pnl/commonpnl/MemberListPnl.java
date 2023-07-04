@@ -54,7 +54,7 @@ public class MemberListPnl extends JPanel {
 		fontData = new FontData();
 
 		this.mainFrame = mainFrame;
-		this.image = iconData.getImageIcon("long_bar").getImage();
+		this.image = iconData.getImageIcon("long_barre").getImage();
 		setOpaque(false);
 
 		setLayout(null);

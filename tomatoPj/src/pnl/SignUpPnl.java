@@ -115,7 +115,7 @@ public class SignUpPnl extends JPanel {
 		
 		
 		testLbl = new JLabel();
-		testLbl.setBounds(860, 763, 60, 60);
+		testLbl.setBounds(860, 765, 60, 60);
 		add(testLbl);
 		
 		signUpActionListener(mainFrame);

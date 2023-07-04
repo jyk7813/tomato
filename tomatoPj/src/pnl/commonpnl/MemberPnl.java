@@ -16,6 +16,7 @@ import frame.MainFrame;
 import tomatoPj.Member;
 import tomatoPj.MemberRepository;
 import utility.IconData;
+import utility.Utility;
 
 public class MemberPnl extends JPanel {
 	private IconData iconData;
@@ -25,6 +26,7 @@ public class MemberPnl extends JPanel {
 	private Member member;
 	private JButton jButton;
 	private MemberRepository memberRepository;
+	private Utility utility;
 	
 	
 	/**
@@ -37,7 +39,12 @@ public class MemberPnl extends JPanel {
 		setOpaque(false);
 	}
 	public MemberPnl(Member member,MainFrame mainFrame) {
+		utility = new Utility();
+		iconData = new IconData();
 		jButton = new JButton();
+		jButton.setLocation(0, 5);
+		jButton.setIcon(iconData.getImageIcon("memberbtnre"));
+		utility.setButtonProperties(jButton);
 		this.member = member;
 		this.mainFrame = mainFrame;
 		iconData = new IconData();
