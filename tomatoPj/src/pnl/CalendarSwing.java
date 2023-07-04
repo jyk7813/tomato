@@ -484,9 +484,10 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		public void actionPerformed(ActionEvent e) {
 			JButton button = (JButton) e.getSource();
 			String str = button.getIcon().toString();
-			str = str.substring(45);
+			str = str.substring(43);
 			if(isSelectDate) {
-					str = str.substring(0, str.length()-4);
+				System.out.println("**확인: " + str);
+				str = str.substring(0, str.length()-4);
 					System.out.println("확인: " + str);
 					day = Integer.parseInt(str);
 					selDate = LocalDate.of(year, month, day);
@@ -497,7 +498,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			} else {
 				for (JButton btn : dateBtnList) {
 					String str2 = btn.getIcon().toString();
-					str2 = str2.substring(45);
+					str2 = str2.substring(43);
 					if(str2.length() >= 7) {
 						str2 = str2.substring(0, str2.length()-6);
 						btn.setIcon(iconManager.getImageIcon(str2));
