@@ -168,7 +168,11 @@ public class MemberListPnl extends JPanel {
 	public void updateMember(MainFrame mainFrame) {
 		
 
-		members = mainFrame.pjInfo.getMemberList();
+		try {
+			members = memberRepository.getMemberBypj_no(mainFrame.pjInfo.getProject_no());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		System.out.println("선택한 프로젝트"+mainFrame.pjInfo);
 		System.out.println(members);
 		// Clear the memberPnls list
