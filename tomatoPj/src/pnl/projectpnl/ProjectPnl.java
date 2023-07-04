@@ -141,14 +141,16 @@ public class ProjectPnl extends JPanel {
         mouseAdapter = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {
-                    insertPjInfo(mainFrame, project_no, title);
-                    mainFrame.setSelectedProjectTitle(title);
-                    System.out.println(mainFrame.getSelectedProjectTitle());
-                } else {
-                    insertPjInfo(mainFrame, project_no, title);
-                    mainFrame.showCard("columnSelect");
-                }
+            	if (e.getButton()== MouseEvent.BUTTON1) {
+            		if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {
+            			insertPjInfo(mainFrame, project_no, title);
+            			mainFrame.setSelectedProjectTitle(title);
+            			System.out.println(mainFrame.getSelectedProjectTitle());
+            		} else {
+            			insertPjInfo(mainFrame, project_no, title);
+            			mainFrame.showCard("columnSelect");
+            		}
+				}
             }
         };
         addMouseListener(mouseAdapter);
