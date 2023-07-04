@@ -3,6 +3,7 @@ package utility;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,7 +57,7 @@ public class CalendarData {
 		String dayOfWeek = now.getDayOfWeek().toString();
 		int dayOfWeekValue = now.getDayOfWeek().getValue();
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일").withLocale(Locale.forLanguageTag("ko"));
 		String formatedNow = now.format(formatter);
 
 		return formatedNow;

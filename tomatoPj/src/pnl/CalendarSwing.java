@@ -108,6 +108,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		// 투두리스트 패널 -----------------------------------
 		// 오늘 날짜 출력 라벨
 		todoDate = calManager.getCurrentDate();
+		
 		selDate = cd.getLocalDate(todoDate);
 		System.out.println(selDate);
 		currentDate.setText(todoDate);
