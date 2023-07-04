@@ -18,6 +18,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
@@ -56,7 +57,7 @@ public class MainFrame extends JFrame {
 	public boolean todoBtnActive = false;
 	public MemberRepository mr = new MemberRepository();
 	public BoradPnl boradPnl;
-
+	private JLabel selectImg;
 	/**
 	 * Launch the application.
 	 */
@@ -86,6 +87,7 @@ public class MainFrame extends JFrame {
 		pjInfo = new SelectProjectInfo();
 		loginMember = new LoginMember();
 		iconData = new IconData();
+		selectImg = new JLabel();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 450, 300);
 		setSize(1920, 1080);
@@ -110,7 +112,7 @@ public class MainFrame extends JFrame {
 		setUndecorated(true);
 
 		loginImage = iconData.getImageIcon("login(BG)remake3").getImage();
-		signImage = iconData.getImageIcon("signup(BG)remake2").getImage();
+		signImage = iconData.getImageIcon("signup(BG)final").getImage();
 		projectImage = iconData.getImageIcon("projectSelect(BG)remake").getImage();
 		boradImage = iconData.getImageIcon("Background").getImage();
 		taskImage = iconData.getImageIcon("selectTask(BG)").getImage();
