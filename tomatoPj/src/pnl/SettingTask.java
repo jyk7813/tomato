@@ -17,7 +17,9 @@ import dbutil.DBUtil;
 import frame.MainFrame;
 import tomatoPj.Column;
 import tomatoPj.Feedback;
+import tomatoPj.FeedbackRepository;
 import tomatoPj.Function_Tag;
+import tomatoPj.Member;
 import tomatoPj.Member_task;
 import tomatoPj.Task;
 import tomatoPj.TaskRepository;
@@ -33,16 +35,20 @@ public class SettingTask {
 	MainFrame MF;
 	TaskRepository TR;
 	TagAddButton TAB;
-	public SettingTask(Taskrefrom ts,Task task,Column column,Feedback feedback) {
+	public SettingTask(MainFrame MF,Taskrefrom ts,Task task,Column column,Feedback feedback) {
+
+		
+		this.MF = MF;
 		dbutil = new DBUtil();
 		IC = new IconData();
 		this.task = task;
 		ts.TakeTask = task;
 		this.ts = ts;
-		this.feedback = feedback;
 		this.Takecolumn = column;
-		TR = new TaskRepository();
+		this.feedback = feedback;
+		ts.TakeFeedBack = feedback;
 
+		TR = new TaskRepository();
 	}
 	public void reset() {
 		task =null;
@@ -69,7 +75,7 @@ public class SettingTask {
 			ts.returnImoportance=0;
 			ts.stars[i].setIcon(IC.getImageIcon("starGray"));
 		}
-
+		ts.TakeFeedBack = null;
 		ts.taskTitle.setText("제목을 입력해주세요");
 		ts.contentText.setText("내용을 입력해주세요");
 		ts.feedBackText.setText("피드백을 입력해주세요");
@@ -81,13 +87,25 @@ public class SettingTask {
 		
 	}
 	
-	public void settingMember_TaskList(){
-		ts.member_taskList = new ArrayList<>();
-		if(task != null) {
-		
+	public void setMember_Task() {
+		ts.member_task_List =new ArrayList<>();
+		try {
+			if(task != null) {
+			List<Member> list = TR.searchMemberByTask_no(task.getTask_no());
+			for(int i = 0; i<list.size();i++) {
+				Member_task MT =new Member_task(0,list.get(i).getMember_no(),task.getTask_no(),"확인용");
+				ts.member_task_List.add(MT);
+			}
+			
+			}else {
+				Member_task MT =new Member_task(0,MF.loginMember.getMember_no(),1,"확인용");
+				ts.member_task_List.add(MT);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		}
-
+	}
 	public void setMemberlist() {
 		if(task != null) {
 		try {
@@ -97,15 +115,13 @@ public class SettingTask {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		}else {
-			ts.memberList = new ArrayList<>();
 		}
 	}
 	
 	public void setTaglist() {
 		if(task != null) {
 			try {
-				System.out.println(TR.searchFunction_tagByTask_no(task.getTask_no()));
+				
 				ts.Function_Tag_List=TR.searchFunction_tagByTask_no(task.getTask_no());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -116,8 +132,9 @@ public class SettingTask {
 		}
 	}
 	public void setUsingMemberNum() {
-
+		System.out.println("여기까진 오니?");
 		ts.useingMemberNum = MF.loginMember.getMember().getMember_no();
+		System.out.println(ts.useingMemberNum);
 	}
 	public void settingPKAndAc() {
 		if(task != null) {
@@ -145,7 +162,7 @@ public class SettingTask {
 			
 			tagText.setSize(80,30);
 			tagText.setLocation(20,0);
-			System.out.println(list.get(i).getText());
+
 		    ts.tagTexts.add(list.get(i).getText());
 		    tagText.setText(list.get(i).getText());
 		    tag.add(tagText);
@@ -175,8 +192,7 @@ public class SettingTask {
 		    ts.tagPnl.add(tag);
 		    ts.tagPnl.revalidate();
 		    ts.tagPnl.repaint();
-		    System.out.println("카운팅 확인");
-		    System.out.println(ts.CountTag);
+
 		    
 		}	
 		if(ts.CountTag>4) {
@@ -248,14 +264,14 @@ public class SettingTask {
 		}
 	
 	public void setFeedback() {
-		ts.feedBackText.setText("피드백을 입력해주세요");
 
 		if(feedback != null && task != null) {
 		ts.TakeFeedBack = feedback;
-		ts.returnFeedBack_PK = feedback.getFeedback_no();
-		ts.returnFeedBack_Task_no = task.getTask_no();
-
 		ts.feedBackText.setText(feedback.getComment());
+
+		}else {
+			ts.feedBackText.setText("피드백을 입력해주세요");		
 		}
 }
+	
 }
