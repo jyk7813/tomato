@@ -25,12 +25,13 @@ public class FeedbackRepository {
 			stmt.setInt(1, task_no);
 			rs = stmt.executeQuery();
 			
-			rs.next();
-			int feedback_no = rs.getInt("feedback_no");
-			int task_noParse = rs.getInt("task_no");
-			int member_no = rs.getInt("member_no");
-			String comment = rs.getString("comment");
-			feedback = new Feedback(feedback_no, task_noParse, member_no, comment);
+			if(rs.next()) {
+				int feedback_no = rs.getInt("feedback_no");
+				int task_noParse = rs.getInt("task_no");
+				int member_no = rs.getInt("member_no");
+				String comment = rs.getString("comment");
+				feedback = new Feedback(feedback_no, task_noParse, member_no, comment);
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
