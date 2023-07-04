@@ -10,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -33,6 +35,7 @@ import tomatoPj.Feedback;
 import tomatoPj.Member;
 import tomatoPj.MemberRepository;
 import tomatoPj.Task;
+import tomatoPj.TaskPnl_Repository;
 import utility.IconData;
 
 public class MainFrame extends JFrame {
@@ -53,6 +56,7 @@ public class MainFrame extends JFrame {
 	public boolean todoBtnActive = false;
 	public MemberRepository mr = new MemberRepository();
 	public BoradPnl boradPnl;
+//	public Map<Integer,Taskrefrom> Library;
 
 	/**
 	 * Launch the application.
@@ -80,6 +84,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public MainFrame() {
+//		Library = new HashMap<Integer, Taskrefrom>();
 		pjInfo = new SelectProjectInfo();
 		loginMember = new LoginMember();
 		iconData = new IconData();

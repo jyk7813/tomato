@@ -31,7 +31,7 @@ public class TopCanbanSelectedPnl extends JPanel {
 		LogoutBtn logoutBtn = new LogoutBtn(mainFrame);
 		logoutBtn.setBounds(1649, 33, 150, 70);
 		add(logoutBtn);
-		backgroundImage = iconData.getImageIcon("canbanselectedre").getImage();
+		backgroundImage = iconData.getImageIcon("selectedcanban").getImage();
 		setOpaque(false);
 
 	}
