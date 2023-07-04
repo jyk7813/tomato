@@ -52,6 +52,7 @@ public class MainFrame extends JFrame {
 	public ProjectSelectPnl projectPnl;
 	
 	public MemberRepository mr = new MemberRepository();
+	public BoradPnl boradPnl;
 
 	/**
 	 * Launch the application.
@@ -121,7 +122,7 @@ public class MainFrame extends JFrame {
 		JPanel loginPnl = new LoginPnl(loginImage, this);
 		JPanel signUpPnl = new SignUpPnl(signImage, this);
 		projectPnl = new ProjectSelectPnl(projectImage, this);
-		JPanel boradPnl = new BoradPnl(boradImage, this);
+		boradPnl = new BoradPnl(boradImage, this);
 		JPanel taskPnl = TBP;
 		JPanel todoPnl = new TestTodoPnl(this);
 
@@ -135,10 +136,10 @@ public class MainFrame extends JFrame {
 
 	}
 
-	public void setTask(Task task, Column column, Feedback feedback) {
+	public void setTask(Task task, Column column) {
 		Taskrefrom myUpPnl = TBP.taskrefrom;
 		System.out.println("메인에서 확인한다 대답.");
-		TBP.taskrefrom.settingTask(myUpPnl, task, column, feedback);
+		TBP.taskrefrom.settingTask(myUpPnl, task, column);
 	}
 
 	public boolean isPanelVisible(JPanel panel) {
@@ -165,5 +166,10 @@ public class MainFrame extends JFrame {
 
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		pcs.removePropertyChangeListener(listener);
+	}
+	public void refreshColumnSelect() {
+	    // assuming columnSelectPnl is the instance of the ColumnSelectPnl
+	    boradPnl.revalidate();
+	    boradPnl.repaint();
 	}
 }

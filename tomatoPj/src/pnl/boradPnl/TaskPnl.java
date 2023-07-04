@@ -66,18 +66,20 @@ public class TaskPnl extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Feedback feedback = new Feedback(6, 27, 1, "대본수정");
+				if (!isEnabled()) {
+					return;
+				}
 				
 				if(task !=null) {
 				System.out.println("주는 칼럼 제목1");
 				System.out.println(column.getTitle());
-				mainFrame.setTask(task, column, feedback);
+				mainFrame.setTask(task, column);
 				mainFrame.showCard("task");
 				}
 				if (task == null){
 					System.out.println("주는 칼럼 제목2");
 					System.out.println(column.getTitle());
-					mainFrame.setTask(task, column, feedback);
+					mainFrame.setTask(task, column);
 					mainFrame.showCard("task");
 				}
 			
@@ -90,6 +92,17 @@ public class TaskPnl extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, null);
+	}
+	public void setimage() {
+		if (!isEnabled()) {
+			this.image = iconData.getImageIcon("boardMiddletranslucent").getImage();
+			revalidate();
+			repaint();
+		} else {
+			this.image = iconData.getImageIcon("boardMiddle_opaque").getImage();
+			revalidate();
+			repaint();
+		}
 	}
 
 }

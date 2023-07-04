@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -30,6 +31,7 @@ public class ColumnPnl extends JPanel {
 	private TaskRepository taskRepo;
 	List<Task> taskList;
 	public TaskPnl taskPnl;
+	public List<TaskPnl> taskPnls = new ArrayList<>();
 
 	/**
 	 * Create the panel.
@@ -65,7 +67,6 @@ public class ColumnPnl extends JPanel {
 		columnTitlePnl.setBounds(0, 41, 350, 80);
 		columnTop.add(columnTitlePnl);
 
-		JButton deleteBtn = new JButton();
 
 		addcardBtn = new JButton(iconData.getImageIcon("addtasktranslucent"));
 		addcardBtn.setBounds(0, 0, 350, 79);
@@ -102,7 +103,11 @@ public class ColumnPnl extends JPanel {
 		        }
 				taskCount++;
 				TaskPnl taskPnl = new TaskPnl(mainFrame, column, task);
-				taskPnl.setBounds(0, 80 * (taskCount - 1), 350, 80);
+                taskPnl.setBounds(0, 80 * (taskCount - 1), 350, 80);
+
+                // Add the TaskPnl to the list
+                taskPnls.add(taskPnl);
+
 				panel.add(taskPnl);
 
 				// Update the position of the addcardBtn
@@ -117,7 +122,10 @@ public class ColumnPnl extends JPanel {
 				// addcardBtn.doClick();
 				taskCount++;
 				taskPnl = new TaskPnl(mainFrame, column, task);
-				taskPnl.setBounds(0, 80 * (taskCount - 1), 350, 80);
+                taskPnl.setBounds(0, 80 * (taskCount - 1), 350, 80);
+
+                // Add the TaskPnl to the list
+                taskPnls.add(taskPnl);
 				panel.add(taskPnl);
 
 				// Update the position of the addcardBtn
@@ -126,9 +134,6 @@ public class ColumnPnl extends JPanel {
 				panel.revalidate();
 				panel.repaint();
 			}
-		}
-		if (isEnabled()) {
-			System.out.println(colTitle + "isLive");
 		}
 		
 	}
@@ -140,4 +145,17 @@ public class ColumnPnl extends JPanel {
             }
         }
     }
+	public void setimage() {
+		if (!isEnabled()) {
+			addcardBtn.setIcon(iconData.getImageIcon("addtasktranslucent"));
+			columnTitlePnl.setimage();
+			revalidate();
+			repaint();
+		} else {
+			addcardBtn.setIcon(iconData.getImageIcon("addcardicon"));
+			columnTitlePnl.setimage();
+			revalidate();
+			repaint();
+		}
+	}
 }
