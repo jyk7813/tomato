@@ -46,17 +46,17 @@ public class BoradPnl extends JPanel{
 			public void componentShown(ComponentEvent e) {
 
 				projectMemberPnl.myInfoPnl.settingMyInfopnl();
-				System.out.println("진입하니?");
 				System.out.println(mainFrame.pjInfo);
 				int size=0;
 				try {
 					size = mainFrame.pjInfo.getCol().size();
+					
 				} catch (NullPointerException e1) {
 					size=0;
 				}
 				if(size>0) {
 					panel_2.columnSelectPnl.columnSetting();
-				}
+				} 
 			}
 		});
 		
