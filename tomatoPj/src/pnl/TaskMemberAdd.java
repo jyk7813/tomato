@@ -3,6 +3,7 @@ import javax.swing.*;
 
 import button.AddMemberBtn;
 import frame.MainFrame;
+import tomatoPj.Member_task;
 import utility.FontData;
 import utility.IconData;
 import utility.Utility;
@@ -80,11 +81,15 @@ public class TaskMemberAdd extends JDialog {
 
                 String input = idInsertTextField.getText();
                 JLabel memberIcon = new JLabel();
-
+                JLabel hidenText = new JLabel();
+                hidenText.setPreferredSize(new Dimension(60,60));
+    			hidenText.setForeground(new Color(0,0,0,0));
+    			hidenText.add(memberIcon);
+    			
                 List<String> ids = new ArrayList<>();
                 for (int i = 0; i < tr.ProjectMember.size(); i++) {
                     ids.add(tr.ProjectMember.get(i).getId());
-                    
+                  
                 }
                 if (ids.contains(input)) {
                     notFound.setVisible(false);  // 입력된 아이디가 존재하면 notFound 라벨을 숨깁니다.
@@ -94,14 +99,16 @@ public class TaskMemberAdd extends JDialog {
                             if (tr.ProjectMember.get(i).getImage() != null) {
                                 ImageIcon icon = new ImageIcon(tr.ProjectMember.get(i).getImage());
                                 memberIcon.setIcon(icon);
+                                hidenText.setText(""+tr.ProjectMember.get(i).getMember_no());
                             } else {
                                 memberIcon.setIcon(IC.getImageIcon("user1"));
+                                hidenText.setText(""+tr.ProjectMember.get(i).getMember_no());
                             }
                         }
                     }
 
                     memberIcon.addMouseListener(new MouseAdapter() {
-                        public void mousePressed(MouseEvent e) {
+                    	public void mousePressed(MouseEvent e) {
 
                             // showInputDialog 메서드를 사용하여 입력 다이얼로그를 표시하고 이미지 아이콘을 설정합니다.
                             tr.MemberPnl.remove(memberIcon);
@@ -109,12 +116,19 @@ public class TaskMemberAdd extends JDialog {
                             tr.MemberPnl.repaint();
                             tr.Count--;
                             tr.plus.setVisible(true);
-
-                            tr.plus.setLocation(0 + ((tr.Count * 1) * 100), 15);
+                            int MemberNum = Integer.valueOf(hidenText.getText());
+                            for(int i =0; i<tr.member_task_List.size();i++) {
+                           	 if(tr.member_task_List.get(i).getMember_no() ==MemberNum) {
+                           		tr.member_task_List.remove(i);
+                           	 }
+                            }
+                            
                         }
                     });
+                    int memberNum = Integer.valueOf(hidenText.getText());
+                    tr.member_task_List.add(new Member_task(0,memberNum,tr.TakeTask.getTask_no(),""));
+                    memberIcon.setSize(new Dimension(60,60));
                     tr.MemberPnl.add(memberIcon);
-                    memberIcon.setPreferredSize(new Dimension(60,60));
                     
 
                     // 아이콘들 간의 간격을 위한 빈 공간 컴포넌트 추가

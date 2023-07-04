@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import dbutil.DBUtil;
 import dbutil.LoginMember;
@@ -107,13 +108,17 @@ public class SettingTask {
 	public void settingMemberIcon() {
 		for(int i = 0; i<ts.memberList.size();i++) {
 			 JLabel memberIcon = new JLabel();
-			
+			JLabel hidenText = new JLabel();
+			hidenText.setPreferredSize(new Dimension(60,60));
+			hidenText.setForeground(new Color(0,0,0,0));
+			hidenText.add(memberIcon);
 			 if (ts.memberList.get(i).getImage() != null) {
                  ImageIcon icon = new ImageIcon(ts.memberList.get(i).getImage());
                  memberIcon.setIcon(icon);
-                 memberIcon.setText(""+ts.memberList.get(i).getMember_no());			 
+                 hidenText.setText(""+ts.memberList.get(i).getMember_no());			 
 			 } else {
                  memberIcon.setIcon(IC.getImageIcon("user1"));
+                 hidenText.setText(""+ts.memberList.get(i).getMember_no());
              }
 			 memberIcon.addMouseListener(new MouseAdapter() {
                  public void mousePressed(MouseEvent e) {
@@ -124,14 +129,19 @@ public class SettingTask {
                      ts.MemberPnl.repaint();
                      ts.Count--;
                      ts.plus.setVisible(true);
+                     int MemberNum = Integer.valueOf(hidenText.getText());
                      for(int i =0; i<ts.member_task_List.size();i++) {
-//                    	 if()
+                    	 if(ts.member_task_List.get(i).getMember_no() ==MemberNum) {
+                    		 ts.member_task_List.remove(i);
+                    	 }
                      }
                      
                  }
              });
+			 
+			
 			 ts.MemberPnl.add(memberIcon);
-             memberIcon.setPreferredSize(new Dimension(60,60));
+             memberIcon.setSize(new Dimension(60,60));
 		}
 	}
 
