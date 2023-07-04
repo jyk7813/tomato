@@ -45,15 +45,12 @@ public class Member_task {
 	}
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Member_task other = (Member_task) obj;
-		return Objects.equals(color, other.color) && member_no == other.member_no && package_no == other.package_no
-				&& task_no == other.task_no;
+	    if (this == obj)
+	        return true;
+	    if (obj == null || getClass() != obj.getClass())
+	        return false;
+	    Member_task other = (Member_task) obj;
+	    return member_no == other.member_no;
 	}
 	@Override
 	public String toString() {

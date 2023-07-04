@@ -2,6 +2,7 @@ package pnl;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -44,6 +45,7 @@ public class TagAddButton extends JDialog {
 	JLabel plus;
 	JPanel tagpnl;
 	Task task;
+	private JLabel notFound;
 	public TagAddButton(MainFrame mainFrame,JLabel plus,JPanel tagpnl,Taskrefrom ts,Task task) {
 		this.ts = ts;
 		this.tagpnl = tagpnl;
@@ -52,7 +54,12 @@ public class TagAddButton extends JDialog {
 		utility = new Utility();
 		this.plus = plus;
 		ImageIcon imageIcon = iconData.getImageIcon("addmember(BG)");
-
+		notFound = new JLabel("이미 존재하는 태그입니다.");
+        notFound.setForeground(new Color(235, 105, 97));
+        notFound.setSize(300,40);
+        notFound.setLocation(30, 10);
+        notFound.setVisible(false);
+    
 		JPanel panelWithBackground = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -68,7 +75,7 @@ public class TagAddButton extends JDialog {
 		panelWithBackground.setOpaque(false);
 		// Add the panel to the JDialog
 		this.add(panelWithBackground);
-
+		panelWithBackground.add(notFound);
 		idInsertTextField = new JTextField();
 		
 		idInsertTextField.setBounds(34, 57, 276, 50);
@@ -105,7 +112,12 @@ public class TagAddButton extends JDialog {
 		JLabel tagText = new JLabel();		
 		tagText.setFont(FD.nanumFont(12));
 		tag.setLayout(null);
-
+		
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.anchor = GridBagConstraints.CENTER;
+		
 		
 	
 		tagText.setSize(80,30);
@@ -118,13 +130,8 @@ public class TagAddButton extends JDialog {
 
 			    ts.tagTexts.add(idInsertTextField.getText());
 			    tagText.setText(idInsertTextField.getText());
-			    if(task!=null) {
-			    ts.return_Function_Tag_List.add(new Function_Tag(task.getTask_no(), "", idInsertTextField.getText()));
-			    }else if(task==null) {
-			    	ts.return_Function_Tag_List.add(new Function_Tag(0, "", idInsertTextField.getText()));
-			    }
 			    List<Function_Tag> list2 = ts.return_Function_Tag_List;
-			    tag.add(tagText);
+			    tag.add(tagText,constraints);
 			    tagText.setVisible(true);
 			    tag.revalidate();
 			    tag.repaint();
@@ -150,13 +157,29 @@ public class TagAddButton extends JDialog {
 	        	        plus.setVisible(true);
 	        	        tagpnl.revalidate();
 	        	        tagpnl.repaint();
-	        	   
+	        	        
 				}
-			    });			    			    
-			    tagpnl.add(tag);
+			    });		
+			    Function_Tag tag2 = new Function_Tag(0,0,"",idInsertTextField.getText());
+			    if(!ts.return_Function_Tag_List.contains(tag2))
+			    		{
+			    	tagpnl.add(tag);
+			    	if(task!=null) {
+			    		ts.return_Function_Tag_List.add(new Function_Tag(task.getTask_no(), "", idInsertTextField.getText()));
+			    	}else if(task==null) {
+			    		ts.return_Function_Tag_List.add(new Function_Tag(0, "", idInsertTextField.getText()));
+			    	}
+			    	notFound.setVisible(false);			    	
+			    }else {			    	
+			    	notFound.setVisible(true);
+			    				    
+			    }
+
+			    	
+
 			    tagpnl.revalidate();
     	        tagpnl.repaint();
-			    dispose();
+//			    dispose();
 			}
 		});
 		panelWithBackground.add(addMemberBtn);
@@ -164,8 +187,7 @@ public class TagAddButton extends JDialog {
 		setUndecorated(true);
 		setBackground(new Color(0, 0, 0, 0));
 		setVisible(true);
-		System.out.println("태그 버튼에서 확인");
-		System.out.println(ts.CountTag);
+
 		if(ts.CountTag>3) {
 			plus.setVisible(false);
 		    tagpnl.revalidate();
