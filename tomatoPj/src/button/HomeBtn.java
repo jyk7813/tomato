@@ -26,8 +26,8 @@ public class HomeBtn extends JButton{
 		iconData = new IconData();
         utility = new Utility();
         
-        enterIcon = iconData.getImageIcon("user3");
-        exitIcon = iconData.getImageIcon("user4");
+        enterIcon = iconData.getImageIconGif("tomatoLogo");
+        exitIcon = iconData.getImageIcon("tomatoLogoStop");
         utility.setButtonProperties(this);
         addMouseListener(new MouseAdapter() {
         	 @Override
