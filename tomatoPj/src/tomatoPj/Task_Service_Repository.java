@@ -2,6 +2,7 @@ package tomatoPj;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class Task_Service_Repository {
 	public String updateTask(Task task, Feedback feedback, List<Function_Tag> function_tagList, List<Member_task> member_taskList) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		PreparedStatement stmt2 = null;
+		ResultSet rs = null;
+	
 		try {
 			if(task != null) {
 				conn = DBUtil.getConnection();
@@ -39,12 +43,17 @@ public class Task_Service_Repository {
 					stmt.setInt(3, task.getImportance());
 					stmt.setTimestamp(4, task.getUpdateDate());
 					stmt.setTimestamp(5, task.getDeadLine());
-					//stmt.setInt(6, task.getTask_no());
 					stmt.executeUpdate();
 					
-					FeedbackFunction(conn, feedback);
-					Function_TagFunction(conn, function_tagList);
-					Member_taskFunction(conn, member_taskList);
+					stmt2 = conn.prepareStatement("SELECT `task_no` FROM `task` ORDER BY `task_no` DESC");
+					rs = stmt2.executeQuery();
+					rs.next();
+					int task_no = rs.getInt("task_no");
+					
+					
+					FeedbackFunction(conn, feedback, task_no);
+					Function_TagFunction(conn, function_tagList, task_no);
+					Member_taskFunction(conn, member_taskList, task_no);
 					return "태스크새로만듬";
 				} else if(task.getTask_no()!=0) {
 
@@ -59,9 +68,9 @@ public class Task_Service_Repository {
 					stmt.setInt(6, task.getTask_no());
 					stmt.executeUpdate();
 					
-					FeedbackFunction(conn, feedback);
-					Function_TagFunction(conn, function_tagList);
-					Member_taskFunction(conn, member_taskList);
+					FeedbackFunction(conn, feedback, task.getTask_no());
+					Function_TagFunction(conn, function_tagList, task.getTask_no());
+					Member_taskFunction(conn, member_taskList, task.getTask_no());
 					
 					return "태스크업데이트";
 				}
@@ -73,7 +82,9 @@ public class Task_Service_Repository {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			DBUtil.close(rs);
 			DBUtil.close(stmt);
+			DBUtil.close(stmt2);
 			DBUtil.close(conn);
 
 		}
@@ -81,7 +92,7 @@ public class Task_Service_Repository {
 	}
 
 	// 피드백이 없어도 돌아가게 만들었음
-	public void FeedbackFunction(Connection conn, Feedback feedback) {
+	public void FeedbackFunction(Connection conn, Feedback feedback, int task_no) {
 		PreparedStatement stmt = null;
 		try {
 			if(feedback != null) {
@@ -110,7 +121,7 @@ public class Task_Service_Repository {
 		}
 	}
 	// 기능 태그가없어도 돌아감
-	public void Function_TagFunction(Connection conn, List<Function_Tag> function_tagList) {
+	public void Function_TagFunction(Connection conn, List<Function_Tag> function_tagList, int task_no) {
 		PreparedStatement stmt = null;
 		try {
 			if (function_tagList.size() == 0 || function_tagList == null) {
@@ -141,7 +152,7 @@ public class Task_Service_Repository {
 		}
 	}
 	// 멤버태그가 없어도 돌아감
-	public void Member_taskFunction(Connection conn, List<Member_task> member_taskList) {
+	public void Member_taskFunction(Connection conn, List<Member_task> member_taskList, int task_no) {
 		PreparedStatement stmt = null;
 		try {
 			if (member_taskList.size() == 0 || member_taskList == null) {
