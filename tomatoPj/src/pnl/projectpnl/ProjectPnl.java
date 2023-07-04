@@ -11,7 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
+import button.DeletePjBtn;
 import dbutil.SelectProjectInfo;
 import frame.MainFrame;
 import pnl.commonpnl.ProjectTitlePnl;
@@ -33,9 +35,18 @@ public class ProjectPnl extends JPanel {
     private ImageIcon pjBack;
     private Utility util;
     private FontData fontData;
+    public int project_no;
+    private JLabel titleLbl;
+    private MainFrame mainFrame;
+    private String title;
+    public DeletePjBtn deletePjBtn;
+    
+//	private JButton projectButton;
     
     // 프로젝트선택시 해당정보 보관
     public void insertPjInfo(MainFrame mainFrame, int project_no, String title) {
+    	this.mainFrame = mainFrame;
+    	this.title = title;
     	mainFrame.pjInfo = new SelectProjectInfo(project_no, title, null, null);
     	mainFrame.showCard("columSelect");
 		mainFrame.pjInfo.setProject_no(project_no);
@@ -59,6 +70,7 @@ public class ProjectPnl extends JPanel {
 	}
     
     public ProjectPnl(MainFrame mainFrame, int project_no, String title) {
+    	this.project_no = project_no;
     	fontData = new FontData();
     	util = new Utility();
     	pjBack = iconData.getImageIcon("project_bar");
@@ -67,30 +79,40 @@ public class ProjectPnl extends JPanel {
     	colRepo = new ColumnRepository();
     	taskRepo = new TaskRepository();
     	
+    	setLayout(null);
         setOpaque(false);
-        setLayout(new BorderLayout(0, 0));
         
-        JButton projectButton = new JButton(title);
-      
-        projectButton.setIcon(pjBack);
-        projectButton.setText(title);
-        projectButton.setHorizontalTextPosition(JButton.CENTER);
-        projectButton.setFont(fontData.nanumFont(27));
-        projectButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {
-					insertPjInfo(mainFrame, project_no, title);
-					mainFrame.setSelectedProjectTitle(title);
-					System.out.println(mainFrame.getSelectedProjectTitle());
-				} else {
-					insertPjInfo(mainFrame, project_no, title);
-					mainFrame.showCard("columnSelect");
-				}
-			}
-		});
-        add(projectButton, BorderLayout.CENTER);
-        util.setButtonProperties(projectButton);
+        titleLbl = new JLabel(title, SwingConstants.CENTER);
+		titleLbl.setBounds(275, 40, 350, 60);
+        titleLbl.setFont(fontData.nanumFontBold(27));
+		add(titleLbl);
+		
+		deletePjBtn = new DeletePjBtn(mainFrame, project_no);
+		deletePjBtn.setBounds(30, 30, 30, 30);
+		add(deletePjBtn);
+		deletePjBtn.setVisible(false);
+        
+//        projectButton = new JButton(title);
+//      
+//        projectButton.setIcon(pjBack);
+//        projectButton.setText(title);
+//        projectButton.setHorizontalTextPosition(JButton.CENTER);
+//        projectButton.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				if (!(mainFrame.getSelectedProjectTitle().equals(title))||mainFrame.getSelectedProjectTitle()==null) {
+//					insertPjInfo(mainFrame, project_no, title);
+//					mainFrame.setSelectedProjectTitle(title);
+//					System.out.println(mainFrame.getSelectedProjectTitle());
+//				} else {
+//					insertPjInfo(mainFrame, project_no, title);
+//					mainFrame.showCard("columnSelect");
+//				}
+//			}
+//		});
+//        add(projectButton, BorderLayout.CENTER);
+//        util.setButtonProperties(projectButton);
+        this.image = iconData.getImageIcon("project").getImage();
     }
 
     @Override
@@ -98,4 +120,16 @@ public class ProjectPnl extends JPanel {
         super.paintComponent(g);
         g.drawImage(image, 0, 0, null); // draws the image onto the JPanel
     }
+    public void setimage() {
+		if (!isEnabled()) {
+			this.image = iconData.getImageIcon("project").getImage();
+			deletePjBtn.setVisible(false);
+		} else {
+			this.image = iconData.getImageIcon("projectselect").getImage();
+			
+		}
+		revalidate();
+		repaint();
+	}
+
 }

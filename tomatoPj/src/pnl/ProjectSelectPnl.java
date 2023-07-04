@@ -15,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,9 +32,8 @@ import javax.swing.ScrollPaneLayout;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import button.LogoutBtn;
-import dbutil.SelectProjectInfo;
 import frame.MainFrame;
-import pnl.commonpnl.ProjectTitlePnl;
+import pnl.boradPnl.AddColumnPnl;
 import pnl.projectpnl.ProjectPnl;
 import pnl.projectpnl.ProjectSelectWestPnl;
 import tomatoPj.ColumnRepository;
@@ -79,7 +80,35 @@ public class ProjectSelectPnl extends JPanel {
 		utility = new Utility();
 		setLayout(new BorderLayout(0, 0));
 		logoutBtn = new LogoutBtn(mainFrame);
+		
+		addPnl();
 
+		
+		
+		addComponentListener(new ComponentListener() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				removeAllProjectPanels();
+				loginMemberSetting();
+				westPnl.projectMemberPnl.myInfoPnl.settingMyInfopnl();
+			}
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+			}
+		});
+	}
+
+	
+	private void addPnl() {
 		centerPnl = new JLayeredPane();
 		centerPnl.setOpaque(false);
 		centerPnl.setLayout(null);
@@ -122,7 +151,8 @@ public class ProjectSelectPnl extends JPanel {
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 					System.out.println("제대로안만들어짐");
-				}
+				} 
+				System.out.println("컬럼셀렉트로 안넘어가나?");
 				mainFrame.showCard("columnSelect");
 				
 			}
@@ -153,29 +183,9 @@ public class ProjectSelectPnl extends JPanel {
 		add(eastPnl, BorderLayout.EAST);
 		northPanel.add(logoutBtn);
 		
-		addComponentListener(new ComponentListener() {
-			@Override
-			public void componentShown(ComponentEvent e) {
-				removeAllProjectPanels();
-				loginMemberSetting();
-				westPnl.projectMemberPnl.myInfoPnl.settingMyInfopnl();
-			}
-
-			@Override
-			public void componentResized(ComponentEvent e) {
-			}
-
-			@Override
-			public void componentMoved(ComponentEvent e) {
-			}
-
-			@Override
-			public void componentHidden(ComponentEvent e) {
-			}
-		});
 	}
 
-	
+
 	// 프로젝트 선택화면에 띄우기 위함
 	private void loginMemberSetting() {
 		mainFrame.loginMember.getPjList().clear();
@@ -206,9 +216,56 @@ public class ProjectSelectPnl extends JPanel {
 		System.out.println("제대로된 멤버? " + memberList);
 		//////////// 가지고있는 프로젝트 리스트 패널 생성  ///////////
 		for (Project project : mainFrame.loginMember.getPjList()) {
-			addPanel(project.getProject_no(), project.getTitle());
+			addProject(project.getProject_no(), project.getTitle());
 		}
 		System.out.println("참여한모든프로젝트 태스크리스트사이즈" + mainFrame.loginMember.getTakeTaskList().size());
+	}
+	
+
+	private void addProject(int project_no, String title) {
+		projectPnl = new ProjectPnl(mainFrame, project_no, title);
+		projectPnls.add(projectPnl);
+		centerPnl.add(projectPnl, new Integer(2)); // Add projectPnl to a lower layer
+		
+		projectPnl.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				for (ProjectPnl pnl : projectPnls) {
+					if (projectPnl == pnl) {
+						pnl.setEnabled(true);
+						pnl.setimage();
+						projectPnl.insertPjInfo(mainFrame, project_no, title);
+						mainFrame.setSelectedProjectTitle(title);
+						if (e.getButton() == MouseEvent.BUTTON3) {
+							projectPnl.deletePjBtn.setVisible(true);
+						}
+					} else {
+						pnl.setEnabled(false);
+						pnl.setimage();
+					}
+				}
+			}
+		});
+		projectPnl.setBounds(0, addProjectBtn.getY(), 900, 216); // Set the position to current jButton position
+		addProjectBtn.setLocation(addProjectBtn.getX(), addProjectBtn.getY() + projectPnl.getHeight() + 10); // Move jButton down
+
+		// Update the preferred size of the centerPnl and validate the JScrollPane
+		centerPnl.setPreferredSize(new Dimension(centerPnl.getWidth(), addProjectBtn.getY() + addProjectBtn.getHeight()));
+		scrollPane.validate();
+		centerPnl.repaint();
+	}
+	
+	private void removeAllProjectPanels() {
+	    for (Component comp : centerPnl.getComponents()) {
+	        if (comp instanceof ProjectPnl) {
+	            centerPnl.remove(comp);
+	        }
+	    }
+	    // Reset the location of the addProjectBtn
+	    addProjectBtn.setLocation(addProjectBtn.getX(), 55);
+	    centerPnl.revalidate();
+	    centerPnl.repaint();
 	}
 	
 	private void scrollPaneSetLayout() {
@@ -216,40 +273,40 @@ public class ProjectSelectPnl extends JPanel {
 			@Override
 			public void layoutContainer(Container parent) {
 				JScrollPane scrollPane = (JScrollPane) parent;
-
+				
 				Rectangle availR = scrollPane.getBounds();
 				availR.x = availR.y = 0;
-
+				
 				Insets insets = parent.getInsets();
 				availR.x = insets.left;
 				availR.y = insets.top;
 				availR.width -= insets.left + insets.right;
 				availR.height -= insets.top + insets.bottom;
-
+				
 				Rectangle vsbR = new Rectangle();
 				vsbR.width = 12;
 				vsbR.height = availR.height;
 				vsbR.x = availR.x + availR.width - vsbR.width;
 				vsbR.y = availR.y;
-
+				
 				if (viewport != null) {
 					viewport.setBounds(availR);
 				}
 				if (vsb != null) {
 					vsb.setVisible(true);
 					vsb.setOpaque(false);
-
+					
 					vsb.setBounds(vsbR);
 				}
 			}
 		});
-
+		
 	}
-
+	
 	private void scrollPaneSetUI() {
 		scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 			private final Dimension d = new Dimension();
-
+			
 			@Override
 			protected JButton createDecreaseButton(int orientation) {
 				return new JButton() {
@@ -259,7 +316,7 @@ public class ProjectSelectPnl extends JPanel {
 					}
 				};
 			}
-
+			
 			@Override
 			protected JButton createIncreaseButton(int orientation) {
 				return new JButton() {
@@ -269,11 +326,11 @@ public class ProjectSelectPnl extends JPanel {
 					}
 				};
 			}
-
+			
 			@Override
 			protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
 			}
-
+			
 			@Override
 			protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
 				Graphics2D g2 = (Graphics2D) g.create();
@@ -295,39 +352,14 @@ public class ProjectSelectPnl extends JPanel {
 				g2.drawRoundRect(r.x, r.y, r.width, r.height, 10, 10);
 				g2.dispose();
 			}
-
+			
 			@Override
 			protected void setThumbBounds(int x, int y, int width, int height) {
 				super.setThumbBounds(x, y, width, height);
 				scrollbar.repaint();
 			}
 		});
-
-	}
-
-	private void addPanel(int project_no, String title) {
 		
-		projectPnl = new ProjectPnl(mainFrame, project_no, title);
-		projectPnls.add(projectPnl);
-		projectPnl.setBounds(0, addProjectBtn.getY(), 900, 216); // Set the position to current jButton position
-		centerPnl.add(projectPnl, new Integer(2)); // Add projectPnl to a lower layer
-		addProjectBtn.setLocation(addProjectBtn.getX(), addProjectBtn.getY() + projectPnl.getHeight() + 10); // Move jButton down
-
-		// Update the preferred size of the centerPnl and validate the JScrollPane
-		centerPnl.setPreferredSize(new Dimension(centerPnl.getWidth(), addProjectBtn.getY() + addProjectBtn.getHeight()));
-		scrollPane.validate();
-		centerPnl.repaint();
-	}
-	private void removeAllProjectPanels() {
-	    for (Component comp : centerPnl.getComponents()) {
-	        if (comp instanceof ProjectPnl) {
-	            centerPnl.remove(comp);
-	        }
-	    }
-	    // Reset the location of the addProjectBtn
-	    addProjectBtn.setLocation(addProjectBtn.getX(), 55);
-	    centerPnl.revalidate();
-	    centerPnl.repaint();
 	}
 
 	@Override
@@ -335,4 +367,5 @@ public class ProjectSelectPnl extends JPanel {
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, this);
 	}
+
 }

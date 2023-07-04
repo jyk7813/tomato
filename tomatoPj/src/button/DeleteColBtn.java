@@ -15,13 +15,13 @@ import tomatoPj.Member;
 import utility.IconData;
 import utility.Utility;
 
-public class deleteColBtn extends JButton {
+public class DeleteColBtn extends JButton {
 	private IconData iconData;
 	private Utility utility;
 	private ImageIcon deleteIcon;
 	private ColumnRepository columnRepository;
 
-	public deleteColBtn(MainFrame mainFrame, int column_no) {
+	public DeleteColBtn(MainFrame mainFrame, int column_no) {
 		columnRepository = new ColumnRepository();
 		iconData = new IconData();
 		utility = new Utility();
