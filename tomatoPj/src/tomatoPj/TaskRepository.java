@@ -263,7 +263,6 @@ public class TaskRepository {
 		}
 		return 0;
 	}
-	
 	public Task searchTaskBy_no(int task_no) {
 		Connection conn = null;
 		PreparedStatement stmt = null;

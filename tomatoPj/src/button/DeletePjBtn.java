@@ -30,6 +30,8 @@ public class DeletePjBtn extends JButton{
 			public void mousePressed(MouseEvent e) {
 				try {
 					projectRepository.deleteProject(project_no);
+					mainFrame.projectPnl.removeAllProjectPanels();
+					mainFrame.projectPnl.loginMemberSetting();
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
