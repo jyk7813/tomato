@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import dbutil.DBUtil;
@@ -102,7 +103,7 @@ public class Task_Service_Repository {
 				if (feedback.getFeedback_no() == 0) {
 					stmt = conn
 							.prepareStatement("INSERT INTO `feedback` (task_no, member_no, `comment`) VALUES(?,?,?)");
-					stmt.setInt(1, feedback.getTask_no());
+					stmt.setInt(1, task_no);
 					stmt.setInt(2, feedback.getMember_no());
 					stmt.setString(3, feedback.getComment());
 					stmt.executeUpdate();
@@ -114,6 +115,7 @@ public class Task_Service_Repository {
 					stmt.setInt(2, feedback.getTask_no());
 					stmt.setInt(3, feedback.getMember_no());
 					stmt.setString(4, feedback.getComment());
+					stmt.setInt(5, feedback.getTask_no());
 					stmt.executeUpdate();
 				}
 			}
@@ -136,11 +138,14 @@ public class Task_Service_Repository {
 			stmt.setInt(1, task_no);
 			stmt.executeUpdate();
 			for (Function_Tag function_tag : function_tagList) {
+
 				stmt2 = conn.prepareStatement("INSERT INTO `function_tag` (task_no, color, `text`) VALUES(?,?,?)");
-				stmt2.setInt(1, function_tag.getTask_no());
+				stmt2.setInt(1, task_no);
 				stmt2.setString(2, function_tag.getColor());
+				
 				stmt2.setString(3, function_tag.getText());
 				stmt2.executeUpdate();
+		
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -152,13 +157,18 @@ public class Task_Service_Repository {
 	}
 
 	// 멤버태그가 없어도 돌아감
-	public void Member_taskFunction(Connection conn, List<Member_task> member_taskList, int task_no) {
+	public void Member_taskFunction(List<Member_task> member_taskList, int task_no) {
+		Connection conn = null;
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
+		System.out.println("서비스 레포지토리");
+		System.out.println(member_taskList);
 		try {
+			conn = DBUtil.getConnection();
 			stmt = conn.prepareStatement("DELETE FROM `member_task` WHERE `task_no` = ?");
 			stmt.setInt(1, task_no);
 			stmt.executeUpdate();
+			if(member_taskList.size() != 0) {
 			for (Member_task member_task : member_taskList) {
 				stmt2 = conn.prepareStatement(
 						"INSERT INTO `member_task` (`member_no`, `task_no`, `color`) " + "VALUES(?,?,?)");
@@ -167,11 +177,16 @@ public class Task_Service_Repository {
 				stmt2.setString(3, member_task.getColor());
 				stmt2.executeUpdate();
 			}
+			}
+		}catch(SQLIntegrityConstraintViolationException e) {
+			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
+		}finally {
+		}
+			DBUtil.close(conn);
 			DBUtil.close(stmt);
 			DBUtil.close(stmt2);
 		}
-	}
+	
 }

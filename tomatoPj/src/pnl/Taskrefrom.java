@@ -226,10 +226,30 @@ public class Taskrefrom extends JPanel {
 					System.out.println(member_task_List);
 					System.out.println(column.getColumn_no());
 					Task_Service_Repository TSR = new Task_Service_Repository();
-					// TSR.updateTask(returnTask,returnFeedBack,Function_Tag_List,
-					// member_task_List,column.getColumn_no());
-
-					add(newBtn());
+					
+					
+					int newTask_num = TSR.updateTask(returnTask,column.getColumn_no());
+					
+					if(TakeFeedBack !=null && TakeFeedBack.getTask_no() ==0) {
+						if(TakeTask ==null) {
+						TSR.FeedbackFunction(TakeFeedBack, newTask_num);
+						}else if(TakeTask !=null) {
+							TSR.FeedbackFunction(TakeFeedBack, returnTask.getTask_no());
+						}
+					}
+					
+					if(returnTask.getTask_no()==0 && Function_Tag_List!= null) {
+						TSR.Function_TagFunction(Function_Tag_List,newTask_num);						
+					}else if(returnTask.getTask_no()!=0 && Function_Tag_List!= null){
+						TSR.Function_TagFunction(Function_Tag_List,returnTask.getTask_no());
+					}
+					
+					
+					if(returnTask.getTask_no()==0 && member_task_List!= null) {
+						TSR.Member_taskFunction(member_task_List,newTask_num);
+					}else if(returnTask.getTask_no()!=0 && member_task_List!= null) {
+						TSR.Member_taskFunction(member_task_List,returnTask.getTask_no());						
+					}
 					st.reset();
 					CountTag = 0;
 					mainFrame.getContentPane().removeAll();
