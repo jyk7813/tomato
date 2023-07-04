@@ -88,7 +88,11 @@ public class TagAddButton extends JDialog {
 
 			    ts.tagTexts.add(idInsertTextField.getText());
 			    tagText.setText(idInsertTextField.getText());
+			    if(task!=null) {
 			    ts.return_Function_Tag_List.add(new Function_Tag(task.getTask_no(), "", idInsertTextField.getText()));
+			    }else if(task==null) {
+			    	ts.return_Function_Tag_List.add(new Function_Tag(0, "", idInsertTextField.getText()));
+			    }
 			    List<Function_Tag> list2 = ts.return_Function_Tag_List;
 			    tag.add(tagText);
 			    tagText.setVisible(true);
@@ -130,9 +134,13 @@ public class TagAddButton extends JDialog {
 		setUndecorated(true);
 		setBackground(new Color(0, 0, 0, 0));
 		setVisible(true);
-//		if(ts.CountTag>4) {
-//			plus.setVisible(false);
-//		}
+		System.out.println("태그 버튼에서 확인");
+		System.out.println(ts.CountTag);
+		if(ts.CountTag>3) {
+			plus.setVisible(false);
+		    tagpnl.revalidate();
+	        tagpnl.repaint();
+		}
 		// WindowFocusListener를 추가합니다.
 		this.addWindowFocusListener(new WindowFocusListener() {
 			@Override

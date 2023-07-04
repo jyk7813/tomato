@@ -16,7 +16,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -193,11 +195,24 @@ public class Taskrefrom extends JPanel {
 					else {
 						returnFeedBack = new Feedback(returnFeedBack_PK, returnFeedBack_Task_no, 3, feedBackText.getText());
 					}
-					System.out.println("나갈때 확인");
-					System.out.println(return_Function_Tag_List.size());
+
+					Set<Function_Tag> newList = new HashSet<>();
+					Set<Function_Tag> OldList = new HashSet<>();
+					for (int i = 0; i<return_Function_Tag_List.size();i++) {
+						if(return_Function_Tag_List.get(i).getNo() == 0) {
+							newList.add(return_Function_Tag_List.get(i));
+						}else {
+							OldList.add(return_Function_Tag_List.get(i));
+						}
+						System.out.println("신규생성");
+					System.out.println(newList);
+					System.out.println("기존ㅇ에 있던거");
+					System.out.println(OldList);
+						
+					}
 					add(newBtn());
 					st.reset();
-
+					CountTag = 0;
 					
 					mainFrame.showCard("columnSelect");
 
