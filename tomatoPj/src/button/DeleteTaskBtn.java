@@ -26,10 +26,9 @@ public class DeleteTaskBtn extends JButton {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				taskRepository.deleteTask(task_no);
-				
-				
-				
+				if (e.getButton()== MouseEvent.BUTTON1) {
+					taskRepository.deleteTask(task_no);
+				}
 			}
 
 		});
