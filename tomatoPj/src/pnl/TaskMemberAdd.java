@@ -137,6 +137,7 @@ public class TaskMemberAdd extends JDialog {
                 	   notFound.setText("이미 추가되있는 유저입니다");
                 	   notFound.setVisible(true);
                    }else {
+                       tr.Count++;
                 	   tr.MemberPnl.add(memberIcon);
                 	   if(tr.TakeTask != null) {
                 	   tr.member_task_List.add(new Member_task(0,memberNum,tr.TakeTask.getTask_no(),""));
@@ -154,7 +155,7 @@ public class TaskMemberAdd extends JDialog {
 
                     tr.MemberPnl.revalidate();
                     tr.MemberPnl.repaint();
-                    tr.Count++;
+    
                 } else {
                 	notFound.setText("해당 아이디는 존재하지 않습니다");
                     notFound.setVisible(true);  // 입력된 아이디가 존재하지 않으면 notFound 라벨을 보여줍니다.

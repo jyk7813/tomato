@@ -82,10 +82,12 @@ public class TaskPnl extends JPanel {
 				}
 
 				if (task != null && e.getButton() == MouseEvent.BUTTON1) {					
+					
 					mainFrame.setTask(task, column);
 					mainFrame.showCard("task");
 				}
 				if (task == null && e.getButton() == MouseEvent.BUTTON1) {
+					
 					mainFrame.setTask(task, column);
 					mainFrame.showCard("task");
 				}
