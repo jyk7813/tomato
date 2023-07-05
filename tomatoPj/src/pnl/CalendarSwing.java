@@ -525,9 +525,9 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 									pnl = getCalPnlByDate(localDate);
 									JLabel lbl = new JLabel();
 									lbl.setName(String.valueOf(pk));
-									System.out.println("**" + t.getTitle());
-									System.out.println("**calendarDot_mini_" + testPk);
-									lbl.setIcon(iconManager.getImageIcon("calendarDot_mini_" + testPk));
+//									System.out.println("**" + t.getTitle());
+//									System.out.println("**calendarDot_mini_" + testPk);
+									lbl.setIcon(iconManager.getImageIcon("calendarDot_mini_1"));
 									lbl.setBounds(0, 0, 15, 15);
 									lbl.setOpaque(false);
 									pnl.add(lbl);
@@ -541,7 +541,7 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 								lbl.setName(String.valueOf(pk));
 								System.out.println("*****" + t.getTitle());
 								System.out.println("calendarDot_mini_" + testPk);
-								lbl.setIcon(iconManager.getImageIcon("calendarDot_mini_" + testPk));
+								lbl.setIcon(iconManager.getImageIcon("calendarDot_mini_1"));
 								lbl.setBounds(0, 0, 15, 15);
 								lbl.setOpaque(false);
 								pnl.add(lbl);
@@ -594,87 +594,88 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 	}
 
 	// 출력할 리스트만 반환받기
-	public List<PrintPlanner> getPrintTodoList(List<PrintPlanner> list, LocalDate date) {
+	public List<PrintPlanner> getPrintTodoList(List<PrintPlanner> list) {
 		List<PrintPlanner> thisList = new ArrayList<>();
 		for (PrintPlanner p : printCurrentList) {
-			if (cd.checkLocalDateRange(date, p.getUp(), p.getDead())) {
-				thisList.add(p);
+				if (cd.checkRangeOfMonth(selDate, p.getUp(), p.getDead())) {
+					thisList.add(p);
+				}
 			}
-		}
 		return thisList;
 	}
 
 	// 투두리스트 출력 메소드
-	public void getTodoList(List<PrintPlanner> list) {
-		List<PrintPlanner> thisList = getPrintTodoList(list, selDate);
-		int count = 0;
-		int pkNum = 0;
-		if (thisList.size() == 0) {
-			JPanel pnl = new JPanel();
-			pnl.setBounds(0, 0, 700, 90);
-			pnl.setLayout(null);
-			pnl.setOpaque(false);
-			JLabel color = new JLabel(iconManager.getImageIcon("calendarDot_9"));
-			color.setBounds(0, 5, 20, 20);
-			color.setLayout(null);
-			color.setOpaque(false);
-			JButton clickBox = new JButton(iconManager.getImageIcon("t_null"));
-			clickBox.setBounds(0, 0, 700, 90);
-			clickBox.setLayout(null);
-			clickBox.setOpaque(false);
-			clickBox.setBorderPainted(false);
-			clickBox.setContentAreaFilled(false);
-			clickBox.setFocusPainted(false);
-			JLabel title = new JLabel();
-			title.setText("일정이 없습니다");
-			title.setFont(fontManager.nanumFontBold(23));
-			title.setBounds(60, 0, 417, 30);
-			title.setOpaque(false);
+		public void getTodoList(List<PrintPlanner> list) {
+			List<PrintPlanner> thisList = getPrintTodoList(list);
+			int count = 0;
+			System.out.println("현재 날짜: " + selDate);
+			if (thisList.size() == 0) {
+				JPanel pnl = new JPanel();
+				pnl.setBounds(0, 0, 700, 80);
+				pnl.setLayout(null);
+				pnl.setOpaque(false);
+				JLabel color = new JLabel(iconManager.getImageIcon("calendarDot_9"));
+				color.setBounds(0, 5, 20, 20);
+				color.setLayout(null);
+				color.setOpaque(false);
+				JButton clickBox = new JButton(iconManager.getImageIcon("t_null"));
+				clickBox.setBounds(0, 0, 700, 80);
+				clickBox.setLayout(null);
+				clickBox.setOpaque(false);
+				clickBox.setBorderPainted(false);
+				clickBox.setContentAreaFilled(false);
+				clickBox.setFocusPainted(false);
+				JLabel title = new JLabel();
+				title.setText("일정이 없습니다");
+				title.setFont(fontManager.nanumFontBold(23));
+				title.setBounds(60, 0, 417, 30);
+				title.setOpaque(false);
 
-			pnl.add(clickBox);
-			pnl.add(color);
-			pnl.add(title);
-			listPnl.add(pnl);
-		} else {
-			for (PrintPlanner p : thisList) {
-				if (pkNum != p.getPk()) {
-					pkNum = p.getPk();
-					JPanel pnl = new JPanel();
-					pnl.setBounds(0, 0, 700, 90);
-					pnl.setLayout(null);
-					pnl.setOpaque(false);
-					String imgsrc = "calendarDot_" + p.getPk();
-					JLabel color = new JLabel(iconManager.getImageIcon(imgsrc));
-					color.setBounds(0, 5, 20, 20);
-					color.setLayout(null);
-					color.setOpaque(false);
-					todoTaskBtn clickBox = new todoTaskBtn(p.getTaskPk(), mainFrame);
-					clickBox.setName(String.valueOf(count + 1));
-					todoBtnList.add(clickBox);
-					getTodoBtn(clickBox);
-					JLabel title = new JLabel();
-					title.setName(String.valueOf(count + 1));
-					title.setText(p.getTaskName());
-					title.setFont(fontManager.nanumFontBold(23));
-					title.setBounds(60, 0, 417, 30);
-					title.setOpaque(false);
-					JLabel dateText = new JLabel();
-					dateText.setName(String.valueOf(count + 1));
-					dateText.setText(p.getUp().toString() + " ~ " + p.getDead().toString());
-					dateText.setFont(fontManager.nanumFontBold(18));
-					dateText.setBounds(60, 35, 417, 30);
-					dateText.setOpaque(false);
-					todoDateList.add(dateText);
-					pnl.add(clickBox);
-					pnl.add(color);
-					pnl.add(title);
-					pnl.add(dateText);
-					listPnl.add(pnl);
-					count++;
+				pnl.add(clickBox);
+				pnl.add(color);
+				pnl.add(title);
+				listPnl.add(pnl);
+			} else {
+				for (PrintPlanner p : thisList) {
+					try {
+						for(Task t : tr.taskListBypjNo(p.getPjPk())) {
+							JPanel pnl = new JPanel();
+							pnl.setBounds(0, 0, 700, 80);
+							pnl.setLayout(null);
+							pnl.setOpaque(false);
+							JLabel color = new JLabel(iconManager.getImageIcon("calendarDot_1"));
+							color.setBounds(0, 5, 20, 20);
+							color.setLayout(null);
+							color.setOpaque(false);
+							todoTaskBtn clickBox = new todoTaskBtn(t.getTask_no(), mainFrame);
+							clickBox.setName(String.valueOf(count + 1));
+							getTodoBtn(clickBox);
+							JLabel title = new JLabel();
+							title.setText(t.getTitle());
+							title.setFont(fontManager.nanumFontBold(23));
+							title.setBounds(60, 0, 417, 30);
+							title.setOpaque(false);
+							JLabel dateText = new JLabel();
+							LocalDate up = cd.timeToLocal(t.getUpdateDate());
+							LocalDate dead = cd.timeToLocal(t.getDeadLine());
+							dateText.setText(up.toString() + " ~ " + dead.toString());
+							dateText.setFont(fontManager.nanumFontBold(18));
+							dateText.setBounds(60, 40, 417, 30);
+							dateText.setOpaque(false);
+
+							pnl.add(clickBox);
+							pnl.add(color);
+							pnl.add(title);
+							pnl.add(dateText);
+							listPnl.add(pnl);
+							count++;
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
-	}
 
 	// 투두버튼 이미지 + 투명하게 설정 메소드
 	public JButton getTodoBtn(JButton btn) {

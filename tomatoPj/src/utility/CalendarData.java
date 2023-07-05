@@ -79,7 +79,7 @@ public class CalendarData {
 		LocalDate endLocalDate = endDate;
 
 		endLocalDate = endLocalDate.plusDays(1); // endDate는 포함하지 않으므로 +1일을 해줘야함.
-
+		System.out.println((localdate.isBefore(startLocalDate)) && (localdate.isBefore(endLocalDate)));
 		return (!localdate.isBefore(startLocalDate)) && (localdate.isBefore(endLocalDate));
 	}
 	
