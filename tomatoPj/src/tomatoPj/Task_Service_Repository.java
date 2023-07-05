@@ -109,13 +109,13 @@ public class Task_Service_Repository {
 					stmt.executeUpdate();
 				} else if (feedback.getFeedback_no() != 0) {
 					stmt = conn.prepareStatement(
-							"UPDATE `feedback` SET feedback_no = ?, task_no = ?, member_no = ?, `comment` = ?\r\n"
+							"UPDATE `feedback` SET task_no = ?, member_no = ?, `comment` = ?\r\n"
 									+ "WHERE task_no = ?");
-					stmt.setInt(1, feedback.getFeedback_no());
-					stmt.setInt(2, task_no);
-					stmt.setInt(3, feedback.getMember_no());
-					stmt.setString(4, feedback.getComment());
-					stmt.setInt(5, task_no);
+					//stmt.setInt(1, feedback.getFeedback_no());
+					stmt.setInt(1, feedback.getTask_no());
+					stmt.setInt(2, feedback.getMember_no());
+					stmt.setString(3, feedback.getComment());
+					stmt.setInt(4, feedback.getTask_no());
 					stmt.executeUpdate();
 				}
 			}

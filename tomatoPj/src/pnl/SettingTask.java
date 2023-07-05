@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 
 import dbutil.DBUtil;
 import dbutil.LoginMember;
+import dbutil.SelectProjectInfo;
 import frame.MainFrame;
 import tomatoPj.Column;
 import tomatoPj.Feedback;
@@ -38,6 +39,7 @@ public class SettingTask {
 	TaskRepository TR;
 	TagAddButton TAB;
 	MemberRepository MR;
+	private SelectProjectInfo sP;
 
 	public SettingTask(MainFrame MF, Taskrefrom ts, Task task, Column column, Feedback feedback) {
 
@@ -54,6 +56,7 @@ public class SettingTask {
 		MR = new MemberRepository();
 		TR = new TaskRepository();
 		ts.member_task_List = new ArrayList<>();
+		sP = MF.pjInfo;
 	}
 
 	public void reset() {
@@ -97,8 +100,8 @@ public class SettingTask {
 		LoginMember LM = MF.loginMember;
 		System.out.println(ts.ProjectMember.size());
 		try {
-			ts.ProjectMember = MR.getMemberBypj_no(LM.getMember_no());
-			System.out.println("현재 참여중인 멤버 몇명?");
+			ts.ProjectMember = MR.getMemberBypj_no(sP.getProject_no());
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -325,7 +328,7 @@ public class SettingTask {
 		if (feedback != null && task != null) {
 			ts.TakeFeedBack = feedback;
 			ts.feedBackText.setText(feedback.getComment());
-
+			System.out.println("제대로 건내줬니");
 		} else {
 			ts.feedBackText.setText("피드백을 입력해주세요");
 		}

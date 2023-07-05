@@ -143,6 +143,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public void setTask(Task task, Column column) {
+		
 		Taskrefrom myUpPnl = TBP.taskrefrom;
 		TBP.taskrefrom.settingTask(myUpPnl, task, column);
 	}
