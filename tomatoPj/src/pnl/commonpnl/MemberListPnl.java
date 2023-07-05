@@ -194,7 +194,7 @@ public class MemberListPnl extends JPanel {
 			memberAddPnl.remove(plusBtn);
 
 			// Make the plusBtn visible if member count is less than MAX_MEMBER_SIZE
-			plusBtn.setVisible(members.size() < MAX_MEMBER_SIZE);
+			plusBtn.setVisible(members.size() <= MAX_MEMBER_SIZE);
 
 			memberAddPnl.revalidate();
 			memberAddPnl.repaint();
