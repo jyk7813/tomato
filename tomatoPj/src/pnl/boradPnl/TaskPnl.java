@@ -4,10 +4,15 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
+import button.DeleteTaskBtn;
 import dbutil.SelectProjectInfo;
 import frame.MainFrame;
 import tomatoPj.Column;
@@ -28,6 +33,7 @@ public class TaskPnl extends JPanel {
 	MainFrame mainFrame;
 	// 자기참조용
 	public JButton jButton2;
+	public DeleteTaskBtn deleteTaskBtn;
 
 	// 테스크 클릭 버튼
 	/**
@@ -39,6 +45,10 @@ public class TaskPnl extends JPanel {
 		iconData = new IconData();
 		utility = new Utility();
 		this.pjInfo = mainFrame.pjInfo;
+		deleteTaskBtn = new DeleteTaskBtn(mainFrame, task,mainFrame.pjInfo.getProject_no());
+		deleteTaskBtn.setBounds(300, 0, 30, 30);
+		add(deleteTaskBtn);
+		deleteTaskBtn.setVisible(false);
 
 		// 넌이제부터 태스크야 알았어?
 		this.image = iconData.getImageIcon("boardMiddletranslucent").getImage();
@@ -51,26 +61,32 @@ public class TaskPnl extends JPanel {
 		} else {
 			tasktitle = task.getTitle();
 		}
-
-		jButton2 = new JButton(tasktitle);
-		jButton2.setBounds(0, 0, 360, 80);
-		add(jButton2);
-		utility.setButtonProperties(jButton2);
-
-		jButton2.addActionListener(new ActionListener() {
+		
+		JLabel taskTitleLbl = new JLabel(tasktitle,SwingConstants.CENTER);
+		taskTitleLbl.setBounds(0,25, 360, 30);
+		add(taskTitleLbl);
+		taskTitleLbl.setOpaque(false);
+		
+//
+//		jButton2 = new JButton(tasktitle);
+//		jButton2.setBounds(0, 0, 360, 80);
+//		add(jButton2);
+//		utility.setButtonProperties(jButton2);
+		
+		addMouseListener(new MouseAdapter() {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void mousePressed(MouseEvent e) {
 				if (!isEnabled()) {
 					return;
 				}
 
-				if (task != null) {					
+				if (task != null && e.getButton() == MouseEvent.BUTTON1) {					
 					
 					mainFrame.setTask(task, column);
 					mainFrame.showCard("task");
 				}
-				if (task == null) {
+				if (task == null && e.getButton() == MouseEvent.BUTTON1) {
 					
 					mainFrame.setTask(task, column);
 					mainFrame.showCard("task");
@@ -79,7 +95,30 @@ public class TaskPnl extends JPanel {
 				revalidate();
 				repaint();
 			}
+			
 		});
+
+//		jButton2.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				if (!isEnabled()) {
+//					return;
+//				}
+//
+//				if (task != null) {					
+//					mainFrame.setTask(task, column);
+//					mainFrame.showCard("task");
+//				}
+//				if (task == null) {
+//					mainFrame.setTask(task, column);
+//					mainFrame.showCard("task");
+//				}
+//
+//				revalidate();
+//				repaint();
+//			}
+//		});
 	}
 
 	@Override
