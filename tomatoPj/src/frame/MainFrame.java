@@ -116,7 +116,7 @@ public class MainFrame extends JFrame {
 		signImage = iconData.getImageIcon("signup(BG)final").getImage();
 		projectImage = iconData.getImageIcon("projectSelect(BG)remake").getImage();
 		boradImage = iconData.getImageIcon("Background").getImage();
-		taskImage = iconData.getImageIcon("selectTask(BG)").getImage();
+		taskImage = iconData.getImageIcon("selectTask(BG)re").getImage();
 //		Image todoImage = iconData.getImageIcon("Background").getImage();
 		addPnl();
 
