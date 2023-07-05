@@ -25,8 +25,8 @@ public class AddPictureBtn extends JButton {
 		iconData = new IconData();
         utility = new Utility();
         
-        enterIcon = iconData.getImageIcon("AddPicture2");
-        exitIcon = iconData.getImageIcon("AddPicture");
+        enterIcon = iconData.getImageIcon("addPicture2");
+        exitIcon = iconData.getImageIcon("addPicture");
         utility.setButtonProperties(this);
         addMouseListener(new MouseAdapter() {
         	 @Override

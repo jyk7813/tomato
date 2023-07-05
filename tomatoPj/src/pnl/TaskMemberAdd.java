@@ -89,7 +89,8 @@ public class TaskMemberAdd extends JDialog {
                 List<String> ids = new ArrayList<>();
                 for (int i = 0; i < tr.ProjectMember.size(); i++) {
                     ids.add(tr.ProjectMember.get(i).getId());
-                  
+                    System.out.println("선택된 프로젝트에 누구누구있어?");
+                  System.out.println(tr.ProjectMember.get(i).getId());
                 }
                 if (ids.contains(input)) {
                 	
@@ -129,17 +130,21 @@ public class TaskMemberAdd extends JDialog {
                     int memberNum = Integer.valueOf(hidenText.getText());
                     Member_task comp =  new Member_task(0,memberNum,0,"");
                     memberIcon.setSize(new Dimension(60,60));
-    
-                   if(tr.member_task_List.contains(comp)) {
+        
+                	   
+                   if(tr.member_task_List.contains(comp)) { 
                 	   
                 	   notFound.setText("이미 추가되있는 유저입니다");
                 	   notFound.setVisible(true);
                    }else {
                 	   tr.MemberPnl.add(memberIcon);
+                	   if(tr.TakeTask != null) {
                 	   tr.member_task_List.add(new Member_task(0,memberNum,tr.TakeTask.getTask_no(),""));
-                	   
+                	   }else {
+                		   tr.member_task_List.add(new Member_task(0,memberNum,0,""));
+                	   }
                    }
-                    		
+                   
              
                     	
             
