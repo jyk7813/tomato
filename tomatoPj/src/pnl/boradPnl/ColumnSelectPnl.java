@@ -130,7 +130,7 @@ public class ColumnSelectPnl extends JPanel {
 		addColumnPanel(newColumn);
 	}
 
-	private void addColumnPanel(Column column) {
+	public void addColumnPanel(Column column) {
 		List<Task> taskList = getTasksForColumn(column);
 		final ColumnPnl columnPnl = new ColumnPnl(mainFrame, column.getTitle(), column, taskList, this);
 		columnPnls.add(columnPnl); // add the new panel to the list
@@ -246,6 +246,14 @@ public class ColumnSelectPnl extends JPanel {
 		// Remove the column from the UI
 		columnPnls.remove(column);
 		// Now we need to fetch the updated data from the database and update the UI
+		updatePnl(project_no);
+	}
+	
+	public void deleteTask(Task task, int project_no) {
+		taskRepo.deleteTask(task.getTask_no());
+		
+		columnPnls.remove(task);
+		
 		updatePnl(project_no);
 	}
 

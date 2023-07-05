@@ -45,7 +45,7 @@ public class TaskPnl extends JPanel {
 		iconData = new IconData();
 		utility = new Utility();
 		this.pjInfo = mainFrame.pjInfo;
-		deleteTaskBtn = new DeleteTaskBtn(mainFrame, task.getTask_no());
+		deleteTaskBtn = new DeleteTaskBtn(mainFrame, task,mainFrame.pjInfo.getProject_no());
 		deleteTaskBtn.setBounds(300, 0, 30, 30);
 		add(deleteTaskBtn);
 		deleteTaskBtn.setVisible(false);
