@@ -8,12 +8,10 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import dbutil.DBUtil;
 import dbutil.LoginMember;
@@ -97,8 +95,10 @@ public class SettingTask {
 	public void setPJ_Mem() {
 		ts.ProjectMember = new ArrayList<Member>();
 		LoginMember LM = MF.loginMember;
+		System.out.println(ts.ProjectMember.size());
 		try {
 			ts.ProjectMember = MR.getMemberBypj_no(LM.getMember_no());
+			System.out.println("현재 참여중인 멤버 몇명?");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,6 +106,7 @@ public class SettingTask {
 	}
 
 	public void settingMemberIcon() {
+		if(ts.memberList !=null) {
 		for(int i = 0; i<ts.memberList.size();i++) {
 			 JLabel memberIcon = new JLabel();
 			JLabel hidenText = new JLabel();
@@ -143,22 +144,19 @@ public class SettingTask {
 			 ts.MemberPnl.add(memberIcon);
              memberIcon.setSize(new Dimension(60,60));
 		}
+		}
 	}
 
 	public void setMember_Task() {
 
 		if (task != null) {
-
+		if(ts.memberList.size() >0) {
 			for (int i = 0; i < ts.memberList.size(); i++) {
 				Member_task MT = new Member_task(0, ts.memberList.get(i).getMember_no(), task.getTask_no(), "확인용");
 				ts.member_task_List.add(MT);
 			}
-
-		} else {
-			Member_task MT = new Member_task(0, MF.loginMember.getMember_no(), 1, "확인용");
-			ts.member_task_List.add(MT);
-		}
-
+			}
+		} 
 	}
 
 	public void setMemberlist() {

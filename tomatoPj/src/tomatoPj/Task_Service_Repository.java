@@ -112,10 +112,10 @@ public class Task_Service_Repository {
 							"UPDATE `feedback` SET feedback_no = ?, task_no = ?, member_no = ?, `comment` = ?\r\n"
 									+ "WHERE task_no = ?");
 					stmt.setInt(1, feedback.getFeedback_no());
-					stmt.setInt(2, feedback.getTask_no());
+					stmt.setInt(2, task_no);
 					stmt.setInt(3, feedback.getMember_no());
 					stmt.setString(4, feedback.getComment());
-					stmt.setInt(5, feedback.getTask_no());
+					stmt.setInt(5, task_no);
 					stmt.executeUpdate();
 				}
 			}
@@ -173,7 +173,7 @@ public class Task_Service_Repository {
 				stmt2 = conn.prepareStatement(
 						"INSERT INTO `member_task` (`member_no`, `task_no`, `color`) " + "VALUES(?,?,?)");
 				stmt2.setInt(1, member_task.getMember_no());
-				stmt2.setInt(2, member_task.getTask_no());
+				stmt2.setInt(2, task_no);
 				stmt2.setString(3, member_task.getColor());
 				stmt2.executeUpdate();
 			}

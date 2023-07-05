@@ -120,8 +120,13 @@ public class Taskrefrom extends JPanel {
 	MainFrame MF;
 	// 돌려주는 펑션태그 목록
 	List<Function_Tag> return_Function_Tag_List;
+	
+	
 	TaskRepository taskRepo;
+	
 	List<Member> memberList;
+	
+	
 	List<Member_task> member_task_List;
 
 	Column column;
@@ -142,6 +147,7 @@ public class Taskrefrom extends JPanel {
 	List<Member> ProjectMember;
 	
 	public Taskrefrom(MainFrame mainFrame) {
+		member_task_List = new ArrayList<>();
 		MF = mainFrame;
 		tagTexts = new ArrayList<>();
 		ts = this;
@@ -207,14 +213,12 @@ public class Taskrefrom extends JPanel {
 								TakeFeedBack.setTask_no(0);
 							}
 						}
-						if (TakeFeedBack.getComment().equals("")) {
-//						TakeFeedBack.setComment(text);
-
-						}
+						
 					}
 
 					returnFeedBack = TakeFeedBack;
-
+					System.out.println("어떤상태?");
+					System.out.println(returnFeedBack);
 					Task_Service_Repository TSR = new Task_Service_Repository();
 					
 					
@@ -222,10 +226,21 @@ public class Taskrefrom extends JPanel {
 					
 					if(TakeFeedBack !=null && TakeFeedBack.getTask_no() ==0) {
 						if(TakeTask ==null) {
-						TSR.FeedbackFunction(TakeFeedBack, newTask_num);
-						}else if(TakeTask !=null) {
-							TSR.FeedbackFunction(TakeFeedBack, returnTask.getTask_no());
-						}
+							
+							if (TakeFeedBack.getComment()==null) {
+								String str = "패드백을 입력해주세요";
+								TakeFeedBack.setComment(str);
+								TSR.FeedbackFunction(returnFeedBack, newTask_num);
+								
+							}
+							TSR.FeedbackFunction(returnFeedBack, newTask_num);
+					}
+						
+					}
+					
+					
+					if(TakeTask !=null&&returnFeedBack.getFeedback_no() !=0) {
+						TSR.FeedbackFunction(returnFeedBack, returnTask.getTask_no());
 					}
 					
 					if(returnTask.getTask_no()==0 && Function_Tag_List!= null) {
@@ -236,6 +251,8 @@ public class Taskrefrom extends JPanel {
 					
 					
 					if(returnTask.getTask_no()==0 && member_task_List!= null) {
+						System.out.println("여기니");
+						System.out.println();
 						TSR.Member_taskFunction(member_task_List,newTask_num);
 					}else if(returnTask.getTask_no()!=0 && member_task_List!= null) {
 						TSR.Member_taskFunction(member_task_List,returnTask.getTask_no());						
@@ -379,9 +396,12 @@ public class Taskrefrom extends JPanel {
 
 
 		st = new SettingTask(MF, myUpPnl, task, column, feedback);
+		System.out.println("너 어디까지 실행하고있냐 씨발");
 
 		st.setPJ_Mem();
 		
+		
+		System.out.println(ProjectMember.size());
 		st.settingPKAndAc();
 
 		st.setUsingMemberNum();
@@ -403,6 +423,7 @@ public class Taskrefrom extends JPanel {
 		
 		// 멤버 세팅
 		st.setMemberlist();
+		
 		st.setMember_Task();
 		// 멤버 아이콘 세ㅐ팅
 		st.settingMemberIcon();
