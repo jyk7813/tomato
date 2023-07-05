@@ -27,7 +27,7 @@ public class ImageInput {
 	
 	
 	
-	public byte[] chooseImageAndConvertToByteArray() {
+	public byte[] chooseImageAndConvertToByteArray() throws IOException, ImageProcessingException, MetadataException {
 	    byte[] imageBytes = null;
 
 	    JFileChooser fileChooser = new JFileChooser();
@@ -37,7 +37,7 @@ public class ImageInput {
 	    if (returnValue == JFileChooser.APPROVE_OPTION) {
 	        File selectedFile = fileChooser.getSelectedFile();
 
-	        try {
+	        
 	            BufferedImage originalImage = ImageIO.read(selectedFile);
 
 	            // First, we scale down the image.
@@ -52,11 +52,7 @@ public class ImageInput {
 	            imageBytes = resizeImage(imageBytes);
 	            imageBytes = cropImageToSquare(imageBytes, 60);
 	            imageBytes = cropImageToCircle(imageBytes);
-	        } catch (IOException | ImageProcessingException e) {
-	            e.printStackTrace();
-	        } catch (MetadataException e) {
-	            e.printStackTrace();
-	        }
+	        
 	    }
 
 	    return imageBytes;

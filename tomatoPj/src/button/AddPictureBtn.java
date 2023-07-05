@@ -4,9 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.MetadataException;
 
 import data_input_output.ImageInput;
 import pnl.SignUpPnl;
@@ -54,7 +58,16 @@ public class AddPictureBtn extends JButton {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			byte[] image = imageInput.chooseImageAndConvertToByteArray();
+			byte[] image = null;
+			try {
+				image = imageInput.chooseImageAndConvertToByteArray();
+			} catch (ImageProcessingException e1) {
+				e1.printStackTrace();
+			} catch (MetadataException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			//System.out.println(image);
 			ImageIcon imageIcon = new ImageIcon(image);
 			signUpPnl.testLbl.setIcon(imageIcon);
