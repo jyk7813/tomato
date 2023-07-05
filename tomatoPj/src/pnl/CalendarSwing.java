@@ -101,7 +101,6 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 
 	public CalendarSwing() {
 		super();
-		System.out.println("달력창 기본 생성자");
 		date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아옴
 		year = date.get(Calendar.YEAR);
 		month = date.get(Calendar.MONTH) + 1;
@@ -185,12 +184,10 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 			this.settingView = toggleSwitch;
 			loginMember = mr.searchByMemberNo(loginMemberNo);
 			printCurrentList = ppl.getAllPrintPlannerList(loginMemberNo);
-			System.out.println("달력창 확인: " + loginMember.getName() + "토글상태: " + toggleSwitch);
 			flag = true;
 			selDate = LocalDate.now();
 
 		} catch (SQLException e) {
-			System.out.println("달력창 생성 실패");
 			e.printStackTrace();
 		}
 		date = Calendar.getInstance();// 현재의 날짜 시간 객체 생성 + 객체를 받아옴
@@ -694,14 +691,12 @@ public class CalendarSwing extends JPanel implements ItemListener, ActionListene
 		public void actionPerformed(ActionEvent e) {
 			JButton button = (JButton) e.getSource();
 			button.getName();
-			System.out.println(button.getName() + "번 리스트가 클릭됨");
 		}
 	}
 
 	private class CalBtn implements ActionListener {
 	      @Override
 	      public void actionPerformed(ActionEvent e) {
-	    	 System.out.println("캘린더패널클릭됨");
 	         JButton button = (JButton) e.getSource();
 	         String str = button.getName();
 	         button.setIcon(iconManager.getImageIcon("_c"));
