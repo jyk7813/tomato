@@ -202,46 +202,37 @@ public class Taskrefrom extends JPanel {
 
 					}
 
+					Task_Service_Repository TSR = new Task_Service_Repository();
+					
+					int newTask_num = TSR.updateTask(returnTask,column.getColumn_no());
 					if (TakeFeedBack != null) {
 						if (TakeFeedBack.getMember_no() == 0) {
 							TakeFeedBack.setMember_no(useingMemberNum);
 						}
-						if (TakeFeedBack.getTask_no() == 0) {
-							if (TakeTask != null) {
-								TakeFeedBack.setTask_no(TakeTask.getTask_no());
-							} else {
-								TakeFeedBack.setTask_no(0);
-							}
-						}
 						
 					}
-
-					returnFeedBack = TakeFeedBack;
-					System.out.println("어떤상태?");
-					System.out.println(returnFeedBack);
-					Task_Service_Repository TSR = new Task_Service_Repository();
+						System.out.println("잘건내줬니");
+						System.out.println(TakeFeedBack);
+						returnFeedBack = TakeFeedBack;
+					if(TakeTask !=null) {
+						System.out.println("줄값 확인");
+						System.out.println(returnFeedBack);
+						TSR.FeedbackFunction(returnFeedBack, returnTask.getTask_no());					
+						System.out.println("실행했니? 낫널일 경우");
 					
-					
-					int newTask_num = TSR.updateTask(returnTask,column.getColumn_no());
-					
-					if(TakeFeedBack !=null && TakeFeedBack.getTask_no() ==0) {
-						if(TakeTask ==null) {
-							
-							if (TakeFeedBack.getComment()==null) {
-								String str = "패드백을 입력해주세요";
-								TakeFeedBack.setComment(str);
-								TSR.FeedbackFunction(returnFeedBack, newTask_num);
-								
-							}
-							TSR.FeedbackFunction(returnFeedBack, newTask_num);
+					}else if(TakeTask ==null) {
+						System.out.println("줄값 확인");
+						TSR.FeedbackFunction(returnFeedBack, newTask_num);
+						System.out.println("실행했니? 널일 경우");
 					}
+					
 						
-					}
+					
+//			sql 문을 실행을 했는데 
 					
 					
-					if(TakeTask !=null&&returnFeedBack.getFeedback_no() !=0) {
-						TSR.FeedbackFunction(returnFeedBack, returnTask.getTask_no());
-					}
+					
+					
 					
 					if(returnTask.getTask_no()==0 && Function_Tag_List!= null) {
 						TSR.Function_TagFunction(Function_Tag_List,newTask_num);						
@@ -251,8 +242,6 @@ public class Taskrefrom extends JPanel {
 					
 					
 					if(returnTask.getTask_no()==0 && member_task_List!= null) {
-						System.out.println("여기니");
-						System.out.println();
 						TSR.Member_taskFunction(member_task_List,newTask_num);
 					}else if(returnTask.getTask_no()!=0 && member_task_List!= null) {
 						TSR.Member_taskFunction(member_task_List,returnTask.getTask_no());						
@@ -396,12 +385,10 @@ public class Taskrefrom extends JPanel {
 
 
 		st = new SettingTask(MF, myUpPnl, task, column, feedback);
-		System.out.println("너 어디까지 실행하고있냐 씨발");
+	
 
 		st.setPJ_Mem();
-		
-		
-		System.out.println(ProjectMember.size());
+	
 		st.settingPKAndAc();
 
 		st.setUsingMemberNum();
@@ -957,17 +944,13 @@ public class Taskrefrom extends JPanel {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// 텍스트 필드의 내용이 변경될 때 호출됨
-				if (TakeFeedBack != null) {
-					text = feedBackText.getText();
-					TakeFeedBack.setComment(text);
-				} else if (TakeTask != null && TakeFeedBack == null) {
+				text = feedBackText.getText();
 				
-					TakeFeedBack = new Feedback(TakeTask.getTask_no(), useingMemberNum, text);
-				}
-				if (TakeTask == null && TakeFeedBack == null) {
+				if(TakeFeedBack!=null) {
+					TakeFeedBack.setComment(text);
+				}else {
 					TakeFeedBack = new Feedback(0, useingMemberNum, text);
 				}
-
 			}
 		});
 

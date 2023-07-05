@@ -66,10 +66,12 @@ public class TaskPnl extends JPanel {
 				}
 
 				if (task != null) {					
+					
 					mainFrame.setTask(task, column);
 					mainFrame.showCard("task");
 				}
 				if (task == null) {
+					
 					mainFrame.setTask(task, column);
 					mainFrame.showCard("task");
 				}
