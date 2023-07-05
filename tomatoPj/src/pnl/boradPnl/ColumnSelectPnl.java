@@ -64,7 +64,7 @@ public class ColumnSelectPnl extends JPanel {
 		columnTopPanel.setOpaque(false);
 
 		addColumnPnl = new AddColumnPnl();
-		addColumnPnl.setBounds(0, 41, 350, 60);
+		addColumnPnl.setBounds(31, 41, 350, 60);
 		addColumnPnl.setOpaque(false); // for testing
 		columnTopPanel.add(addColumnPnl);
 		add(columnTopPanel);
